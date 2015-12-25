@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1F39043F-11B4-4202-9B0A-6606FA7BB355}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lua</RootNamespace>
+    <AssemblyName>Lua</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LUA_CORE;_WIN32;LUA_COMPAT_VARARG;LUA_COMPAT_MOD;LUA_COMPAT_GFIND;CATCH_EXCEPTIONS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;LUA_CORE;_WIN32;LUA_COMPAT_VARARG;LUA_COMPAT_MOD;LUA_COMPAT_GFIND;CATCH_EXCEPTIONS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\ArrayElement.cs" />
+    <Compile Include="src\ArrayRef.cs" />
+    <Compile Include="src\BinOpr.cs" />
+    <Compile Include="src\BlockCnt.cs" />
+    <Compile Include="src\CallInfo.cs" />
+    <Compile Include="src\CallS.cs" />
+    <Compile Include="src\CCallS.cs" />
+    <Compile Include="src\CClosure.cs" />
+    <Compile Include="src\CharPtr.cs" />
+    <Compile Include="src\Closure.cs" />
+    <Compile Include="src\ClosureHeader.cs" />
+    <Compile Include="src\ClosureType.cs" />
+    <Compile Include="src\CommonHeader.cs" />
+    <Compile Include="src\ConsControl.cs" />
+    <Compile Include="src\DumpState.cs" />
+    <Compile Include="src\expdesc.cs" />
+    <Compile Include="src\expkind.cs" />
+    <Compile Include="src\FilePtr.cs" />
+    <Compile Include="src\FuncState.cs" />
+    <Compile Include="src\GCheader.cs" />
+    <Compile Include="src\GCObject.cs" />
+    <Compile Include="src\GCObjectRef.cs" />
+    <Compile Include="src\global_State.cs" />
+    <Compile Include="src\InstructionPtr.cs" />
+    <Compile Include="src\LClosure.cs" />
+    <Compile Include="src\LexState.cs" />
+    <Compile Include="src\LG.cs" />
+    <Compile Include="src\LHS_assign.cs" />
+    <Compile Include="src\LoadF.cs" />
+    <Compile Include="src\LoadS.cs" />
+    <Compile Include="src\LoadState.cs" />
+    <Compile Include="src\LocVar.cs" />
+    <Compile Include="src\LuaAPI.cs" />
+    <Compile Include="src\LuaAuxLib.cs" />
+    <Compile Include="src\LuaBaseLib.cs" />
+    <Compile Include="src\LuaCode.cs" />
+    <Compile Include="src\LuaDebugLib.cs" />
+    <Compile Include="src\LuaDebug.cs" />
+    <Compile Include="src\LuaDo.cs" />
+    <Compile Include="src\LuaDump.cs" />
+    <Compile Include="src\LuaException.cs" />
+    <Compile Include="src\LuaFunc.cs" />
+    <Compile Include="src\LuaGC.cs" />
+    <Compile Include="src\LuaInit.cs" />
+    <Compile Include="src\LuaIOLib.cs" />
+    <Compile Include="src\LuaLex.cs" />
+    <Compile Include="src\LuaLimits.cs" />
+    <Compile Include="src\luaL_Buffer.cs" />
+    <Compile Include="src\luaL_Reg.cs" />
+    <Compile Include="src\LuaMathLib.cs" />
+    <Compile Include="src\LuaMem.cs" />
+    <Compile Include="src\LuaLoadLib.cs" />
+    <Compile Include="src\LuaObject.cs" />
+    <Compile Include="src\LuaOpCodes.cs" />
+    <Compile Include="src\LuaOSLib.cs" />
+    <Compile Include="src\LuaParser.cs" />
+    <Compile Include="src\LuaState.cs" />
+    <Compile Include="src\LuaString.cs" />
+    <Compile Include="src\LuaStrLib.cs" />
+    <Compile Include="src\LuaTable.cs" />
+    <Compile Include="src\LuaTableLib.cs" />
+    <Compile Include="src\LuaTM.cs" />
+    <Compile Include="src\Lua.cs" />
+    <Compile Include="src\LuaConf.cs" />
+    <Compile Include="src\LuacProgram.cs" />
+    <Compile Include="src\LuaLib.cs" />
+    <Compile Include="src\LuaProgram.cs" />
+    <Compile Include="src\LuaUndump.cs" />
+    <Compile Include="src\LuaVM.cs" />
+    <Compile Include="src\LuaZIO.cs" />
+    <Compile Include="src\LuaPrint.cs" />
+    <Compile Include="src\lua_Debug.cs" />
+    <Compile Include="src\lua_longjmp.cs" />
+    <Compile Include="src\lua_State.cs" />
+    <Compile Include="src\MatchState.cs" />
+    <Compile Include="src\Mbuffer.cs" />
+    <Compile Include="src\NextRef.cs" />
+    <Compile Include="src\Node.cs" />
+    <Compile Include="src\OpArgMask.cs" />
+    <Compile Include="src\OpCode.cs" />
+    <Compile Include="src\OpenValRef.cs" />
+    <Compile Include="src\OpMode.cs" />
+    <Compile Include="src\priority_.cs" />
+    <Compile Include="src\Program.cs" />
+    <Compile Include="src\Proto.cs" />
+    <Compile Include="src\RESERVED.cs" />
+    <Compile Include="src\RootGCRef.cs" />
+    <Compile Include="src\SemInfo.cs" />
+    <Compile Include="src\Smain.cs" />
+    <Compile Include="src\SParser.cs" />
+    <Compile Include="src\stringtable.cs" />
+    <Compile Include="src\Table.cs" />
+    <Compile Include="src\TKey.cs" />
+    <Compile Include="src\TKey_nk.cs" />
+    <Compile Include="src\TMS.cs" />
+    <Compile Include="src\Token.cs" />
+    <Compile Include="src\Tools.cs" />
+    <Compile Include="src\TString.cs" />
+    <Compile Include="src\TString_tsv.cs" />
+    <Compile Include="src\TValue.cs" />
+    <Compile Include="src\Udata.cs" />
+    <Compile Include="src\Udata_uv.cs" />
+    <Compile Include="src\UnOpr.cs" />
+    <Compile Include="src\UpVal.cs" />
+    <Compile Include="src\upvaldesc.cs" />
+    <Compile Include="src\Value.cs" />
+    <Compile Include="src\ZIO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProfilingSessions\Session20151105_212619.sdps" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
