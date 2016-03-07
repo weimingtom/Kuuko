@@ -32,13 +32,13 @@ namespace KopiLua
 			else 
 			{
 				LuaAPI.lua_pushnil(L);
-				if (filename != null)
+				if (CharPtr.isNotEqual(filename, null))
 				{
-					LuaAPI.lua_pushfstring(L, "%s: %s", filename, LuaConf.strerror(en));
+					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s: %s"), filename, LuaConf.strerror(en));
 				}
 				else
 				{
-					LuaAPI.lua_pushfstring(L, "%s", LuaConf.strerror(en));
+					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s"), LuaConf.strerror(en));
 				}
 				LuaAPI.lua_pushinteger(L, en);
 				return 3;
@@ -47,13 +47,13 @@ namespace KopiLua
 
 		private static void fileerror(lua_State L, int arg, CharPtr filename) 
 		{
-			LuaAPI.lua_pushfstring(L, "%s: %s", filename, LuaConf.strerror(LuaConf.errno()));
+			LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s: %s"), filename, LuaConf.strerror(LuaConf.errno()));
 			LuaAuxLib.luaL_argerror(L, arg, Lua.lua_tostring(L, -1));
 		}
 
 		public static FilePtr tofilep(lua_State L) 
 		{ 
-			return (FilePtr)LuaAuxLib.luaL_checkudata(L, 1, LuaLib.LUA_FILEHANDLE); 
+			return (FilePtr)LuaAuxLib.luaL_checkudata(L, 1, CharPtr.toCharPtr(LuaLib.LUA_FILEHANDLE)); 
 		}
 
 		private static int io_type(lua_State L) 
@@ -61,18 +61,18 @@ namespace KopiLua
 			object ud;
 			LuaAuxLib.luaL_checkany(L, 1);
 			ud = LuaAPI.lua_touserdata(L, 1);
-			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, LuaLib.LUA_FILEHANDLE);
+			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, CharPtr.toCharPtr(LuaLib.LUA_FILEHANDLE));
 			if (ud == null || (LuaAPI.lua_getmetatable(L, 1) == 0) || (LuaAPI.lua_rawequal(L, -2, -1) == 0))
 			{
 				LuaAPI.lua_pushnil(L);  /* not a file */
 			}
 			else if ( (ud as FilePtr).file == null)
 			{
-				Lua.lua_pushliteral(L, "closed file");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("closed file"));
 			}
 			else
 			{
-				Lua.lua_pushliteral(L, "file");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("file"));
 			}
 			return 1;
 		}
@@ -82,7 +82,7 @@ namespace KopiLua
 			FilePtr f = tofilep(L);
 			if (f.file == null)
 			{
-				LuaAuxLib.luaL_error(L, "attempt to use a closed file");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("attempt to use a closed file"));
 			}
 			return f.file;
 		}
@@ -96,7 +96,7 @@ namespace KopiLua
 		{
 			FilePtr pf = (FilePtr)LuaAPI.lua_newuserdata(L, typeof(FilePtr));
 			pf.file = null;  /* file file is currently `closed' */
-			LuaAuxLib.luaL_getmetatable(L, LuaLib.LUA_FILEHANDLE);
+			LuaAuxLib.luaL_getmetatable(L, CharPtr.toCharPtr(LuaLib.LUA_FILEHANDLE));
 			LuaAPI.lua_setmetatable(L, -2);
 			return pf;
 		}
@@ -107,7 +107,7 @@ namespace KopiLua
 		private static int io_noclose(lua_State L) 
 		{
 			LuaAPI.lua_pushnil(L);
-			Lua.lua_pushliteral(L, "cannot close standard file");
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr("cannot close standard file"));
 			return 2;
 		}
 
@@ -136,7 +136,7 @@ namespace KopiLua
 		private static int aux_close(lua_State L) 
 		{
 			LuaAPI.lua_getfenv(L, 1);
-			LuaAPI.lua_getfield(L, -1, "__close");
+			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("__close"));
 			return (LuaAPI.lua_tocfunction(L, -1))(L);
 		}
 
@@ -164,11 +164,11 @@ namespace KopiLua
 			Stream f = tofilep(L).file;
 			if (f == null)
 			{
-				Lua.lua_pushliteral(L, "file (closed)");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("file (closed)"));
 			}
 			else
 			{
-				LuaAPI.lua_pushfstring(L, "file (%p)", f);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("file (%p)"), f);
 			}
 			return 1;
 		}
@@ -176,7 +176,7 @@ namespace KopiLua
 		private static int io_open(lua_State L) 
 		{
 			CharPtr filename = LuaAuxLib.luaL_checkstring(L, 1);
-			CharPtr mode = LuaAuxLib.luaL_optstring(L, 2, "r");
+			CharPtr mode = LuaAuxLib.luaL_optstring(L, 2, CharPtr.toCharPtr("r"));
 			FilePtr pf = newfile(L);
 			pf.file = LuaConf.fopen(filename, mode);
 			return (pf.file == null) ? pushresult(L, 0, filename) : 1;
@@ -189,7 +189,7 @@ namespace KopiLua
 		private static int io_popen(lua_State L) 
 		{
 			CharPtr filename = LuaAuxLib.luaL_checkstring(L, 1);
-			CharPtr mode = LuaAuxLib.luaL_optstring(L, 2, "r");
+			CharPtr mode = LuaAuxLib.luaL_optstring(L, 2, CharPtr.toCharPtr("r"));
 			FilePtr pf = newfile(L);
 			pf.file = LuaConf.lua_popen(L, filename, mode);
 			return (pf.file == null) ? pushresult(L, 0, filename) : 1;
@@ -209,7 +209,7 @@ namespace KopiLua
 			f = (LuaAPI.lua_touserdata(L, -1) as FilePtr).file;
 			if (f == null)
 			{
-				LuaAuxLib.luaL_error(L, "standard %s file is closed", fnames[findex - 1]);
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("standard %s file is closed"), fnames[findex - 1]);
 			}
 			return f;
 		}
@@ -219,7 +219,7 @@ namespace KopiLua
 			if (!Lua.lua_isnoneornil(L, 1))
 			{
 				CharPtr filename = Lua.lua_tostring(L, 1);
-				if (filename != null) 
+				if (CharPtr.isNotEqual(filename, null)) 
 				{
 					FilePtr pf = newfile(L);
 					pf.file = LuaConf.fopen(filename, mode);
@@ -242,12 +242,12 @@ namespace KopiLua
 
 		private static int io_input(lua_State L) 
 		{
-			return g_iofile(L, IO_INPUT, "r");
+			return g_iofile(L, IO_INPUT, CharPtr.toCharPtr("r"));
 		}
 
 		private static int io_output(lua_State L) 
 		{
-			return g_iofile(L, IO_OUTPUT, "w");
+			return g_iofile(L, IO_OUTPUT, CharPtr.toCharPtr("w"));
 		}
 
 		private static void aux_lines(lua_State L, int idx, int toclose) 
@@ -277,7 +277,7 @@ namespace KopiLua
 			{
 				CharPtr filename = LuaAuxLib.luaL_checkstring(L, 1);
 				FilePtr pf = newfile(L);
-				pf.file = LuaConf.fopen(filename, "r");
+				pf.file = LuaConf.fopen(filename, CharPtr.toCharPtr("r"));
 				if (pf.file == null)
 				{
 					fileerror(L, 1, filename);
@@ -298,7 +298,7 @@ namespace KopiLua
 		{
 			//lua_Number d;
 			object[] parms = {(object)(double)0.0};
-			if (LuaConf.fscanf(f, LuaConf.LUA_NUMBER_SCAN, parms) == 1)
+			if (LuaConf.fscanf(f, CharPtr.toCharPtr(LuaConf.LUA_NUMBER_SCAN), parms) == 1)
 			{
 				LuaAPI.lua_pushnumber(L, (double)parms[0]);
 				return 1;
@@ -325,14 +325,14 @@ namespace KopiLua
 			{
 				uint l;
 				CharPtr p = LuaAuxLib.luaL_prepbuffer(b);
-				if (LuaConf.fgets(p, f) == null)
+				if (CharPtr.isEqual(LuaConf.fgets(p, f), null))
 				{  
 					/* eof? */
 					LuaAuxLib.luaL_pushresult(b);  /* close buffer */
 					return (LuaAPI.lua_objlen(L, -1) > 0) ? 1 : 0;  /* check whether read something */
 				}
 				l = (uint)LuaConf.strlen(p);
-				if (l == 0 || p[l-1] != '\n')
+				if (l == 0 || p.get(l - 1) != '\n')
 				{
 					LuaAuxLib.luaL_addsize(b, (int)l);
 				}
@@ -382,7 +382,7 @@ namespace KopiLua
 			else 
 			{  
 				/* ensure stack space for all results and for auxlib's buffer */
-				LuaAuxLib.luaL_checkstack(L, nargs + Lua.LUA_MINSTACK, "too many arguments");
+				LuaAuxLib.luaL_checkstack(L, nargs + Lua.LUA_MINSTACK, CharPtr.toCharPtr("too many arguments"));
 				success = 1;
 				for (n = first; (nargs-- != 0) && (success != 0); n++) 
 				{
@@ -394,8 +394,8 @@ namespace KopiLua
 					else 
 					{
 						CharPtr p = Lua.lua_tostring(L, n);
-						LuaAuxLib.luaL_argcheck(L, (p != null) && (p[0] == '*'), n, "invalid option");
-						switch (p[1]) 
+						LuaAuxLib.luaL_argcheck(L, (CharPtr.isNotEqual(p, null)) && (p.get(0) == '*'), n, "invalid option");
+						switch (p.get(1)) 
 						{
 							case 'n':  /* number */
 								{
@@ -415,7 +415,7 @@ namespace KopiLua
 								}
 							default:
 								{
-									return LuaAuxLib.luaL_argerror(L, n, "invalid format");
+									return LuaAuxLib.luaL_argerror(L, n, CharPtr.toCharPtr("invalid format"));
 								}
 						}
 					}
@@ -449,12 +449,12 @@ namespace KopiLua
 			int sucess;
 			if (f == null)  /* file is already closed? */
 			{
-				LuaAuxLib.luaL_error(L, "file is already closed");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("file is already closed"));
 			}
 			sucess = read_line(L, f);
 			if (LuaConf.ferror(f) != 0)
 			{
-				return LuaAuxLib.luaL_error(L, "%s", LuaConf.strerror(LuaConf.errno()));
+				return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("%s"), LuaConf.strerror(LuaConf.errno()));
 			}
 			if (sucess != 0) 
 			{
@@ -486,7 +486,7 @@ namespace KopiLua
 				{
 					/* optimization: could be done exactly as for strings */
 					status = ((status!=0) &&
-					          (LuaConf.fprintf(f, LuaConf.LUA_NUMBER_FMT, LuaAPI.lua_tonumber(L, arg)) > 0)) ? 1 : 0;
+					          (LuaConf.fprintf(f, CharPtr.toCharPtr(LuaConf.LUA_NUMBER_FMT), LuaAPI.lua_tonumber(L, arg)) > 0)) ? 1 : 0;
 				}
 				else 
 				{
@@ -516,13 +516,13 @@ namespace KopiLua
 				LuaConf.SEEK_END 
 			};
 			CharPtr[] modenames = { 
-				"set", 
-				"cur", 
-				"end", 
+				CharPtr.toCharPtr("set"), 
+				CharPtr.toCharPtr("cur"), 
+				CharPtr.toCharPtr("end"), 
 				null
 			};
 			Stream f = tofile(L);
-			int op = LuaAuxLib.luaL_checkoption(L, 2, "cur", modenames);
+			int op = LuaAuxLib.luaL_checkoption(L, 2, CharPtr.toCharPtr("cur"), modenames);
 			long offset = LuaAuxLib.luaL_optlong(L, 3, 0);
 			op = LuaConf.fseek(f, offset, mode[op]);
 			if (op != 0)
@@ -539,15 +539,15 @@ namespace KopiLua
 		private static int f_setvbuf(lua_State L) 
 		{
 			CharPtr[] modenames = { 
-				"no", 
-				"full", 
-				"line", 
+				CharPtr.toCharPtr("no"), 
+				CharPtr.toCharPtr("full"), 
+				CharPtr.toCharPtr("line"), 
 				null 
 			};
 			int[] mode = { LuaConf._IONBF, LuaConf._IOFBF, LuaConf._IOLBF };
 			Stream f = tofile(L);
 			int op = LuaAuxLib.luaL_checkoption(L, 2, null, modenames);
-			Int32/*lua_Integer*/ sz = LuaAuxLib.luaL_optinteger(L, 3, LuaConf.LUAL_BUFFERSIZE);
+			int/*Int32*//*lua_Integer*/ sz = LuaAuxLib.luaL_optinteger(L, 3, LuaConf.LUAL_BUFFERSIZE);
 			int res = LuaConf.setvbuf(f, null, mode[op], (uint)sz);
 			return pushresult(L, (res == 0) ? 1 : 0, null);
 		}
@@ -582,38 +582,38 @@ namespace KopiLua
 
 
 		private readonly static luaL_Reg[] iolib = {
-			new luaL_Reg("close", io_close),
-			new luaL_Reg("flush", io_flush),
-			new luaL_Reg("input", io_input),
-			new luaL_Reg("lines", io_lines),
-			new luaL_Reg("open", io_open),
-			new luaL_Reg("output", io_output),
-			new luaL_Reg("popen", io_popen),
-			new luaL_Reg("read", io_read),
-			new luaL_Reg("tmpfile", io_tmpfile),
-			new luaL_Reg("type", io_type),
-			new luaL_Reg("write", io_write),
+			new luaL_Reg(CharPtr.toCharPtr("close"), io_close),
+			new luaL_Reg(CharPtr.toCharPtr("flush"), io_flush),
+			new luaL_Reg(CharPtr.toCharPtr("input"), io_input),
+			new luaL_Reg(CharPtr.toCharPtr("lines"), io_lines),
+			new luaL_Reg(CharPtr.toCharPtr("open"), io_open),
+			new luaL_Reg(CharPtr.toCharPtr("output"), io_output),
+			new luaL_Reg(CharPtr.toCharPtr("popen"), io_popen),
+			new luaL_Reg(CharPtr.toCharPtr("read"), io_read),
+			new luaL_Reg(CharPtr.toCharPtr("tmpfile"), io_tmpfile),
+			new luaL_Reg(CharPtr.toCharPtr("type"), io_type),
+			new luaL_Reg(CharPtr.toCharPtr("write"), io_write),
 			new luaL_Reg(null, null)
 		};
 
 		private readonly static luaL_Reg[] flib = {
-			new luaL_Reg("close", io_close),
-			new luaL_Reg("flush", f_flush),
-			new luaL_Reg("lines", f_lines),
-			new luaL_Reg("read", f_read),
-			new luaL_Reg("seek", f_seek),
-			new luaL_Reg("setvbuf", f_setvbuf),
-			new luaL_Reg("write", f_write),
-			new luaL_Reg("__gc", io_gc),
-			new luaL_Reg("__tostring", io_tostring),
+			new luaL_Reg(CharPtr.toCharPtr("close"), io_close),
+			new luaL_Reg(CharPtr.toCharPtr("flush"), f_flush),
+			new luaL_Reg(CharPtr.toCharPtr("lines"), f_lines),
+			new luaL_Reg(CharPtr.toCharPtr("read"), f_read),
+			new luaL_Reg(CharPtr.toCharPtr("seek"), f_seek),
+			new luaL_Reg(CharPtr.toCharPtr("setvbuf"), f_setvbuf),
+			new luaL_Reg(CharPtr.toCharPtr("write"), f_write),
+			new luaL_Reg(CharPtr.toCharPtr("__gc"), io_gc),
+			new luaL_Reg(CharPtr.toCharPtr("__tostring"), io_tostring),
 			new luaL_Reg(null, null)
 		};
 
 		private static void createmeta(lua_State L) 
 		{
-			LuaAuxLib.luaL_newmetatable(L, LuaLib.LUA_FILEHANDLE);  /* create metatable for file files */
+			LuaAuxLib.luaL_newmetatable(L, CharPtr.toCharPtr(LuaLib.LUA_FILEHANDLE));  /* create metatable for file files */
 			LuaAPI.lua_pushvalue(L, -1);  /* push metatable */
-			LuaAPI.lua_setfield(L, -2, "__index");  /* metatable.__index = metatable */
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__index"));  /* metatable.__index = metatable */
 			LuaAuxLib.luaL_register(L, null, flib);  /* file methods */
 		}
 
@@ -634,7 +634,7 @@ namespace KopiLua
 		{
 			LuaAPI.lua_createtable(L, 0, 1);
 			Lua.lua_pushcfunction(L, cls);
-			LuaAPI.lua_setfield(L, -2, "__close");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__close"));
 		}
 
 		public static int luaopen_io(lua_State L) 
@@ -644,14 +644,14 @@ namespace KopiLua
 			newfenv(L, io_fclose);
 			LuaAPI.lua_replace(L, Lua.LUA_ENVIRONINDEX);
 			/* open library */
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_IOLIBNAME, iolib);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_IOLIBNAME), iolib);
 			/* create (and set) default files */
 			newfenv(L, io_noclose);  /* close function for default files */
-			createstdfile(L, LuaConf.stdin, IO_INPUT, "stdin");
-			createstdfile(L, LuaConf.stdout, IO_OUTPUT, "stdout");
-			createstdfile(L, LuaConf.stderr, 0, "stderr");
+			createstdfile(L, LuaConf.stdin, IO_INPUT, CharPtr.toCharPtr("stdin"));
+			createstdfile(L, LuaConf.stdout, IO_OUTPUT, CharPtr.toCharPtr("stdout"));
+			createstdfile(L, LuaConf.stderr, 0, CharPtr.toCharPtr("stderr"));
 			Lua.lua_pop(L, 1);  /* pop environment for default files */
-			LuaAPI.lua_getfield(L, -1, "popen");
+			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("popen"));
 			newfenv(L, io_pclose);  /* create environment for 'popen' */
 			LuaAPI.lua_setfenv(L, -2);  /* set fenv for 'popen' */
 			Lua.lua_pop(L, 1);  /* pop 'popen' */

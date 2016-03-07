@@ -50,7 +50,7 @@ namespace KopiLua
 		
 		public static bool f_isLua(CallInfo ci) 
 		{ 
-			return ci_func(ci).c.isC == 0; 
+			return ci_func(ci).c.getIsC() == 0; 
 		}
 		
 		public static bool isLua(CallInfo ci) 
@@ -71,17 +71,17 @@ namespace KopiLua
 		/* macros to convert a GCObject into a specific value */
 		public static TString rawgco2ts(GCObject o) 
 		{ 
-			return (TString)LuaLimits.check_exp(o.gch.tt == Lua.LUA_TSTRING, o.ts); 
+			return (TString)LuaLimits.check_exp(o.getGch().tt == Lua.LUA_TSTRING, o.getTs()); 
 		}
 		
 		public static TString gco2ts(GCObject o) 
 		{ 
-			return (TString)(rawgco2ts(o).tsv); 
+			return (TString)(rawgco2ts(o).getTsv()); 
 		}
 		
 		public static Udata rawgco2u(GCObject o) 
-		{ 
-			return (Udata)LuaLimits.check_exp(o.gch.tt == Lua.LUA_TUSERDATA, o.u); 
+		{
+            return (Udata)LuaLimits.check_exp(o.getGch().tt == Lua.LUA_TUSERDATA, o.getU()); 
 		}
 		
 		public static Udata gco2u(GCObject o) 
@@ -90,33 +90,33 @@ namespace KopiLua
 		}
 		
 		public static Closure gco2cl(GCObject o) 
-		{ 
-			return (Closure)LuaLimits.check_exp(o.gch.tt == Lua.LUA_TFUNCTION, o.cl); 
+		{
+            return (Closure)LuaLimits.check_exp(o.getGch().tt == Lua.LUA_TFUNCTION, o.getCl()); 
 		}
 		
 		public static Table gco2h(GCObject o) 
-		{ 
-			return (Table)LuaLimits.check_exp(o.gch.tt == Lua.LUA_TTABLE, o.h); 
+		{
+            return (Table)LuaLimits.check_exp(o.getGch().tt == Lua.LUA_TTABLE, o.getH()); 
 		}
 		
 		public static Proto gco2p(GCObject o) 
-		{ 
-			return (Proto)LuaLimits.check_exp(o.gch.tt == LuaObject.LUA_TPROTO, o.p); 
+		{
+            return (Proto)LuaLimits.check_exp(o.getGch().tt == LuaObject.LUA_TPROTO, o.getP()); 
 		}
 		
 		public static UpVal gco2uv(GCObject o) 
-		{ 
-			return (UpVal)LuaLimits.check_exp(o.gch.tt == LuaObject.LUA_TUPVAL, o.uv); 
+		{
+            return (UpVal)LuaLimits.check_exp(o.getGch().tt == LuaObject.LUA_TUPVAL, o.getUv()); 
 		}
 		
 		public static UpVal ngcotouv(GCObject o) 
-		{ 
-			return (UpVal)LuaLimits.check_exp((o == null) || (o.gch.tt == LuaObject.LUA_TUPVAL), o.uv); 
+		{
+            return (UpVal)LuaLimits.check_exp((o == null) || (o.getGch().tt == LuaObject.LUA_TUPVAL), o.getUv()); 
 		}
 		
 		public static lua_State gco2th(GCObject o) 
-		{ 
-			return (lua_State)LuaLimits.check_exp(o.gch.tt == Lua.LUA_TTHREAD, o.th); 
+		{
+            return (lua_State)LuaLimits.check_exp(o.getGch().tt == Lua.LUA_TTHREAD, o.getTh()); 
 		}
 
 		/* macro to convert any Lua object into a GCObject */
@@ -159,7 +159,7 @@ namespace KopiLua
 			L1.ci.func = L1.top;
 			LuaObject.setnilvalue(/*StkId*/TValue.inc(ref L1.top));  /* `function' entry for this `ci' */
 			L1.base_ = L1.ci.base_ = L1.top;
-			L1.ci.top = L1.top + Lua.LUA_MINSTACK;
+			L1.ci.top = TValue.plus(L1.top, Lua.LUA_MINSTACK);
 		}
 
 		private static void freestack(lua_State L, lua_State L1) 
@@ -181,7 +181,7 @@ namespace KopiLua
 			LuaString.luaS_resize(L, LuaLimits.MINSTRTABSIZE);  /* initial size of string table */
 			LuaTM.luaT_init(L);
 			LuaLex.luaX_init(L);
-			LuaString.luaS_fix(LuaString.luaS_newliteral(L, LuaMem.MEMERRMSG));
+			LuaString.luaS_fix(LuaString.luaS_newliteral(L, CharPtr.toCharPtr(LuaMem.MEMERRMSG)));
 			g.GCthreshold = 4 * g.totalbytes;
 		}
 

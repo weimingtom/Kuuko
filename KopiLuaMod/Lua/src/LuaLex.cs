@@ -44,12 +44,12 @@ namespace KopiLua
 				int/*uint*/ newsize;
 				if (b.buffsize >= LuaLimits.MAX_SIZET / 2)
 				{
-					luaX_lexerror(ls, "lexical element too long", 0);
+					luaX_lexerror(ls, CharPtr.toCharPtr("lexical element too long"), 0);
 				}
 				newsize = b.buffsize * 2;
 				LuaZIO.luaZ_resizebuffer(ls.L, b, (int)newsize);
 			}
-			b.buffer[b.n++] = (char)c;
+			b.buffer.set(b.n++, (char)c);
 		}
 
 		public static void luaX_init(lua_State L) 
@@ -57,10 +57,10 @@ namespace KopiLua
 			int i;
 			for (i = 0; i < NUM_RESERVED; i++) 
 			{
-				TString ts = LuaString.luaS_new(L, luaX_tokens[i]);
+				TString ts = LuaString.luaS_new(L, CharPtr.toCharPtr(luaX_tokens[i]));
 				LuaString.luaS_fix(ts);  /* reserved words are never collected */
 				LuaLimits.lua_assert(luaX_tokens[i].Length + 1 <= TOKEN_LEN);
-				ts.tsv.reserved = LuaLimits.cast_byte(i + 1);  /* reserved word */
+				ts.getTsv().reserved = LuaLimits.cast_byte(i + 1);  /* reserved word */
 			}
 		}
 
@@ -71,12 +71,12 @@ namespace KopiLua
 			if (token < FIRST_RESERVED) 
 			{
 				LuaLimits.lua_assert(token == (byte)token);
-				return (LuaConf.iscntrl(token)) ? LuaObject.luaO_pushfstring(ls.L, "char(%d)", token) :
-					LuaObject.luaO_pushfstring(ls.L, "%c", token);
+				return (LuaConf.iscntrl(token)) ? LuaObject.luaO_pushfstring(ls.L, CharPtr.toCharPtr("char(%d)"), token) :
+					LuaObject.luaO_pushfstring(ls.L, CharPtr.toCharPtr("%c"), token);
 			}
 			else
 			{
-				return luaX_tokens[(int)token-FIRST_RESERVED];
+				return CharPtr.toCharPtr(luaX_tokens[(int)token - FIRST_RESERVED]);
 			}
 		}
 
@@ -100,12 +100,12 @@ namespace KopiLua
 
 		public static void luaX_lexerror(LexState ls, CharPtr msg, int token) 
 		{
-			CharPtr buff = new char[MAXSRC];
+			CharPtr buff = CharPtr.toCharPtr(new char[MAXSRC]);
 			LuaObject.luaO_chunkid(buff, LuaObject.getstr(ls.source), MAXSRC);
-			msg = LuaObject.luaO_pushfstring(ls.L, "%s:%d: %s", buff, ls.linenumber, msg);
+			msg = LuaObject.luaO_pushfstring(ls.L, CharPtr.toCharPtr("%s:%d: %s"), buff, ls.linenumber, msg);
 			if (token != 0)
 			{
-				LuaObject.luaO_pushfstring(ls.L, "%s near " + LuaConf.LUA_QS, msg, txtToken(ls, token));
+				LuaObject.luaO_pushfstring(ls.L, CharPtr.toCharPtr("%s near " + LuaConf.getLUA_QS()), msg, txtToken(ls, token));
 			}
 			LuaDo.luaD_throw(ls.L, Lua.LUA_ERRSYNTAX);
 		}
@@ -138,7 +138,7 @@ namespace KopiLua
 			}
 			if (++ls.linenumber >= LuaLimits.MAX_INT)
 			{
-				luaX_syntaxerror(ls, "chunk has too many lines");
+				luaX_syntaxerror(ls, CharPtr.toCharPtr("chunk has too many lines"));
 			}
 		}
 
@@ -163,7 +163,7 @@ namespace KopiLua
 		 */
 		private static int check_next(LexState ls, CharPtr set) 
 		{
-			if (LuaConf.strchr(set, (char)ls.current) == null)
+			if (CharPtr.isEqual(LuaConf.strchr(set, (char)ls.current), null))
 			{
 				return 0;
 			}
@@ -177,15 +177,15 @@ namespace KopiLua
 			CharPtr p = LuaZIO.luaZ_buffer(ls.buff);
 			while ((n--) != 0)
 			{
-				if (p[n] == from) 
+				if (p.get(n) == from) 
 				{
-					p[n] = to;
+					p.set(n, to);
 				}
 			}
 		}
 
-
-		private static void trydecpoint (LexState ls, SemInfo seminfo) {
+		private static void trydecpoint(LexState ls, SemInfo seminfo) 
+        {
 			/* format error: try to update decimal point separator */
 			// todo: add proper support for localeconv - mjf
 			//lconv cv = localeconv();
@@ -196,7 +196,7 @@ namespace KopiLua
 			{
 				/* format error with correct decimal point: no more options */
 				buffreplace(ls, ls.decpoint, '.');  /* undo change (for error message) */
-				luaX_lexerror(ls, "malformed number", (int)RESERVED.TK_NUMBER);
+				luaX_lexerror(ls, CharPtr.toCharPtr("malformed number"), (int)RESERVED.TK_NUMBER);
 			}
 		}
 
@@ -208,9 +208,9 @@ namespace KopiLua
 			{
 				save_and_next(ls);
 			} while (LuaConf.isdigit(ls.current) || ls.current == '.');
-			if (check_next(ls, "Ee") != 0)  /* `E'? */
+			if (check_next(ls, CharPtr.toCharPtr("Ee")) != 0)  /* `E'? */
 			{
-				check_next(ls, "+-");  /* optional exponent sign */
+				check_next(ls, CharPtr.toCharPtr("+-"));  /* optional exponent sign */
 			}
 			while (LuaConf.isalnum(ls.current) || ls.current == '_')
 			{
@@ -253,8 +253,8 @@ namespace KopiLua
 				{
 					case LuaZIO.EOZ:
 						{
-							luaX_lexerror(ls, (seminfo != null) ? "unfinished long string" :
-								"unfinished long comment", (int)RESERVED.TK_EOS);
+							luaX_lexerror(ls, (seminfo != null) ? CharPtr.toCharPtr("unfinished long string") :
+								CharPtr.toCharPtr("unfinished long comment"), (int)RESERVED.TK_EOS);
 							break;  /* to avoid warnings */
 						}
 					#if LUA_COMPAT_LSTR
@@ -330,13 +330,13 @@ endloop:
 				{
 					case LuaZIO.EOZ:
 						{
-							luaX_lexerror(ls, "unfinished string", (int)RESERVED.TK_EOS);
+							luaX_lexerror(ls, CharPtr.toCharPtr("unfinished string"), (int)RESERVED.TK_EOS);
 							continue;  /* to avoid warnings */
 						}
 					case '\n':
 					case '\r':
 						{
-							luaX_lexerror(ls, "unfinished string", (int)RESERVED.TK_STRING);
+							luaX_lexerror(ls, CharPtr.toCharPtr("unfinished string"), (int)RESERVED.TK_STRING);
 							continue;  /* to avoid warnings */
 						}
 					case '\\': 
@@ -407,7 +407,7 @@ endloop:
 											} while (++i < 3 && LuaConf.isdigit(ls.current));
 											if (c > System.Byte.MaxValue)
 											{
-												luaX_lexerror(ls, "escape sequence too large", (int)RESERVED.TK_STRING);
+												luaX_lexerror(ls, CharPtr.toCharPtr("escape sequence too large"), (int)RESERVED.TK_STRING);
 											}
 											save(ls, c);
 										}
@@ -484,7 +484,7 @@ endloop:
 							}
 							else 
 							{
-								luaX_lexerror(ls, "invalid long string delimiter", (int)RESERVED.TK_STRING);
+								luaX_lexerror(ls, CharPtr.toCharPtr("invalid long string delimiter"), (int)RESERVED.TK_STRING);
 							}
 						}
 						break;
@@ -549,9 +549,9 @@ endloop:
 					case '.': 
 						{
 							save_and_next(ls);
-							if (check_next(ls, ".") != 0) 
+							if (check_next(ls, CharPtr.toCharPtr(".")) != 0) 
 							{
-								if (check_next(ls, ".") != 0)
+								if (check_next(ls, CharPtr.toCharPtr(".")) != 0)
 								{
 									return (int)RESERVED.TK_DOTS;   /* ... */
 								}
@@ -596,9 +596,9 @@ endloop:
 								} while (LuaConf.isalnum(ls.current) || ls.current == '_');
 								ts = luaX_newstring(ls, LuaZIO.luaZ_buffer(ls.buff),
 									LuaZIO.luaZ_bufflen(ls.buff));
-								if (ts.tsv.reserved > 0)  /* reserved word? */
+								if (ts.getTsv().reserved > 0)  /* reserved word? */
 								{
-									return ts.tsv.reserved - 1 + FIRST_RESERVED;
+									return ts.getTsv().reserved - 1 + FIRST_RESERVED;
 								}
 								else 
 								{

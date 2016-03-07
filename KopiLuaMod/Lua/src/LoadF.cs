@@ -3,7 +3,6 @@
  ** Auxiliary functions for building Lua libraries
  ** See Copyright Notice in lua.h
  */
-using System;
 using System.IO;
 
 /**
@@ -16,6 +15,6 @@ namespace KopiLua
 	{
 		public int extraline;
 		public Stream f;
-		public CharPtr buff = new char[LuaConf.LUAL_BUFFERSIZE];
+		public CharPtr buff = CharPtr.toCharPtr(new char[LuaConf.LUAL_BUFFERSIZE]);
 	}
 }

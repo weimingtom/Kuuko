@@ -3,8 +3,6 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	/*
@@ -26,69 +24,45 @@ namespace KopiLua
 			//this.values = (GCObject[])array;
 			//Debug.Assert(this.values != null);
 		}
-		
-		public GCheader gch
-		{
-			get
-			{
-				return (GCheader)this;
-			}
-		}
-		
-		public TString ts
-		{
-			get
-			{
-				return (TString)this;
-			}
-		}
-		
-		public Udata u
-		{
-			get
-			{
-				return (Udata)this;
-			}
-		}
-		
-		public Closure cl
-		{
-			get
-			{
-				return (Closure)this;
-			}
-		}
-		
-		public Table h
-		{
-			get
-			{
-				return (Table)this;
-			}
-		}
-		
-		public Proto p
-		{
-			get
-			{
-				return (Proto)this;
-			}
-		}
-		
-		public UpVal uv
-		{
-			get
-			{
-				return (UpVal)this;
-			}
-		}
-		
-		public lua_State th
-		{
-			get
-			{
-				return (lua_State)this;
-			}
-		}
+
+        public GCheader getGch()
+        {
+            return (GCheader)this;
+        }
+
+        public TString getTs()
+        {
+            return (TString)this;
+        }
+
+        public Udata getU()
+        {
+            return (Udata)this;
+        }
+
+        public Closure getCl()
+        {
+            return (Closure)this;
+        }
+
+        public Table getH()
+        {
+            return (Table)this;
+        }
+
+        public Proto getP()
+        {
+            return (Proto)this;
+        }
+
+        public UpVal getUv()
+        {
+            return (UpVal)this;
+        }
+
+        public lua_State getTh()
+        {
+            return (lua_State)this;
+        }
 	}
 }

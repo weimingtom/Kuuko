@@ -20,7 +20,7 @@ namespace KopiLua
 		{
 			if (z.n-- > 0)
 			{
-				int ch = char2int(z.p[0]);
+				int ch = char2int(z.p.get(0));
 				z.p.inc();
 				return ch;
 			}
@@ -57,7 +57,7 @@ namespace KopiLua
 
 		public static void luaZ_resizebuffer(lua_State L, Mbuffer buff, int size)
 		{
-			if (buff.buffer == null)
+			if (CharPtr.isEqual(buff.buffer, null))
 			{
 				buff.buffer = new CharPtr();
 			}
@@ -80,13 +80,13 @@ namespace KopiLua
 			LuaLimits.lua_unlock(L);
 			buff = z.reader(L, z.data, out size);
 			LuaLimits.lua_lock(L);
-			if (buff == null || size == 0) 
+			if (CharPtr.isEqual(buff, null) || size == 0) 
 			{
 				return EOZ;
 			}
 			z.n = size - 1;
 			z.p = new CharPtr(buff);
-			int result = char2int(z.p[0]);
+			int result = char2int(z.p.get(0));
 			z.p.inc();
 			return result;
 		}
@@ -105,7 +105,7 @@ namespace KopiLua
 					z.p.dec();
 				}
 			}
-			return char2int(z.p[0]);
+			return char2int(z.p.get(0));
 		}
 
 		public static void luaZ_init(lua_State L, ZIO z, lua_Reader reader, object data)

@@ -45,6 +45,11 @@ mod
 
 todo:
 remove ref
+CharPtr -> IntPtr
+getter, setter
+ushort
+InstructionPtr Uint32
+string equal
 
 -----------------------
 
@@ -56,3 +61,26 @@ LuaPrint
 LuaStrLib
 LuaTableLib
 LuaVM
+
+-------------------------
+operator
+
+CharPtr
+ClosureType
+InstructionPtr
+Node
+TValue
+
+public TValue this[int offset]
+
+l.ToString() == "C"
+
+----------------------
+
+public static int GetUnmanagedSize(Type t)
+
+LuaMem.luaM_freearray<Int32>(L, f.lineinfo);
+
+public const uint MAX_SIZET	= uint.MaxValue - 2;
+public const UInt32/*lu_mem*/ MAX_LUMEM = /*lu_mem*/UInt32.MaxValue - 2;
+public const int MAX_INT = (/*Int32*/int.MaxValue - 2);  /* maximum value of an int (-2 for safety) */

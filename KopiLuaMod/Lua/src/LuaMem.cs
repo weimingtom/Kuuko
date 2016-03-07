@@ -117,7 +117,7 @@ namespace KopiLua
 
 		public static object luaM_toobig(lua_State L) 
 		{
-			LuaDebug.luaG_runerror(L, "memory allocation error: block too big");
+			LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("memory allocation error: block too big"));
 			return null;  /* to avoid warnings */
 		}
 

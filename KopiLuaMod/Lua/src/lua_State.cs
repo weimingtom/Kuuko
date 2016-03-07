@@ -12,7 +12,7 @@ namespace KopiLua
 	 */
 	public class lua_State : GCObject
 	{
-		public Byte/*lu_byte*/ status;
+		public byte status; /*Byte*/ /*lu_byte*/
 		public TValue/*StkId*/ top;  /* first free slot in the stack */
 		public TValue/*StkId*/ base_;  /* base of current function */
 		public global_State l_G;
@@ -24,10 +24,10 @@ namespace KopiLua
 		public CallInfo[] base_ci;  /* array of CallInfo's */
 		public int stacksize;
 		public int size_ci;  /* size of array `base_ci' */
-		public ushort nCcalls;  /* number of nested C calls */
-		public ushort baseCcalls;  /* nested C calls when resuming coroutine */
-		public Byte/*lu_byte*/ hookmask;
-		public Byte/*lu_byte*/ allowhook;
+		public int/*ushort*/ nCcalls;  /* number of nested C calls */
+		public int/*ushort*/ baseCcalls;  /* nested C calls when resuming coroutine */
+		public byte hookmask; /*Byte*/ /*lu_byte*/
+		public byte allowhook; /*Byte*/ /*lu_byte*/
 		public int basehookcount;
 		public int hookcount;
 		public lua_Hook hook;
@@ -36,6 +36,6 @@ namespace KopiLua
 		public GCObject openupval;  /* list of open upvalues in this stack */
 		public GCObject gclist;
 		public lua_longjmp errorJmp;  /* current error recover point */
-		public Int32/*ptrdiff_t*/ errfunc;  /* current error handling function (stack index) */
+		public int/*Int32*//*ptrdiff_t*/ errfunc;  /* current error handling function (stack index) */
 	}
 }

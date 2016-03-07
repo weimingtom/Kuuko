@@ -209,16 +209,13 @@ namespace KopiLua
 		 */
 		public static CharPtr LUA_QL(string x)	
 		{
-			return "'" + x + "'";
+			return CharPtr.toCharPtr("'" + x + "'");
 		}
-		
-		public static CharPtr LUA_QS 
-		{
-			get 
-			{
-				return LUA_QL("%s"); 
-			}
-		}
+
+        public static CharPtr getLUA_QS()
+        {
+                return LUA_QL("%s");
+        }
 
 		/*
 		@@ LUA_IDSIZE gives the maximum size for the description of the source
@@ -300,7 +297,7 @@ namespace KopiLua
 		{
 			fputs(p, stdout);
 			fflush(stdout);	/* show prompt */
-			return (fgets(b, stdin) != null);  /* get line */
+			return (CharPtr.isNotEqual(fgets(b, stdin), null));  /* get line */
 		}
 		
 		public static void lua_saveline(lua_State L, int idx)
@@ -553,7 +550,7 @@ namespace KopiLua
 		
 		public static CharPtr lua_number2str(double n)
 		{ 
-			return String.Format("{0}", n); 
+			return CharPtr.toCharPtr(String.Format("{0}", n)); //FIXME:
 		}
 		
 		public const int LUAI_MAXNUMBER2STR = 32; /* 16 digits, sign, point, and \0 */
@@ -564,13 +561,13 @@ namespace KopiLua
 		{
 			end = new CharPtr(s.chars, s.index);
 			string str = "";
-			while (end[0] == ' ')
+			while (end.get(0) == ' ')
 			{
 				end = end.next();
 			}
-			while (number_chars.IndexOf(end[0]) >= 0)
+			while (number_chars.IndexOf(end.get(0)) >= 0)
 			{
-				str += end[0];
+				str += end.get(0);
 				end = end.next();
 			}
 
@@ -820,7 +817,7 @@ namespace KopiLua
 
 		public static Stream lua_popen(lua_State L, CharPtr c, CharPtr m) 
 		{ 
-			LuaAuxLib.luaL_error(L, LUA_QL("popen") + " not supported"); 
+			LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LUA_QL("popen") + " not supported")); 
 			return null; 
 		}
 		
@@ -1035,28 +1032,28 @@ namespace KopiLua
 				end = new CharPtr(s.chars, s.index);
 
 				// skip over any leading whitespace
-				while (end[0] == ' ')
+				while (end.get(0) == ' ')
 				{
 					end = end.next();
 				}
 
 				// ignore any leading 0x
-				if ((end[0] == '0') && (end[1] == 'x'))
+				if ((end.get(0) == '0') && (end.get(1) == 'x'))
 				{
 					end = end.next().next();
 				}
-				else if ((end[0] == '0') && (end[1] == 'X'))
+				else if ((end.get(0) == '0') && (end.get(1) == 'X'))
 				{
 					end = end.next().next();
 				}
 
 				// do we have a leading + or - sign?
 				bool negate = false;
-				if (end[0] == '+')
+				if (end.get(0) == '+')
 				{
 					end = end.next();
 				}
-				else if (end[0] == '-')
+				else if (end.get(0) == '-')
 				{
 					negate = true;
 					end = end.next();
@@ -1069,7 +1066,7 @@ namespace KopiLua
 				while (true)
 				{
 					// get this char
-					char ch = end[0];
+					char ch = end.get(0);
 
 					// which digit is this?
 					int this_digit = 0;
@@ -1142,11 +1139,11 @@ namespace KopiLua
 		{
 			int parm_index = 0;
 			int index = 0;
-			while (fmt[index] != 0)
+			while (fmt.get(index) != 0)
 			{
-				if (fmt[index++]=='%')
+				if (fmt.get(index++) == '%')
 				{
-					switch (fmt[index++])
+					switch (fmt.get(index++))
 					{
 						case 's':
 							{
@@ -1192,7 +1189,7 @@ namespace KopiLua
 		public static void sprintf(CharPtr buffer, CharPtr str, params object[] argv)
 		{
 			string temp = Tools.sprintf(str.ToString(), argv);
-			strcpy(buffer, temp);
+			strcpy(buffer, CharPtr.toCharPtr(temp));
 		}
 
 		public static int fprintf(Stream stream, CharPtr str, params object[] argv)
@@ -1218,13 +1215,14 @@ namespace KopiLua
 
 		public static CharPtr strerror(int error)
 		{
-			return String.Format("error #{0}", error); // todo: check how this works - mjf
+			return CharPtr.toCharPtr(String.Format("error #{0}", error)); // todo: check how this works - mjf
+            //FIXME:
 		}
 
 		public static CharPtr getenv(CharPtr envname)
 		{
 			// todo: fix this - mjf
-			//if (envname == "LUA_PATH)
+			//if (envname.Equals("LUA_PATH"))
 			//return "MyPath";
 			return null;
 		}
@@ -1240,9 +1238,9 @@ namespace KopiLua
 		{
 			for (int i = 0; i < size; i++)
 			{
-				if (ptr1[i] != ptr2[i])
+				if (ptr1.get(i) != ptr2.get(i))
 				{
-					if (ptr1[i]<ptr2[i])
+					if (ptr1.get(i) < ptr2.get(i))
 					{
 						return -1;
 					}
@@ -1259,7 +1257,7 @@ namespace KopiLua
 		{
 			for (uint i = 0; i < count; i++)
 			{	
-				if (ptr[i] == c)
+				if (ptr.get(i) == c)
 				{
 					return new CharPtr(ptr.chars, (int)(ptr.index + i));
 				}
@@ -1269,11 +1267,11 @@ namespace KopiLua
 
 		public static CharPtr strpbrk(CharPtr str, CharPtr charset)
 		{
-			for (int i = 0; str[i] != '\0'; i++) 
+			for (int i = 0; str.get(i) != '\0'; i++) 
 			{
-				for (int j = 0; charset[j] != '\0'; j++)
+				for (int j = 0; charset.get(j) != '\0'; j++)
 				{
-					if (str[i] == charset[j])
+					if (str.get(i) == charset.get(j))
 					{
 						return new CharPtr(str.chars, str.index + i);
 					}
@@ -1298,41 +1296,41 @@ namespace KopiLua
 		public static CharPtr strcpy(CharPtr dst, CharPtr src)
 		{
 			int i;
-			for (i = 0; src[i] != '\0'; i++)
+			for (i = 0; src.get(i) != '\0'; i++)
 			{
-				dst[i] = src[i];
+				dst.set(i, src.get(i));
 			}
-			dst[i] = '\0';
+			dst.set(i, '\0');
 			return dst;
 		}
 
 		public static CharPtr strcat(CharPtr dst, CharPtr src)
 		{
 			int dst_index = 0;
-			while (dst[dst_index] != '\0')
+			while (dst.get(dst_index) != '\0')
 			{
 				dst_index++;
 			}
 			int src_index = 0;
-			while (src[src_index] != '\0')
+			while (src.get(src_index) != '\0')
 			{
-				dst[dst_index++] = src[src_index++];
+				dst.set(dst_index++, src.get(src_index++));
 			}
-			dst[dst_index++] = '\0';
+			dst.set(dst_index++, '\0');
 			return dst;
 		}
 
 		public static CharPtr strncat(CharPtr dst, CharPtr src, int count)
 		{
 			int dst_index = 0;
-			while (dst[dst_index] != '\0')
+			while (dst.get(dst_index) != '\0')
 			{
 				dst_index++;
 			}
 			int src_index = 0;
-			while ((src[src_index] != '\0') && (count-- > 0))
+			while ((src.get(src_index) != '\0') && (count-- > 0))
 			{
-				dst[dst_index++] = src[src_index++];
+				dst.set(dst_index++, src.get(src_index++));
 			}
 			return dst;
 		}
@@ -1350,14 +1348,14 @@ namespace KopiLua
 		public static CharPtr strncpy(CharPtr dst, CharPtr src, int length)
 		{
 			int index = 0;
-			while ((src[index] != '\0') && (index<length))
+			while ((src.get(index) != '\0') && (index < length))
 			{
-				dst[index] = src[index];
+				dst.set(index, src.get(index));
 				index++;
 			}
 			while (index < length)
 			{
-				dst[index++] = '\0';
+				dst.set(index++, '\0');
 			}
 			return dst;
 		}
@@ -1365,7 +1363,7 @@ namespace KopiLua
 		public static int strlen(CharPtr str)
 		{
 			int index = 0;
-			while (str[index] != '\0')
+			while (str.get(index) != '\0')
 			{
 				index++;
 			}
@@ -1426,7 +1424,7 @@ namespace KopiLua
 				int result = stream.Read(bytes, 0, num_bytes);
 				for (int i = 0; i < result; i++)
 				{
-					ptr[i] = (char)bytes[i];
+					ptr.set(i, (char)bytes[i]);
 				}
 				return result/size;
 			}
@@ -1442,7 +1440,7 @@ namespace KopiLua
 			byte[] bytes = new byte[num_bytes];
 			for (int i = 0; i < num_bytes; i++)
 			{
-				bytes[i] = (byte)ptr[i];
+				bytes[i] = (byte)ptr.get(i);
 			}
 			try
 			{
@@ -1457,24 +1455,24 @@ namespace KopiLua
 
 		public static int strcmp(CharPtr s1, CharPtr s2)
 		{
-			if (s1 == s2)
+			if (CharPtr.isEqual(s1, s2))
 			{
 				return 0;
 			}
-			if (s1 == null)
+			if (CharPtr.isEqual(s1, null))
 			{
 				return -1;
 			}
-			if (s2 == null)
+			if (CharPtr.isEqual(s2, null))
 			{
 				return 1;
 			}
 
 			for (int i = 0; ; i++)
 			{
-				if (s1[i] != s2[i])
+				if (s1.get(i) != s2.get(i))
 				{
-					if (s1[i] < s2[i])
+					if (s1.get(i) < s2.get(i))
 					{
 						return -1;
 					}
@@ -1483,7 +1481,7 @@ namespace KopiLua
 						return 1;
 					}
 				}
-				if (s1[i] == '\0')
+				if (s1.get(i) == '\0')
 				{
 					return 0;
 				}
@@ -1497,8 +1495,8 @@ namespace KopiLua
 			{
 				while (true)
 				{
-					str[index] = (char)stream.ReadByte();
-					if (str[index] == '\n')
+					str.set(index, (char)stream.ReadByte());
+					if (str.get(index) == '\n')
 					{
 						break;
 					}
@@ -1553,9 +1551,9 @@ namespace KopiLua
 			string str = filename.ToString();
 			FileMode filemode = FileMode.Open;
 			FileAccess fileaccess = (FileAccess)0;
-			for (int i = 0; mode[i] != '\0'; i++)
+			for (int i = 0; mode.get(i) != '\0'; i++)
 			{
-				switch (mode[i])
+				switch (mode.get(i))
 				{
 					case 'r':
 						{
@@ -1688,7 +1686,7 @@ namespace KopiLua
 		{
 			for (int i = 0; i < size; i++)
 			{
-				ptr1[i] = ptr2[i];
+				ptr1.set(i, ptr2.get(i));
 			}
 		}
 

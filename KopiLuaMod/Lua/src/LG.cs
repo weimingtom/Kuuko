@@ -3,8 +3,6 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	/*
@@ -12,14 +10,11 @@ namespace KopiLua
 	 */
 	public class LG : lua_State
 	{
-		public lua_State l 
-		{ 
-			get 
-			{ 
-				return this; 
-			} 
-		}
-		
 		public global_State g = new global_State();
+		
+		public lua_State getL() 
+		{
+		    return this; 
+		}
 	}
 }

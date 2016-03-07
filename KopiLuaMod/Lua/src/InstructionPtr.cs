@@ -33,19 +33,17 @@ namespace KopiLua
 			}
 			return new InstructionPtr(ptr.codes, ptr.pc);
 		}
-		
-		public UInt32/*Instruction*/ this[int index]
-		{
-			get
-			{
-				return this.codes[pc + index];
-			}
-			set
-			{
-				this.codes[pc + index] = value;
-			}
-		}
-		
+
+        //UInt32/*Instruction*/ this[int index]
+        public UInt32/*Instruction*/ get(int index)
+        {
+                return this.codes[pc + index];
+        }
+        public void set(int index, UInt32/*Instruction*/ val)
+        {
+            this.codes[pc + index] = val;
+        }
+
 		public static InstructionPtr inc(ref InstructionPtr ptr)
 		{
 			InstructionPtr result = new InstructionPtr(ptr.codes, ptr.pc);
@@ -59,28 +57,32 @@ namespace KopiLua
 			ptr.pc--;
 			return result;
 		}
-		
-		public static bool operator <(InstructionPtr p1, InstructionPtr p2)
+
+        //operator <
+		public static bool lessThan(InstructionPtr p1, InstructionPtr p2)
 		{
-			Debug.Assert(p1.codes == p2.codes);
+            Debug.Assert(p1.codes == p2.codes);
 			return p1.pc < p2.pc;
 		}
-		
-		public static bool operator >(InstructionPtr p1, InstructionPtr p2)
+
+        //operator >
+		public static bool greaterThan(InstructionPtr p1, InstructionPtr p2)
 		{
-			Debug.Assert(p1.codes == p2.codes);
+            Debug.Assert(p1.codes == p2.codes);
 			return p1.pc > p2.pc;
 		}
-		
-		public static bool operator <=(InstructionPtr p1, InstructionPtr p2)
+
+        //operator <=
+		public static bool lessEqual(InstructionPtr p1, InstructionPtr p2)
 		{
-			Debug.Assert(p1.codes == p2.codes);
+            Debug.Assert(p1.codes == p2.codes);
 			return p1.pc < p2.pc;
 		}
-		
-		public static bool operator >=(InstructionPtr p1, InstructionPtr p2)
+
+        //operator >=
+		public static bool greaterEqual(InstructionPtr p1, InstructionPtr p2)
 		{
-			Debug.Assert(p1.codes == p2.codes);
+            Debug.Assert(p1.codes == p2.codes);
 			return p1.pc > p2.pc;
 		}
 	}

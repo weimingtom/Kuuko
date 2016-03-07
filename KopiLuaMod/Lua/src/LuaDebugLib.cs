@@ -51,8 +51,8 @@ namespace KopiLua
 			LuaAPI.lua_settop(L, 2);
 			if (LuaAPI.lua_setfenv(L, 1) == 0)
 			{	
-				LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("setfenv") +
-					" cannot change environment of given object");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("setfenv") +
+					" cannot change environment of given object"));
 			}
 			return 1;
 		}
@@ -102,7 +102,7 @@ namespace KopiLua
 			lua_Debug ar = new lua_Debug();
 			int arg;
 			lua_State L1 = getthread(L, out arg);
-			CharPtr options = LuaAuxLib.luaL_optstring(L, arg + 2, "flnSu");
+			CharPtr options = LuaAuxLib.luaL_optstring(L, arg + 2, CharPtr.toCharPtr("flnSu"));
 			if (LuaAPI.lua_isnumber(L, arg + 1) != 0)
 			{
 				if (LuaDebug.lua_getstack(L1, (int)LuaAPI.lua_tointeger(L, arg + 1), ar) == 0)
@@ -113,48 +113,48 @@ namespace KopiLua
 			}
 			else if (Lua.lua_isfunction(L, arg + 1)) 
 			{
-				LuaAPI.lua_pushfstring(L, ">%s", options);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(">%s"), options);
 				options = Lua.lua_tostring(L, -1);
 				LuaAPI.lua_pushvalue(L, arg + 1);
 				LuaAPI.lua_xmove(L, L1, 1);
 			}
 			else
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 1, "function or level expected");
+				return LuaAuxLib.luaL_argerror(L, arg + 1, CharPtr.toCharPtr("function or level expected"));
 			}
 			if (LuaDebug.lua_getinfo(L1, options, ar) == 0)
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 2, "invalid option");
+				return LuaAuxLib.luaL_argerror(L, arg + 2, CharPtr.toCharPtr("invalid option"));
 			}
 			LuaAPI.lua_createtable(L, 0, 2);
-			if (LuaConf.strchr(options, 'S') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'S'), null))
 			{
-				settabss(L, "source", ar.source);
-				settabss(L, "short_src", ar.short_src);
-				settabsi(L, "linedefined", ar.linedefined);
-				settabsi(L, "lastlinedefined", ar.lastlinedefined);
-				settabss(L, "what", ar.what);
+				settabss(L, CharPtr.toCharPtr("source"), ar.source);
+				settabss(L, CharPtr.toCharPtr("short_src"), ar.short_src);
+				settabsi(L, CharPtr.toCharPtr("linedefined"), ar.linedefined);
+				settabsi(L, CharPtr.toCharPtr("lastlinedefined"), ar.lastlinedefined);
+				settabss(L, CharPtr.toCharPtr("what"), ar.what);
 			}
-			if (LuaConf.strchr(options, 'l') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'l'), null))
 			{
-				settabsi(L, "currentline", ar.currentline);
+				settabsi(L, CharPtr.toCharPtr("currentline"), ar.currentline);
 			}
-			if (LuaConf.strchr(options, 'u') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'u'), null))
 			{
-				settabsi(L, "nups", ar.nups);
+				settabsi(L, CharPtr.toCharPtr("nups"), ar.nups);
 			}
-			if (LuaConf.strchr(options, 'n') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'n'), null))
 			{
-				settabss(L, "name", ar.name);
-				settabss(L, "namewhat", ar.namewhat);
+				settabss(L, CharPtr.toCharPtr("name"), ar.name);
+				settabss(L, CharPtr.toCharPtr("namewhat"), ar.namewhat);
 			}
-			if (LuaConf.strchr(options, 'L') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'L'), null))
 			{
-				treatstackoption(L, L1, "activelines");
+				treatstackoption(L, L1, CharPtr.toCharPtr("activelines"));
 			}
-			if (LuaConf.strchr(options, 'f') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'f'), null))
 			{
-				treatstackoption(L, L1, "func");
+				treatstackoption(L, L1, CharPtr.toCharPtr("func"));
 			}
 			return 1;  /* return table */
 		}
@@ -167,10 +167,10 @@ namespace KopiLua
 			CharPtr name;
 			if (LuaDebug.lua_getstack(L1, LuaAuxLib.luaL_checkint(L, arg + 1), ar) == 0)  /* out of range? */
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 1, "level out of range");
+				return LuaAuxLib.luaL_argerror(L, arg + 1, CharPtr.toCharPtr("level out of range"));
 			}
 			name = LuaDebug.lua_getlocal(L1, ar, LuaAuxLib.luaL_checkint(L, arg + 2));
-			if (name != null) 
+			if (CharPtr.isNotEqual(name, null)) 
 			{
 				LuaAPI.lua_xmove(L1, L, 1);
 				LuaAPI.lua_pushstring(L, name);
@@ -191,7 +191,7 @@ namespace KopiLua
 			lua_Debug ar = new lua_Debug();
 			if (LuaDebug.lua_getstack(L1, LuaAuxLib.luaL_checkint(L, arg + 1), ar) == 0)  /* out of range? */
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 1, "level out of range");
+				return LuaAuxLib.luaL_argerror(L, arg + 1, CharPtr.toCharPtr("level out of range"));
 			}
 			LuaAuxLib.luaL_checkany(L, arg + 3);
 			LuaAPI.lua_settop(L, arg + 3);
@@ -209,7 +209,7 @@ namespace KopiLua
 			{
 				name = (get != 0) ? LuaAPI.lua_getupvalue(L, 1, n) : LuaAPI.lua_setupvalue(L, 1, n);
 			}
-			if (name == null) 
+			if (CharPtr.isEqual(name, null)) 
 			{
 				return 0;
 			}
@@ -247,7 +247,7 @@ namespace KopiLua
 			LuaAPI.lua_rawget(L, -2);
 			if (Lua.lua_isfunction(L, -1))
 			{
-				LuaAPI.lua_pushstring(L, hooknames[(int)ar.event_]);
+				LuaAPI.lua_pushstring(L, CharPtr.toCharPtr(hooknames[(int)ar.event_]));
 				if (ar.currentline >= 0)
 				{
 					LuaAPI.lua_pushinteger(L, ar.currentline);
@@ -256,7 +256,7 @@ namespace KopiLua
 				{
 					LuaAPI.lua_pushnil(L);
 				}
-				LuaLimits.lua_assert(LuaDebug.lua_getinfo(L, "lS", ar));
+				LuaLimits.lua_assert(LuaDebug.lua_getinfo(L, CharPtr.toCharPtr("lS"), ar));
 				LuaAPI.lua_call(L, 2, 0);
 			}
 		}
@@ -264,15 +264,15 @@ namespace KopiLua
 		private static int makemask(CharPtr smask, int count) 
 		{
 			int mask = 0;
-			if (LuaConf.strchr(smask, 'c') != null) 
+			if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'c'), null)) 
 			{
 				mask |= Lua.LUA_MASKCALL;
 			}
-			if (LuaConf.strchr(smask, 'r') != null) 
+			if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'r'), null)) 
 			{
 				mask |= Lua.LUA_MASKRET;
 			}
-			if (LuaConf.strchr(smask, 'l') != null) 
+			if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'l'), null)) 
 			{
 				mask |= Lua.LUA_MASKLINE;
 			}
@@ -288,17 +288,17 @@ namespace KopiLua
 			int i = 0;
 			if ((mask & Lua.LUA_MASKCALL) != 0) 
 			{
-				smask[i++] = 'c';
+				smask.set(i++, 'c');
 			}
 			if ((mask & Lua.LUA_MASKRET) != 0) 
 			{
-				smask[i++] = 'r';
+				smask.set(i++, 'r');
 			}
 			if ((mask & Lua.LUA_MASKLINE) != 0) 
 			{
-				smask[i++] = 'l';
+				smask.set(i++, 'l');
 			}
-			smask[i] = '\0';
+			smask.set(i, '\0');
 			return smask;
 		}
 
@@ -348,12 +348,12 @@ namespace KopiLua
 		{
 			int arg;
 			lua_State L1 = getthread(L, out arg);
-			CharPtr buff = new char[5];
+			CharPtr buff = CharPtr.toCharPtr(new char[5]);
 			int mask = LuaDebug.lua_gethookmask(L1);
 			lua_Hook hook = LuaDebug.lua_gethook(L1);
 			if (hook != null && hook != hookf)  /* external hook? */
 			{
-				Lua.lua_pushliteral(L, "external hook");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("external hook"));
 			}
 			else 
 			{
@@ -371,18 +371,18 @@ namespace KopiLua
 		{
 			for (;;) 
 			{
-				CharPtr buffer = new char[250];
-				LuaConf.fputs("lua_debug> ", LuaConf.stderr);
-				if (LuaConf.fgets(buffer, LuaConf.stdin) == null ||
-				    LuaConf.strcmp(buffer, "cont\n") == 0)
+				CharPtr buffer = CharPtr.toCharPtr(new char[250]);
+				LuaConf.fputs(CharPtr.toCharPtr("lua_debug> "), LuaConf.stderr);
+				if (CharPtr.isEqual(LuaConf.fgets(buffer, LuaConf.stdin), null) ||
+				    LuaConf.strcmp(buffer, CharPtr.toCharPtr("cont\n")) == 0)
 				{
 					return 0;
 				}
-				if (LuaAuxLib.luaL_loadbuffer(L, buffer, /*(uint)*/LuaConf.strlen(buffer), "=(debug command)") != 0 ||
+				if (LuaAuxLib.luaL_loadbuffer(L, buffer, /*(uint)*/LuaConf.strlen(buffer), CharPtr.toCharPtr("=(debug command)")) != 0 ||
 				    LuaAPI.lua_pcall(L, 0, 0, 0) != 0)
 				{
 					LuaConf.fputs(Lua.lua_tostring(L, -1), LuaConf.stderr);
-					LuaConf.fputs("\n", LuaConf.stderr);
+					LuaConf.fputs(CharPtr.toCharPtr("\n"), LuaConf.stderr);
 				}
 				LuaAPI.lua_settop(L, 0);  /* remove eventual returns */
 			}
@@ -409,7 +409,7 @@ namespace KopiLua
 			}
 			if (LuaAPI.lua_gettop(L) == arg)
 			{
-				Lua.lua_pushliteral(L, "");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr(""));
 			}
 			else if (LuaAPI.lua_isstring(L, arg + 1) == 0) 
 			{
@@ -417,9 +417,9 @@ namespace KopiLua
 			}
 			else 
 			{
-				Lua.lua_pushliteral(L, "\n");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("\n"));
 			}
-			Lua.lua_pushliteral(L, "stack traceback:");
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr("stack traceback:"));
 			while (LuaDebug.lua_getstack(L1, level++, ar) != 0)
 			{
 				if (level > LEVELS1 && firstpart) 
@@ -431,7 +431,7 @@ namespace KopiLua
 					}
 					else 
 					{
-						Lua.lua_pushliteral(L, "\n\t...");  /* too many levels */
+						Lua.lua_pushliteral(L, CharPtr.toCharPtr("\n\t..."));  /* too many levels */
 						while (LuaDebug.lua_getstack(L1, level + LEVELS2, ar) != 0)  /* find last levels */
 						{
 							level++;
@@ -440,30 +440,30 @@ namespace KopiLua
 					firstpart = false;
 					continue;
 				}
-				Lua.lua_pushliteral(L, "\n\t");
-				LuaDebug.lua_getinfo(L1, "Snl", ar);
-				LuaAPI.lua_pushfstring(L, "%s:", ar.short_src);
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("\n\t"));
+				LuaDebug.lua_getinfo(L1, CharPtr.toCharPtr("Snl"), ar);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s:"), ar.short_src);
 				if (ar.currentline > 0)
 				{
-					LuaAPI.lua_pushfstring(L, "%d:", ar.currentline);
+					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%d:"), ar.currentline);
 				}
-				if (ar.namewhat != '\0')  /* is there a name? */
+				if (CharPtr.isNotEqual(ar.namewhat, '\0'))  /* is there a name? */
 				{
-					LuaAPI.lua_pushfstring(L, " in function " + LuaConf.LUA_QS, ar.name);
+					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in function " + LuaConf.getLUA_QS()), ar.name);
 				}
 				else 
 				{
-					if (ar.what == 'm')  /* main? */
+					if (CharPtr.isEqual(ar.what, 'm'))  /* main? */
 					{
-						LuaAPI.lua_pushfstring(L, " in main chunk");
+						LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in main chunk"));
 					}
-					else if (ar.what == 'C' || ar.what == 't')
+					else if (CharPtr.isEqual(ar.what, 'C') || CharPtr.isEqual(ar.what, 't'))
 					{
-						Lua.lua_pushliteral(L, " ?");  /* C function or tail call */
+						Lua.lua_pushliteral(L, CharPtr.toCharPtr(" ?"));  /* C function or tail call */
 					}
 					else
 					{
-						LuaAPI.lua_pushfstring(L, " in function <%s:%d>",
+						LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in function <%s:%d>"),
 							ar.short_src, ar.linedefined);
 					}
 				}
@@ -474,26 +474,26 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] dblib = {
-			new luaL_Reg("debug", db_debug),
-			new luaL_Reg("getfenv", db_getfenv),
-			new luaL_Reg("gethook", db_gethook),
-			new luaL_Reg("getinfo", db_getinfo),
-			new luaL_Reg("getlocal", db_getlocal),
-			new luaL_Reg("getregistry", db_getregistry),
-			new luaL_Reg("getmetatable", db_getmetatable),
-			new luaL_Reg("getupvalue", db_getupvalue),
-			new luaL_Reg("setfenv", db_setfenv),
-			new luaL_Reg("sethook", db_sethook),
-			new luaL_Reg("setlocal", db_setlocal),
-			new luaL_Reg("setmetatable", db_setmetatable),
-			new luaL_Reg("setupvalue", db_setupvalue),
-			new luaL_Reg("traceback", db_errorfb),
+			new luaL_Reg(CharPtr.toCharPtr("debug"), db_debug),
+			new luaL_Reg(CharPtr.toCharPtr("getfenv"), db_getfenv),
+			new luaL_Reg(CharPtr.toCharPtr("gethook"), db_gethook),
+			new luaL_Reg(CharPtr.toCharPtr("getinfo"), db_getinfo),
+			new luaL_Reg(CharPtr.toCharPtr("getlocal"), db_getlocal),
+			new luaL_Reg(CharPtr.toCharPtr("getregistry"), db_getregistry),
+			new luaL_Reg(CharPtr.toCharPtr("getmetatable"), db_getmetatable),
+			new luaL_Reg(CharPtr.toCharPtr("getupvalue"), db_getupvalue),
+			new luaL_Reg(CharPtr.toCharPtr("setfenv"), db_setfenv),
+			new luaL_Reg(CharPtr.toCharPtr("sethook"), db_sethook),
+			new luaL_Reg(CharPtr.toCharPtr("setlocal"), db_setlocal),
+			new luaL_Reg(CharPtr.toCharPtr("setmetatable"), db_setmetatable),
+			new luaL_Reg(CharPtr.toCharPtr("setupvalue"), db_setupvalue),
+			new luaL_Reg(CharPtr.toCharPtr("traceback"), db_errorfb),
 			new luaL_Reg(null, null)
 		};
 
 
 		public static int luaopen_debug (lua_State L) {
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_DBLIBNAME, dblib);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_DBLIBNAME), dblib);
 			return 1;
 		}
 

@@ -9,6 +9,8 @@ namespace KopiLua
 {
 	public class OpenValRef : GCObjectRef
 	{
+		private lua_State L;
+		
 		public OpenValRef(lua_State L) 
 		{ 
 			this.L = L; 
@@ -23,7 +25,5 @@ namespace KopiLua
 		{ 
 			return this.L.openupval; 
 		}
-		
-		lua_State L;
 	}
 }

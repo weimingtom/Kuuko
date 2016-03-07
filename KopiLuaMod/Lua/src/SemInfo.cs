@@ -3,12 +3,13 @@
  ** Lexical Analyzer
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class SemInfo
 	{
+		public double r;  /*Double*/ /*lua_Number*/
+		public TString ts;
+		
 		public SemInfo() 
 		{
 			
@@ -19,8 +20,5 @@ namespace KopiLua
 			this.r = copy.r;
 			this.ts = copy.ts;
 		}
-		
-		public Double/*lua_Number*/ r;
-		public TString ts;
 	}  /* semantics information */
 }

@@ -3,21 +3,19 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class TString : TString_tsv
 	{
-		//public L_Umaxalign dummy;  /* ensures maximum alignment for strings */
-		public TString_tsv tsv 
-		{ 
-			get 
-			{ 
-				return this; 
-			}
-		}
+		public CharPtr str;
 		
+		//public L_Umaxalign dummy;  /* ensures maximum alignment for strings */
+
+        public TString_tsv getTsv()
+        {
+            return this;
+        }
+
 		public TString()
 		{
 			
@@ -27,8 +25,6 @@ namespace KopiLua
 		{ 
 			this.str = str; 
 		}
-		
-		public CharPtr str;
 		
 		public override string ToString() 
 		{ 

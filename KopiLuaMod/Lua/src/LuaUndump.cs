@@ -44,7 +44,7 @@ namespace KopiLua
 
 		static void error(LoadState S, CharPtr why)
 		{
-			LuaObject.luaO_pushfstring(S.L, "%s: %s in precompiled chunk", S.name, why);
+			LuaObject.luaO_pushfstring(S.L, CharPtr.toCharPtr("%s: %s in precompiled chunk"), S.name, why);
 			LuaDo.luaD_throw(S.L, Lua.LUA_ERRSYNTAX);
 		}
 		//#endif
@@ -52,7 +52,7 @@ namespace KopiLua
 		public static object LoadMem(LoadState S, Type t)
 		{
 			int size = Marshal.SizeOf(t);
-			CharPtr str = new char[size];
+			CharPtr str = CharPtr.toCharPtr(new char[size]);
 			LoadBlock(S, str, size);
 			byte[] bytes = new byte[str.chars.Length];
 			for (int i = 0; i < str.chars.Length; i++)
@@ -174,7 +174,7 @@ namespace KopiLua
 						}
 					default:
 						{
-							error(S, "bad constant");
+							error(S, CharPtr.toCharPtr("bad constant"));
 							break;
 						}
 				}
@@ -230,7 +230,7 @@ namespace KopiLua
 			Proto f;
 			if (++S.L.nCcalls > LuaConf.LUAI_MAXCCALLS) 
 			{
-				error(S, "code too deep");
+				error(S, CharPtr.toCharPtr("code too deep"));
 			}
 			f = LuaFunc.luaF_newproto(S.L);
 			LuaObject.setptvalue2s(S.L, S.L.top, f); 
@@ -257,8 +257,8 @@ namespace KopiLua
 
 		private static void LoadHeader(LoadState S)
 		{
-			CharPtr h = new char[LUAC_HEADERSIZE];
-			CharPtr s = new char[LUAC_HEADERSIZE];
+			CharPtr h = CharPtr.toCharPtr(new char[LUAC_HEADERSIZE]);
+			CharPtr s = CharPtr.toCharPtr(new char[LUAC_HEADERSIZE]);
 			luaU_header(h);
 			LoadBlock(S, s, LUAC_HEADERSIZE);
 			IF(LuaConf.memcmp(h, s, LUAC_HEADERSIZE) != 0, "bad header");
@@ -270,13 +270,13 @@ namespace KopiLua
 		public static Proto luaU_undump(lua_State L, ZIO Z, Mbuffer buff, CharPtr name)
 		{
 			LoadState S = new LoadState();
-			if (name[0] == '@' || name[0] == '=')
+			if (name.get(0) == '@' || name.get(0) == '=')
 			{
 				S.name = CharPtr.plus(name, 1);
 			}
-			else if (name[0] == Lua.LUA_SIGNATURE[0])
+			else if (name.get(0) == Lua.LUA_SIGNATURE[0])
 			{
-				S.name = "binary string";
+				S.name = CharPtr.toCharPtr("binary string");
 			}
 			else
 			{
@@ -286,7 +286,7 @@ namespace KopiLua
 			S.Z = Z;
 			S.b = buff;
 			LoadHeader(S);
-			return LoadFunction(S, LuaString.luaS_newliteral(L, "=?"));
+			return LoadFunction(S, LuaString.luaS_newliteral(L, CharPtr.toCharPtr("=?")));
 		}
 
 		/*
@@ -296,25 +296,25 @@ namespace KopiLua
 		{
 			h = new CharPtr(h);
 			int x = 1;
-			LuaConf.memcpy(h, Lua.LUA_SIGNATURE, Lua.LUA_SIGNATURE.Length);
+			LuaConf.memcpy(h, CharPtr.toCharPtr(Lua.LUA_SIGNATURE), Lua.LUA_SIGNATURE.Length);
 			h = h.add(Lua.LUA_SIGNATURE.Length);
-			h[0] = (char)LUAC_VERSION;
+			h.set(0, (char)LUAC_VERSION);
 			h.inc();
-			h[0] = (char)LUAC_FORMAT;
+			h.set(0, (char)LUAC_FORMAT);
 			h.inc();
 			//*h++=(char)*(char*)&x;				/* endianness */
-			h[0] = (char)x;						/* endianness */
+			h.set(0, (char)x);						/* endianness */
 			h.inc();
-			h[0] = (char)sizeof(int);
+			h.set(0, (char)sizeof(int));
 			h.inc();
-			h[0] = (char)sizeof(uint);
+			h.set(0, (char)sizeof(uint));
 			h.inc();
-			h[0] = (char)sizeof(UInt32/*Instruction*/);
+			h.set(0, (char)sizeof(UInt32/*Instruction*/));
 			h.inc();
-			h[0] = (char)sizeof(Double/*lua_Number*/);
+			h.set(0, (char)sizeof(Double/*lua_Number*/));
 			h.inc();
 			//(h++)[0] = ((lua_Number)0.5 == 0) ? 0 : 1;		/* is lua_Number integral? */
-			h[0] = (char)0;	// always 0 on this build
+			h.set(0, (char)0);	// always 0 on this build
 		}
 	}
 }

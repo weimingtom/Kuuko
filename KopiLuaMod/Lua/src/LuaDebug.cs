@@ -132,16 +132,16 @@ namespace KopiLua
 		{
 			CharPtr name;
 			Proto fp = getluaproto(ci);
-			if ((fp != null) && (name = LuaFunc.luaF_getlocalname(fp, n, currentpc(L, ci))) != null)
+			if ((fp != null) && CharPtr.isNotEqual((name = LuaFunc.luaF_getlocalname(fp, n, currentpc(L, ci))), null))
 			{
 				return name;  /* is a local variable in a Lua function */
 			}
 			else 
 			{
 				TValue/*StkId*/ limit = (ci == L.ci) ? L.top : (CallInfo.plus(ci, 1)).func;
-				if (limit - ci.base_ >= n && n > 0)  /* is 'n' inside 'ci' stack? */
+				if (TValue.minus(limit, ci.base_) >= n && n > 0)  /* is 'n' inside 'ci' stack? */
 				{
-					return "(*temporary)";
+					return CharPtr.toCharPtr("(*temporary)");
 				}
 				else
 				{
@@ -155,9 +155,9 @@ namespace KopiLua
 			CallInfo ci = L.base_ci[ar.i_ci];
 			CharPtr name = findlocal(L, ci, n);
 			LuaLimits.lua_lock(L);
-			if (name != null)
+			if (CharPtr.isNotEqual(name, null))
 			{
-				LuaAPI.luaA_pushobject(L, ci.base_[n - 1]);
+				LuaAPI.luaA_pushobject(L, ci.base_.get(n - 1));
 			}
 			LuaLimits.lua_unlock(L);
 			return name;
@@ -168,9 +168,9 @@ namespace KopiLua
 			CallInfo ci = L.base_ci[ar.i_ci];
 			CharPtr name = findlocal(L, ci, n);
 			LuaLimits.lua_lock(L);
-			if (name != null)
+			if (CharPtr.isNotEqual(name, null))
 			{
-				LuaObject.setobjs2s(L, ci.base_[n - 1], L.top - 1);
+				LuaObject.setobjs2s(L, ci.base_.get(n - 1), TValue.minus(L.top, 1));
 			}
 			/*StkId*/TValue.dec(ref L.top);  /* pop value */
 			LuaLimits.lua_unlock(L);
@@ -179,36 +179,36 @@ namespace KopiLua
 
 		private static void funcinfo (lua_Debug ar, Closure cl) 
 		{
-			if (cl.c.isC != 0) 
+			if (cl.c.getIsC() != 0) 
 			{
-				ar.source = "=[C]";
+				ar.source = CharPtr.toCharPtr("=[C]");
 				ar.linedefined = -1;
 				ar.lastlinedefined = -1;
-				ar.what = "C";
+				ar.what = CharPtr.toCharPtr("C");
 			}
 			else 
 			{
 				ar.source = LuaObject.getstr(cl.l.p.source);
 				ar.linedefined = cl.l.p.linedefined;
 				ar.lastlinedefined = cl.l.p.lastlinedefined;
-				ar.what = (ar.linedefined == 0) ? "main" : "Lua";
+				ar.what = (ar.linedefined == 0) ? CharPtr.toCharPtr("main") : CharPtr.toCharPtr("Lua");
 			}
 			LuaObject.luaO_chunkid(ar.short_src, ar.source, LuaConf.LUA_IDSIZE);
 		}
 
 		private static void info_tailcall(lua_Debug ar) 
 		{
-			ar.name = ar.namewhat = "";
-			ar.what = "tail";
+			ar.name = ar.namewhat = CharPtr.toCharPtr("");
+			ar.what = CharPtr.toCharPtr("tail");
 			ar.lastlinedefined = ar.linedefined = ar.currentline = -1;
-			ar.source = "=(tail call)";
+			ar.source = CharPtr.toCharPtr("=(tail call)");
 			LuaObject.luaO_chunkid(ar.short_src, ar.source, LuaConf.LUA_IDSIZE);
 			ar.nups = 0;
 		}
 
 		private static void collectvalidlines(lua_State L, Closure f) 
 		{
-			if (f == null || (f.c.isC!=0)) 
+			if (f == null || (f.c.getIsC() != 0)) 
 			{
 				LuaObject.setnilvalue(L.top);
 			}
@@ -235,9 +235,9 @@ namespace KopiLua
 				info_tailcall(ar);
 				return status;
 			}
-			for (; what[0] != 0; what = what.next()) 
+			for (; what.get(0) != 0; what = what.next()) 
 			{
-				switch (what[0]) 
+				switch (what.get(0)) 
 				{
 					case 'S': 
 						{
@@ -251,15 +251,15 @@ namespace KopiLua
 						}
 					case 'u': 
 						{
-							ar.nups = f.c.nupvalues;
+							ar.nups = f.c.getNupvalues();
 							break;
 						}
 					case 'n': 
 						{
 							ar.namewhat = (ci!=null) ? getfuncname(L, ci, ref ar.name) : null;
-							if (ar.namewhat == null) 
+							if (CharPtr.isEqual(ar.namewhat, null)) 
 							{
-								ar.namewhat = "";  /* not found */
+								ar.namewhat = CharPtr.toCharPtr("");  /* not found */
 								ar.name = null;
 							}
 							break;
@@ -285,9 +285,9 @@ namespace KopiLua
 			Closure f = null;
 			CallInfo ci = null;
 			LuaLimits.lua_lock(L);
-			if (what == '>') 
+			if (CharPtr.isEqual(what, '>')) 
 			{
-				TValue/*StkId*/ func = L.top - 1;
+				TValue/*StkId*/ func = TValue.minus(L.top, 1);
 				LuaConf.luai_apicheck(L, LuaObject.ttisfunction(func));
 				what = what.next();  /* skip the '>' */
 				f = LuaObject.clvalue(func);
@@ -301,7 +301,7 @@ namespace KopiLua
 				f = LuaObject.clvalue(ci.func);
 			}
 			status = auxgetinfo(L, what, ar, f, ci);
-			if (LuaConf.strchr(what, 'f') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(what, 'f'), null))
 			{
 				if (f == null) 
 				{
@@ -313,7 +313,7 @@ namespace KopiLua
 				}
 				LuaDo.incr_top(L);
 			}
-			if (LuaConf.strchr(what, 'L') != null)
+			if (CharPtr.isNotEqual(LuaConf.strchr(what, 'L'), null))
 			{
 				collectvalidlines(L, f);
 			}
@@ -761,7 +761,7 @@ namespace KopiLua
 			}
 			else
 			{
-				return "?";
+				return CharPtr.toCharPtr("?");
 			}
 		}
 
@@ -776,9 +776,9 @@ namespace KopiLua
 				int pc = currentpc(L, ci);
 				UInt32/*Instruction*/ i;
 				name = LuaFunc.luaF_getlocalname(p, stackpos + 1, pc);
-				if (name!=null)  /* is a local? */
+				if (CharPtr.isNotEqual(name, null))  /* is a local? */
 				{
-					return "local";
+					return CharPtr.toCharPtr("local");
 				}
 				i = symbexec(p, pc, stackpos);  /* try symbolic execution */
 				LuaLimits.lua_assert(pc != -1);
@@ -789,7 +789,7 @@ namespace KopiLua
 							int g = LuaOpCodes.GETARG_Bx(i);  /* global index */
 							LuaLimits.lua_assert(LuaObject.ttisstring(p.k[g]));
 							name = LuaObject.svalue(p.k[g]);
-							return "global";
+							return CharPtr.toCharPtr("global");
 						}
 					case OpCode.OP_MOVE: 
 						{
@@ -805,19 +805,19 @@ namespace KopiLua
 						{
 							int k = LuaOpCodes.GETARG_C(i);  /* key index */
 							name = kname(p, k);
-							return "field";
+							return CharPtr.toCharPtr("field");
 						}
 					case OpCode.OP_GETUPVAL: 
 						{
 							int u = LuaOpCodes.GETARG_B(i);  /* upvalue index */
-							name = (p.upvalues != null) ? LuaObject.getstr(p.upvalues[u]) : "?";
-							return "upvalue";
+							name = (p.upvalues != null) ? LuaObject.getstr(p.upvalues[u]) : CharPtr.toCharPtr("?");
+							return CharPtr.toCharPtr("upvalue");
 						}
 					case OpCode.OP_SELF: 
 						{
 							int k = LuaOpCodes.GETARG_C(i);  /* key index */
 							name = kname(p, k);
-							return "method";
+							return CharPtr.toCharPtr("method");
 						}
 					default: 
 						{
@@ -852,7 +852,7 @@ namespace KopiLua
 		private static int isinstack (CallInfo ci, TValue o) 
 		{
 			TValue/*StkId*/ p;
-			for (p = ci.base_; p < ci.top; /*StkId*/TValue.inc(ref p))
+			for (p = ci.base_; TValue.lessThan(p, ci.top); /*StkId*/TValue.inc(ref p))
 			{
 				if (o == p) 
 				{
@@ -867,16 +867,16 @@ namespace KopiLua
 			CharPtr name = null;
 			CharPtr t = LuaTM.luaT_typenames[LuaObject.ttype(o)];
 			CharPtr kind = (isinstack(L.ci, o)) != 0 ?
-				getobjname(L, L.ci, LuaLimits.cast_int(o - L.base_), ref name) :
+				getobjname(L, L.ci, LuaLimits.cast_int(TValue.minus(o, L.base_)), ref name) :
 				null;
-			if (kind != null)
+			if (CharPtr.isNotEqual(kind, null))
 			{
-				luaG_runerror(L, "attempt to %s %s " + LuaConf.LUA_QS + " (a %s value)",
+				luaG_runerror(L, CharPtr.toCharPtr("attempt to %s %s " + LuaConf.getLUA_QS() + " (a %s value)"),
 				              op, kind, name, t);
 			}
 			else
 			{
-				luaG_runerror(L, "attempt to %s a %s value", op, t);
+				luaG_runerror(L, CharPtr.toCharPtr("attempt to %s a %s value"), op, t);
 			}
 		}
 
@@ -887,7 +887,7 @@ namespace KopiLua
 				p1 = p2;
 			}
 			LuaLimits.lua_assert(!LuaObject.ttisstring(p1) && !LuaObject.ttisnumber(p1));
-			luaG_typeerror(L, p1, "concatenate");
+			luaG_typeerror(L, p1, CharPtr.toCharPtr("concatenate"));
 		}
 
 		public static void luaG_aritherror(lua_State L, TValue p1, TValue p2) 
@@ -897,25 +897,26 @@ namespace KopiLua
 			{
 				p2 = p1;  /* first operand is wrong */
 			}
-			luaG_typeerror(L, p2, "perform arithmetic on");
+			luaG_typeerror(L, p2, CharPtr.toCharPtr("perform arithmetic on"));
 		}
 		
 		public static int luaG_ordererror(lua_State L, TValue p1, TValue p2) 
 		{
 			CharPtr t1 = LuaTM.luaT_typenames[LuaObject.ttype(p1)];
 			CharPtr t2 = LuaTM.luaT_typenames[LuaObject.ttype(p2)];
-			if (t1[2] == t2[2])
+			if (t1.get(2) == t2.get(2))
 			{
-				luaG_runerror(L, "attempt to compare two %s values", t1);
+				luaG_runerror(L, CharPtr.toCharPtr("attempt to compare two %s values"), t1);
 			}
 			else
 			{
-				luaG_runerror(L, "attempt to compare %s with %s", t1, t2);
+				luaG_runerror(L, CharPtr.toCharPtr("attempt to compare %s with %s"), t1, t2);
 			}
 			return 0;
 		}
 
-		private static void addinfo (lua_State L, CharPtr msg) {
+		private static void addinfo(lua_State L, CharPtr msg) 
+        {
 			CallInfo ci = L.ci;
 			if (LuaState.isLua(ci))
 			{  
@@ -923,7 +924,7 @@ namespace KopiLua
 				CharPtr buff = new CharPtr(new char[LuaConf.LUA_IDSIZE]);  /* add file:line information */
 				int line = currentline(L, ci);
 				LuaObject.luaO_chunkid(buff, LuaObject.getstr(getluaproto(ci).source), LuaConf.LUA_IDSIZE);
-				LuaObject.luaO_pushfstring(L, "%s:%d: %s", buff, line, msg);
+				LuaObject.luaO_pushfstring(L, CharPtr.toCharPtr("%s:%d: %s"), buff, line, msg);
 			}
 		}
 
@@ -937,10 +938,10 @@ namespace KopiLua
 				{
 					LuaDo.luaD_throw(L, Lua.LUA_ERRERR);
 				}
-				LuaObject.setobjs2s(L, L.top, L.top - 1);  /* move argument */
-				LuaObject.setobjs2s(L, L.top - 1, errfunc);  /* push function */
+				LuaObject.setobjs2s(L, L.top, TValue.minus(L.top, 1));  /* move argument */
+				LuaObject.setobjs2s(L, TValue.minus(L.top, 1), errfunc);  /* push function */
 				LuaDo.incr_top(L);
-				LuaDo.luaD_call(L, L.top - 2, 1);  /* call it */
+				LuaDo.luaD_call(L, TValue.minus(L.top, 2), 1);  /* call it */
 			}
 			LuaDo.luaD_throw(L, Lua.LUA_ERRRUN);
 		}

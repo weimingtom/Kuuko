@@ -3,12 +3,12 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class RootGCRef : GCObjectRef
 	{
+		private global_State g;
+		
 		public RootGCRef(global_State g) 
 		{ 
 			this.g = g; 
@@ -23,7 +23,5 @@ namespace KopiLua
 		{ 
 			return this.g.rootgc; 
 		}
-		
-		global_State g;
 	}
 }

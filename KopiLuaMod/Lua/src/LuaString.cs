@@ -33,9 +33,9 @@ namespace KopiLua
 
 		public static void luaS_fix(TString s)
 		{
-			Byte/*lu_byte*/ marked = s.tsv.marked;	// can't pass properties in as ref
+			Byte/*lu_byte*/ marked = s.getTsv().marked;	// can't pass properties in as ref
 			LuaGC.l_setbit(ref marked, LuaGC.FIXEDBIT);
-			s.tsv.marked = marked;
+			s.getTsv().marked = marked;
 		}
 
 		public static void luaS_resize(lua_State L, int newsize) 
@@ -68,11 +68,11 @@ namespace KopiLua
 				while (p != null) 
 				{  
 					/* for each node in the list */
-					GCObject next = p.gch.next;  /* save next */
+                    GCObject next = p.getGch().next;  /* save next */
 					long/*int*//*uint*/ h = LuaState.gco2ts(p).hash;
 					int h1 = (int)LuaConf.lmod(h, newsize);  /* new position */
 					LuaLimits.lua_assert((int)(h % newsize) == LuaConf.lmod(h, newsize));
-					p.gch.next = newhash[h1];  /* chain it */
+                    p.getGch().next = newhash[h1];  /* chain it */
 					newhash[h1] = p;
 					p = next;
 				}
@@ -94,19 +94,19 @@ namespace KopiLua
 			{
 				LuaMem.luaM_toobig(L);
 			}
-			ts = new TString(new char[l+1]);
+			ts = new TString(CharPtr.toCharPtr(new char[l + 1]));
 			LuaMem.AddTotalBytes(L, (int)(l + 1) * LuaConf.GetUnmanagedSize(typeof(char)) + LuaConf.GetUnmanagedSize(typeof(TString)));
-			ts.tsv.len = l;
-			ts.tsv.hash = h;
-			ts.tsv.marked = LuaGC.luaC_white(LuaState.G(L));
-			ts.tsv.tt = Lua.LUA_TSTRING;
-			ts.tsv.reserved = 0;
+			ts.getTsv().len = l;
+            ts.getTsv().hash = h;
+            ts.getTsv().marked = LuaGC.luaC_white(LuaState.G(L));
+            ts.getTsv().tt = Lua.LUA_TSTRING;
+            ts.getTsv().reserved = 0;
 			//memcpy(ts+1, str, l*GetUnmanagedSize(typeof(char)));
 			LuaConf.memcpy(ts.str.chars, str.chars, str.index, (int)l);
-			ts.str[l] = '\0';  /* ending 0 */
+			ts.str.set(l, '\0');  /* ending 0 */
 			tb = LuaState.G(L).strt;
 			h = (int/*uint*/)LuaConf.lmod(h, tb.size);
-			ts.tsv.next = tb.hash[h];  /* chain new entry */
+            ts.getTsv().next = tb.hash[h];  /* chain new entry */
 			tb.hash[h] = LuaState.obj2gco(ts);
 			tb.nuse++;
 			if ((tb.nuse > (int)tb.size) && (tb.size <= LuaLimits.MAX_INT / 2))
@@ -127,14 +127,14 @@ namespace KopiLua
 			{
 				/*FIXME:*/
 				/* compute hash */
-				h = (0xffffffff) & (h ^ ((h << 5)+(h >> 2) + (byte)str[l1 - 1]));
+				h = (0xffffffff) & (h ^ ((h << 5)+(h >> 2) + (byte)str.get(l1 - 1)));
 			}
 			for (o = LuaState.G(L).strt.hash[LuaConf.lmod(h, LuaState.G(L).strt.size)];
 			     o != null;
-			     o = o.gch.next) 
+                 o = o.getGch().next) 
 			{
 				TString ts = LuaState.rawgco2ts(o);
-				if (ts.tsv.len == l && (LuaConf.memcmp(str, LuaObject.getstr(ts), l) == 0))
+                if (ts.getTsv().len == l && (LuaConf.memcmp(str, LuaObject.getstr(ts), l) == 0))
 				{
 					/* string may be dead */
 					if (LuaGC.isdead(LuaState.G(L), o)) 

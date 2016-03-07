@@ -14,17 +14,10 @@ namespace KopiLua
 	{
 		public Proto[] protos = null;
 		public int index = 0;
-		public Proto this[int offset] 
-		{ 
-			get 
-			{ 
-				return this.protos[this.index + offset]; 
-			} 
-		}
 		
 		public TValue[] k;  /* constants used by the function */
 		public UInt32/*Instruction*/[] code;
-		public new Proto[] p;  /* functions defined inside the function */
+		public /*new*/ Proto[] p;  /* functions defined inside the function */
 		public int[] lineinfo;  /* map from opcodes to source lines */
 		public LocVar[] locvars;  /* information about local variables */
 		public TString[] upvalues;  /* upvalue names */
@@ -38,9 +31,15 @@ namespace KopiLua
 		public int linedefined;
 		public int lastlinedefined;
 		public GCObject gclist;
-		public Byte/*lu_byte*/ nups;  /* number of upvalues */
-		public Byte/*lu_byte*/ numparams;
-		public Byte/*lu_byte*/ is_vararg;
-		public Byte/*lu_byte*/ maxstacksize;
-	};
+		public byte nups;  /*Byte*/ /*lu_byte*/ /* number of upvalues */
+		public byte numparams;  /*Byte*/ /*lu_byte*/ 
+		public byte is_vararg;  /*Byte*/ /*lu_byte*/
+		public byte maxstacksize;  /*Byte*/ /*lu_byte*/
+
+        //Proto this[int offset] get
+		public Proto get(int offset) 
+		{ 
+			return this.protos[this.index + offset]; 
+		}
+	}
 }

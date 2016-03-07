@@ -26,7 +26,7 @@ namespace KopiLua
 			else 
 			{
 				LuaAPI.lua_pushnil(L);
-				LuaAPI.lua_pushfstring(L, "%s: %s", filename, LuaConf.strerror(en));
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s: %s"), filename, LuaConf.strerror(en));
 				LuaAPI.lua_pushinteger(L, en);
 				return 3;
 			}
@@ -34,7 +34,7 @@ namespace KopiLua
 
 		private static int os_execute(lua_State L) 
 		{
-			CharPtr strCmdLine = "/C regenresx " + LuaAuxLib.luaL_optstring(L, 1, null);
+			CharPtr strCmdLine = CharPtr.toCharPtr("/C regenresx " + LuaAuxLib.luaL_optstring(L, 1, null));
 			System.Diagnostics.Process proc = new System.Diagnostics.Process();
 			proc.EnableRaisingEvents=false;
 			proc.StartInfo.FileName = "CMD.exe";
@@ -79,7 +79,7 @@ namespace KopiLua
 
 		private static int os_tmpname(lua_State L) 
 		{
-			LuaAPI.lua_pushstring(L, Path.GetTempFileName());
+			LuaAPI.lua_pushstring(L, CharPtr.toCharPtr(Path.GetTempFileName()));
 			return 1;
 		}
 
@@ -141,7 +141,7 @@ namespace KopiLua
 			{
 				if (d < 0)
 				{
-					return LuaAuxLib.luaL_error(L, "field " + LuaConf.LUA_QS + " missing in date table", key);
+					return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("field " + LuaConf.getLUA_QS() + " missing in date table"), key);
 				}
 				res = d;
 			}
@@ -151,9 +151,9 @@ namespace KopiLua
 
 		private static int os_date(lua_State L) 
 		{
-			CharPtr s = LuaAuxLib.luaL_optstring(L, 1, "%c");
+			CharPtr s = LuaAuxLib.luaL_optstring(L, 1, CharPtr.toCharPtr("%c"));
 			DateTime stm;
-			if (s[0] == '!') 
+			if (s.get(0) == '!') 
 			{  
 				/* UTC? */
 				stm = DateTime.UtcNow;
@@ -163,22 +163,22 @@ namespace KopiLua
 			{
 				stm = DateTime.Now;
 			}
-			if (LuaConf.strcmp(s, "*t") == 0)
+			if (LuaConf.strcmp(s, CharPtr.toCharPtr("*t")) == 0)
 			{
 				LuaAPI.lua_createtable(L, 0, 9);  /* 9 = number of fields */
-				setfield(L, "sec", stm.Second);
-				setfield(L, "min", stm.Minute);
-				setfield(L, "hour", stm.Hour);
-				setfield(L, "day", stm.Day);
-				setfield(L, "month", stm.Month);
-				setfield(L, "year", stm.Year);
-				setfield(L, "wday", (int)stm.DayOfWeek);
-				setfield(L, "yday", stm.DayOfYear);
-				setboolfield(L, "isdst", stm.IsDaylightSavingTime() ? 1 : 0);
+				setfield(L, CharPtr.toCharPtr("sec"), stm.Second);
+				setfield(L, CharPtr.toCharPtr("min"), stm.Minute);
+				setfield(L, CharPtr.toCharPtr("hour"), stm.Hour);
+				setfield(L, CharPtr.toCharPtr("day"), stm.Day);
+				setfield(L, CharPtr.toCharPtr("month"), stm.Month);
+				setfield(L, CharPtr.toCharPtr("year"), stm.Year);
+				setfield(L, CharPtr.toCharPtr("wday"), (int)stm.DayOfWeek);
+				setfield(L, CharPtr.toCharPtr("yday"), stm.DayOfYear);
+				setboolfield(L, CharPtr.toCharPtr("isdst"), stm.IsDaylightSavingTime() ? 1 : 0);
 			}
 			else 
 			{
-				LuaAuxLib.luaL_error(L, "strftime not implemented yet"); // todo: implement this - mjf
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("strftime not implemented yet")); // todo: implement this - mjf
 				#if false
 				CharPtr cc = new char[3];
 				luaL_Buffer b;
@@ -218,13 +218,13 @@ namespace KopiLua
 			{
 				LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TTABLE);
 				LuaAPI.lua_settop(L, 1);  /* make sure table is at the top */
-				int sec = getfield(L, "sec", 0);
-				int min = getfield(L, "min", 0);
-				int hour = getfield(L, "hour", 12);
-				int day = getfield(L, "day", -1);
-				int month = getfield(L, "month", -1) - 1;
-				int year = getfield(L, "year", -1) - 1900;
-				int isdst = getboolfield(L, "isdst");	// todo: implement this - mjf
+				int sec = getfield(L, CharPtr.toCharPtr("sec"), 0);
+				int min = getfield(L, CharPtr.toCharPtr("min"), 0);
+				int hour = getfield(L, CharPtr.toCharPtr("hour"), 12);
+				int day = getfield(L, CharPtr.toCharPtr("day"), -1);
+				int month = getfield(L, CharPtr.toCharPtr("month"), -1) - 1;
+				int year = getfield(L, CharPtr.toCharPtr("year"), -1) - 1900;
+				int isdst = getboolfield(L, CharPtr.toCharPtr("isdst"));	// todo: implement this - mjf
 				t = new DateTime(year, month, day, hour, min, sec);
 			}
 			LuaAPI.lua_pushnumber(L, t.Ticks);
@@ -253,8 +253,8 @@ namespace KopiLua
 		  lua_pushstring(L, setlocale(cat[op], l));
 			 */
 			CharPtr l = LuaAuxLib.luaL_optstring(L, 1, null);
-			LuaAPI.lua_pushstring(L, "C");
-			return (l.ToString() == "C") ? 1 : 0;
+			LuaAPI.lua_pushstring(L, CharPtr.toCharPtr("C"));
+			return (l.ToString().Equals("C")) ? 1 : 0;
 		}
 
 		private static int os_exit(lua_State L) 
@@ -264,17 +264,17 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] syslib = {
-			new luaL_Reg("clock",     os_clock),
-			new luaL_Reg("date",      os_date),
-			new luaL_Reg("difftime",  os_difftime),
-			new luaL_Reg("execute",   os_execute),
-			new luaL_Reg("exit",      os_exit),
-			new luaL_Reg("getenv",    os_getenv),
-			new luaL_Reg("remove",    os_remove),
-			new luaL_Reg("rename",    os_rename),
-			new luaL_Reg("setlocale", os_setlocale),
-			new luaL_Reg("time",      os_time),
-			new luaL_Reg("tmpname",   os_tmpname),
+			new luaL_Reg(CharPtr.toCharPtr("clock"), os_clock),
+			new luaL_Reg(CharPtr.toCharPtr("date"), os_date),
+			new luaL_Reg(CharPtr.toCharPtr("difftime"), os_difftime),
+			new luaL_Reg(CharPtr.toCharPtr("execute"), os_execute),
+			new luaL_Reg(CharPtr.toCharPtr("exit"), os_exit),
+			new luaL_Reg(CharPtr.toCharPtr("getenv"), os_getenv),
+			new luaL_Reg(CharPtr.toCharPtr("remove"), os_remove),
+			new luaL_Reg(CharPtr.toCharPtr("rename"), os_rename),
+			new luaL_Reg(CharPtr.toCharPtr("setlocale"), os_setlocale),
+			new luaL_Reg(CharPtr.toCharPtr("time"), os_time),
+			new luaL_Reg(CharPtr.toCharPtr("tmpname"), os_tmpname),
 			new luaL_Reg(null, null)
 		};
 
@@ -282,7 +282,7 @@ namespace KopiLua
 
 		public static int luaopen_os (lua_State L) 
 		{
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_OSLIBNAME, syslib);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_OSLIBNAME), syslib);
 			return 1;
 		}
 	}

@@ -3,7 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
 using System.Diagnostics;
 
 namespace KopiLua
@@ -12,6 +11,12 @@ namespace KopiLua
 	{
 		private Node[] values = null;
 		private int index = -1;
+		
+		public static int ids = 0;
+		public int id = ids++;
+		
+		public TValue i_val;
+		public TKey i_key;
 		
 		public void set_index(int index)
 		{
@@ -23,9 +28,6 @@ namespace KopiLua
 			this.values = (Node[])array;
 			Debug.Assert(this.values != null);
 		}
-		
-		public static int ids = 0;
-		public int id = ids++;
 		
 		public Node()
 		{
@@ -48,27 +50,21 @@ namespace KopiLua
 			this.i_val = i_val;
 			this.i_key = i_key;
 		}
-		
-		public TValue i_val;
-		public TKey i_key;
-		
-		public Node this[uint offset]
-		{
-			get 
-			{ 
-				return this.values[this.index + (int)offset]; 
-			}
-		}
-		
-		public Node this[int offset]
-		{
-			get 
-			{ 
-				return this.values[this.index + offset]; 
-			}
-		}
-		
-		public static int operator -(Node n1, Node n2)
+
+        //Node this[int offset]
+        public Node get(int offset)
+        {
+            return this.values[this.index + offset];
+        }
+
+        //Node this[uint offset]
+        public Node get(uint offset)
+        {
+            return this.values[this.index + (int)offset];
+        }
+
+        //operator -
+		public static int minus(Node n1, Node n2)
 		{
 			Debug.Assert(n1.values == n2.values);
 			return n1.index - n2.index;
@@ -76,71 +72,79 @@ namespace KopiLua
 		
 		public static Node inc(ref Node node)
 		{
-			node = node[1];
-			return node[-1];
+			node = node.get(1);
+			return node.get(-1);
 		}
 		
 		public static Node dec(ref Node node)
 		{
-			node = node[-1];
-			return node[1];
+			node = node.get(-1);
+			return node.get(1);
 		}
 		
-		public static bool operator >(Node n1, Node n2) 
+        //operator >
+		public static bool greaterThan(Node n1, Node n2) 
 		{
 			Debug.Assert(n1.values == n2.values); 
 			return n1.index > n2.index;
 		}
 		
-		public static bool operator >=(Node n1, Node n2) 
+        //operator >=
+		public static bool greaterEqual(Node n1, Node n2) 
 		{ 
 			Debug.Assert(n1.values == n2.values); 
 			return n1.index >= n2.index;
 		}
-		
-		public static bool operator <(Node n1, Node n2) 
+
+        //operator <
+		public static bool lessThan(Node n1, Node n2) 
 		{ 
 			Debug.Assert(n1.values == n2.values); 
 			return n1.index < n2.index;
 		}
 		
-		public static bool operator <=(Node n1, Node n2) 
+        //operator <=
+		public static bool lessEqual(Node n1, Node n2) 
 		{ 
 			Debug.Assert(n1.values == n2.values); 
 			return n1.index <= n2.index; 
 		}
-		
-		public static bool operator ==(Node n1, Node n2)
-		{
-			object o1 = n1 as Node;
-			object o2 = n2 as Node;
-			if ((o1 == null) && (o2 == null)) 
-			{
-				return true;
-			}
-			if (o1 == null) 
-			{
-				return false;
-			}
-			if (o2 == null) 
-			{
-				return false;
-			}
-			if (n1.values != n2.values) 
-			{
-				return false;
-			}
-			return n1.index == n2.index;
-		}
-		
-		public static bool operator !=(Node n1, Node n2) 
-		{ 
-			return !(n1 == n2); 
-		}
-		
+
+        //operator ==
+        public static bool isEqual(Node n1, Node n2)
+        {
+            object o1 = n1 as Node;
+            object o2 = n2 as Node;
+            if ((o1 == null) && (o2 == null))
+            {
+                return true;
+            }
+            if (o1 == null)
+            {
+                return false;
+            }
+            if (o2 == null)
+            {
+                return false;
+            }
+            if (n1.values != n2.values)
+            {
+                return false;
+            }
+            return n1.index == n2.index;
+        }
+
+        //operator !=
+        public static bool isNotEqual(Node n1, Node n2)
+        {
+            //return !(n1 == n2); 
+            return !isEqual(n1, n2);
+        }
+
 		public override bool Equals(object o) 
 		{ 
-			return this == (Node)o; 
+			//return this == (Node)o; 
+            return Node.isEqual(this, (Node)o);
 		}
 		
 		public override int GetHashCode() 

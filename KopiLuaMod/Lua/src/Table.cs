@@ -3,14 +3,12 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class Table : GCObject
 	{
-		public Byte/*lu_byte*/ flags;  /* 1<<p means tagmethod(p) is not present */
-		public Byte/*lu_byte*/ lsizenode;  /* log2 of size of `node' array */
+		public byte flags; /*Byte*/ /*lu_byte*/  /* 1<<p means tagmethod(p) is not present */
+		public byte lsizenode;  /*Byte*/ /*lu_byte*/ /* log2 of size of `node' array */
 		public Table metatable;
 		public TValue[] array;  /* array part */
 		public Node[] node;

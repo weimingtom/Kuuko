@@ -3,13 +3,11 @@
  ** Lua Parser
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class upvaldesc
 	{
-		public Byte/*lu_byte*/ k;
-		public Byte/*lu_byte*/ info;
+		public byte k;  /*Byte*/ /*lu_byte*/
+		public byte info;  /*Byte*/ /*lu_byte*/
 	}
 }

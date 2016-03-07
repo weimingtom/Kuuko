@@ -33,8 +33,8 @@ namespace KopiLua
 		//#include "lstring.h"
 		//#include "lundump.h"
 
-		static CharPtr PROGNAME = "luac";		/* default program name */
-		static CharPtr OUTPUT = PROGNAME + ".out"; /* default output file */
+		static CharPtr PROGNAME = CharPtr.toCharPtr("luac");		/* default program name */
+		static CharPtr OUTPUT = CharPtr.toCharPtr(PROGNAME + ".out"); /* default output file */
 
 		static int listing = 0;			/* list bytecodes? */
 		static int dumping = 1;			/* dump bytecodes? */
@@ -45,31 +45,31 @@ namespace KopiLua
 
 		static void fatal(CharPtr message)
 		{
-			LuaConf.fprintf(LuaConf.stderr,"%s: %s\n",progname,message);
+			LuaConf.fprintf(LuaConf.stderr, CharPtr.toCharPtr("%s: %s\n"), progname, message);
 			Environment.Exit(LuaConf.EXIT_FAILURE);
 		}
 
 		static void cannot(CharPtr what)
 		{
-			LuaConf.fprintf(LuaConf.stderr, "%s: cannot %s %s: %s\n", progname, what, output, LuaConf.strerror(LuaConf.errno()));
+			LuaConf.fprintf(LuaConf.stderr, CharPtr.toCharPtr("%s: cannot %s %s: %s\n"), progname, what, output, LuaConf.strerror(LuaConf.errno()));
 			Environment.Exit(LuaConf.EXIT_FAILURE);
 		}
 
 		static void usage(CharPtr message)
 		{
-			if (message[0]=='-')			
+			if (message.get(0) == '-')			
 			{
 				LuaConf.fprintf(LuaConf.stderr, 
-					"%s: unrecognized option " + LuaConf.LUA_QS + "\n", 
+					CharPtr.toCharPtr("%s: unrecognized option " + LuaConf.getLUA_QS() + "\n"), 
 					progname, message);
 			}
 			else
 			{
-				LuaConf.fprintf(LuaConf.stderr, "%s: %s\n", 
+				LuaConf.fprintf(LuaConf.stderr, CharPtr.toCharPtr("%s: %s\n"), 
 				    progname, message);
 			}
 			LuaConf.fprintf(LuaConf.stderr,
-			                "usage: %s [options] [filenames].\n" +
+			                CharPtr.toCharPtr("usage: %s [options] [filenames].\n" +
 			                "Available options are:\n" +
 			                "  -        process stdin\n" +
 			                "  -l       list\n" +
@@ -77,8 +77,8 @@ namespace KopiLua
 			                "  -p       parse only\n" +
 			                "  -s       strip debug information\n" +
 			                "  -v       show version information\n" +
-			                "  --       stop handling options\n",
-			                progname,Output);
+			                "  --       stop handling options\n"),
+			                progname, Output);
 			Environment.Exit(LuaConf.EXIT_FAILURE);
 		}
 
@@ -88,9 +88,9 @@ namespace KopiLua
 		{
 			int i;
 			int version = 0;
-			if ((argv.Length > 0) && (argv[0] != "")) 
+			if ((argv.Length > 0) && (!argv[0].Equals(""))) 
 			{
-				progname = argv[0];
+				progname = CharPtr.toCharPtr(argv[0]);
 			}
 			for (i = 1; i < argc; i++)
 			{
@@ -98,7 +98,7 @@ namespace KopiLua
 				{
 					break;
 				}
-				else if (LuaConf.strcmp(argv[i], "--") == 0)			/* end of options; skip it */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("--")) == 0)			/* end of options; skip it */
 				{
 					++i;
 					if (version != 0) 
@@ -107,41 +107,41 @@ namespace KopiLua
 					}
 					break;
 				}
-				else if (LuaConf.strcmp(argv[i], "-") == 0)			/* end of options; use stdin */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-")) == 0)			/* end of options; use stdin */
 				{
 					break;
 				}
-				else if (LuaConf.strcmp(argv[i], "-l") == 0)			/* list */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-l")) == 0)			/* list */
 				{
 					++listing;
 				}
-				else if (LuaConf.strcmp(argv[i], "-o") == 0)			/* output file */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-o")) == 0)			/* output file */
 				{
-					output = argv[++i];
-					if (output == null || (output[0] == 0)) 
+					output = CharPtr.toCharPtr(argv[++i]);
+					if (CharPtr.isEqual(output, null) || (output.get(0) == 0)) 
 					{
-						usage(LuaConf.LUA_QL("-o") + " needs argument");
+						usage(CharPtr.toCharPtr(LuaConf.LUA_QL("-o") + " needs argument"));
 					}
-					if (LuaConf.strcmp(argv[i], "-") == 0) 
+					if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-")) == 0) 
 					{
 						output = null;
 					}
 				}
-				else if (LuaConf.strcmp(argv[i], "-p") == 0)			/* parse only */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-p")) == 0)			/* parse only */
 				{
 					dumping = 0;
 				}
-				else if (LuaConf.strcmp(argv[i], "-s") == 0)			/* strip debug information */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-s")) == 0)			/* strip debug information */
 				{
 					stripping = 1;
 				}
-				else if (LuaConf.strcmp(argv[i], "-v") == 0)			/* show version */
+				else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-v")) == 0)			/* show version */
 				{
 					++version;
 				}
 				else					/* unknown option */
 				{
-					usage(argv[i]);
+					usage(CharPtr.toCharPtr(argv[i]));
 				}
 			}
 			if (i == argc && ((listing != 0) || (dumping == 0)))
@@ -151,7 +151,7 @@ namespace KopiLua
 			}
 			if (version != 0)
 			{
-				LuaConf.printf("%s  %s\n",Lua.LUA_RELEASE,Lua.LUA_COPYRIGHT);
+				LuaConf.printf(CharPtr.toCharPtr("%s  %s\n"), Lua.LUA_RELEASE, Lua.LUA_COPYRIGHT);
 				if (version == argc - 1) 
 				{
 					Environment.Exit(LuaConf.EXIT_SUCCESS);
@@ -162,22 +162,22 @@ namespace KopiLua
 
 		static Proto toproto(lua_State L, int i) 
 		{
-			return LuaObject.clvalue(L.top+(i)).l.p;
+			return LuaObject.clvalue(TValue.plus(L.top, i)).l.p;
 		}
 
 		static Proto combine(lua_State L, int n)
 		{
-			if (n==1)
+			if (n == 1)
 			{
-				return toproto(L,-1);
+				return toproto(L, -1);
 			}
 			else
 			{
 				int i, pc;
 				Proto f = LuaFunc.luaF_newproto(L);
-				LuaObject.setptvalue2s(L,L.top,f); 
+				LuaObject.setptvalue2s(L, L.top,f); 
 				LuaDo.incr_top(L);
-				f.source = LuaString.luaS_newliteral(L,"=(" + PROGNAME + ")");
+				f.source = LuaString.luaS_newliteral(L, CharPtr.toCharPtr("=(" + PROGNAME + ")"));
 				f.maxstacksize = 1;
 				pc = 2 * n + 1;
 				f.code = (UInt32[]/*Instruction[]*/)LuaMem.luaM_newvector<UInt32/*Instruction*/>(L, pc);
@@ -211,11 +211,11 @@ namespace KopiLua
 			int i;
 			if (LuaAPI.lua_checkstack(L,argc) == 0) 
 			{
-				fatal("too many input files");
+				fatal(CharPtr.toCharPtr("too many input files"));
 			}
 			for (i = 0; i < argc; i++)
 			{
-				CharPtr filename = (LuaConf.strcmp(argv[i], "-") == 0) ? null : argv[i];
+				CharPtr filename = (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-")) == 0) ? null : CharPtr.toCharPtr(argv[i]);
 				if (LuaAuxLib.luaL_loadfile(L,filename) != 0) 
 				{
 					fatal(Lua.lua_tostring(L,-1));
@@ -228,13 +228,22 @@ namespace KopiLua
 			}
 			if (dumping!=0)
 			{
-				Stream D = (output==null) ? LuaConf.stdout : LuaConf.fopen(output, "wb");
-				if (D==null) cannot("open");
-				LuaLimits.lua_lock(L);
+				Stream D = (CharPtr.isEqual(output, null)) ? LuaConf.stdout : LuaConf.fopen(output, CharPtr.toCharPtr("wb"));
+                if (D == null)
+                {
+                    cannot(CharPtr.toCharPtr("open"));
+                }
+                LuaLimits.lua_lock(L);
 				LuaDump.luaU_dump(L, f, writer, D, stripping);
 				LuaLimits.lua_unlock(L);
-				if (LuaConf.ferror(D) != 0) cannot("write");
-				if (LuaConf.fclose(D)!=0) cannot("close");
+                if (LuaConf.ferror(D) != 0)
+                {
+                    cannot(CharPtr.toCharPtr("write"));
+                }
+                if (LuaConf.fclose(D) != 0)
+                {
+                    cannot(CharPtr.toCharPtr("close"));
+                }
 			}
 			return 0;
 		}
@@ -257,12 +266,12 @@ namespace KopiLua
 			args = (string[])newargs.ToArray();
 			if (argc <= 0) 
 			{
-				usage("no input files given");
+				usage(CharPtr.toCharPtr("no input files given"));
 			}
 			L = Lua.lua_open();
 			if (L == null) 
 			{
-				fatal("not enough memory for state");
+				fatal(CharPtr.toCharPtr("not enough memory for state"));
 			}
 			s.argc = argc;
 			s.argv = args;

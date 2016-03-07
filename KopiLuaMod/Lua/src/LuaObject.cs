@@ -108,17 +108,17 @@ namespace KopiLua
 		
 		public static TString rawtsvalue(TValue o) 
 		{ 
-			return (TString)LuaLimits.check_exp(ttisstring(o), o.value.gc.ts); 
+			return (TString)LuaLimits.check_exp(ttisstring(o), o.value.gc.getTs()); 
 		}
 		
 		public static TString_tsv tsvalue(TValue o) 
 		{ 
-			return rawtsvalue(o).tsv; 
+			return rawtsvalue(o).getTsv(); 
 		}
 		
 		public static Udata rawuvalue(TValue o) 
 		{ 
-			return (Udata)LuaLimits.check_exp(ttisuserdata(o), o.value.gc.u); 
+			return (Udata)LuaLimits.check_exp(ttisuserdata(o), o.value.gc.getU()); 
 		}
 		
 		public static Udata_uv uvalue(TValue o) 
@@ -128,12 +128,12 @@ namespace KopiLua
 		
 		public static Closure clvalue(TValue o) 
 		{ 
-			return (Closure)LuaLimits.check_exp(ttisfunction(o), o.value.gc.cl); 
+			return (Closure)LuaLimits.check_exp(ttisfunction(o), o.value.gc.getCl()); 
 		}
 		
 		public static Table hvalue(TValue o) 
 		{ 
-			return (Table)LuaLimits.check_exp(ttistable(o), o.value.gc.h); 
+			return (Table)LuaLimits.check_exp(ttistable(o), o.value.gc.getH()); 
 		}
 		
 		public static int bvalue(TValue o)	
@@ -143,7 +143,7 @@ namespace KopiLua
 		
 		public static lua_State thvalue(TValue o) 
 		{ 
-			return (lua_State)LuaLimits.check_exp(ttisthread(o), o.value.gc.th); 
+			return (lua_State)LuaLimits.check_exp(ttisthread(o), o.value.gc.getTh()); 
 		}
 
 		public static int l_isfalse(TValue o) 
@@ -156,13 +156,13 @@ namespace KopiLua
 		 */
 		public static void checkconsistency(TValue obj)
 		{
-			LuaLimits.lua_assert(!iscollectable(obj) || (ttype(obj) == (obj).value.gc.gch.tt));
+			LuaLimits.lua_assert(!iscollectable(obj) || (ttype(obj) == (obj).value.gc.getGch().tt));
 		}
 
 		public static void checkliveness(global_State g, TValue obj)
 		{
 			LuaLimits.lua_assert(!iscollectable(obj) ||
-				((ttype(obj) == obj.value.gc.gch.tt) && !LuaGC.isdead(g, obj.value.gc)));
+				((ttype(obj) == obj.value.gc.getGch().tt) && !LuaGC.isdead(g, obj.value.gc)));
 		}
 
 
@@ -330,12 +330,12 @@ namespace KopiLua
 
 		public static bool iscfunction(TValue o) 
 		{ 
-			return ((ttype(o) == Lua.LUA_TFUNCTION) && (clvalue(o).c.isC != 0)); 
+			return ((ttype(o) == Lua.LUA_TFUNCTION) && (clvalue(o).c.getIsC() != 0)); 
 		}
 		
 		public static bool isLfunction(TValue o) 
 		{ 
-			return ((ttype(o) == Lua.LUA_TFUNCTION) && (clvalue(o).c.isC == 0)); 
+			return ((ttype(o) == Lua.LUA_TFUNCTION) && (clvalue(o).c.getIsC() == 0)); 
 		}
 
 		/*
@@ -460,23 +460,23 @@ namespace KopiLua
 		{
 			CharPtr endptr;
 			result = LuaConf.lua_str2number(s, out endptr);
-			if (endptr == s) 
+			if (CharPtr.isEqual(endptr, s)) 
 			{
 				return 0;  /* conversion failed */
 			}
-			if (endptr[0] == 'x' || endptr[0] == 'X')  /* maybe an hexadecimal constant? */
+			if (endptr.get(0) == 'x' || endptr.get(0) == 'X')  /* maybe an hexadecimal constant? */
 			{
 				result = LuaLimits.cast_num(LuaConf.strtoul(s, out endptr, 16));
 			}
-			if (endptr[0] == '\0') 
+			if (endptr.get(0) == '\0') 
 			{
 				return 1;  /* most common case */
 			}
-			while (LuaConf.isspace(endptr[0])) 
+			while (LuaConf.isspace(endptr.get(0))) 
 			{
 				endptr = endptr.next();
 			}
-			if (endptr[0] != '\0') 
+			if (endptr.get(0) != '\0') 
 			{
 				return 0;  /* invalid trailing characters? */
 			}
@@ -494,38 +494,38 @@ namespace KopiLua
 		{
 			int parm_index = 0;
 			int n = 1;
-			pushstr(L, "");
+			pushstr(L, CharPtr.toCharPtr(""));
 			for (;;) 
 			{
 				CharPtr e = LuaConf.strchr(fmt, '%');
-				if (e == null) 
+				if (CharPtr.isEqual(e, null)) 
 				{
 					break;
 				}
 				setsvalue2s(L, L.top, LuaString.luaS_newlstr(L, fmt, /*(uint)*/CharPtr.minus(e, fmt)));
 				LuaDo.incr_top(L);
-				switch (e[1]) 
+				switch (e.get(1)) 
 				{
 					case 's': 
 						{
 							object o = argp[parm_index++];
 							CharPtr s = o as CharPtr;
-							if (s == null)
+							if (CharPtr.isEqual(s, null))
 							{
-								s = (string)o;
+								s = CharPtr.toCharPtr((string)o);
 							}
-							if (s == null) 
+							if (CharPtr.isEqual(s, null)) 
 							{
-								s = "(null)";
+								s = CharPtr.toCharPtr("(null)");
 							}
 							pushstr(L, s);
 							break;
 						}
 					case 'c': 
 						{
-							CharPtr buff = new char[2];
-							buff[0] = (char)(int)argp[parm_index++];
-							buff[1] = '\0';
+							CharPtr buff = CharPtr.toCharPtr(new char[2]);
+							buff.set(0, (char)(int)argp[parm_index++]);
+							buff.set(1, '\0');
 							pushstr(L, buff);
 							break;
 						}
@@ -544,22 +544,22 @@ namespace KopiLua
 					case 'p': 
 						{
 							//CharPtr buff = new char[4*sizeof(void *) + 8]; /* should be enough space for a `%p' */
-							CharPtr buff = new char[32];
-							LuaConf.sprintf(buff, "0x%08x", argp[parm_index++].GetHashCode());
+							CharPtr buff = CharPtr.toCharPtr(new char[32]);
+							LuaConf.sprintf(buff, CharPtr.toCharPtr("0x%08x"), argp[parm_index++].GetHashCode());
 							pushstr(L, buff);
 							break;
 						}
 					case '%': 
 						{
-							pushstr(L, "%");
+							pushstr(L, CharPtr.toCharPtr("%"));
 							break;
 						}
 					default: 
 						{
-							CharPtr buff = new char[3];
-							buff[0] = '%';
-							buff[1] = e[1];
-							buff[2] = '\0';
+							CharPtr buff = CharPtr.toCharPtr(new char[3]);
+							buff.set(0, '%');
+							buff.set(1, e.get(1));
+							buff.set(2, '\0');
 							pushstr(L, buff);
 							break;
 						}
@@ -568,9 +568,9 @@ namespace KopiLua
 				fmt = CharPtr.plus(e, 2);
 			}
 			pushstr(L, fmt);
-			LuaVM.luaV_concat(L, n + 1, LuaLimits.cast_int(L.top - L.base_) - 1);
-			L.top -= n;
-			return svalue(L.top - 1);
+			LuaVM.luaV_concat(L, n + 1, LuaLimits.cast_int(TValue.minus(L.top, L.base_)) - 1);
+			L.top = TValue.minus(L.top, n);
+			return svalue(TValue.minus(L.top, 1));
 		}
 
 		public static CharPtr luaO_pushfstring(lua_State L, CharPtr fmt, params object[] args)
@@ -581,49 +581,49 @@ namespace KopiLua
 		public static void luaO_chunkid(CharPtr out_, CharPtr source, int/*uint*/ bufflen) 
 		{
 			//out_ = "";
-			if (source[0] == '=') 
+			if (source.get(0) == '=') 
 			{
 				LuaConf.strncpy(out_, CharPtr.plus(source, 1), /*(int)*/bufflen);  /* remove first char */
-				out_[bufflen-1] = '\0';  /* ensures null termination */
+				out_.set(bufflen - 1, '\0');  /* ensures null termination */
 			}
 			else
 			{ 
 				/* out = "source", or "...source" */
-				if (source[0] == '@') 
+				if (source.get(0) == '@') 
 				{
 					int/*uint*/ l;
 					source = source.next();  /* skip the `@' */
-					bufflen -= /*(uint)*/(" '...' ".Length + 1);
+					bufflen -= /*(uint)*/(" '...' ".Length + 1); //FIXME:
 					l = /*(uint)*/LuaConf.strlen(source);
-					LuaConf.strcpy(out_, "");
+					LuaConf.strcpy(out_, CharPtr.toCharPtr(""));
 					if (l > bufflen) 
 					{
 						source = CharPtr.plus(source, (l - bufflen));  /* get last part of file name */
-						LuaConf.strcat(out_, "...");
+						LuaConf.strcat(out_, CharPtr.toCharPtr("..."));
 					}
 					LuaConf.strcat(out_, source);
 				}
 				else 
 				{  
 					/* out = [string "string"] */
-					int/*uint*/ len = LuaConf.strcspn(source, "\n\r");  /* stop at first newline */
+					int/*uint*/ len = LuaConf.strcspn(source, CharPtr.toCharPtr("\n\r"));  /* stop at first newline */
 					bufflen -= /*(uint)*/(" [string \"...\"] ".Length + 1);
 					if (len > bufflen) 
 					{
 						len = bufflen;
 					}
-					LuaConf.strcpy(out_, "[string \"");
-					if (source[len] != '\0') 
+					LuaConf.strcpy(out_, CharPtr.toCharPtr("[string \""));
+					if (source.get(len) != '\0') 
 					{  
 						/* must truncate? */
 						LuaConf.strncat(out_, source, (int)len);
-						LuaConf.strcat(out_, "...");
+						LuaConf.strcat(out_, CharPtr.toCharPtr("..."));
 					}
 					else
 					{
 						LuaConf.strcat(out_, source);
 					}
-					LuaConf.strcat(out_, "\"]");
+					LuaConf.strcat(out_, CharPtr.toCharPtr("\"]"));
 				}
 			}
 		}

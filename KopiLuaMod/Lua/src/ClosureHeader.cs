@@ -3,8 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
     /*
@@ -12,8 +10,8 @@ namespace KopiLua
      */ 
     public class ClosureHeader : GCObject
     {
-    	public Byte/*lu_byte*/ isC;
-    	public Byte/*lu_byte*/ nupvalues;
+    	public byte isC; /*Byte*/ /*lu_byte*/
+    	public byte nupvalues; /*Byte*/ /*lu_byte*/
     	public GCObject gclist;
     	public Table env;
     }

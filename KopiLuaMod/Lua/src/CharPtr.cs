@@ -12,32 +12,39 @@ namespace KopiLua
 	{
 		public char[] chars;
 		public int index;
+
+        //public char this[int offset] get
+        public char get(int offset)
+        {
+            return chars[index + offset];
+        }
+
+        //public char this[int offset] set
+        public void set(int offset, char val)
+        {
+            chars[index + offset] = val;
+        }
+
+        //public char this[long offset] get
+        public char get(long offset)
+        {
+            return chars[index + (int)offset];
+        }
+
+        //public char this[long offset] set
+        public void set(long offset, char val)
+        {
+            chars[index + (int)offset] = val;
+        }
 		
-		public char this[int offset]
-		{
-			get
-			{
-				return chars[index + offset];
-			}
-			
-			set
-			{
-				chars[index + offset] = value;
-			}
-		}
-		
-		public char this[long offset]
-		{
-			get { return chars[index + (int)offset]; }
-			set { chars[index + (int)offset] = value; }
-		}
-		
-		public static implicit operator CharPtr(string str) 
+        //implicit operator CharPtr
+        public static CharPtr toCharPtr(string str) 
 		{
 			return new CharPtr(str); 
 		}
-		
-		public static implicit operator CharPtr(char[] chars) 
+
+		//implicit operator CharPtr
+		public static CharPtr toCharPtr(char[] chars) 
 		{ 
 			return new CharPtr(chars); 
 		}
@@ -123,37 +130,41 @@ namespace KopiLua
 		{ 
 			return new CharPtr(this.chars, this.index - ofs); 
 		}
-		
-		public static bool operator ==(CharPtr ptr, char ch) 
+
+        //operator ==
+        public static bool isEqual(CharPtr ptr, char ch)
+        {
+            return ptr.get(0) == ch;
+        }
+
+        //operator ==
+        public static bool isEqual(char ch, CharPtr ptr) 
 		{ 
-			return ptr[0] == ch; 
+			return ptr.get(0) == ch; 
 		}
 		
-		public static bool operator ==(char ch, CharPtr ptr) 
+        //operator !=
+		public static bool isNotEqual(CharPtr ptr, char ch) 
 		{ 
-			return ptr[0] == ch; 
+			return ptr.get(0) != ch; 
 		}
 		
-		public static bool operator !=(CharPtr ptr, char ch) 
+        //operator !=
+        public static bool isNotEqual(char ch, CharPtr ptr) 
 		{ 
-			return ptr[0] != ch; 
-		}
-		
-		public static bool operator !=(char ch, CharPtr ptr) 
-		{ 
-			return ptr[0] != ch; 
+			return ptr.get(0) != ch; 
 		}
 		
 		public static CharPtr plus(CharPtr ptr1, CharPtr ptr2)
 		{
 			string result = "";
-			for (int i = 0; ptr1[i] != '\0'; i++)
+			for (int i = 0; ptr1.get(i) != '\0'; i++)
 			{
-				result += ptr1[i];
+				result += ptr1.get(i);
 			}
-			for (int i = 0; ptr2[i] != '\0'; i++)
+			for (int i = 0; ptr2.get(i) != '\0'; i++)
 			{
-				result += ptr2[i];
+				result += ptr2.get(i);
 			}
 			return new CharPtr(result);
 		}
@@ -163,49 +174,55 @@ namespace KopiLua
 			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index - ptr2.index;
 		}
 		
-		public static bool operator <(CharPtr ptr1, CharPtr ptr2)
+        //operator <
+		public static bool lessThan(CharPtr ptr1, CharPtr ptr2)
 		{
 			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index < ptr2.index;
 		}
-		public static bool operator <=(CharPtr ptr1, CharPtr ptr2)
+        //operator <=
+		public static bool lessEqual(CharPtr ptr1, CharPtr ptr2)
 		{
 			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index <= ptr2.index;
 		}
-		public static bool operator >(CharPtr ptr1, CharPtr ptr2)
+        public static bool greaterThan(CharPtr ptr1, CharPtr ptr2)
 		{
 			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index > ptr2.index;
 		}
-		public static bool operator >=(CharPtr ptr1, CharPtr ptr2)
+        //operator >=
+		public static bool greaterEqual(CharPtr ptr1, CharPtr ptr2)
 		{
 			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index >= ptr2.index;
 		}
-		public static bool operator ==(CharPtr ptr1, CharPtr ptr2)
-		{
-			object o1 = ptr1 as CharPtr;
-			object o2 = ptr2 as CharPtr;
-			if ((o1 == null) && (o2 == null)) 
-			{
-				return true;
-			}
-			if (o1 == null) 
-			{
-				return false;
-			}
-			if (o2 == null) 
-			{
-				return false;
-			}
-			return (ptr1.chars == ptr2.chars) && (ptr1.index == ptr2.index);
-		}
-		
-		public static bool operator !=(CharPtr ptr1, CharPtr ptr2)
-		{
-			return !(ptr1 == ptr2);
-		}
+
+        //operator ==
+        public static bool isEqual(CharPtr ptr1, CharPtr ptr2)
+        {
+            object o1 = ptr1 as CharPtr;
+            object o2 = ptr2 as CharPtr;
+            if ((o1 == null) && (o2 == null))
+            {
+                return true;
+            }
+            if (o1 == null)
+            {
+                return false;
+            }
+            if (o2 == null)
+            {
+                return false;
+            }
+            return (ptr1.chars == ptr2.chars) && (ptr1.index == ptr2.index);
+        }
+
+        //operator !=
+        public static bool isNotEqual(CharPtr ptr1, CharPtr ptr2)
+        {
+            return !(CharPtr.isEqual(ptr1, ptr2));
+        }
 		
 		public override bool Equals(object o)
 		{
-			return this == (o as CharPtr);
+			return CharPtr.isEqual(this, (o as CharPtr));
 		}
 		
 		public override int GetHashCode()

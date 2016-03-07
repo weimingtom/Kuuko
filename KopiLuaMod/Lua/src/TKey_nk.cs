@@ -3,8 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	/*
@@ -12,17 +10,17 @@ namespace KopiLua
 	 */
 	public class TKey_nk : TValue
 	{
+		public Node next;  /* for chaining */
+		
 		public TKey_nk() 
 		{
 			
 		}
 		
 		public TKey_nk(Value value, int tt, Node next)
-			: base(value, tt)
+		: base(value, tt)
 		{
 			this.next = next;
 		}
-		
-		public Node next;  /* for chaining */
 	}
 }

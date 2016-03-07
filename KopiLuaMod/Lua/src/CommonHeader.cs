@@ -3,8 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
     /*
@@ -14,7 +12,7 @@ namespace KopiLua
     public class CommonHeader
     {
     	public GCObject next;
-    	public Byte/*lu_byte*/ tt;
-    	public Byte/*lu_byte*/ marked;
+    	public byte tt; /*Byte*/ /*lu_byte*/
+    	public byte marked; /*Byte*/ /*lu_byte*/
     }
 }

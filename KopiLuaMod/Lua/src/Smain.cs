@@ -3,8 +3,6 @@
 ** Lua stand-alone interpreter
 ** See Copyright Notice in lua.h
 */
-using System;
-
 namespace KopiLua
 {
     public class Smain

@@ -3,13 +3,11 @@
  ** a generic input stream interface
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class ZIO//Zio
 	{
-		public int/*uint*/ n;			/* bytes still unread */
+		public int n;  /*uint*/			/* bytes still unread */
 		public CharPtr p;			/* current position in buffer */
 		public lua_Reader reader;
 		public object data;			/* additional data */

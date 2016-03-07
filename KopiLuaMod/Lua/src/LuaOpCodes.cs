@@ -89,7 +89,7 @@ namespace KopiLua
 		
 		public static OpCode GET_OPCODE(InstructionPtr i) 
 		{ 
-			return GET_OPCODE(i[0]); 
+			return GET_OPCODE(i.get(0)); 
 		}
 
 		public static void SET_OPCODE(ref UInt32/*Instruction*/ i, UInt32/*Instruction*/ o)
@@ -114,27 +114,27 @@ namespace KopiLua
 		
 		public static int GETARG_A(InstructionPtr i) 
 		{ 
-			return GETARG_A(i[0]); 
+			return GETARG_A(i.get(0)); 
 		}
 
 		public static void SETARG_A(InstructionPtr i, int u)
 		{
-			i[0] = (UInt32/*Instruction*/)((i[0] & MASK0(SIZE_A, POS_A)) | ((u << POS_A) & MASK1(SIZE_A, POS_A)));
+			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_A, POS_A)) | ((u << POS_A) & MASK1(SIZE_A, POS_A))));
 		}
 
 		public static int GETARG_B(UInt32/*Instruction*/ i)
 		{
-			return (int)((i>>POS_B) & MASK1(SIZE_B,0));
+			return (int)((i >> POS_B) & MASK1(SIZE_B, 0));
 		}
 		
 		public static int GETARG_B(InstructionPtr i)
 		{ 
-			return GETARG_B(i[0]); 
+			return GETARG_B(i.get(0)); 
 		}
 
 		public static void SETARG_B(InstructionPtr i, int b)
 		{
-			i[0] = (UInt32/*Instruction*/)((i[0] & MASK0(SIZE_B, POS_B)) | ((b << POS_B) & MASK1(SIZE_B, POS_B)));
+			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_B, POS_B)) | ((b << POS_B) & MASK1(SIZE_B, POS_B))));
 		}
 
 		public static int GETARG_C(UInt32/*Instruction*/ i)
@@ -144,12 +144,12 @@ namespace KopiLua
 		
 		public static int GETARG_C(InstructionPtr i)
 		{ 
-			return GETARG_C(i[0]); 
+			return GETARG_C(i.get(0)); 
 		}
 
 		public static void SETARG_C(InstructionPtr i, int b)
 		{
-			i[0] = (UInt32/*Instruction*/)((i[0] & MASK0(SIZE_C, POS_C)) | ((b << POS_C) & MASK1(SIZE_C, POS_C)));
+			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_C, POS_C)) | ((b << POS_C) & MASK1(SIZE_C, POS_C))));
 		}
 
 		public static int GETARG_Bx(UInt32/*Instruction*/ i)
@@ -159,12 +159,12 @@ namespace KopiLua
 		
 		public static int GETARG_Bx(InstructionPtr i)
 		{ 
-			return GETARG_Bx(i[0]); 
+			return GETARG_Bx(i.get(0)); 
 		}
 
 		public static void SETARG_Bx(InstructionPtr i, int b)
 		{
-			i[0] = (UInt32/*Instruction*/)((i[0] & MASK0(SIZE_Bx, POS_Bx)) | ((b << POS_Bx) & MASK1(SIZE_Bx, POS_Bx)));
+			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_Bx, POS_Bx)) | ((b << POS_Bx) & MASK1(SIZE_Bx, POS_Bx))));
 		}
 
 		public static int GETARG_sBx(UInt32/*Instruction*/ i)
@@ -174,7 +174,7 @@ namespace KopiLua
 		
 		public static int GETARG_sBx(InstructionPtr i)
 		{ 
-			return GETARG_sBx(i[0]); 
+			return GETARG_sBx(i.get(0)); 
 		}
 
 		public static void SETARG_sBx(InstructionPtr i, int b)
@@ -265,44 +265,44 @@ namespace KopiLua
 
 		/* ORDER OP */
 		public/*private*/ readonly static CharPtr[] luaP_opnames = {
-			"MOVE",
-			"LOADK",
-			"LOADBOOL",
-			"LOADNIL",
-			"GETUPVAL",
-			"GETGLOBAL",
-			"GETTABLE",
-			"SETGLOBAL",
-			"SETUPVAL",
-			"SETTABLE",
-			"NEWTABLE",
-			"SELF",
-			"ADD",
-			"SUB",
-			"MUL",
-			"DIV",
-			"MOD",
-			"POW",
-			"UNM",
-			"NOT",
-			"LEN",
-			"CONCAT",
-			"JMP",
-			"EQ",
-			"LT",
-			"LE",
-			"TEST",
-			"TESTSET",
-			"CALL",
-			"TAILCALL",
-			"RETURN",
-			"FORLOOP",
-			"FORPREP",
-			"TFORLOOP",
-			"SETLIST",
-			"CLOSE",
-			"CLOSURE",
-			"VARARG",
+			CharPtr.toCharPtr("MOVE"),
+			CharPtr.toCharPtr("LOADK"),
+			CharPtr.toCharPtr("LOADBOOL"),
+			CharPtr.toCharPtr("LOADNIL"),
+			CharPtr.toCharPtr("GETUPVAL"),
+			CharPtr.toCharPtr("GETGLOBAL"),
+			CharPtr.toCharPtr("GETTABLE"),
+			CharPtr.toCharPtr("SETGLOBAL"),
+			CharPtr.toCharPtr("SETUPVAL"),
+			CharPtr.toCharPtr("SETTABLE"),
+			CharPtr.toCharPtr("NEWTABLE"),
+			CharPtr.toCharPtr("SELF"),
+			CharPtr.toCharPtr("ADD"),
+			CharPtr.toCharPtr("SUB"),
+			CharPtr.toCharPtr("MUL"),
+			CharPtr.toCharPtr("DIV"),
+			CharPtr.toCharPtr("MOD"),
+			CharPtr.toCharPtr("POW"),
+			CharPtr.toCharPtr("UNM"),
+			CharPtr.toCharPtr("NOT"),
+			CharPtr.toCharPtr("LEN"),
+			CharPtr.toCharPtr("CONCAT"),
+			CharPtr.toCharPtr("JMP"),
+			CharPtr.toCharPtr("EQ"),
+			CharPtr.toCharPtr("LT"),
+			CharPtr.toCharPtr("LE"),
+			CharPtr.toCharPtr("TEST"),
+			CharPtr.toCharPtr("TESTSET"),
+			CharPtr.toCharPtr("CALL"),
+			CharPtr.toCharPtr("TAILCALL"),
+			CharPtr.toCharPtr("RETURN"),
+			CharPtr.toCharPtr("FORLOOP"),
+			CharPtr.toCharPtr("FORPREP"),
+			CharPtr.toCharPtr("TFORLOOP"),
+			CharPtr.toCharPtr("SETLIST"),
+			CharPtr.toCharPtr("CLOSE"),
+			CharPtr.toCharPtr("CLOSURE"),
+			CharPtr.toCharPtr("VARARG"),
 		};
 
 

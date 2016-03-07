@@ -3,12 +3,13 @@
  ** Code generator for Lua
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public enum UnOpr 
 	{ 
-		OPR_MINUS, OPR_NOT, OPR_LEN, OPR_NOUNOPR 
+		OPR_MINUS, 
+		OPR_NOT, 
+		OPR_LEN, 
+		OPR_NOUNOPR
 	}
 }

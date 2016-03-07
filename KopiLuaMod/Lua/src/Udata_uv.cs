@@ -3,14 +3,12 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class Udata_uv : GCObject
 	{
 		public Table metatable;
 		public Table env;
-		public int/*uint*/ len;
+		public int len; /*uint*/
 	}
 }

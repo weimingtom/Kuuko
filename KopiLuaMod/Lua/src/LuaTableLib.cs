@@ -93,7 +93,7 @@ namespace KopiLua
 			//#ifndef luaL_setn
 			//luaL_setn(L, 1, luaL_checkint(L, 2));
 			//#else
-			LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("setn") + " is obsolete");
+			LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("setn") + " is obsolete"));
 			//#endif
 			LuaAPI.lua_pushvalue(L, 1);
 			return 1;
@@ -129,7 +129,7 @@ namespace KopiLua
 					}
 				default: 
 					{
-						return LuaAuxLib.luaL_error(L, "wrong number of arguments to " + LuaConf.LUA_QL("insert"));
+						return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("wrong number of arguments to " + LuaConf.LUA_QL("insert")));
 					}
 			}
 			LuaAuxLib.luaL_setn(L, 1, e);  /* new size */
@@ -162,8 +162,8 @@ namespace KopiLua
 			LuaAPI.lua_rawgeti(L, 1, i);
 			if (LuaAPI.lua_isstring(L, -1) == 0)
 			{
-				LuaAuxLib.luaL_error(L, "invalid value (%s) at index %d in table for " +
-					LuaConf.LUA_QL("concat"), LuaAuxLib.luaL_typename(L, -1), i);
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("invalid value (%s) at index %d in table for " +
+					LuaConf.LUA_QL("concat")), LuaAuxLib.luaL_typename(L, -1), i);
 			}
 			LuaAuxLib.luaL_addvalue(b);
 		}
@@ -174,7 +174,7 @@ namespace KopiLua
 			luaL_Buffer b = new luaL_Buffer();
 			int/*uint*/ lsep;
 			int i, last;
-			CharPtr sep = LuaAuxLib.luaL_optlstring(L, 2, "", out lsep);
+			CharPtr sep = LuaAuxLib.luaL_optlstring(L, 2, CharPtr.toCharPtr(""), out lsep);
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TTABLE);
 			i = LuaAuxLib.luaL_optint(L, 3, 1);
 			last = LuaAuxLib.luaL_opt_integer(L, LuaAuxLib.luaL_checkint, 4, LuaAuxLib.luaL_getn(L, 1));
@@ -296,7 +296,7 @@ namespace KopiLua
 					{
 						if (i > u) 
 						{
-							LuaAuxLib.luaL_error(L, "invalid order function for sorting");
+							LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("invalid order function for sorting"));
 						}
 						Lua.lua_pop(L, 1);  /* remove a[i] */
 					}
@@ -305,7 +305,7 @@ namespace KopiLua
 					{
 						if (j < l) 
 						{
-							LuaAuxLib.luaL_error(L, "invalid order function for sorting");
+							LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("invalid order function for sorting"));
 						}
 						Lua.lua_pop(L, 1);  /* remove a[j] */
 					}
@@ -340,7 +340,7 @@ namespace KopiLua
 		private static int sort(lua_State L) 
 		{
 			int n = aux_getn(L, 1);
-			LuaAuxLib.luaL_checkstack(L, 40, "");  /* assume array is smaller than 2^40 */
+			LuaAuxLib.luaL_checkstack(L, 40, CharPtr.toCharPtr(""));  /* assume array is smaller than 2^40 */
 			if (!Lua.lua_isnoneornil(L, 2))  /* is there a 2nd argument? */
 			{
 				LuaAuxLib.luaL_checktype(L, 2, Lua.LUA_TFUNCTION);
@@ -353,21 +353,21 @@ namespace KopiLua
 		/* }====================================================== */
 
 		private readonly static luaL_Reg[] tab_funcs = {
-			new luaL_Reg("concat", tconcat),
-			new luaL_Reg("foreach", _foreach),
-			new luaL_Reg("foreachi", foreachi),
-			new luaL_Reg("getn", getn),
-			new luaL_Reg("maxn", maxn),
-			new luaL_Reg("insert", tinsert),
-			new luaL_Reg("remove", tremove),
-			new luaL_Reg("setn", setn),
-			new luaL_Reg("sort", sort),
+			new luaL_Reg(CharPtr.toCharPtr("concat"), tconcat),
+			new luaL_Reg(CharPtr.toCharPtr("foreach"), _foreach),
+			new luaL_Reg(CharPtr.toCharPtr("foreachi"), foreachi),
+			new luaL_Reg(CharPtr.toCharPtr("getn"), getn),
+			new luaL_Reg(CharPtr.toCharPtr("maxn"), maxn),
+			new luaL_Reg(CharPtr.toCharPtr("insert"), tinsert),
+			new luaL_Reg(CharPtr.toCharPtr("remove"), tremove),
+			new luaL_Reg(CharPtr.toCharPtr("setn"), setn),
+			new luaL_Reg(CharPtr.toCharPtr("sort"), sort),
 			new luaL_Reg(null, null)
 		};
 
 		public static int luaopen_table(lua_State L) 
 		{
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_TABLIBNAME, tab_funcs);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_TABLIBNAME), tab_funcs);
 			return 1;
 		}
 	}

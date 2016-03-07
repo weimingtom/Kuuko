@@ -29,9 +29,9 @@ namespace KopiLua
 			Closure c = LuaMem.luaM_new<Closure>(L);
 			LuaMem.AddTotalBytes(L, sizeCclosure(nelems));
 			LuaGC.luaC_link(L, LuaState.obj2gco(c), Lua.LUA_TFUNCTION);
-			c.c.isC = 1;
-			c.c.env = e;
-			c.c.nupvalues = LuaLimits.cast_byte(nelems);
+			c.c.setIsC(1);
+			c.c.setEnv(e);
+			c.c.setNupvalues(LuaLimits.cast_byte(nelems));
 			c.c.upvalue = new TValue[nelems];
 			for (int i = 0; i < nelems; i++)
 			{
@@ -46,9 +46,9 @@ namespace KopiLua
 			Closure c = LuaMem.luaM_new<Closure>(L);
 			LuaMem.AddTotalBytes(L, sizeLclosure(nelems));
 			LuaGC.luaC_link(L, LuaState.obj2gco(c), Lua.LUA_TFUNCTION);
-			c.l.isC = 0;
-			c.l.env = e;
-			c.l.nupvalues = LuaLimits.cast_byte(nelems);
+			c.l.setIsC(0);
+			c.l.setEnv(e);
+			c.l.setNupvalues(LuaLimits.cast_byte(nelems));
 			c.l.upvals = new UpVal[nelems];
 			for (int i = 0; i < nelems; i++)
 			{
@@ -76,7 +76,7 @@ namespace KopiLua
 			GCObjectRef pp = new OpenValRef(L);
 			UpVal p;
 			UpVal uv;
-			while (pp.get() != null && (p = LuaState.ngcotouv(pp.get())).v >= level)
+			while (pp.get() != null && TValue.greaterEqual((p = LuaState.ngcotouv(pp.get())).v, level))
 			{
 				LuaLimits.lua_assert(p.v != p.u.value);
 				if (p.v == level) 
@@ -111,7 +111,8 @@ namespace KopiLua
 			uv.u.l.prev.u.l.next = uv.u.l.next;
 		}
 
-		public static void luaF_freeupval (lua_State L, UpVal uv) {
+		public static void luaF_freeupval(lua_State L, UpVal uv) 
+		{
 			if (uv.v != uv.u.value)  /* is it open? */
 			{
 				unlinkupval(uv);  /* remove from open list */
@@ -123,7 +124,7 @@ namespace KopiLua
 		{
 			UpVal uv;
 			global_State g = LuaState.G(L);
-			while (L.openupval != null && (uv = LuaState.ngcotouv(L.openupval)).v >= level)
+			while (L.openupval != null && TValue.greaterEqual((uv = LuaState.ngcotouv(L.openupval)).v, level))
 			{
 				GCObject o = LuaState.obj2gco(uv);
 				LuaLimits.lua_assert(!LuaGC.isblack(o) && uv.v != uv.u.value);
@@ -182,8 +183,8 @@ namespace KopiLua
 		// we have a gc, so nothing to do
 		public static void luaF_freeclosure(lua_State L, Closure c) 
 		{
-			int size = (c.c.isC != 0) ? sizeCclosure(c.c.nupvalues) :
-				sizeLclosure(c.l.nupvalues);
+			int size = (c.c.getIsC() != 0) ? sizeCclosure(c.c.getNupvalues()) :
+				sizeLclosure(c.l.getNupvalues());
 			//luaM_freemem(L, c, size);
 			LuaMem.SubtractTotalBytes(L, size);
 		}

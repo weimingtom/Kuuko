@@ -3,8 +3,6 @@
 ** Lua Parser
 ** See Copyright Notice in lua.h
 */
-using System;
-
 namespace KopiLua
 {
     public class ConsControl

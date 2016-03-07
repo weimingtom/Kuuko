@@ -3,18 +3,11 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class Udata : Udata_uv
 	{
-		public Udata() 
-		{ 
-			this.uv = this; 
-		}
-		
-		public new Udata_uv uv;
+		public /*new*/ Udata_uv uv;
 		
 		//public L_Umaxalign dummy;  /* ensures maximum alignment for `local' udata */
 		
@@ -22,5 +15,10 @@ namespace KopiLua
 		// be possible to still do that by allocating memory and pinning it down, but we can do the
 		// same thing just as easily by allocating a seperate byte array for it instead.
 		public object user_data;
+		
+		public Udata() 
+		{ 
+			this.uv = this; 
+		}
 	}
 }

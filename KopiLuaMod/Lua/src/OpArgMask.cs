@@ -2,8 +2,6 @@
  ** $Id: lopcodes.c,v 1.37.1.1 2007/12/27 13:02:25 roberto Exp $
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	/*===========================================================================
@@ -36,7 +34,8 @@ namespace KopiLua
 	 ** bit 7: operator is a test
 	 */
 	
-	public enum OpArgMask {
+	public enum OpArgMask 
+	{
 		OpArgN,  /* argument is not used */
 		OpArgU,  /* argument is used */
 		OpArgR,  /* argument is a register or a jump offset */

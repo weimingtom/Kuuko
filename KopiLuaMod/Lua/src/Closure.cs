@@ -3,19 +3,18 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
 
 namespace KopiLua
 {
 	public class Closure : ClosureHeader
-	{
+	{	
+		public CClosure c;
+		public LClosure l;
+		
 		public Closure()
 		{
 			c = new CClosure(this);
 			l = new LClosure(this);
 		}
-	
-		public CClosure c;
-		public LClosure l;
 	}
 }

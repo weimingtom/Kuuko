@@ -3,8 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	/*
@@ -14,7 +12,7 @@ namespace KopiLua
 	{
 		public GCObject gc;
 		public object p;
-		public Double/*lua_Number*/ n;
+		public double n;  /*Double*/ /*lua_Number*/
 		public int b;
 	}
 }

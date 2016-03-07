@@ -23,7 +23,7 @@ namespace KopiLua
 
 		public static void api_checknelems(lua_State L, int n)
 		{
-			LuaLimits.api_check(L, n <= L.top - L.base_);
+			LuaLimits.api_check(L, n <= TValue.minus(L.top, L.base_));
 		}
 
 		public static void api_checkvalidindex(lua_State L, TValue/*StkId*/ i)
@@ -33,7 +33,7 @@ namespace KopiLua
 
 		public static void api_incr_top(lua_State L)
 		{
-			LuaLimits.api_check(L, L.top < L.ci.top);
+			LuaLimits.api_check(L, TValue.lessThan(L.top, L.ci.top));
 			/*StkId*/TValue.inc(ref L.top);
 		}
 
@@ -41,9 +41,9 @@ namespace KopiLua
 		{
 			if (idx > 0)
 			{
-				TValue o = L.base_ + (idx - 1);
-				LuaLimits.api_check(L, idx <= L.ci.top - L.base_);
-				if (o >= L.top)
+				TValue o = TValue.plus(L.base_, (idx - 1));
+				LuaLimits.api_check(L, idx <= TValue.minus(L.ci.top, L.base_));
+				if (TValue.greaterEqual(o, L.top))
 				{
 					return LuaObject.luaO_nilobject;
 				}
@@ -54,8 +54,8 @@ namespace KopiLua
 			}
 			else if (idx > Lua.LUA_REGISTRYINDEX)
 			{
-				LuaLimits.api_check(L, idx != 0 && -idx <= L.top - L.base_);
-				return L.top + idx;
+				LuaLimits.api_check(L, idx != 0 && -idx <= TValue.minus(L.top, L.base_));
+				return TValue.plus(L.top, idx);
 			}
 			else
 			{
@@ -69,7 +69,7 @@ namespace KopiLua
 					case Lua.LUA_ENVIRONINDEX:
 						{
 							Closure func = LuaState.curr_func(L);
-							LuaObject.sethvalue(L, L.env, func.c.env);
+							LuaObject.sethvalue(L, L.env, func.c.getEnv());
 							return L.env;
 						}
 					case Lua.LUA_GLOBALSINDEX:
@@ -80,7 +80,7 @@ namespace KopiLua
 						{
 							Closure func = LuaState.curr_func(L);
 							idx = Lua.LUA_GLOBALSINDEX - idx;
-							return (idx <= func.c.nupvalues)
+							return (idx <= func.c.getNupvalues())
 								? func.c.upvalue[idx-1]
 								: (TValue)LuaObject.luaO_nilobject;
 						}
@@ -97,7 +97,7 @@ namespace KopiLua
 			else
 			{
 				Closure func = LuaState.curr_func(L);
-				return func.c.env;
+				return func.c.getEnv();
 			}
 		}
 
@@ -111,16 +111,16 @@ namespace KopiLua
 		{
 			int res = 1;
 			LuaLimits.lua_lock(L);
-			if (size > LuaConf.LUAI_MAXCSTACK || (L.top - L.base_ + size) > LuaConf.LUAI_MAXCSTACK)
+			if (size > LuaConf.LUAI_MAXCSTACK || (TValue.minus(L.top, L.base_) + size) > LuaConf.LUAI_MAXCSTACK)
 			{
 				res = 0;  /* stack overflow */
 			}
 			else if (size > 0)
 			{
 				LuaDo.luaD_checkstack(L, size);
-				if (L.ci.top < L.top + size)
+				if (TValue.lessThan(L.ci.top, TValue.plus(L.top, size)))
 				{
-					L.ci.top = L.top + size;
+					L.ci.top = TValue.plus(L.top, size);
 				}
 			}
 			LuaLimits.lua_unlock(L);
@@ -130,15 +130,18 @@ namespace KopiLua
 		public static void lua_xmove(lua_State from, lua_State to, int n)
 		{
 			int i;
-			if (from == to) return;
-			LuaLimits.lua_lock(to);
+            if (from == to)
+            {
+                return;
+            }
+            LuaLimits.lua_lock(to);
 			api_checknelems(from, n);
 			LuaLimits.api_check(from, LuaState.G(from) == LuaState.G(to));
-			LuaLimits.api_check(from, to.ci.top - to.top >= n);
-			from.top -= n;
+			LuaLimits.api_check(from, TValue.minus(to.ci.top, to.top) >= n);
+			from.top = TValue.minus(from.top, n);
 			for (i = 0; i < n; i++)
 			{
-				LuaObject.setobj2s(to, /*StkId*/TValue.inc(ref to.top), from.top + i);
+				LuaObject.setobj2s(to, /*StkId*/TValue.inc(ref to.top), TValue.plus(from.top, i));
 			}
 			LuaLimits.lua_unlock(to);
 		}
@@ -176,7 +179,7 @@ namespace KopiLua
 		 */
 		public static int lua_gettop(lua_State L)
 		{
-			return LuaLimits.cast_int(L.top - L.base_);
+			return LuaLimits.cast_int(TValue.minus(L.top, L.base_));
 		}
 
 		public static void lua_settop(lua_State L, int idx)
@@ -184,17 +187,17 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			if (idx >= 0)
 			{
-				LuaLimits.api_check(L, idx <= L.stack_last - L.base_);
-				while (L.top < L.base_ + idx)
+				LuaLimits.api_check(L, idx <= TValue.minus(L.stack_last, L.base_));
+				while (TValue.lessThan(L.top, TValue.plus(L.base_, idx)))
 				{
 					LuaObject.setnilvalue(/*StkId*/TValue.inc(ref L.top));
 				}
-				L.top = L.base_ + idx;
+				L.top = TValue.plus(L.base_, idx);
 			}
 			else
 			{
-				LuaLimits.api_check(L, -(idx + 1) <= (L.top - L.base_));
-				L.top += idx+1;  /* `subtract' index (index is negative) */
+				LuaLimits.api_check(L, -(idx + 1) <= TValue.minus(L.top, L.base_));
+				L.top = TValue.plus(L.top, idx+1);  /* `subtract' index (index is negative) */
 			}
 			LuaLimits.lua_unlock(L);
 		}
@@ -205,9 +208,9 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			p = index2adr(L, idx);
 			api_checkvalidindex(L, p);
-			while ((p = p[1]) < L.top)
+			while (TValue.lessThan((p = p.get(1)), L.top))
 			{
-				LuaObject.setobjs2s(L, p - 1, p);
+				LuaObject.setobjs2s(L, TValue.minus(p, 1), p);
 			}
 			/*StkId*/TValue.dec(ref L.top);
 			LuaLimits.lua_unlock(L);
@@ -220,9 +223,9 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			p = index2adr(L, idx);
 			api_checkvalidindex(L, p);
-			for (q = L.top; q > p; /*StkId*/TValue.dec(ref q))
+			for (q = L.top; TValue.greaterThan(q, p); /*StkId*/TValue.dec(ref q))
 			{
-				LuaObject.setobjs2s(L, q, q - 1);
+				LuaObject.setobjs2s(L, q, TValue.minus(q, 1));
 			}
 			LuaObject.setobjs2s(L, p, L.top);
 			LuaLimits.lua_unlock(L);
@@ -235,7 +238,7 @@ namespace KopiLua
 			/* explicit test for incompatible code */
 			if (idx == Lua.LUA_ENVIRONINDEX && L.ci == L.base_ci[0])
 			{
-				LuaDebug.luaG_runerror(L, "no calling environment");
+				LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("no calling environment"));
 			}
 			api_checknelems(L, 1);
 			o = index2adr(L, idx);
@@ -243,16 +246,16 @@ namespace KopiLua
 			if (idx == Lua.LUA_ENVIRONINDEX)
 			{
 				Closure func = LuaState.curr_func(L);
-				LuaLimits.api_check(L, LuaObject.ttistable(L.top - 1));
-				func.c.env = LuaObject.hvalue(L.top - 1);
-				LuaGC.luaC_barrier(L, func, L.top - 1);
+				LuaLimits.api_check(L, LuaObject.ttistable(TValue.minus(L.top, 1)));
+				func.c.setEnv(LuaObject.hvalue(TValue.minus(L.top, 1)));
+				LuaGC.luaC_barrier(L, func, TValue.minus(L.top, 1));
 			}
 			else
 			{
-				LuaObject.setobj(L, o, L.top - 1);
+				LuaObject.setobj(L, o, TValue.minus(L.top, 1));
 				if (idx < Lua.LUA_GLOBALSINDEX)  /* function upvalue? */
 				{
-					LuaGC.luaC_barrier(L, LuaState.curr_func(L), L.top - 1);
+					LuaGC.luaC_barrier(L, LuaState.curr_func(L), TValue.minus(L.top, 1));
 				}
 			}
 			/*StkId*/TValue.dec(ref L.top);
@@ -279,7 +282,7 @@ namespace KopiLua
 		public static CharPtr lua_typename(lua_State L, int t)
 		{
 			//UNUSED(L);
-			return (t == Lua.LUA_TNONE) ? "no value" : LuaTM.luaT_typenames[t];
+			return (t == Lua.LUA_TNONE) ? CharPtr.toCharPtr("no value") : LuaTM.luaT_typenames[t];
 		}
 
 		public static bool lua_iscfunction(lua_State L, int idx)
@@ -354,14 +357,14 @@ namespace KopiLua
 			}
 		}
 
-		public static Int32/*lua_Integer*/ lua_tointeger(lua_State L, int idx) 
+		public static int/*Int32*//*lua_Integer*/ lua_tointeger(lua_State L, int idx) 
 		{
 			TValue n = new TValue();
 			TValue o = index2adr(L, idx);
 			if (LuaVM.tonumber(ref o, n) != 0)
 			{
-				Int32/*lua_Integer*/ res;
-				Double/*lua_Number*/ num = LuaObject.nvalue(o);
+				int/*Int32*//*lua_Integer*/ res;
+				double/*Double*//*lua_Number*/ num = LuaObject.nvalue(o);
 				LuaConf.lua_number2integer(out res, num);
 				return res;
 			}
@@ -497,7 +500,7 @@ namespace KopiLua
 			LuaLimits.lua_unlock(L);
 		}
 
-		public static void lua_pushnumber(lua_State L, Double/*lua_Number*/ n) 
+		public static void lua_pushnumber(lua_State L, double/*Double*//*lua_Number*/ n) 
 		{
 			LuaLimits.lua_lock(L);
 			LuaObject.setnvalue(L.top, n);
@@ -505,7 +508,7 @@ namespace KopiLua
 			LuaLimits.lua_unlock(L);
 		}
 
-		public static void lua_pushinteger(lua_State L, Int32/*lua_Integer*/ n) 
+		public static void lua_pushinteger(lua_State L, int/*Int32*//*lua_Integer*/ n) 
 		{
 			LuaLimits.lua_lock(L);
 			LuaObject.setnvalue(L.top, LuaLimits.cast_num(n));
@@ -524,7 +527,7 @@ namespace KopiLua
 
 		public static void lua_pushstring(lua_State L, CharPtr s) 
 		{
-			if (s == null)
+			if (CharPtr.isEqual(s, null))
 			{
 				lua_pushnil(L);
 			}
@@ -572,10 +575,10 @@ namespace KopiLua
 			api_checknelems(L, n);
 			cl = LuaFunc.luaF_newCclosure(L, n, getcurrenv(L));
 			cl.c.f = fn;
-			L.top -= n;
+			L.top = TValue.minus(L.top, n);
 			while (n-- != 0)
 			{
-				LuaObject.setobj2n(L, cl.c.upvalue[n], L.top + n);
+				LuaObject.setobj2n(L, cl.c.upvalue[n], TValue.plus(L.top, n));
 			}
 			LuaObject.setclvalue(L, L.top, cl);
 			LuaLimits.lua_assert(LuaGC.iswhite(LuaState.obj2gco(cl)));
@@ -618,7 +621,7 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			t = index2adr(L, idx);
 			api_checkvalidindex(L, t);
-			LuaVM.luaV_gettable(L, t, L.top - 1, L.top - 1);
+			LuaVM.luaV_gettable(L, t, TValue.minus(L.top, 1), TValue.minus(L.top, 1));
 			LuaLimits.lua_unlock(L);
 		}
 
@@ -641,7 +644,7 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			t = index2adr(L, idx);
 			LuaLimits.api_check(L, LuaObject.ttistable(t));
-			LuaObject.setobj2s(L, L.top - 1, LuaTable.luaH_get(LuaObject.hvalue(t), L.top - 1));
+			LuaObject.setobj2s(L, TValue.minus(L.top, 1), LuaTable.luaH_get(LuaObject.hvalue(t), TValue.minus(L.top, 1)));
 			LuaLimits.lua_unlock(L);
 		}
 
@@ -714,7 +717,7 @@ namespace KopiLua
 			{
 				case Lua.LUA_TFUNCTION:
 					{
-						LuaObject.sethvalue(L, L.top, LuaObject.clvalue(o).c.env);
+						LuaObject.sethvalue(L, L.top, LuaObject.clvalue(o).c.getEnv());
 						break;
 					}
 				case Lua.LUA_TUSERDATA:
@@ -748,8 +751,8 @@ namespace KopiLua
 			api_checknelems(L, 2);
 			t = index2adr(L, idx);
 			api_checkvalidindex(L, t);
-			LuaVM.luaV_settable(L, t, L.top - 2, L.top - 1);
-			L.top -= 2;  /* pop index and value */
+			LuaVM.luaV_settable(L, t, TValue.minus(L.top, 2), TValue.minus(L.top, 1));
+			L.top = TValue.minus(L.top, 2);  /* pop index and value */
 			LuaLimits.lua_unlock(L);
 		}
 
@@ -762,7 +765,7 @@ namespace KopiLua
 			t = index2adr(L, idx);
 			api_checkvalidindex(L, t);
 			LuaObject.setsvalue(L, key, LuaString.luaS_new(L, k));
-			LuaVM.luaV_settable(L, t, key, L.top - 1);
+			LuaVM.luaV_settable(L, t, key, TValue.minus(L.top, 1));
 			/*StkId*/TValue.dec(ref L.top);  /* pop value */
 			LuaLimits.lua_unlock(L);
 		}
@@ -774,9 +777,9 @@ namespace KopiLua
 			api_checknelems(L, 2);
 			t = index2adr(L, idx);
 			LuaLimits.api_check(L, LuaObject.ttistable(t));
-			LuaObject.setobj2t(L, LuaTable.luaH_set(L, LuaObject.hvalue(t), L.top - 2), L.top - 1);
-			LuaGC.luaC_barriert(L, LuaObject.hvalue(t), L.top - 1);
-			L.top -= 2;
+			LuaObject.setobj2t(L, LuaTable.luaH_set(L, LuaObject.hvalue(t), TValue.minus(L.top, 2)), TValue.minus(L.top, 1));
+			LuaGC.luaC_barriert(L, LuaObject.hvalue(t), TValue.minus(L.top, 1));
+			L.top = TValue.minus(L.top, 2);
 			LuaLimits.lua_unlock(L);
 		}
 
@@ -787,8 +790,8 @@ namespace KopiLua
 			api_checknelems(L, 1);
 			o = index2adr(L, idx);
 			LuaLimits.api_check(L, LuaObject.ttistable(o));
-			LuaObject.setobj2t(L, LuaTable.luaH_setnum(L, LuaObject.hvalue(o), n), L.top - 1);
-			LuaGC.luaC_barriert(L, LuaObject.hvalue(o), L.top - 1);
+			LuaObject.setobj2t(L, LuaTable.luaH_setnum(L, LuaObject.hvalue(o), n), TValue.minus(L.top, 1));
+			LuaGC.luaC_barriert(L, LuaObject.hvalue(o), TValue.minus(L.top, 1));
 			/*StkId*/TValue.dec(ref L.top);
 			LuaLimits.lua_unlock(L);
 		}
@@ -801,14 +804,14 @@ namespace KopiLua
 			api_checknelems(L, 1);
 			obj = index2adr(L, objindex);
 			api_checkvalidindex(L, obj);
-			if (LuaObject.ttisnil(L.top - 1))
+			if (LuaObject.ttisnil(TValue.minus(L.top, 1)))
 			{
 				mt = null;
 			}
 			else 
 			{
-				LuaLimits.api_check(L, LuaObject.ttistable(L.top - 1));
-				mt = LuaObject.hvalue(L.top - 1);
+				LuaLimits.api_check(L, LuaObject.ttistable(TValue.minus(L.top, 1)));
+				mt = LuaObject.hvalue(TValue.minus(L.top, 1));
 			}
 			switch (LuaObject.ttype(obj))
 			{
@@ -849,22 +852,22 @@ namespace KopiLua
 			api_checknelems(L, 1);
 			o = index2adr(L, idx);
 			api_checkvalidindex(L, o);
-			LuaLimits.api_check(L, LuaObject.ttistable(L.top - 1));
+			LuaLimits.api_check(L, LuaObject.ttistable(TValue.minus(L.top, 1)));
 			switch (LuaObject.ttype(o))
 			{
 				case Lua.LUA_TFUNCTION:
 					{
-						LuaObject.clvalue(o).c.env = LuaObject.hvalue(L.top - 1);
+						LuaObject.clvalue(o).c.setEnv(LuaObject.hvalue(TValue.minus(L.top, 1)));
 						break;
 					}
 				case Lua.LUA_TUSERDATA:
 					{
-						LuaObject.uvalue(o).env = LuaObject.hvalue(L.top - 1);
+						LuaObject.uvalue(o).env = LuaObject.hvalue(TValue.minus(L.top, 1));
 						break;
 					}
 				case Lua.LUA_TTHREAD:
 					{
-						LuaObject.sethvalue(L, LuaState.gt(LuaObject.thvalue(o)), LuaObject.hvalue(L.top - 1));
+						LuaObject.sethvalue(L, LuaState.gt(LuaObject.thvalue(o)), LuaObject.hvalue(TValue.minus(L.top, 1)));
 						break;
 					}
 				default:
@@ -875,7 +878,7 @@ namespace KopiLua
 			}
 			if (res != 0) 
 			{
-				LuaGC.luaC_objbarrier(L, LuaObject.gcvalue(o), LuaObject.hvalue(L.top - 1));
+				LuaGC.luaC_objbarrier(L, LuaObject.gcvalue(o), LuaObject.hvalue(TValue.minus(L.top, 1)));
 			}
 			/*StkId*/TValue.dec(ref L.top);
 			LuaLimits.lua_unlock(L);
@@ -887,7 +890,7 @@ namespace KopiLua
 		 */
 		public static void adjustresults(lua_State L, int nres) 
 		{
-			if (nres == Lua.LUA_MULTRET && L.top >= L.ci.top)
+			if (nres == Lua.LUA_MULTRET && TValue.greaterEqual(L.top, L.ci.top))
 			{
 				L.ci.top = L.top;
 			}
@@ -895,7 +898,7 @@ namespace KopiLua
 
 		public static void checkresults(lua_State L, int na, int nr) 
 		{
-			LuaLimits.api_check(L, (nr) == Lua.LUA_MULTRET || (L.ci.top - L.top >= (nr) - (na)));
+			LuaLimits.api_check(L, (nr) == Lua.LUA_MULTRET || (TValue.minus(L.ci.top, L.top) >= (nr) - (na)));
 		}
 		
 		public static void lua_call(lua_State L, int nargs, int nresults) 
@@ -904,7 +907,7 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			api_checknelems(L, nargs+1);
 			checkresults(L, nargs, nresults);
-			func = L.top - (nargs+1);
+			func = TValue.minus(L.top, (nargs + 1));
 			LuaDo.luaD_call(L, func, nresults);
 			adjustresults(L, nresults);
 			LuaLimits.lua_unlock(L);
@@ -920,7 +923,7 @@ namespace KopiLua
 		{
 			CallS c = new CallS();
 			int status;
-			Int32/*ptrdiff_t*/ func;
+			int/*Int32*//*ptrdiff_t*/ func;
 			LuaLimits.lua_lock(L);
 			api_checknelems(L, nargs+1);
 			checkresults(L, nargs, nresults);
@@ -934,7 +937,7 @@ namespace KopiLua
 				api_checkvalidindex(L, o);
 				func = LuaDo.savestack(L, o);
 			}
-			c.func = L.top - (nargs+1);  /* function to be called */
+			c.func = TValue.minus(L.top, (nargs + 1));  /* function to be called */
 			c.nresults = nresults;
 			status = LuaDo.luaD_pcall(L, f_call, c, LuaDo.savestack(L, c.func), func);
 			adjustresults(L, nresults);
@@ -952,7 +955,7 @@ namespace KopiLua
 			api_incr_top(L);
 			LuaObject.setpvalue(L.top, c.ud);  /* push only argument */
 			api_incr_top(L);
-			LuaDo.luaD_call(L, L.top - 2, 0);
+			LuaDo.luaD_call(L, TValue.minus(L.top, 2), 0);
 		}
 
 		public static int lua_cpcall(lua_State L, lua_CFunction func, object ud) 
@@ -972,9 +975,9 @@ namespace KopiLua
 			ZIO z = new ZIO();
 			int status;
 			LuaLimits.lua_lock(L);
-			if (chunkname == null) 
+			if (CharPtr.isEqual(chunkname, null)) 
 			{
-				chunkname = "?";
+				chunkname = CharPtr.toCharPtr("?");
 			}
 			LuaZIO.luaZ_init(L, z, reader, data);
 			status = LuaDo.luaD_protectedparser(L, z, chunkname);
@@ -988,7 +991,7 @@ namespace KopiLua
 			TValue o;
 			LuaLimits.lua_lock(L);
 			api_checknelems(L, 1);
-			o = L.top - 1;
+			o = TValue.minus(L.top, 1);
 			if (LuaObject.isLfunction(o))
 			{
 				status = LuaDump.luaU_dump(L, LuaObject.clvalue(o).l.p, writer, data, 0);
@@ -1107,7 +1110,7 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			t = index2adr(L, idx);
 			LuaLimits.api_check(L, LuaObject.ttistable(t));
-			more = LuaTable.luaH_next(L, LuaObject.hvalue(t), L.top - 1);
+			more = LuaTable.luaH_next(L, LuaObject.hvalue(t), TValue.minus(L.top, 1));
 			if (more != 0)
 			{
 				api_incr_top(L);
@@ -1127,13 +1130,13 @@ namespace KopiLua
 			if (n >= 2)
 			{
 				LuaGC.luaC_checkGC(L);
-				LuaVM.luaV_concat(L, n, LuaLimits.cast_int(L.top - L.base_) - 1);
-				L.top -= (n-1);
+				LuaVM.luaV_concat(L, n, LuaLimits.cast_int(TValue.minus(L.top, L.base_)) - 1); //FIXME:
+				L.top = TValue.minus(L.top, (n - 1));
 			}
 			else if (n == 0)
 			{
 				/* push empty string */
-				LuaObject.setsvalue2s(L, L.top, LuaString.luaS_newlstr(L, "", 0));
+				LuaObject.setsvalue2s(L, L.top, LuaString.luaS_newlstr(L, CharPtr.toCharPtr(""), 0));
 				api_incr_top(L);
 			}
 			/* else n == 1; nothing to do */
@@ -1193,14 +1196,14 @@ namespace KopiLua
 				return null;
 			}
 			f = LuaObject.clvalue(fi);
-			if (f.c.isC != 0)
+			if (f.c.getIsC() != 0)
 			{
-				if (!(1 <= n && n <= f.c.nupvalues))
+				if (!(1 <= n && n <= f.c.getNupvalues()))
 				{
 					return null;
 				}
 				val = f.c.upvalue[n - 1];
-				return "";
+				return CharPtr.toCharPtr("");
 			}
 			else
 			{
@@ -1220,7 +1223,7 @@ namespace KopiLua
 			TValue val = new TValue();
 			LuaLimits.lua_lock(L);
 			name = aux_upvalue(index2adr(L, funcindex), n, ref val);
-			if (name != null)
+			if (CharPtr.isNotEqual(name, null))
 			{
 				LuaObject.setobj2s(L, L.top, val);
 				api_incr_top(L);
@@ -1238,7 +1241,7 @@ namespace KopiLua
 			fi = index2adr(L, funcindex);
 			api_checknelems(L, 1);
 			name = aux_upvalue(fi, n, ref val);
-			if (name != null)
+			if (CharPtr.isNotEqual(name, null))
 			{
 				/*StkId*/TValue.dec(ref L.top);
 				LuaObject.setobj(L, val, L.top);

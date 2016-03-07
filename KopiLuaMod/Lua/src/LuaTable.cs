@@ -53,7 +53,7 @@ namespace KopiLua
 
 		public static TValue key2tval(Node n) 
 		{ 
-			return n.i_key.tvk; 
+			return n.i_key.getTvk(); 
 		}
 
 		/*
@@ -75,7 +75,7 @@ namespace KopiLua
 		
 		public static Node hashstr(Table t, TString str)  
 		{
-			return hashpow2(t, str.tsv.hash);
+            return hashpow2(t, str.getTsv().hash);
 		}
 		
 		public static Node hashboolean(Table t, int p)
@@ -201,7 +201,7 @@ namespace KopiLua
 					    (LuaObject.ttype(gkey(n)) == LuaObject.LUA_TDEADKEY && LuaObject.iscollectable(key) &&
 					     LuaObject.gcvalue(gkey(n)) == LuaObject.gcvalue(key)))
 					{
-						i = LuaLimits.cast_int(n - gnode(t, 0));  /* key index in hash table */
+						i = LuaLimits.cast_int(Node.minus(n, gnode(t, 0)));  /* key index in hash table */
 						/* hash elements are numbered after array ones */
 						return i + t.sizearray;
 					}
@@ -209,8 +209,8 @@ namespace KopiLua
 					{
 						n = gnext(n);
 					}
-				} while (n != null);
-				LuaDebug.luaG_runerror(L, "invalid key to " + LuaConf.LUA_QL("next"));  /* key not found */
+                } while (Node.isNotEqual(n, null));
+				LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("invalid key to " + LuaConf.LUA_QL("next")));  /* key not found */
 				return 0;  /* to avoid warnings */
 			}
 		}
@@ -225,7 +225,7 @@ namespace KopiLua
 				{  
 					/* a non-nil value? */
 					LuaObject.setnvalue(key, LuaLimits.cast_num(i + 1));
-					LuaObject.setobj2s(L, key + 1, t.array[i]);
+					LuaObject.setobj2s(L, TValue.plus(key, 1), t.array[i]);
 					return 1;
 				}
 			}
@@ -236,7 +236,7 @@ namespace KopiLua
 				{  
 					/* a non-nil value? */
 					LuaObject.setobj2s(L, key, key2tval(gnode(t, i)));
-					LuaObject.setobj2s(L, key + 1, gval(gnode(t, i)));
+					LuaObject.setobj2s(L, TValue.plus(key, 1), gval(gnode(t, i)));
 					return 1;
 				}
 			}
@@ -371,7 +371,7 @@ namespace KopiLua
 				lsize = LuaObject.ceillog2(size);
 				if (lsize > MAXBITS)
 				{
-					LuaDebug.luaG_runerror(L, "table overflow");
+					LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("table overflow"));
 				}
 				size = LuaObject.twoto(lsize);
 				Node[] nodes = LuaMem.luaM_newvector<Node>(L, size);
@@ -424,7 +424,7 @@ namespace KopiLua
 					LuaObject.setobjt2t(L, luaH_set(L, t, key2tval(old)), gval(old));
 				}
 			}
-			if (nold[0] != dummynode)
+			if (Node.isNotEqual(nold[0], dummynode))
 			{
 				LuaMem.luaM_freearray(L, nold);  /* free old array */
 			}
@@ -432,7 +432,7 @@ namespace KopiLua
 
 		public static void luaH_resizearray(lua_State L, Table t, int nasize) 
 		{
-			int nsize = (t.node[0] == dummynode) ? 0 : LuaObject.sizenode(t);
+			int nsize = (Node.isEqual(t.node[0], dummynode)) ? 0 : LuaObject.sizenode(t);
 			resize(L, t, nasize, nsize);
 		}
 
@@ -480,7 +480,7 @@ namespace KopiLua
 
 		public static void luaH_free(lua_State L, Table t) 
 		{
-			if (t.node[0] != dummynode)
+			if (Node.isNotEqual(t.node[0], dummynode))
 			{
 				LuaMem.luaM_freearray(L, t.node);
 			}
@@ -510,23 +510,23 @@ namespace KopiLua
 		private static TValue newkey(lua_State L, Table t, TValue key) 
 		{
 			Node mp = mainposition(t, key);
-			if (!LuaObject.ttisnil(gval(mp)) || mp == dummynode)
+			if (!LuaObject.ttisnil(gval(mp)) || Node.isEqual(mp, dummynode))
 			{
 				Node othern;
 				Node n = getfreepos(t);  /* get a free place */
-				if (n == null) 
+				if (Node.isEqual(n, null)) 
 				{  
 					/* cannot find a free place? */
 					rehash(L, t, key);  /* grow table */
 					return luaH_set(L, t, key);  /* re-insert key into grown table */
 				}
-				LuaLimits.lua_assert(n != dummynode);
+				LuaLimits.lua_assert(Node.isNotEqual(n, dummynode));
 				othern = mainposition(t, key2tval(mp));
-				if (othern != mp) 
+				if (Node.isNotEqual(othern, mp)) 
 				{  
 					/* is colliding node out of its main position? */
 					/* yes; move colliding node into free position */
-					while (gnext(othern) != mp) 
+					while (Node.isNotEqual(gnext(othern), mp)) 
 					{
 						othern = gnext(othern);  /* find previous */
 					}
@@ -577,7 +577,7 @@ namespace KopiLua
 					{
 						n = gnext(n);
 					}
-				} while (n != null);
+				} while (Node.isNotEqual(n, null));
 				return LuaObject.luaO_nilobject;
 			}
 		}
@@ -599,7 +599,7 @@ namespace KopiLua
 				{
 					n = gnext(n);
 				}
-			} while (n != null);
+			} while (Node.isNotEqual(n, null));
 			return LuaObject.luaO_nilobject;
 		}
 
@@ -640,7 +640,7 @@ namespace KopiLua
 							{
 								node = gnext(node);
 							}
-						} while (node != null);
+						} while (Node.isNotEqual(node, null));
 						return LuaObject.luaO_nilobject;
 					}
 				default: 
@@ -657,7 +657,7 @@ namespace KopiLua
 							{
 								node = gnext(node);
 							}
-						} while (node != null);
+						} while (Node.isNotEqual(node, null));
 						return LuaObject.luaO_nilobject;
 					}
 			}
@@ -675,11 +675,11 @@ namespace KopiLua
 			{
 				if (LuaObject.ttisnil(key)) 
 				{
-					LuaDebug.luaG_runerror(L, "table index is nil");
+					LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("table index is nil"));
 				}
 				else if (LuaObject.ttisnumber(key) && LuaConf.luai_numisnan(LuaObject.nvalue(key)))
 				{
-					LuaDebug.luaG_runerror(L, "table index is NaN");
+					LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("table index is NaN"));
 				}
 				return newkey(L, t, key);
 			}
@@ -778,7 +778,7 @@ namespace KopiLua
 				return (int)i;
 			}
 			/* else must find a boundary in hash part */
-			else if (t.node[0] == dummynode)  /* hash part is empty? */
+			else if (Node.isEqual(t.node[0], dummynode))  /* hash part is empty? */
 			{
 				return (int)j;  /* that is easy... */
 			}

@@ -3,12 +3,12 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class NextRef : GCObjectRef
 	{
+		private GCheader header;
+		
 		public NextRef(GCheader header) 
 		{ 
 			this.header = header; 
@@ -23,7 +23,5 @@ namespace KopiLua
 		{ 
 			return this.header.next; 
 		}
-		
-		GCheader header;
 	}
 }

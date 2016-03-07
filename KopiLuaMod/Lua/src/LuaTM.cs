@@ -24,17 +24,17 @@ namespace KopiLua
 		}
 
 		public readonly static CharPtr[] luaT_typenames = {
-			"nil", "boolean", "userdata", "number",
-			"string", "table", "function", "userdata", "thread",
-			"proto", "upval"
+			CharPtr.toCharPtr("nil"), CharPtr.toCharPtr("boolean"), CharPtr.toCharPtr("userdata"), CharPtr.toCharPtr("number"),
+			CharPtr.toCharPtr("string"), CharPtr.toCharPtr("table"), CharPtr.toCharPtr("function"), CharPtr.toCharPtr("userdata"), CharPtr.toCharPtr("thread"),
+			CharPtr.toCharPtr("proto"), CharPtr.toCharPtr("upval")
 		};
 
 		private readonly static CharPtr[] luaT_eventname = {  /* ORDER TM */
-			"__index", "__newindex",
-			"__gc", "__mode", "__eq",
-			"__add", "__sub", "__mul", "__div", "__mod",
-			"__pow", "__unm", "__len", "__lt", "__le",
-			"__concat", "__call"
+			CharPtr.toCharPtr("__index"), CharPtr.toCharPtr("__newindex"),
+			CharPtr.toCharPtr("__gc"), CharPtr.toCharPtr("__mode"), CharPtr.toCharPtr("__eq"),
+			CharPtr.toCharPtr("__add"), CharPtr.toCharPtr("__sub"), CharPtr.toCharPtr("__mul"), CharPtr.toCharPtr("__div"), CharPtr.toCharPtr("__mod"),
+			CharPtr.toCharPtr("__pow"), CharPtr.toCharPtr("__unm"), CharPtr.toCharPtr("__len"), CharPtr.toCharPtr("__lt"), CharPtr.toCharPtr("__le"),
+			CharPtr.toCharPtr("__concat"), CharPtr.toCharPtr("__call")
 		};
 
 		public static void luaT_init(lua_State L) 

@@ -3,19 +3,18 @@
  ** Lua Parser
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class priority_
-	{
-		public priority_(Byte/*lu_byte*/ left, Byte/*lu_byte*/ right)
+	{	
+		public byte left; /*Byte*/ /*lu_byte*/ /* left priority for each binary operator */
+		public byte right; /*Byte*/ /*lu_byte*/ /* right priority */
+	
+		/*Byte*/ /*lu_byte*/
+		public priority_(byte left, byte right)
 		{
 			this.left = left;
 			this.right = right;
 		}
-		
-		public Byte/*lu_byte*/ left;  /* left priority for each binary operator */
-		public Byte/*lu_byte*/ right; /* right priority */
 	}
 }

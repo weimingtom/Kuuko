@@ -3,8 +3,6 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	/*
@@ -15,8 +13,8 @@ namespace KopiLua
 		public stringtable strt = new stringtable(); /* hash table for strings */
 		public lua_Alloc frealloc;  /* function to reallocate memory */
 		public object ud;         /* auxiliary data to `frealloc' */
-		public Byte/*lu_byte*/ currentwhite;
-		public Byte/*lu_byte*/ gcstate;  /* state of garbage collector */
+		public byte currentwhite;  /*Byte*/ /*lu_byte*/
+		public byte gcstate; /*Byte*/ /*lu_byte*/  /* state of garbage collector */
 		public int sweepstrgc;  /* position of sweep in `strt' */
 		public GCObject rootgc;  /* list of all collectable objects */
 		public GCObjectRef sweepgc;  /* position of sweep in `rootgc' */

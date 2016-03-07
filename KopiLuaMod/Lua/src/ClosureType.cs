@@ -3,17 +3,16 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class ClosureType
 	{
-		ClosureHeader header;
+		private ClosureHeader header;
 
-		public static implicit operator ClosureHeader(ClosureType ctype) 
-		{ 
-			return ctype.header; 
+        //implicit operator ClosureHeader
+		public static ClosureHeader toClosureHeader(ClosureType ctype) 
+		{
+            return ctype.header; 
 		}
 		
 		public ClosureType(ClosureHeader header) 
@@ -21,52 +20,50 @@ namespace KopiLua
 			this.header = header; 
 		}
 
-		public Byte/*lu_byte*/ isC 
-		{ 
-			get 
-			{ 
-				return header.isC; 
-			} 
-			set 
-			{ 
-				header.isC = value; 
-			} 
-		}
-		
-		public Byte/*lu_byte*/ nupvalues 
-		{ 
-			get 
-			{ 
-				return header.nupvalues; 
-			} 
-			set 
-			{ 
-				header.nupvalues = value; 
-			} 
-		}
-		
-		public GCObject gclist 
-		{ 
-			get 
-			{ 
-				return header.gclist; 
-			} 
-			set 
-			{ 
-				header.gclist = value; 
-			} 
-		}
-		
-		public Table env 
-		{ 
-			get 
-			{ 
-				return header.env; 
-			} 
-			set 
-			{ 
-				header.env = value; 
-			} 
-		}
+        /*Byte*/ /*lu_byte*/
+        public byte getIsC()
+        {
+            return header.isC;
+        }
+
+        /*Byte*/ /*lu_byte*/
+        public void setIsC(byte val) 
+        {
+            header.isC = val;
+        }
+
+        /*Byte*/
+        /*lu_byte*/
+        public byte getNupvalues()
+        {
+            return header.nupvalues;
+        }
+
+        /*Byte*/
+        /*lu_byte*/
+        public void setNupvalues(byte val)
+        {
+            header.nupvalues = val;
+        }
+
+        public GCObject getGclist()
+        {
+            return header.gclist;
+        }
+
+        public void setGclist(GCObject val)
+        {
+            header.gclist = val;
+        }
+
+        public Table getEnv()
+        {
+            return header.env;
+        }
+
+        public void setEnv(Table val)
+        {
+            header.env = val;
+        }
 	}
 }

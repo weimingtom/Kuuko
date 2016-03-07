@@ -3,12 +3,12 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class TKey
 	{
+		public TKey_nk nk = new TKey_nk();
+		
 		public TKey()
 		{
 			this.nk = new TKey_nk();
@@ -23,15 +23,10 @@ namespace KopiLua
 		{
 			this.nk = new TKey_nk(value, tt, next);
 		}
-		
-		public TKey_nk nk = new TKey_nk();
-		
-		public TValue tvk 
-		{ 
-			get 
-			{ 
-				return this.nk; 
-			}
-		}
+
+        public TValue getTvk()
+        {
+            return this.nk;
+        }
 	}
 }

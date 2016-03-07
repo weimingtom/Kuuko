@@ -33,8 +33,8 @@ namespace KopiLua
 
 		public static void setprogdir(lua_State L)
 		{
-			CharPtr buff = Directory.GetCurrentDirectory();
-			LuaAuxLib.luaL_gsub(L, Lua.lua_tostring(L, -1), LuaConf.LUA_EXECDIR, buff);
+			CharPtr buff = CharPtr.toCharPtr(Directory.GetCurrentDirectory());
+			LuaAuxLib.luaL_gsub(L, Lua.lua_tostring(L, -1), CharPtr.toCharPtr(LuaConf.LUA_EXECDIR), buff);
 			LuaAPI.lua_remove(L, -2);  /* remove original string */
 		}
 
@@ -264,14 +264,14 @@ namespace KopiLua
 		public static object ll_load(lua_State L, CharPtr path)
 		{
 			//(void)path;  /* to avoid warnings */
-			Lua.lua_pushliteral(L, DLMSG);
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(DLMSG));
 			return null;
 		}
 
 		public static lua_CFunction ll_sym(lua_State L, object lib, CharPtr sym)
 		{
 			//(void)lib; (void)sym;  /* to avoid warnings */
-			Lua.lua_pushliteral(L, DLMSG);
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(DLMSG));
 			return null;
 		}
 
@@ -283,7 +283,7 @@ namespace KopiLua
 			// todo: the whole usage of plib here is wrong, fix it - mjf
 			//void **plib;
 			object plib = null;
-			LuaAPI.lua_pushfstring(L, "%s%s", LIBPREFIX, path);
+			LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s%s"), LIBPREFIX, path);
 			LuaAPI.lua_gettable(L, Lua.LUA_REGISTRYINDEX);  /* check library in registry? */
 			if (!Lua.lua_isnil(L, -1))  /* is there an entry? */
 			{
@@ -295,9 +295,9 @@ namespace KopiLua
 				Lua.lua_pop(L, 1);
 				//plib = lua_newuserdata(L, (uint)Marshal.SizeOf(plib));
 				//plib[0] = null;
-				LuaAuxLib.luaL_getmetatable(L, "_LOADLIB");
+				LuaAuxLib.luaL_getmetatable(L, CharPtr.toCharPtr("_LOADLIB"));
 				LuaAPI.lua_setmetatable(L, -2);
-				LuaAPI.lua_pushfstring(L, "%s%s", LIBPREFIX, path);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s%s"), LIBPREFIX, path);
 				LuaAPI.lua_pushvalue(L, -2);
 				LuaAPI.lua_settable(L, Lua.LUA_REGISTRYINDEX);
 			}
@@ -310,7 +310,7 @@ namespace KopiLua
 		 */
 		private static int gctm(lua_State L)
 		{
-			object lib = LuaAuxLib.luaL_checkudata(L, 1, "_LOADLIB");
+			object lib = LuaAuxLib.luaL_checkudata(L, 1, CharPtr.toCharPtr("_LOADLIB"));
 			if (lib != null)
 			{
 				ll_unloadlib(lib);
@@ -355,7 +355,7 @@ namespace KopiLua
 			{  /* error; error message is on stack top */
 				LuaAPI.lua_pushnil(L);
 				LuaAPI.lua_insert(L, -2);
-				LuaAPI.lua_pushstring(L, (stat == ERRLIB) ? LIB_FAIL : "init");
+				LuaAPI.lua_pushstring(L, (stat == ERRLIB) ? CharPtr.toCharPtr(LIB_FAIL) : CharPtr.toCharPtr("init"));
 				return 3;  /* return nil, error message, and where */
 			}
 		}
@@ -368,7 +368,7 @@ namespace KopiLua
 		 */
 		private static int readable(CharPtr filename)
 		{
-			Stream f = LuaConf.fopen(filename, "r");  /* try to open file */
+			Stream f = LuaConf.fopen(filename, CharPtr.toCharPtr("r"));  /* try to open file */
 			if (f == null) return 0;  /* open failed */
 			LuaConf.fclose(f);
 			return 1;
@@ -377,16 +377,16 @@ namespace KopiLua
 		private static CharPtr pushnexttemplate(lua_State L, CharPtr path)
 		{
 			CharPtr l;
-			while (path[0] == LuaConf.LUA_PATHSEP[0])
+			while (path.get(0) == LuaConf.LUA_PATHSEP[0])
 			{
 				path = path.next();  /* skip separators */
 			}
-			if (path[0] == '\0')
+			if (path.get(0) == '\0')
 			{
 				return null;  /* no more templates */
 			}
 			l = LuaConf.strchr(path, LuaConf.LUA_PATHSEP[0]);  /* find next separator */
-			if (l == null)
+			if (CharPtr.isEqual(l, null))
 			{
 				l = CharPtr.plus(path, LuaConf.strlen(path));
 			}
@@ -397,24 +397,24 @@ namespace KopiLua
 		private static CharPtr findfile(lua_State L, CharPtr name, CharPtr pname) 
 		{
 			CharPtr path;
-			name = LuaAuxLib.luaL_gsub(L, name, ".", LuaConf.LUA_DIRSEP);
+			name = LuaAuxLib.luaL_gsub(L, name, CharPtr.toCharPtr("."), CharPtr.toCharPtr(LuaConf.LUA_DIRSEP));
 			LuaAPI.lua_getfield(L, Lua.LUA_ENVIRONINDEX, pname);
 			path = Lua.lua_tostring(L, -1);
-			if (path == null)
+			if (CharPtr.isEqual(path, null))
 			{
-				LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("package.%s") + " must be a string", pname);
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("package.%s") + " must be a string"), pname);
 			}
-			Lua.lua_pushliteral(L, "");  /* error accumulator */
-			while ((path = pushnexttemplate(L, path)) != null)
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(""));  /* error accumulator */
+			while (CharPtr.isNotEqual((path = pushnexttemplate(L, path)), null))
 			{
 				CharPtr filename;
-				filename = LuaAuxLib.luaL_gsub(L, Lua.lua_tostring(L, -1), LuaConf.LUA_PATH_MARK, name);
+				filename = LuaAuxLib.luaL_gsub(L, Lua.lua_tostring(L, -1), CharPtr.toCharPtr(LuaConf.LUA_PATH_MARK), name);
 				LuaAPI.lua_remove(L, -2);  /* remove path template */
 				if (readable(filename) != 0)  /* does file exist and is readable? */
 				{
 					return filename;  /* return that file name */
 				}
-				LuaAPI.lua_pushfstring(L, "\n\tno file " + LuaConf.LUA_QS, filename);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("\n\tno file " + LuaConf.getLUA_QS()), filename);
 				LuaAPI.lua_remove(L, -2);  /* remove file name */
 				LuaAPI.lua_concat(L, 2);  /* add entry to possible error message */
 			}
@@ -423,7 +423,7 @@ namespace KopiLua
 
 		private static void loaderror(lua_State L, CharPtr filename)
 		{
-			LuaAuxLib.luaL_error(L, "error loading module " + LuaConf.LUA_QS + " from file " + LuaConf.LUA_QS + ":\n\t%s",
+			LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("error loading module " + LuaConf.getLUA_QS() + " from file " + LuaConf.getLUA_QS() + ":\n\t%s"),
 				Lua.lua_tostring(L, 1), filename, Lua.lua_tostring(L, -1));
 		}
 
@@ -431,8 +431,8 @@ namespace KopiLua
 		{
 			CharPtr filename;
 			CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
-			filename = findfile(L, name, "path");
-			if (filename == null)
+			filename = findfile(L, name, CharPtr.toCharPtr("path"));
+			if (CharPtr.isEqual(filename, null))
 			{
 				return 1;  /* library not found in this path */
 			}
@@ -447,12 +447,12 @@ namespace KopiLua
 		{
 			CharPtr funcname;
 			CharPtr mark = LuaConf.strchr(modname, LuaConf.LUA_IGMARK[0]);
-			if (mark!=null)
+			if (CharPtr.isNotEqual(mark, null))
 			{
 				modname = CharPtr.plus(mark, 1);
 			}
-			funcname = LuaAuxLib.luaL_gsub(L, modname, ".", LUA_OFSEP);
-			funcname = LuaAPI.lua_pushfstring(L, POF + "%s", funcname);
+			funcname = LuaAuxLib.luaL_gsub(L, modname, CharPtr.toCharPtr("."), CharPtr.toCharPtr(LUA_OFSEP));
+			funcname = LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(POF + "%s"), funcname);
 			LuaAPI.lua_remove(L, -2);  /* remove 'gsub' result */
 			return funcname;
 		}
@@ -461,8 +461,8 @@ namespace KopiLua
 		{
 			CharPtr funcname;
 			CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
-			CharPtr filename = findfile(L, name, "cpath");
-			if (filename == null)
+			CharPtr filename = findfile(L, name, CharPtr.toCharPtr("cpath"));
+			if (CharPtr.isEqual(filename, null))
 			{
 				return 1;  /* library not found in this path */
 			}
@@ -481,13 +481,13 @@ namespace KopiLua
 			CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
 			CharPtr p = LuaConf.strchr(name, '.');
 			int stat;
-			if (p == null)
+			if (CharPtr.isEqual(p, null))
 			{
 				return 0;  /* is root */
 			}
 			LuaAPI.lua_pushlstring(L, name, /*(uint)*/CharPtr.minus(p, name));
-			filename = findfile(L, Lua.lua_tostring(L, -1), "cpath");
-			if (filename == null)
+			filename = findfile(L, Lua.lua_tostring(L, -1), CharPtr.toCharPtr("cpath"));
+			if (CharPtr.isEqual(filename, null))
 			{
 				return 1;  /* root not found */
 			}
@@ -498,7 +498,7 @@ namespace KopiLua
 				{
 					loaderror(L, filename);  /* real error */
 				}
-				LuaAPI.lua_pushfstring(L, "\n\tno module " + LuaConf.LUA_QS + " in file " + LuaConf.LUA_QS,
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("\n\tno module " + LuaConf.getLUA_QS() + " in file " + LuaConf.getLUA_QS()),
 				                       name, filename);
 				return 1;  /* function not found */
 			}
@@ -508,15 +508,15 @@ namespace KopiLua
 		private static int loader_preload(lua_State L)
 		{
 			CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
-			LuaAPI.lua_getfield(L, Lua.LUA_ENVIRONINDEX, "preload");
+			LuaAPI.lua_getfield(L, Lua.LUA_ENVIRONINDEX, CharPtr.toCharPtr("preload"));
 			if (!Lua.lua_istable(L, -1))
 			{
-				LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("package.preload") + " must be a table");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("package.preload") + " must be a table"));
 			}
 			LuaAPI.lua_getfield(L, -1, name);
 			if (Lua.lua_isnil(L, -1))  /* not found? */
 			{
-				LuaAPI.lua_pushfstring(L, "\n\tno field package.preload['%s']", name);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("\n\tno field package.preload['%s']"), name);
 			}
 			return 1;
 		}
@@ -528,30 +528,30 @@ namespace KopiLua
 			CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
 			int i;
 			LuaAPI.lua_settop(L, 1);  /* _LOADED table will be at index 2 */
-			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, "_LOADED");
+			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, CharPtr.toCharPtr("_LOADED"));
 			LuaAPI.lua_getfield(L, 2, name);
 			if (LuaAPI.lua_toboolean(L, -1) != 0)
 			{
 				/* is it there? */
 				if (LuaAPI.lua_touserdata(L, -1) == sentinel)  /* check loops */
 				{
-					LuaAuxLib.luaL_error(L, "loop or previous error loading module " + LuaConf.LUA_QS, name);
+					LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("loop or previous error loading module " + LuaConf.getLUA_QS()), name);
 				}
 				return 1;  /* package is already loaded */
 			}
 			/* else must load it; iterate over available loaders */
-			LuaAPI.lua_getfield(L, Lua.LUA_ENVIRONINDEX, "loaders");
+			LuaAPI.lua_getfield(L, Lua.LUA_ENVIRONINDEX, CharPtr.toCharPtr("loaders"));
 			if (!Lua.lua_istable(L, -1))
 			{
-				LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("package.loaders") + " must be a table");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("package.loaders") + " must be a table"));
 			}
-			Lua.lua_pushliteral(L, "");  /* error message accumulator */
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(""));  /* error message accumulator */
 			for (i = 1; ; i++)
 			{
 				LuaAPI.lua_rawgeti(L, -2, i);  /* get a loader */
 				if (Lua.lua_isnil(L, -1))
 				{
-					LuaAuxLib.luaL_error(L, "module " + LuaConf.LUA_QS + " not found:%s",
+					LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("module " + LuaConf.getLUA_QS() + " not found:%s"),
 					                     name, Lua.lua_tostring(L, -2));
 				}
 				LuaAPI.lua_pushstring(L, name);
@@ -601,10 +601,10 @@ namespace KopiLua
 		{
 			lua_Debug ar = new lua_Debug();
 			if (LuaDebug.lua_getstack(L, 1, ar) == 0 ||
-			    LuaDebug.lua_getinfo(L, "f", ar) == 0 ||  /* get calling function */
+			    LuaDebug.lua_getinfo(L, CharPtr.toCharPtr("f"), ar) == 0 ||  /* get calling function */
 			    LuaAPI.lua_iscfunction(L, -1))
 			{
-				LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("module") + " not called from a Lua function");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("module") + " not called from a Lua function"));
 			}
 			LuaAPI.lua_pushvalue(L, -2);
 			LuaAPI.lua_setfenv(L, -2);
@@ -626,11 +626,11 @@ namespace KopiLua
 		{
 			CharPtr dot;
 			LuaAPI.lua_pushvalue(L, -1);
-			LuaAPI.lua_setfield(L, -2, "_M");  /* module._M = module */
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("_M"));  /* module._M = module */
 			LuaAPI.lua_pushstring(L, modname);
-			LuaAPI.lua_setfield(L, -2, "_NAME");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("_NAME"));
 			dot = LuaConf.strrchr(modname, '.');  /* look for last dot in module name */
-			if (dot == null)
+			if (CharPtr.isEqual(dot, null))
 			{
 				dot = modname;
 			}
@@ -640,29 +640,29 @@ namespace KopiLua
 			}
 			/* set _PACKAGE as package name (full module name minus last part) */
 			LuaAPI.lua_pushlstring(L, modname, /*(uint)*/CharPtr.minus(dot, modname));
-			LuaAPI.lua_setfield(L, -2, "_PACKAGE");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("_PACKAGE"));
 		}
 
 		private static int ll_module(lua_State L)
 		{
 			CharPtr modname = LuaAuxLib.luaL_checkstring(L, 1);
 			int loaded = LuaAPI.lua_gettop(L) + 1;  /* index of _LOADED table */
-			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, "_LOADED");
+			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, CharPtr.toCharPtr("_LOADED"));
 			LuaAPI.lua_getfield(L, loaded, modname);  /* get _LOADED[modname] */
 			if (!Lua.lua_istable(L, -1))
 			{
 				/* not found? */
 				Lua.lua_pop(L, 1);  /* remove previous result */
 				/* try global variable (and create one if it does not exist) */
-				if (LuaAuxLib.luaL_findtable(L, Lua.LUA_GLOBALSINDEX, modname, 1) != null)
+				if (CharPtr.isNotEqual(LuaAuxLib.luaL_findtable(L, Lua.LUA_GLOBALSINDEX, modname, 1), null))
 				{
-					return LuaAuxLib.luaL_error(L, "name conflict for module " + LuaConf.LUA_QS, modname);
+					return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("name conflict for module " + LuaConf.getLUA_QS()), modname);
 				}
 				LuaAPI.lua_pushvalue(L, -1);
 				LuaAPI.lua_setfield(L, loaded, modname);  /* _LOADED[modname] = new table */
 			}
 			/* check whether table already has a _NAME field */
-			LuaAPI.lua_getfield(L, -1, "_NAME");
+			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("_NAME"));
 			if (!Lua.lua_isnil(L, -1))  /* is table an initialized module? */
 			{
 				Lua.lua_pop(L, 1);
@@ -689,7 +689,7 @@ namespace KopiLua
 				LuaAPI.lua_setmetatable(L, 1);
 			}
 			LuaAPI.lua_pushvalue(L, Lua.LUA_GLOBALSINDEX);
-			LuaAPI.lua_setfield(L, -2, "__index");  /* mt.__index = _G */
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__index"));  /* mt.__index = _G */
 			return 0;
 		}
 
@@ -701,16 +701,16 @@ namespace KopiLua
 		private static void setpath(lua_State L, CharPtr fieldname, CharPtr envname, CharPtr def)
 		{
 			CharPtr path = LuaConf.getenv(envname);
-			if (path == null)  /* no environment variable? */
+			if (CharPtr.isEqual(path, null))  /* no environment variable? */
 			{
 				LuaAPI.lua_pushstring(L, def);  /* use default */
 			}
 			else
 			{
 				/* replace ";;" by ";AUXMARK;" and then AUXMARK by default path */
-				path = LuaAuxLib.luaL_gsub(L, path, LuaConf.LUA_PATHSEP + LuaConf.LUA_PATHSEP,
-					LuaConf.LUA_PATHSEP + AUXMARK + LuaConf.LUA_PATHSEP);
-				LuaAuxLib.luaL_gsub(L, path, AUXMARK, def);
+				path = LuaAuxLib.luaL_gsub(L, path, CharPtr.toCharPtr(LuaConf.LUA_PATHSEP + LuaConf.LUA_PATHSEP),
+					CharPtr.toCharPtr(LuaConf.LUA_PATHSEP + AUXMARK + LuaConf.LUA_PATHSEP));
+				LuaAuxLib.luaL_gsub(L, path, CharPtr.toCharPtr(AUXMARK), def);
 				LuaAPI.lua_remove(L, -2);
 			}
 			setprogdir(L);
@@ -718,14 +718,14 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] pk_funcs = {
-			new luaL_Reg("loadlib", ll_loadlib),
-			new luaL_Reg("seeall", ll_seeall),
+			new luaL_Reg(CharPtr.toCharPtr("loadlib"), ll_loadlib),
+			new luaL_Reg(CharPtr.toCharPtr("seeall"), ll_seeall),
 			new luaL_Reg(null, null)
 		};
 
 		private readonly static luaL_Reg[] ll_funcs = {
-			new luaL_Reg("module", ll_module),
-			new luaL_Reg("require", ll_require),
+			new luaL_Reg(CharPtr.toCharPtr("module"), ll_module),
+			new luaL_Reg(CharPtr.toCharPtr("require"), ll_require),
 			new luaL_Reg(null, null)
 		};
 
@@ -741,11 +741,11 @@ namespace KopiLua
 		{
 			int i;
 			/* create new type _LOADLIB */
-			LuaAuxLib.luaL_newmetatable(L, "_LOADLIB");
+			LuaAuxLib.luaL_newmetatable(L, CharPtr.toCharPtr("_LOADLIB"));
 			Lua.lua_pushcfunction(L, gctm);
-			LuaAPI.lua_setfield(L, -2, "__gc");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__gc"));
 			/* create `package' table */
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_LOADLIBNAME, pk_funcs);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_LOADLIBNAME), pk_funcs);
 			#if LUA_COMPAT_LOADLIB
 			lua_getfield(L, -1, "loadlib");
 			lua_setfield(L, LUA_GLOBALSINDEX, "loadlib");
@@ -760,19 +760,19 @@ namespace KopiLua
 				Lua.lua_pushcfunction(L, loaders[i]);
 				LuaAPI.lua_rawseti(L, -2, i + 1);
 			}
-			LuaAPI.lua_setfield(L, -2, "loaders");  /* put it in field `loaders' */
-			setpath(L, "path", LuaConf.LUA_PATH, LuaConf.LUA_PATH_DEFAULT);  /* set field `path' */
-			setpath(L, "cpath", LuaConf.LUA_CPATH, LuaConf.LUA_CPATH_DEFAULT); /* set field `cpath' */
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("loaders"));  /* put it in field `loaders' */
+			setpath(L, CharPtr.toCharPtr("path"), CharPtr.toCharPtr(LuaConf.LUA_PATH), CharPtr.toCharPtr(LuaConf.LUA_PATH_DEFAULT));  /* set field `path' */
+			setpath(L, CharPtr.toCharPtr("cpath"), CharPtr.toCharPtr(LuaConf.LUA_CPATH), CharPtr.toCharPtr(LuaConf.LUA_CPATH_DEFAULT)); /* set field `cpath' */
 			/* store config information */
-			Lua.lua_pushliteral(L, LuaConf.LUA_DIRSEP + "\n" + LuaConf.LUA_PATHSEP + "\n" + LuaConf.LUA_PATH_MARK + "\n" +
-				LuaConf.LUA_EXECDIR + "\n" + LuaConf.LUA_IGMARK);
-			LuaAPI.lua_setfield(L, -2, "config");
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(LuaConf.LUA_DIRSEP + "\n" + LuaConf.LUA_PATHSEP + "\n" + LuaConf.LUA_PATH_MARK + "\n" +
+				LuaConf.LUA_EXECDIR + "\n" + LuaConf.LUA_IGMARK));
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("config"));
 			/* set field `loaded' */
-			LuaAuxLib.luaL_findtable(L, Lua.LUA_REGISTRYINDEX, "_LOADED", 2);
-			LuaAPI.lua_setfield(L, -2, "loaded");
+			LuaAuxLib.luaL_findtable(L, Lua.LUA_REGISTRYINDEX, CharPtr.toCharPtr("_LOADED"), 2);
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("loaded"));
 			/* set field `preload' */
 			Lua.lua_newtable(L);
-			LuaAPI.lua_setfield(L, -2, "preload");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("preload"));
 			LuaAPI.lua_pushvalue(L, Lua.LUA_GLOBALSINDEX);
 			LuaAuxLib.luaL_register(L, null, ll_funcs);  /* open lib into global table */
 			Lua.lua_pop(L, 1);

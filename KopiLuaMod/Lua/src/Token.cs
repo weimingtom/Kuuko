@@ -9,6 +9,9 @@ namespace KopiLua
 {
 	public class Token
 	{
+		public int token;
+		public SemInfo seminfo = new SemInfo();
+		
 		public Token()
 		{
 			
@@ -19,8 +22,5 @@ namespace KopiLua
 			this.token = copy.token;
 			this.seminfo = new SemInfo(copy.seminfo);
 		}
-		
-		public int token;
-		public SemInfo seminfo = new SemInfo();
 	}
 }

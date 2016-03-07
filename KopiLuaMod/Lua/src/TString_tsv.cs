@@ -3,8 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	//typedef TValue *StkId;  /* index to stack elements */
@@ -14,9 +12,9 @@ namespace KopiLua
 	 */
 	public class TString_tsv : GCObject
 	{
-		public Byte/*lu_byte*/ reserved;
+		public byte reserved;  /*Byte*/ /*lu_byte*/
 		/*FIXME:*/
-		public long/*int*//*uint*/ hash;
-		public int/*uint*/ len;
+		public long hash; /*int*//*uint*/
+		public int len; /*uint*/
 	}
 }

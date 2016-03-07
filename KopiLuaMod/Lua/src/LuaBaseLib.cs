@@ -21,7 +21,7 @@ namespace KopiLua
 		{
 			int n = LuaAPI.lua_gettop(L);  /* number of arguments */
 			int i;
-			Lua.lua_getglobal(L, "tostring");
+			Lua.lua_getglobal(L, CharPtr.toCharPtr("tostring"));
 			for (i = 1; i <= n; i++) 
 			{
 				CharPtr s;
@@ -29,14 +29,14 @@ namespace KopiLua
 				LuaAPI.lua_pushvalue(L, i);   /* value to print */
 				LuaAPI.lua_call(L, 1, 1);
 				s = Lua.lua_tostring(L, -1);  /* get result */
-				if (s == null)
+				if (CharPtr.isEqual(s, null))
 				{	
-					return LuaAuxLib.luaL_error(L, LuaConf.LUA_QL("tostring") + " must return a string to " +
-						LuaConf.LUA_QL("print"));
+					return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("tostring") + " must return a string to " +
+						LuaConf.LUA_QL("print"))); //FIXME:
 				}
 				if (i > 1) 
 				{
-					LuaConf.fputs("\t", LuaConf.stdout);
+					LuaConf.fputs(CharPtr.toCharPtr("\t"), LuaConf.stdout);
 				}
 				LuaConf.fputs(s, LuaConf.stdout);
 				Lua.lua_pop(L, 1);  /* pop result */
@@ -65,14 +65,14 @@ namespace KopiLua
 				ulong n;
 				LuaAuxLib.luaL_argcheck(L, 2 <= base_ && base_ <= 36, 2, "base out of range");
 				n = LuaConf.strtoul(s1, out s2, base_);
-				if (s1 != s2) 
+				if (CharPtr.isNotEqual(s1, s2)) 
 				{  
 					/* at least one valid digit? */
-					while (LuaConf.isspace((byte)(s2[0]))) 
+					while (LuaConf.isspace((byte)(s2.get(0)))) 
 					{
 						s2 = s2.next();  /* skip trailing spaces */
 					}
-					if (s2[0] == '\0') 
+					if (s2.get(0) == '\0') 
 					{  
 						/* no invalid trailing characters? */
 						LuaAPI.lua_pushnumber(L, (Double/*lua_Number*/)n);
@@ -106,7 +106,7 @@ namespace KopiLua
 				LuaAPI.lua_pushnil(L);
 				return 1;  /* no metatable */
 			}
-			LuaAuxLib.luaL_getmetafield(L, 1, "__metatable");
+			LuaAuxLib.luaL_getmetafield(L, 1, CharPtr.toCharPtr("__metatable"));
 			return 1;  /* returns either __metatable field (if present) or metatable */
 		}
 
@@ -116,9 +116,9 @@ namespace KopiLua
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TTABLE);
 			LuaAuxLib.luaL_argcheck(L, t == Lua.LUA_TNIL || t == Lua.LUA_TTABLE, 2,
 				"nil or table expected");
-			if (LuaAuxLib.luaL_getmetafield(L, 1, "__metatable") != 0)
+			if (LuaAuxLib.luaL_getmetafield(L, 1, CharPtr.toCharPtr("__metatable")) != 0)
 			{
-				LuaAuxLib.luaL_error(L, "cannot change a protected metatable");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("cannot change a protected metatable"));
 			}
 			LuaAPI.lua_settop(L, 2);
 			LuaAPI.lua_setmetatable(L, 1);
@@ -138,12 +138,12 @@ namespace KopiLua
 				LuaAuxLib.luaL_argcheck(L, level >= 0, 1, "level must be non-negative");
 				if (LuaDebug.lua_getstack(L, level, ar) == 0)
 				{
-					LuaAuxLib.luaL_argerror(L, 1, "invalid level");
+					LuaAuxLib.luaL_argerror(L, 1, CharPtr.toCharPtr("invalid level"));
 				}
-				LuaDebug.lua_getinfo(L, "f", ar);
+				LuaDebug.lua_getinfo(L, CharPtr.toCharPtr("f"), ar);
 				if (Lua.lua_isnil(L, -1))
 				{
-					LuaAuxLib.luaL_error(L, "no function environment for tail call at level %d",
+					LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("no function environment for tail call at level %d"),
 						level);
 				}
 			}
@@ -179,7 +179,7 @@ namespace KopiLua
 			else if (LuaAPI.lua_iscfunction(L, -2) || LuaAPI.lua_setfenv(L, -2) == 0)
 			{
 				LuaAuxLib.luaL_error(L,
-					LuaConf.LUA_QL("setfenv") + " cannot change environment of given object");
+					CharPtr.toCharPtr(LuaConf.LUA_QL("setfenv") + " cannot change environment of given object"));
 			}
 			return 1;
 		}
@@ -218,13 +218,13 @@ namespace KopiLua
 		}
 
 		public static readonly CharPtr[] opts = {
-			"stop", 
-			"restart", 
-			"collect",
-			"count", 
-			"step", 
-			"setpause", 
-			"setstepmul", 
+			CharPtr.toCharPtr("stop"), 
+			CharPtr.toCharPtr("restart"), 
+			CharPtr.toCharPtr("collect"),
+			CharPtr.toCharPtr("count"), 
+			CharPtr.toCharPtr("step"), 
+			CharPtr.toCharPtr("setpause"), 
+			CharPtr.toCharPtr("setstepmul"), 
 			null
 		};
 		
@@ -240,7 +240,7 @@ namespace KopiLua
 
 		private static int luaB_collectgarbage(lua_State L) 
 		{
-			int o = LuaAuxLib.luaL_checkoption(L, 1, "collect", opts);
+			int o = LuaAuxLib.luaL_checkoption(L, 1, CharPtr.toCharPtr("collect"), opts);
 			int ex = LuaAuxLib.luaL_optint(L, 2, 0);
 			int res = LuaAPI.lua_gc(L, optsnum[o], ex);
 			switch (optsnum[o]) 
@@ -350,7 +350,7 @@ namespace KopiLua
 		private static CharPtr generic_reader(lua_State L, object ud, out int/*uint*/ size) 
 		{
 			//(void)ud;  /* to avoid warnings */
-			LuaAuxLib.luaL_checkstack(L, 2, "too many nested functions");
+			LuaAuxLib.luaL_checkstack(L, 2, CharPtr.toCharPtr("too many nested functions"));
 			LuaAPI.lua_pushvalue(L, 1);  /* get function */
 			LuaAPI.lua_call(L, 0, 1);  /* call it */
 			if (Lua.lua_isnil(L, -1))
@@ -366,7 +366,7 @@ namespace KopiLua
 			else
 			{
 				size = 0;
-				LuaAuxLib.luaL_error(L, "reader function must return a string");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("reader function must return a string"));
 			}
 			return null;  /* to avoid warnings */
 		}
@@ -374,7 +374,7 @@ namespace KopiLua
 		private static int luaB_load(lua_State L) 
 		{
 			int status;
-			CharPtr cname = LuaAuxLib.luaL_optstring(L, 2, "=(load)");
+			CharPtr cname = LuaAuxLib.luaL_optstring(L, 2, CharPtr.toCharPtr("=(load)"));
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TFUNCTION);
 			LuaAPI.lua_settop(L, 3);  /* function, eventual name, plus one reserved slot */
 			status = LuaAPI.lua_load(L, generic_reader, null, cname);
@@ -398,7 +398,7 @@ namespace KopiLua
 			LuaAuxLib.luaL_checkany(L, 1);
 			if (LuaAPI.lua_toboolean(L, 1) == 0)
 			{
-				return LuaAuxLib.luaL_error(L, "%s", LuaAuxLib.luaL_optstring(L, 2, "assertion failed!"));
+				return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("%s"), LuaAuxLib.luaL_optstring(L, 2, CharPtr.toCharPtr("assertion failed!")));
 			}
 			return LuaAPI.lua_gettop(L);
 		}
@@ -416,7 +416,7 @@ namespace KopiLua
 			n = e - i + 1;  /* number of elements */
 			if (n <= 0 || (LuaAPI.lua_checkstack(L, n) == 0))  /* n <= 0 means arith. overflow */
 			{
-				return LuaAuxLib.luaL_error(L, "too many results to unpack");
+				return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("too many results to unpack"));
 			}
 			LuaAPI.lua_rawgeti(L, 1, i);  /* push arg[i] (avoiding overflow problems) */
 			while (i++ < e)  /* push arg[i + 1...e] */
@@ -429,7 +429,7 @@ namespace KopiLua
 		private static int luaB_select(lua_State L) 
 		{
 			int n = LuaAPI.lua_gettop(L);
-			if (LuaAPI.lua_type(L, 1) == Lua.LUA_TSTRING && Lua.lua_tostring(L, 1)[0] == '#')
+			if (LuaAPI.lua_type(L, 1) == Lua.LUA_TSTRING && Lua.lua_tostring(L, 1).get(0) == '#')
 			{
 				LuaAPI.lua_pushinteger(L, n - 1);
 				return 1;
@@ -475,7 +475,7 @@ namespace KopiLua
 		private static int luaB_tostring(lua_State L) 
 		{
 			LuaAuxLib.luaL_checkany(L, 1);
-			if (LuaAuxLib.luaL_callmeta(L, 1, "__tostring") != 0)  /* is there a metafield? */
+			if (LuaAuxLib.luaL_callmeta(L, 1, CharPtr.toCharPtr("__tostring")) != 0)  /* is there a metafield? */
 			{
 				return 1;  /* use its value */
 			}
@@ -493,17 +493,17 @@ namespace KopiLua
 					}
 				case Lua.LUA_TBOOLEAN:
 					{
-						LuaAPI.lua_pushstring(L, (LuaAPI.lua_toboolean(L, 1) != 0 ? "true" : "false"));
+						LuaAPI.lua_pushstring(L, (LuaAPI.lua_toboolean(L, 1) != 0 ? CharPtr.toCharPtr("true") : CharPtr.toCharPtr("false")));
 						break;
 					}
 				case Lua.LUA_TNIL:
 					{
-						Lua.lua_pushliteral(L, "nil");
+						Lua.lua_pushliteral(L, CharPtr.toCharPtr("nil"));
 						break;
 					}
 				default:
 					{
-						LuaAPI.lua_pushfstring(L, "%s: %p", LuaAuxLib.luaL_typename(L, 1), LuaAPI.lua_topointer(L, 1));
+						LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s: %p"), LuaAuxLib.luaL_typename(L, 1), LuaAPI.lua_topointer(L, 1));
 						break;
 					}
 			}
@@ -543,30 +543,30 @@ namespace KopiLua
 
 
 		private readonly static luaL_Reg[] base_funcs = {
-			new luaL_Reg("assert", luaB_assert),
-			new luaL_Reg("collectgarbage", luaB_collectgarbage),
-			new luaL_Reg("dofile", luaB_dofile),
-			new luaL_Reg("error", luaB_error),
-			new luaL_Reg("gcinfo", luaB_gcinfo),
-			new luaL_Reg("getfenv", luaB_getfenv),
-			new luaL_Reg("getmetatable", luaB_getmetatable),
-			new luaL_Reg("loadfile", luaB_loadfile),
-			new luaL_Reg("load", luaB_load),
-			new luaL_Reg("loadstring", luaB_loadstring),
-			new luaL_Reg("next", luaB_next),
-			new luaL_Reg("pcall", luaB_pcall),
-			new luaL_Reg("print", luaB_print),
-			new luaL_Reg("rawequal", luaB_rawequal),
-			new luaL_Reg("rawget", luaB_rawget),
-			new luaL_Reg("rawset", luaB_rawset),
-			new luaL_Reg("select", luaB_select),
-			new luaL_Reg("setfenv", luaB_setfenv),
-			new luaL_Reg("setmetatable", luaB_setmetatable),
-			new luaL_Reg("tonumber", luaB_tonumber),
-			new luaL_Reg("tostring", luaB_tostring),
-			new luaL_Reg("type", luaB_type),
-			new luaL_Reg("unpack", luaB_unpack),
-			new luaL_Reg("xpcall", luaB_xpcall),
+			new luaL_Reg(CharPtr.toCharPtr("assert"), luaB_assert),
+			new luaL_Reg(CharPtr.toCharPtr("collectgarbage"), luaB_collectgarbage),
+			new luaL_Reg(CharPtr.toCharPtr("dofile"), luaB_dofile),
+			new luaL_Reg(CharPtr.toCharPtr("error"), luaB_error),
+			new luaL_Reg(CharPtr.toCharPtr("gcinfo"), luaB_gcinfo),
+			new luaL_Reg(CharPtr.toCharPtr("getfenv"), luaB_getfenv),
+			new luaL_Reg(CharPtr.toCharPtr("getmetatable"), luaB_getmetatable),
+			new luaL_Reg(CharPtr.toCharPtr("loadfile"), luaB_loadfile),
+			new luaL_Reg(CharPtr.toCharPtr("load"), luaB_load),
+			new luaL_Reg(CharPtr.toCharPtr("loadstring"), luaB_loadstring),
+			new luaL_Reg(CharPtr.toCharPtr("next"), luaB_next),
+			new luaL_Reg(CharPtr.toCharPtr("pcall"), luaB_pcall),
+			new luaL_Reg(CharPtr.toCharPtr("print"), luaB_print),
+			new luaL_Reg(CharPtr.toCharPtr("rawequal"), luaB_rawequal),
+			new luaL_Reg(CharPtr.toCharPtr("rawget"), luaB_rawget),
+			new luaL_Reg(CharPtr.toCharPtr("rawset"), luaB_rawset),
+			new luaL_Reg(CharPtr.toCharPtr("select"), luaB_select),
+			new luaL_Reg(CharPtr.toCharPtr("setfenv"), luaB_setfenv),
+			new luaL_Reg(CharPtr.toCharPtr("setmetatable"), luaB_setmetatable),
+			new luaL_Reg(CharPtr.toCharPtr("tonumber"), luaB_tonumber),
+			new luaL_Reg(CharPtr.toCharPtr("tostring"), luaB_tostring),
+			new luaL_Reg(CharPtr.toCharPtr("type"), luaB_type),
+			new luaL_Reg(CharPtr.toCharPtr("unpack"), luaB_unpack),
+			new luaL_Reg(CharPtr.toCharPtr("xpcall"), luaB_xpcall),
 			new luaL_Reg(null, null)
 		};
 
@@ -628,7 +628,7 @@ namespace KopiLua
 		{
 			lua_State co = LuaAPI.lua_tothread(L, 1);
 			LuaAuxLib.luaL_argcheck(L, co != null, 1, "coroutine expected");
-			LuaAPI.lua_pushstring(L, statnames[costatus(L, co)]);
+			LuaAPI.lua_pushstring(L, CharPtr.toCharPtr(statnames[costatus(L, co)]));
 			return 1;
 		}
 
@@ -637,11 +637,11 @@ namespace KopiLua
 			int status = costatus(L, co);
 			if (LuaAPI.lua_checkstack(co, narg) == 0)
 			{
-				LuaAuxLib.luaL_error(L, "too many arguments to resume");
+				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("too many arguments to resume"));
 			}
 			if (status != CO_SUS) 
 			{
-				LuaAPI.lua_pushfstring(L, "cannot resume %s coroutine", statnames[status]);
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("cannot resume %s coroutine"), statnames[status]);
 				return -1;  /* error flag */
 			}
 			LuaAPI.lua_xmove(L, co, narg);
@@ -652,7 +652,7 @@ namespace KopiLua
 				int nres = LuaAPI.lua_gettop(co);
 				if (LuaAPI.lua_checkstack(L, nres + 1) == 0)
 				{
-					LuaAuxLib.luaL_error(L, "too many results to resume");
+					LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("too many results to resume"));
 				}
 				LuaAPI.lua_xmove(co, L, nres);  /* move yielded values */
 				return nres;
@@ -735,12 +735,12 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] co_funcs = {
-			new luaL_Reg("create", luaB_cocreate),
-			new luaL_Reg("resume", luaB_coresume),
-			new luaL_Reg("running", luaB_corunning),
-			new luaL_Reg("status", luaB_costatus),
-			new luaL_Reg("wrap", luaB_cowrap),
-			new luaL_Reg("yield", luaB_yield),
+			new luaL_Reg(CharPtr.toCharPtr("create"), luaB_cocreate),
+			new luaL_Reg(CharPtr.toCharPtr("resume"), luaB_coresume),
+			new luaL_Reg(CharPtr.toCharPtr("running"), luaB_corunning),
+			new luaL_Reg(CharPtr.toCharPtr("status"), luaB_costatus),
+			new luaL_Reg(CharPtr.toCharPtr("wrap"), luaB_cowrap),
+			new luaL_Reg(CharPtr.toCharPtr("yield"), luaB_yield),
 			new luaL_Reg(null, null)
 		};
 
@@ -757,28 +757,28 @@ namespace KopiLua
 		{
 			/* set global _G */
 			LuaAPI.lua_pushvalue(L, Lua.LUA_GLOBALSINDEX);
-			Lua.lua_setglobal(L, "_G");
+			Lua.lua_setglobal(L, CharPtr.toCharPtr("_G"));
 			/* open lib into global table */
-			LuaAuxLib.luaL_register(L, "_G", base_funcs);
-			Lua.lua_pushliteral(L, Lua.LUA_VERSION);
-			Lua.lua_setglobal(L, "_VERSION");  /* set global _VERSION */
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr("_G"), base_funcs);
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(Lua.LUA_VERSION));
+			Lua.lua_setglobal(L, CharPtr.toCharPtr("_VERSION"));  /* set global _VERSION */
 			/* `ipairs' and `pairs' need auxliliary functions as upvalues */
-			auxopen(L, "ipairs", luaB_ipairs, ipairsaux);
-			auxopen(L, "pairs", luaB_pairs, luaB_next);
+			auxopen(L, CharPtr.toCharPtr("ipairs"), luaB_ipairs, ipairsaux);
+			auxopen(L, CharPtr.toCharPtr("pairs"), luaB_pairs, luaB_next);
 			/* `newproxy' needs a weaktable as upvalue */
 			LuaAPI.lua_createtable(L, 0, 1);  /* new table `w' */
 			LuaAPI.lua_pushvalue(L, -1);  /* `w' will be its own metatable */
 			LuaAPI.lua_setmetatable(L, -2);
-			Lua.lua_pushliteral(L, "kv");
-			LuaAPI.lua_setfield(L, -2, "__mode");  /* metatable(w).__mode = "kv" */
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr("kv"));
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__mode"));  /* metatable(w).__mode = "kv" */
 			LuaAPI.lua_pushcclosure(L, luaB_newproxy, 1);
-			Lua.lua_setglobal(L, "newproxy");  /* set global `newproxy' */
+			Lua.lua_setglobal(L, CharPtr.toCharPtr("newproxy"));  /* set global `newproxy' */
 		}
 
 		public static int luaopen_base(lua_State L) 
 		{
 			base_open(L);
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_COLIBNAME, co_funcs);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_COLIBNAME), co_funcs);
 			return 2;
 		}
 	}

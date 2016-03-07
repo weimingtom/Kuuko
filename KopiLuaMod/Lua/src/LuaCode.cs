@@ -108,7 +108,7 @@ namespace KopiLua
 			LuaLimits.lua_assert(dest != NO_JUMP);
 			if (Math.Abs(offset) > LuaOpCodes.MAXARG_sBx)
 			{
-				LuaLex.luaX_syntaxerror(fs.ls, "control structure too long");
+				LuaLex.luaX_syntaxerror(fs.ls, CharPtr.toCharPtr("control structure too long"));
 			}
 			LuaOpCodes.SETARG_sBx(jmp, offset);
 		}
@@ -139,7 +139,7 @@ namespace KopiLua
 		private static InstructionPtr getjumpcontrol(FuncState fs, int pc)
 		{
 			InstructionPtr pi = new InstructionPtr(fs.f.code, pc);
-			if (pc >= 1 && (LuaOpCodes.testTMode(LuaOpCodes.GET_OPCODE(pi[-1])) != 0))
+			if (pc >= 1 && (LuaOpCodes.testTMode(LuaOpCodes.GET_OPCODE(pi.get(-1))) != 0))
 			{
 				return new InstructionPtr(pi.codes, pi.pc-1);
 			}
@@ -158,7 +158,7 @@ namespace KopiLua
 			for (; list != NO_JUMP; list = getjump(fs, list)) 
 			{
 				InstructionPtr i = getjumpcontrol(fs, list);
-				if (LuaOpCodes.GET_OPCODE(i[0]) != OpCode.OP_TESTSET) 
+				if (LuaOpCodes.GET_OPCODE(i.get(0)) != OpCode.OP_TESTSET) 
 				{
 					return 1;
 				}
@@ -169,17 +169,17 @@ namespace KopiLua
 		private static int patchtestreg(FuncState fs, int node, int reg)
 		{
 			InstructionPtr i = getjumpcontrol(fs, node);
-			if (LuaOpCodes.GET_OPCODE(i[0]) != OpCode.OP_TESTSET)
+			if (LuaOpCodes.GET_OPCODE(i.get(0)) != OpCode.OP_TESTSET)
 			{
 				return 0;  /* cannot patch other instructions */
 			}
-			if (reg != LuaOpCodes.NO_REG && reg != LuaOpCodes.GETARG_B(i[0]))
+			if (reg != LuaOpCodes.NO_REG && reg != LuaOpCodes.GETARG_B(i.get(0)))
 			{
 				LuaOpCodes.SETARG_A(i, reg);
 			}
 			else  /* no register to put value or register already has the value */
 			{
-				i[0] = (uint)LuaOpCodes.CREATE_ABC(OpCode.OP_TEST, LuaOpCodes.GETARG_B(i[0]), 0, LuaOpCodes.GETARG_C(i[0]));
+				i.set(0, (uint)LuaOpCodes.CREATE_ABC(OpCode.OP_TEST, LuaOpCodes.GETARG_B(i.get(0)), 0, LuaOpCodes.GETARG_C(i.get(0))));
 			}
 			
 			return 1;
@@ -264,7 +264,7 @@ namespace KopiLua
 			{
 				if (newstack >= LuaLimits.MAXSTACK)
 				{
-					LuaLex.luaX_syntaxerror(fs.ls, "function or expression too complex");
+					LuaLex.luaX_syntaxerror(fs.ls, CharPtr.toCharPtr("function or expression too complex"));
 				}
 				fs.f.maxstacksize = LuaLimits.cast_byte(newstack);
 			}
@@ -309,7 +309,7 @@ namespace KopiLua
 				/* constant not found; create a new entry */
 				LuaObject.setnvalue(idx, LuaLimits.cast_num(fs.nk));
 				LuaMem.luaM_growvector(L, ref f.k, fs.nk, ref f.sizek,
-					LuaOpCodes.MAXARG_Bx, "constant table overflow");
+					LuaOpCodes.MAXARG_Bx, CharPtr.toCharPtr("constant table overflow"));
 				while (oldsize < f.sizek) 
 				{
 					LuaObject.setnilvalue(f.k[oldsize++]);
@@ -654,9 +654,9 @@ namespace KopiLua
 		private static void invertjump(FuncState fs, expdesc e)
 		{
 			InstructionPtr pc = getjumpcontrol(fs, e.u.s.info);
-			LuaLimits.lua_assert(LuaOpCodes.testTMode(LuaOpCodes.GET_OPCODE(pc[0])) != 0 && LuaOpCodes.GET_OPCODE(pc[0]) != OpCode.OP_TESTSET &&
-				LuaOpCodes.GET_OPCODE(pc[0]) != OpCode.OP_TEST);
-			LuaOpCodes.SETARG_A(pc, (LuaOpCodes.GETARG_A(pc[0]) == 0) ? 1 : 0);
+			LuaLimits.lua_assert(LuaOpCodes.testTMode(LuaOpCodes.GET_OPCODE(pc.get(0))) != 0 && LuaOpCodes.GET_OPCODE(pc.get(0)) != OpCode.OP_TESTSET &&
+				LuaOpCodes.GET_OPCODE(pc.get(0)) != OpCode.OP_TEST);
+			LuaOpCodes.SETARG_A(pc, (LuaOpCodes.GETARG_A(pc.get(0)) == 0) ? 1 : 0);
 		}
 
 
@@ -1109,11 +1109,11 @@ namespace KopiLua
 			dischargejpc(fs);  /* `pc' will change */
 			/* put new instruction in code array */
 			LuaMem.luaM_growvector(fs.L, ref f.code, fs.pc, ref f.sizecode,
-				LuaLimits.MAX_INT, "code size overflow");
+				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
 			f.code[fs.pc] = (uint)i;
 			/* save corresponding line information */
 			LuaMem.luaM_growvector(fs.L, ref f.lineinfo, fs.pc, ref f.sizelineinfo,
-				LuaLimits.MAX_INT, "code size overflow");
+				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
 			f.lineinfo[fs.pc] = line;
 			return fs.pc++;
 		}

@@ -40,7 +40,7 @@ namespace KopiLua
 		{
 			if (!cond)
 			{
-				luaL_argerror(L, numarg, extramsg);
+				luaL_argerror(L, numarg, CharPtr.toCharPtr(extramsg));
 			}
 		}
 		
@@ -60,7 +60,7 @@ namespace KopiLua
 			return /*(int)*/luaL_checkinteger(L, n);
 		}
 		
-		public static int luaL_optint(lua_State L, int n, Int32/*lua_Integer*/ d) 
+		public static int luaL_optint(lua_State L, int n, int/*Int32*//*lua_Integer*/ d) 
 		{
 			return /*(int)*/luaL_optinteger(L, n, d); 
 		}
@@ -70,7 +70,7 @@ namespace KopiLua
 			return luaL_checkinteger(L, n);
 		}
 		
-		public static long luaL_optlong(lua_State L, int n, Int32/*lua_Integer*/ d) 
+		public static long luaL_optlong(lua_State L, int n, int/*Int32*//*lua_Integer*/ d) 
 		{ 
 			return luaL_optinteger(L, n, d); 
 		}
@@ -91,14 +91,14 @@ namespace KopiLua
 			LuaAPI.lua_getfield(L, Lua.LUA_REGISTRYINDEX, n); 
 		}
 
-		public static Double/*lua_Number*/ luaL_opt(lua_State L, luaL_opt_delegate f, int n, Double/*lua_Number*/ d)
+		public static double/*Double*//*lua_Number*/ luaL_opt(lua_State L, luaL_opt_delegate f, int n, Double/*lua_Number*/ d)
 		{
 			return Lua.lua_isnoneornil(L, (n != 0) ? d : f(L, n)) ? 1 : 0;
 		}
 
-		public static Int32/*lua_Integer*/ luaL_opt_integer(lua_State L, luaL_opt_delegate_integer f, int n, Double/*lua_Number*/ d)
+		public static int/*Int32*//*lua_Integer*/ luaL_opt_integer(lua_State L, luaL_opt_delegate_integer f, int n, Double/*lua_Number*/ d)
 		{
-			return (Int32/*lua_Integer*/)(Lua.lua_isnoneornil(L, n) ? d : f(L, (n)));
+			return (int/*Int32*//*lua_Integer*/)(Lua.lua_isnoneornil(L, n) ? d : f(L, (n)));
 		}
 
 		/*
@@ -112,7 +112,7 @@ namespace KopiLua
 			{
 				luaL_prepbuffer(B);
 			}
-			B.buffer[B.p++] = c;
+			B.buffer.set(B.p++, c);
 		}
 
 		///* compatibility only */
@@ -171,29 +171,29 @@ namespace KopiLua
 			lua_Debug ar = new lua_Debug();
 			if (LuaDebug.lua_getstack(L, 0, ar) == 0)  /* no stack frame? */
 			{
-				return luaL_error(L, "bad argument #%d (%s)", narg, extramsg);
+				return luaL_error(L, CharPtr.toCharPtr("bad argument #%d (%s)"), narg, extramsg);
 			}
-			LuaDebug.lua_getinfo(L, "n", ar);
-			if (LuaConf.strcmp(ar.namewhat, "method") == 0)
+			LuaDebug.lua_getinfo(L, CharPtr.toCharPtr("n"), ar);
+			if (LuaConf.strcmp(ar.namewhat, CharPtr.toCharPtr("method")) == 0)
 			{
 				narg--;  /* do not count `self' */
 				if (narg == 0)  /* error is in the self argument itself? */
 				{
-					return luaL_error(L, "calling " + LuaConf.LUA_QS + " on bad self ({1})",
-					              ar.name, extramsg);
+					return luaL_error(L, CharPtr.toCharPtr("calling " + LuaConf.getLUA_QS() + " on bad self ({1})"),
+					              ar.name, extramsg); //FIXME:
 				}
 			}
-			if (ar.name == null)
+			if (CharPtr.isEqual(ar.name, null))
 			{
-				ar.name = "?";
+				ar.name = CharPtr.toCharPtr("?");
 			}
-			return luaL_error(L, "bad argument #%d to " + LuaConf.LUA_QS + " (%s)",
+			return luaL_error(L, CharPtr.toCharPtr("bad argument #%d to " + LuaConf.getLUA_QS() + " (%s)"),
 				narg, ar.name, extramsg);
 		}
 
 		public static int luaL_typerror(lua_State L, int narg, CharPtr tname) 
 		{
-			CharPtr msg = LuaAPI.lua_pushfstring(L, "%s expected, got %s",
+			CharPtr msg = LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s expected, got %s"),
 				tname, luaL_typename(L, narg));
 			return luaL_argerror(L, narg, msg);
 		}
@@ -209,15 +209,15 @@ namespace KopiLua
 			if (LuaDebug.lua_getstack(L, level, ar) != 0) 
 			{  
 				/* check function at level */
-				LuaDebug.lua_getinfo(L, "Sl", ar);  /* get info about it */
+				LuaDebug.lua_getinfo(L, CharPtr.toCharPtr("Sl"), ar);  /* get info about it */
 				if (ar.currentline > 0) 
 				{  
 					/* is there info? */
-					LuaAPI.lua_pushfstring(L, "%s:%d: ", ar.short_src, ar.currentline);
+					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s:%d: "), ar.short_src, ar.currentline);
 					return;
 				}
 			}
-			Lua.lua_pushliteral(L, "");  /* else, no information available... */
+			Lua.lua_pushliteral(L, CharPtr.toCharPtr(""));  /* else, no information available... */
 		}
 
 		public static int luaL_error(lua_State L, CharPtr fmt, params object[] p)
@@ -232,7 +232,7 @@ namespace KopiLua
 
 		public static int luaL_checkoption(lua_State L, int narg, CharPtr def, CharPtr [] lst) 
 		{
-			CharPtr name = (def != null) ? luaL_optstring(L, narg, def) :
+			CharPtr name = (CharPtr.isNotEqual(def, null)) ? luaL_optstring(L, narg, def) :
 				luaL_checkstring(L, narg);
 			int i;
 			for (i = 0; i < lst.Length; i++)
@@ -242,7 +242,7 @@ namespace KopiLua
 					return i;
 				}
 			}
-			return luaL_argerror(L, narg, LuaAPI.lua_pushfstring(L, "invalid option " + LuaConf.LUA_QS, name));
+			return luaL_argerror(L, narg, LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("invalid option " + LuaConf.getLUA_QS()), name));
 		}
 
 		public static int luaL_newmetatable(lua_State L, CharPtr tname) 
@@ -285,7 +285,7 @@ namespace KopiLua
 		{
 			if (LuaAPI.lua_checkstack(L, space) == 0)
 			{
-				luaL_error(L, "stack overflow (%s)", mes);
+				luaL_error(L, CharPtr.toCharPtr("stack overflow (%s)"), mes);
 			}
 		}
 
@@ -302,7 +302,7 @@ namespace KopiLua
 		{
 			if (LuaAPI.lua_type(L, narg) == Lua.LUA_TNONE)
 			{
-				luaL_argerror(L, narg, "value expected");
+				luaL_argerror(L, narg, CharPtr.toCharPtr("value expected"));
 			}
 		}
 
@@ -315,7 +315,7 @@ namespace KopiLua
 		public static CharPtr luaL_checklstring(lua_State L, int narg, out int/*uint*/ len)
 		{
 			CharPtr s = LuaAPI.lua_tolstring(L, narg, out len);
-			if (s == null) 
+			if (CharPtr.isEqual(s, null)) 
 			{
 				tag_error(L, narg, Lua.LUA_TSTRING);
 			}
@@ -332,7 +332,7 @@ namespace KopiLua
 		{
 			if (Lua.lua_isnoneornil(L, narg))
 			{
-				len = /*(uint)*/((def != null) ? LuaConf.strlen(def) : 0);
+				len = /*(uint)*/((CharPtr.isNotEqual(def, null)) ? LuaConf.strlen(def) : 0);
 				return def;
 			}
 			else
@@ -341,9 +341,9 @@ namespace KopiLua
 			}
 		}
 
-		public static Double/*lua_Number*/ luaL_checknumber(lua_State L, int narg)
+		public static double/*Double*//*lua_Number*/ luaL_checknumber(lua_State L, int narg)
 		{
-			Double/*lua_Number*/ d = LuaAPI.lua_tonumber(L, narg);
+			double/*Double*//*lua_Number*/ d = LuaAPI.lua_tonumber(L, narg);
 			if ((d == 0) && (LuaAPI.lua_isnumber(L, narg) == 0))  /* avoid extra test when d is not 0 */
 			{
 				tag_error(L, narg, Lua.LUA_TNUMBER);
@@ -351,20 +351,20 @@ namespace KopiLua
 			return d;
 		}
 
-		public static Double/*lua_Number*/ luaL_optnumber(lua_State L, int narg, Double/*lua_Number*/ def)
+		public static double/*Double*//*lua_Number*/ luaL_optnumber(lua_State L, int narg, Double/*lua_Number*/ def)
 		{
 			return luaL_opt(L, luaL_checknumber, narg, def);
 		}
 
-		public static Int32/*lua_Integer*/ luaL_checkinteger(lua_State L, int narg)
+		public static int/*Int32*//*lua_Integer*/ luaL_checkinteger(lua_State L, int narg)
 		{
-			Int32/*lua_Integer*/ d = LuaAPI.lua_tointeger(L, narg);
+			int/*Int32*//*lua_Integer*/ d = LuaAPI.lua_tointeger(L, narg);
 			if (d == 0 && LuaAPI.lua_isnumber(L, narg) == 0)  /* avoid extra test when d is not 0 */
 			tag_error(L, narg, Lua.LUA_TNUMBER);
 			return d;
 		}
 
-		public static Int32/*lua_Integer*/ luaL_optinteger(lua_State L, int narg, Int32/*lua_Integer*/ def)
+		public static int/*Int32*//*lua_Integer*/ luaL_optinteger(lua_State L, int narg, int/*Int32*//*lua_Integer*/ def)
 		{
 			return luaL_opt_integer(L, luaL_checkinteger, narg, def);
 		}
@@ -411,7 +411,7 @@ namespace KopiLua
 		private static int libsize(luaL_Reg[] l) 
 		{
 			int size = 0;
-			for (; l[size].name != null; size++)
+			for (; CharPtr.isNotEqual(l[size].name, null); size++)
 			{
 				;
 			}
@@ -420,20 +420,20 @@ namespace KopiLua
 
 		public static void luaI_openlib (lua_State L, CharPtr libname, luaL_Reg[] l, int nup) 
 		{
-			if (libname!=null) 
+			if (CharPtr.isNotEqual(libname, null)) 
 			{
 				int size = libsize(l);
 				/* check whether lib already exists */
-				luaL_findtable(L, Lua.LUA_REGISTRYINDEX, "_LOADED", 1);
+				luaL_findtable(L, Lua.LUA_REGISTRYINDEX, CharPtr.toCharPtr("_LOADED"), 1);
 				LuaAPI.lua_getfield(L, -1, libname);  /* get _LOADED[libname] */
 				if (!Lua.lua_istable(L, -1))
 				{  
 					/* not found? */
 					Lua.lua_pop(L, 1);  /* remove previous result */
 					/* try global variable (and create one if it does not exist) */
-					if (luaL_findtable(L, Lua.LUA_GLOBALSINDEX, libname, size) != null)
+					if (CharPtr.isNotEqual(luaL_findtable(L, Lua.LUA_GLOBALSINDEX, libname, size), null))
 					{
-						luaL_error(L, "name conflict for module " + LuaConf.LUA_QS, libname);
+						luaL_error(L, CharPtr.toCharPtr("name conflict for module " + LuaConf.getLUA_QS()), libname);
 					}
 					LuaAPI.lua_pushvalue(L, -1);
 					LuaAPI.lua_setfield(L, -3, libname);  /* _LOADED[libname] = new table */
@@ -442,7 +442,7 @@ namespace KopiLua
 				LuaAPI.lua_insert(L, -(nup + 1));  /* move library table to below upvalues */
 			}
 			int reg_num = 0;
-			for (; l[reg_num].name != null; reg_num++) 
+			for (; CharPtr.isNotEqual(l[reg_num].name, null); reg_num++) 
 			{
 				int i;
 				for (i = 0; i < nup; i++)  /* copy upvalues to the top */
@@ -540,7 +540,7 @@ namespace KopiLua
 			int/*uint*/ l = /*(uint)*/LuaConf.strlen(p);
 			luaL_Buffer b = new luaL_Buffer();
 			luaL_buffinit(L, b);
-			while ((wild = LuaConf.strstr(s, p)) != null)
+			while (CharPtr.isNotEqual((wild = LuaConf.strstr(s, p)), null))
 			{
 				luaL_addlstring(b, s, /*(uint)*/CharPtr.minus(wild, s));  /* push prefix */
 				luaL_addstring(b, r);  /* push replacement in place of pattern */
@@ -558,7 +558,7 @@ namespace KopiLua
 			do 
 			{
 				e = LuaConf.strchr(fname, '.');
-				if (e == null) 
+				if (CharPtr.isEqual(e, null)) 
 				{
 					e = CharPtr.plus(fname, LuaConf.strlen(fname));
 				}
@@ -568,7 +568,7 @@ namespace KopiLua
 				{
 					/* no such field? */
 					Lua.lua_pop(L, 1);  /* remove this nil */
-					LuaAPI.lua_createtable(L, 0, (e == '.' ? 1 : szhint)); /* new table for field */
+					LuaAPI.lua_createtable(L, 0, (CharPtr.isEqual(e, '.') ? 1 : szhint)); /* new table for field */
 					LuaAPI.lua_pushlstring(L, fname, /*(uint)*/CharPtr.minus(e, fname));
 					LuaAPI.lua_pushvalue(L, -2);
 					LuaAPI.lua_settable(L, -4);  /* set new table into field */
@@ -581,7 +581,7 @@ namespace KopiLua
 				}
 				LuaAPI.lua_remove(L, -2);  /* remove previous table */
 				fname = CharPtr.plus(e, 1);
-			} while (e == '.');
+            } while (CharPtr.isEqual(e, '.'));
 			return null;
 		}
 
@@ -656,7 +656,7 @@ namespace KopiLua
 		{
 			while (l-- != 0)
 			{
-				char c = s[0];
+				char c = s.get(0);
 				s = s.next();
 				luaL_addchar(B, c);
 			}
@@ -686,7 +686,7 @@ namespace KopiLua
 				CharPtr src = new CharPtr(s.chars, s.index);
 				for (int/*uint*/ i = 0; i < vl; i++)
 				{
-					dst[i] = src[i];
+					dst.set(i, src.get(i));
 				}
 				B.p += /*(int)*/vl;
 				Lua.lua_pop(L, 1);  /* remove from stack */
@@ -756,7 +756,7 @@ namespace KopiLua
 		 ** Load functions
 		 ** =======================================================
 		 */
-		public static CharPtr getF (lua_State L, object ud, out int/*uint*/ size) 
+		public static CharPtr getF(lua_State L, object ud, out int/*uint*/ size) 
 		{
 			size = 0;
 			LoadF lf = (LoadF)ud;
@@ -765,7 +765,7 @@ namespace KopiLua
 			{
 				lf.extraline = 0;
 				size = 1;
-				return "\n";
+				return CharPtr.toCharPtr("\n");
 			}
 			if (LuaConf.feof(lf.f) != 0) 
 			{
@@ -779,7 +779,7 @@ namespace KopiLua
 		{
 			CharPtr serr = LuaConf.strerror(LuaConf.errno());
 			CharPtr filename = CharPtr.plus(Lua.lua_tostring(L, fnameindex), 1);
-			LuaAPI.lua_pushfstring(L, "cannot %s %s: %s", what, filename, serr);
+			LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("cannot %s %s: %s"), what, filename, serr);
 			LuaAPI.lua_remove(L, fnameindex);
 			return LUA_ERRFILE;
 		}
@@ -791,18 +791,18 @@ namespace KopiLua
 			int c;
 			int fnameindex = LuaAPI.lua_gettop(L) + 1;  /* index of filename on the stack */
 			lf.extraline = 0;
-			if (filename == null) 
+			if (CharPtr.isEqual(filename, null)) 
 			{
-				Lua.lua_pushliteral(L, "=stdin");
+				Lua.lua_pushliteral(L, CharPtr.toCharPtr("=stdin"));
 				lf.f = LuaConf.stdin;
 			}
 			else 
 			{
-				LuaAPI.lua_pushfstring(L, "@%s", filename);
-				lf.f = LuaConf.fopen(filename, "r");
+				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("@%s"), filename);
+				lf.f = LuaConf.fopen(filename, CharPtr.toCharPtr("r"));
 				if (lf.f == null) 
 				{
-					return errfile(L, "open", fnameindex);
+					return errfile(L, CharPtr.toCharPtr("open"), fnameindex);
 				}
 			}
 			c = LuaConf.getc(lf.f);
@@ -819,13 +819,13 @@ namespace KopiLua
 					c = LuaConf.getc(lf.f);
 				}
 			}
-			if (c == Lua.LUA_SIGNATURE[0] && (filename != null))
+			if (c == Lua.LUA_SIGNATURE[0] && (CharPtr.isNotEqual(filename, null)))
 			{
 				/* binary file? */
-				lf.f = LuaConf.freopen(filename, "rb", lf.f);  /* reopen in binary mode */
+				lf.f = LuaConf.freopen(filename, CharPtr.toCharPtr("rb"), lf.f);  /* reopen in binary mode */
 				if (lf.f == null) 
 				{
-					return errfile(L, "reopen", fnameindex);
+					return errfile(L, CharPtr.toCharPtr("reopen"), fnameindex);
 				}
 				/* skip eventual `#!...' */
 				while ((c = LuaConf.getc(lf.f)) != LuaConf.EOF && c != Lua.LUA_SIGNATURE[0]) 
@@ -837,14 +837,14 @@ namespace KopiLua
 			LuaConf.ungetc(c, lf.f);
 			status = LuaAPI.lua_load(L, getF, lf, Lua.lua_tostring(L, -1));
 			readstatus = LuaConf.ferror(lf.f);
-			if (filename != null) 
+			if (CharPtr.isNotEqual(filename, null)) 
 			{
 				LuaConf.fclose(lf.f);  /* close file (even in case of errors) */
 			}
 			if (readstatus != 0) 
 			{
 				LuaAPI.lua_settop(L, fnameindex);  /* ignore results from `lua_load' */
-				return errfile(L, "read", fnameindex);
+				return errfile(L, CharPtr.toCharPtr("read"), fnameindex);
 			}
 			LuaAPI.lua_remove(L, fnameindex);
 			return status;
@@ -883,7 +883,7 @@ namespace KopiLua
 		private static int panic(lua_State L) 
 		{
 			//(void)L;  /* to avoid warnings */
-			LuaConf.fprintf(LuaConf.stderr, "PANIC: unprotected error in call to Lua API (%s)\n",
+			LuaConf.fprintf(LuaConf.stderr, CharPtr.toCharPtr("PANIC: unprotected error in call to Lua API (%s)\n"),
 				Lua.lua_tostring(L, -1));
 			return 0;
 		}
@@ -896,6 +896,6 @@ namespace KopiLua
 		}
 	}
 
-	public delegate Double/*lua_Number*/ luaL_opt_delegate(lua_State L, int narg);
-	public delegate Int32/*lua_Integer*/ luaL_opt_delegate_integer(lua_State L, int narg);
+	public delegate double/*Double*//*lua_Number*/ luaL_opt_delegate(lua_State L, int narg);
+	public delegate int/*Int32*//*lua_Integer*/ luaL_opt_delegate_integer(lua_State L, int narg);
 }

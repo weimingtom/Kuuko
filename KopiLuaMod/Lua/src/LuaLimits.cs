@@ -38,7 +38,7 @@ namespace KopiLua
 		public const UInt32/*lu_mem*/ MAX_LUMEM = /*lu_mem*/UInt32.MaxValue - 2;
 
 
-		public const int MAX_INT = (Int32.MaxValue - 2);  /* maximum value of an int (-2 for safety) */
+		public const int MAX_INT = (/*Int32*/int.MaxValue - 2);  /* maximum value of an int (-2 for safety) */
 
 		/*
 		 ** conversion of pointer to integer

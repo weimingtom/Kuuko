@@ -3,15 +3,13 @@
  ** a generic input stream interface
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class Mbuffer
 	{
 		public CharPtr buffer = new CharPtr();
-		public int/*uint*/ n;
-		public int/*uint*/ buffsize;
+		public int n; /*uint*/
+		public int buffsize; /*uint*/
 	}
 }
 

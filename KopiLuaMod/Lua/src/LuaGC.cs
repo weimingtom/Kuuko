@@ -109,12 +109,12 @@ namespace KopiLua
 
 		public static bool iswhite(GCObject x) 
 		{ 
-			return test2bits(x.gch.marked, WHITE0BIT, WHITE1BIT); 
+			return test2bits(x.getGch().marked, WHITE0BIT, WHITE1BIT); 
 		}
 		
 		public static bool isblack(GCObject x) 
 		{ 
-			return testbit(x.gch.marked, BLACKBIT); 
+			return testbit(x.getGch().marked, BLACKBIT); 
 		}
 		
 		public static bool isgray(GCObject x) 
@@ -129,17 +129,17 @@ namespace KopiLua
 		
 		public static bool isdead(global_State g, GCObject v) 
 		{ 
-			return (v.gch.marked & otherwhite(g) & WHITEBITS) != 0; 
+			return (v.getGch().marked & otherwhite(g) & WHITEBITS) != 0; 
 		}
 
 		public static void changewhite(GCObject x) 
 		{ 
-			x.gch.marked ^= (byte)WHITEBITS; 
+			x.getGch().marked ^= (byte)WHITEBITS; 
 		}
 		
 		public static void gray2black(GCObject x) 
 		{ 
-			l_setbit(ref x.gch.marked, BLACKBIT); 
+			l_setbit(ref x.getGch().marked, BLACKBIT); 
 		}
 
 		public static bool valiswhite(TValue x) 
@@ -203,22 +203,22 @@ namespace KopiLua
 
 		public static void makewhite(global_State g, GCObject x)
 		{
-			x.gch.marked = (byte)(x.gch.marked & maskmarks | luaC_white(g));
+			x.getGch().marked = (byte)(x.getGch().marked & maskmarks | luaC_white(g));
 		}
 
 		public static void white2gray(GCObject x) 
 		{ 
-			reset2bits(ref x.gch.marked, WHITE0BIT, WHITE1BIT); 
+			reset2bits(ref x.getGch().marked, WHITE0BIT, WHITE1BIT); 
 		}
 		
 		public static void black2gray(GCObject x) 
 		{ 
-			resetbit(ref x.gch.marked, BLACKBIT); 
+			resetbit(ref x.getGch().marked, BLACKBIT); 
 		}
 
 		public static void stringmark(TString s) 
 		{
-			reset2bits(ref s.tsv.marked, WHITE0BIT, WHITE1BIT);
+			reset2bits(ref s.getTsv().marked, WHITE0BIT, WHITE1BIT);
 		}
 
 		public static bool isfinalized(Udata_uv u) 
@@ -271,7 +271,7 @@ namespace KopiLua
 		{
 			LuaLimits.lua_assert(iswhite(o) && !isdead(g, o));
 			white2gray(o);
-			switch (o.gch.tt) 
+			switch (o.getGch().tt) 
 			{
 				case Lua.LUA_TSTRING:
 					{
@@ -300,7 +300,7 @@ namespace KopiLua
 					}
 				case Lua.LUA_TFUNCTION:
 					{
-						LuaState.gco2cl(o).c.gclist = g.gray;
+						LuaState.gco2cl(o).c.setGclist(g.gray);
 						g.gray = o;
 						break;
 					}
@@ -337,7 +337,7 @@ namespace KopiLua
 			{
 				do 
 				{
-					u = u.gch.next;
+					u = u.getGch().next;
 					makewhite(g, u);  /* may be marked, if left from previous GC */
 					reallymarkobject(g, u);
 				} while (u != g.tmudata);
@@ -355,28 +355,28 @@ namespace KopiLua
 			{
 				if (!(iswhite(curr) || (all != 0)) || isfinalized(LuaState.gco2u(curr)))
 				{
-					p = new NextRef(curr.gch);  /* don't bother with them */
+					p = new NextRef(curr.getGch());  /* don't bother with them */
 				}
 				else if (LuaTM.fasttm(L, LuaState.gco2u(curr).metatable, TMS.TM_GC) == null)
 				{
 					markfinalized(LuaState.gco2u(curr));  /* don't need finalization */
-					p = new NextRef(curr.gch);
+					p = new NextRef(curr.getGch());
 				}
 				else 
 				{  
 					/* must call its gc method */
 					deadmem += /*(uint)*/LuaString.sizeudata(LuaState.gco2u(curr));
 					markfinalized(LuaState.gco2u(curr));
-					p.set(curr.gch.next);
+					p.set(curr.getGch().next);
 					/* link `curr' at the end of `tmudata' list */
 					if (g.tmudata == null)  /* list is empty? */
 					{
-						g.tmudata = curr.gch.next = curr;  /* creates a circular list */
+						g.tmudata = curr.getGch().next = curr;  /* creates a circular list */
 					}
 					else 
 					{
-						curr.gch.next = g.tmudata.gch.next;
-						g.tmudata.gch.next = curr;
+						curr.getGch().next = g.tmudata.getGch().next;
+						g.tmudata.getGch().next = curr;
 						g.tmudata = curr;
 					}
 				}
@@ -398,9 +398,9 @@ namespace KopiLua
 			if ((mode != null) && LuaObject.ttisstring(mode))
 			{  
 				/* is there a weak mode? */
-				weakkey = (LuaConf.strchr(LuaObject.svalue(mode), 'k') != null) ? 1 : 0;
-				weakvalue = (LuaConf.strchr(LuaObject.svalue(mode), 'v') != null) ? 1 : 0;
-				if ((weakkey!=0) || (weakvalue!=0)) 
+				weakkey = (CharPtr.isNotEqual(LuaConf.strchr(LuaObject.svalue(mode), 'k'), null)) ? 1 : 0;
+				weakvalue = (CharPtr.isNotEqual(LuaConf.strchr(LuaObject.svalue(mode), 'v'), null)) ? 1 : 0;
+				if ((weakkey != 0) || (weakvalue != 0)) 
 				{  
 					/* is really weak? */
 					h.marked &= (byte)~(KEYWEAK | VALUEWEAK);  /* clear bits */
@@ -490,11 +490,11 @@ namespace KopiLua
 
 		private static void traverseclosure(global_State g, Closure cl) 
 		{
-			markobject(g, cl.c.env);
-			if (cl.c.isC != 0) 
+			markobject(g, cl.c.getEnv());
+			if (cl.c.getIsC() != 0) 
 			{
 				int i;
-				for (i = 0; i < cl.c.nupvalues; i++)  /* mark its upvalues */
+				for (i = 0; i < cl.c.getNupvalues(); i++)  /* mark its upvalues */
 				{
 					markvalue(g, cl.c.upvalue[i]);
 				}
@@ -502,9 +502,9 @@ namespace KopiLua
 			else 
 			{
 				int i;
-				LuaLimits.lua_assert(cl.l.nupvalues == cl.l.p.nups);
+				LuaLimits.lua_assert(cl.l.getNupvalues() == cl.l.p.nups);
 				markobject(g, cl.l.p);
-				for (i = 0; i < cl.l.nupvalues; i++)  /* mark its upvalues */
+				for (i = 0; i < cl.l.getNupvalues(); i++)  /* mark its upvalues */
 				{
 					markobject(g, cl.l.upvals[i]);
 				}
@@ -514,7 +514,7 @@ namespace KopiLua
 		private static void checkstacksizes(lua_State L, TValue/*StkId*/ max)
 		{
 			int ci_used = LuaLimits.cast_int(CallInfo.minus(L.ci, L.base_ci[0]));  /* number of `ci' in use */
-			int s_used = LuaLimits.cast_int(max - L.stack);  /* part of stack in use */
+			int s_used = LuaLimits.cast_int(TValue.minus(max, L.stack));  /* part of stack in use */
 			if (L.size_ci > LuaConf.LUAI_MAXCALLS)  /* handling overflow? */
 			{
 				return;  /* do not touch the stacks */
@@ -540,17 +540,17 @@ namespace KopiLua
 			lim = l.top;
 			for (ci = l.base_ci[0]; CallInfo.lessEqual(ci, l.ci); CallInfo.inc(ref ci))
 			{
-				LuaLimits.lua_assert(ci.top <= l.stack_last);
-				if (lim < ci.top) 
+				LuaLimits.lua_assert(TValue.lessEqual(ci.top, l.stack_last));
+				if (TValue.lessThan(lim, ci.top)) 
 				{
 					lim = ci.top;
 				}
 			}
-			for (o = l.stack[0]; o < l.top; /*StkId*/TValue.inc(ref o))
+			for (o = l.stack[0]; TValue.lessThan(o, l.top); /*StkId*/TValue.inc(ref o))
 			{
 				markvalue(g, o);
 			}
-			for (; o <= lim; /*StkId*/TValue.inc(ref o))
+			for (; TValue.lessEqual(o, lim); /*StkId*/TValue.inc(ref o))
 			{
 				LuaObject.setnilvalue(o);
 			}
@@ -561,12 +561,12 @@ namespace KopiLua
 		 ** traverse one gray object, turning it to black.
 		 ** Returns `quantity' traversed.
 		 */
-		private static Int32/*l_mem*/ propagatemark(global_State g)
+		private static int/*Int32*//*l_mem*/ propagatemark(global_State g)
 		{
 			GCObject o = g.gray;
 			LuaLimits.lua_assert(isgray(o));
 			gray2black(o);
-			switch (o.gch.tt) 
+			switch (o.getGch().tt) 
 			{
 				case Lua.LUA_TTABLE:
 					{
@@ -583,10 +583,10 @@ namespace KopiLua
 				case Lua.LUA_TFUNCTION:
 					{
 						Closure cl = LuaState.gco2cl(o);
-						g.gray = cl.c.gclist;
+						g.gray = cl.c.getGclist();
 						traverseclosure(g, cl);
-						return (cl.c.isC != 0) ? LuaFunc.sizeCclosure(cl.c.nupvalues) :
-							LuaFunc.sizeLclosure(cl.l.nupvalues);
+						return (cl.c.getIsC() != 0) ? LuaFunc.sizeCclosure(cl.c.getNupvalues()) :
+							LuaFunc.sizeLclosure(cl.l.getNupvalues());
 					}
 				case Lua.LUA_TTHREAD:
 					{
@@ -694,7 +694,7 @@ namespace KopiLua
 
 		private static void freeobj(lua_State L, GCObject o) 
 		{
-			switch (o.gch.tt) 
+			switch (o.getGch().tt) 
 			{
 				case LuaObject.LUA_TPROTO: 
 					{
@@ -755,25 +755,25 @@ namespace KopiLua
 			int deadmask = otherwhite(g);
 			while ((curr = p.get()) != null && count-- > 0) 
 			{
-				if (curr.gch.tt == Lua.LUA_TTHREAD)  /* sweep open upvalues of each thread */
+				if (curr.getGch().tt == Lua.LUA_TTHREAD)  /* sweep open upvalues of each thread */
 				{
 					sweepwholelist(L, new OpenValRef(LuaState.gco2th(curr)));
 				}
-				if (((curr.gch.marked ^ WHITEBITS) & deadmask) != 0) 
+				if (((curr.getGch().marked ^ WHITEBITS) & deadmask) != 0) 
 				{  
 					/* not dead? */
-					LuaLimits.lua_assert(isdead(g, curr) || testbit(curr.gch.marked, FIXEDBIT));
+					LuaLimits.lua_assert(isdead(g, curr) || testbit(curr.getGch().marked, FIXEDBIT));
 					makewhite(g, curr);  /* make it white (for next cycle) */
-					p = new NextRef(curr.gch);
+					p = new NextRef(curr.getGch());
 				}
 				else 
 				{  
 					/* must erase `curr' */
 					LuaLimits.lua_assert(isdead(g, curr) || deadmask == bitmask(SFIXEDBIT));
-					p.set( curr.gch.next );
+					p.set( curr.getGch().next );
 					if (curr == g.rootgc)  /* is the first element of the list? */
 					{
-						g.rootgc = curr.gch.next;  /* adjust first */
+						g.rootgc = curr.getGch().next;  /* adjust first */
 					}
 					freeobj(L, curr);
 				}
@@ -802,7 +802,7 @@ namespace KopiLua
 		private static void GCTM(lua_State L) 
 		{
 			global_State g = LuaState.G(L);
-			GCObject o = g.tmudata.gch.next;  /* get first element */
+			GCObject o = g.tmudata.getGch().next;  /* get first element */
 			Udata udata = LuaState.rawgco2u(o);
 			TValue tm;
 			/* remove udata from `tmudata' */
@@ -812,7 +812,7 @@ namespace KopiLua
 			}
 			else
 			{
-				g.tmudata.gch.next = udata.uv.next;
+				g.tmudata.getGch().next = udata.uv.next;
 			}
 			udata.uv.next = g.mainthread.next;  /* return it to `root' list */
 			g.mainthread.next = o;
@@ -825,9 +825,9 @@ namespace KopiLua
 				L.allowhook = 0;  /* stop debug hooks during GC tag method */
 				g.GCthreshold = 2*g.totalbytes;  /* avoid GC steps */
 				LuaObject.setobj2s(L, L.top, tm);
-				LuaObject.setuvalue(L, L.top + 1, udata);
-				L.top += 2;
-				LuaDo.luaD_call(L, L.top - 2, 0);
+				LuaObject.setuvalue(L, TValue.plus(L.top, 1), udata);
+				L.top = TValue.plus(L.top, 2);
+				LuaDo.luaD_call(L, TValue.minus(L.top, 2), 0);
 				L.allowhook = oldah;  /* restore hooks */
 				g.GCthreshold = /*(uint)*/oldt;  /* restore threshold */
 			}
@@ -927,7 +927,7 @@ namespace KopiLua
 			g.estimate = g.totalbytes - udsize;  /* first estimate */
 		}
 
-		private static Int32/*l_mem*/ singlestep(lua_State L)
+		private static int/*Int32*//*l_mem*/ singlestep(lua_State L)
 		{
 			global_State g = LuaState.G(L);
 			/*lua_checkmemory(L);*/
@@ -1005,10 +1005,10 @@ namespace KopiLua
 
 		public static void luaC_step (lua_State L) {
 			global_State g = LuaState.G(L);
-			Int32/*l_mem*/ lim = (Int32/*l_mem*/)((GCSTEPSIZE / 100) * g.gcstepmul);
+			int/*Int32*//*l_mem*/ lim = (int/*Int32*//*l_mem*/)((GCSTEPSIZE / 100) * g.gcstepmul);
 			if (lim == 0)
 			{
-				lim = (Int32/*l_mem*/)((LuaLimits.MAX_LUMEM - 1) / 2);  /* no limit */
+				lim = (int/*Int32*//*l_mem*/)((LuaLimits.MAX_LUMEM - 1) / 2);  /* no limit */
 			}
 			g.gcdept += g.totalbytes - g.GCthreshold;
 			do 
@@ -1072,7 +1072,7 @@ namespace KopiLua
 			global_State g = LuaState.G(L);
 			LuaLimits.lua_assert(isblack(o) && iswhite(v) && !isdead(g, v) && !isdead(g, o));
 			LuaLimits.lua_assert(g.gcstate != GCSfinalize && g.gcstate != GCSpause);
-			LuaLimits.lua_assert(LuaObject.ttype(o.gch) != Lua.LUA_TTABLE);
+			LuaLimits.lua_assert(LuaObject.ttype(o.getGch()) != Lua.LUA_TTABLE);
 			/* must keep invariant? */
 			if (g.gcstate == GCSpropagate)
 			{
@@ -1099,17 +1099,17 @@ namespace KopiLua
 		public static void luaC_link(lua_State L, GCObject o, Byte/*lu_byte*/ tt)
 		{
 			global_State g = LuaState.G(L);
-			o.gch.next = g.rootgc;
+			o.getGch().next = g.rootgc;
 			g.rootgc = o;
-			o.gch.marked = luaC_white(g);
-			o.gch.tt = tt;
+			o.getGch().marked = luaC_white(g);
+			o.getGch().tt = tt;
 		}
 
 		public static void luaC_linkupval(lua_State L, UpVal uv) 
 		{
 			global_State g = LuaState.G(L);
 			GCObject o = LuaState.obj2gco(uv);
-			o.gch.next = g.rootgc;  /* link upvalue into `rootgc' list */
+			o.getGch().next = g.rootgc;  /* link upvalue into `rootgc' list */
 			g.rootgc = o;
 			if (isgray(o)) 
 			{

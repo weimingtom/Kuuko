@@ -3,18 +3,16 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class LClosure : ClosureType
-	{
+	{	
+		public Proto p;
+		public UpVal[] upvals;
+		
 		public LClosure(ClosureHeader header) : base(header) 
 		{
 				
 		}
-		
-		public Proto p;
-		public UpVal[] upvals;
 	}
 }

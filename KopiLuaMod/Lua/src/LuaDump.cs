@@ -26,7 +26,7 @@ namespace KopiLua
 			{
 				ch[i] = (char)bytes[i];
 			}
-			CharPtr str = ch;
+			CharPtr str = CharPtr.toCharPtr(ch);
 			DumpBlock(str, /*(uint)*/str.chars.Length, D);
 		}
 
@@ -79,14 +79,14 @@ namespace KopiLua
 
 		private static void DumpString(TString s, DumpState D)
 		{
-			if (s == null || LuaObject.getstr(s) == null)
+			if (s == null || CharPtr.isEqual(LuaObject.getstr(s), null))
 			{
 				int/*uint*/ size = 0;
 				DumpVar(size,D);
 			}
 			else
 			{
-				int/*uint*/ size = s.tsv.len + 1;		/* include trailing '\0' */
+				int/*uint*/ size = s.getTsv().len + 1;		/* include trailing '\0' */
 				DumpVar(size,D);
 				DumpBlock(LuaObject.getstr(s), size, D);
 			}
@@ -178,7 +178,7 @@ namespace KopiLua
 
 		private static void DumpHeader(DumpState D)
 		{
-			CharPtr h = new char[LuaUndump.LUAC_HEADERSIZE];
+			CharPtr h = CharPtr.toCharPtr(new char[LuaUndump.LUAC_HEADERSIZE]);
 			LuaUndump.luaU_header(h);
 			DumpBlock(h, LuaUndump.LUAC_HEADERSIZE, D);
 		}

@@ -237,7 +237,7 @@ namespace KopiLua
 					}
 				default: 
 					{
-						return LuaAuxLib.luaL_error(L, "wrong number of arguments");
+						return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("wrong number of arguments"));
 					}
 			}
 			return 1;
@@ -252,34 +252,34 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] mathlib = {
-			new luaL_Reg("abs", math_abs),
-			new luaL_Reg("acos", math_acos),
-			new luaL_Reg("asin", math_asin),
-			new luaL_Reg("atan2", math_atan2),
-			new luaL_Reg("atan", math_atan),
-			new luaL_Reg("ceil", math_ceil),
-			new luaL_Reg("cosh", math_cosh),
-			new luaL_Reg("cos", math_cos),
-			new luaL_Reg("deg", math_deg),
-			new luaL_Reg("exp", math_exp),
-			new luaL_Reg("floor", math_floor),
-			new luaL_Reg("fmod", math_fmod),
-			new luaL_Reg("frexp", math_frexp),
-			new luaL_Reg("ldexp", math_ldexp),
-			new luaL_Reg("log10", math_log10),
-			new luaL_Reg("log", math_log),
-			new luaL_Reg("max", math_max),
-			new luaL_Reg("min", math_min),
-			new luaL_Reg("modf", math_modf),
-			new luaL_Reg("pow", math_pow),
-			new luaL_Reg("rad", math_rad),
-			new luaL_Reg("random", math_random),
-			new luaL_Reg("randomseed", math_randomseed),
-			new luaL_Reg("sinh", math_sinh),
-			new luaL_Reg("sin", math_sin),
-			new luaL_Reg("sqrt", math_sqrt),
-			new luaL_Reg("tanh", math_tanh),
-			new luaL_Reg("tan", math_tan),
+			new luaL_Reg(CharPtr.toCharPtr("abs"), math_abs),
+			new luaL_Reg(CharPtr.toCharPtr("acos"), math_acos),
+			new luaL_Reg(CharPtr.toCharPtr("asin"), math_asin),
+			new luaL_Reg(CharPtr.toCharPtr("atan2"), math_atan2),
+			new luaL_Reg(CharPtr.toCharPtr("atan"), math_atan),
+			new luaL_Reg(CharPtr.toCharPtr("ceil"), math_ceil),
+			new luaL_Reg(CharPtr.toCharPtr("cosh"), math_cosh),
+			new luaL_Reg(CharPtr.toCharPtr("cos"), math_cos),
+			new luaL_Reg(CharPtr.toCharPtr("deg"), math_deg),
+			new luaL_Reg(CharPtr.toCharPtr("exp"), math_exp),
+			new luaL_Reg(CharPtr.toCharPtr("floor"), math_floor),
+			new luaL_Reg(CharPtr.toCharPtr("fmod"), math_fmod),
+			new luaL_Reg(CharPtr.toCharPtr("frexp"), math_frexp),
+			new luaL_Reg(CharPtr.toCharPtr("ldexp"), math_ldexp),
+			new luaL_Reg(CharPtr.toCharPtr("log10"), math_log10),
+			new luaL_Reg(CharPtr.toCharPtr("log"), math_log),
+			new luaL_Reg(CharPtr.toCharPtr("max"), math_max),
+			new luaL_Reg(CharPtr.toCharPtr("min"), math_min),
+			new luaL_Reg(CharPtr.toCharPtr("modf"), math_modf),
+			new luaL_Reg(CharPtr.toCharPtr("pow"), math_pow),
+			new luaL_Reg(CharPtr.toCharPtr("rad"), math_rad),
+			new luaL_Reg(CharPtr.toCharPtr("random"), math_random),
+			new luaL_Reg(CharPtr.toCharPtr("randomseed"), math_randomseed),
+			new luaL_Reg(CharPtr.toCharPtr("sinh"), math_sinh),
+			new luaL_Reg(CharPtr.toCharPtr("sin"), math_sin),
+			new luaL_Reg(CharPtr.toCharPtr("sqrt"), math_sqrt),
+			new luaL_Reg(CharPtr.toCharPtr("tanh"), math_tanh),
+			new luaL_Reg(CharPtr.toCharPtr("tan"), math_tan),
 			new luaL_Reg(null, null)
 		};
 
@@ -288,14 +288,14 @@ namespace KopiLua
 		 */
 		public static int luaopen_math (lua_State L)
 		{
-			LuaAuxLib.luaL_register(L, LuaLib.LUA_MATHLIBNAME, mathlib);
+			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_MATHLIBNAME), mathlib);
 			LuaAPI.lua_pushnumber(L, PI);
-			LuaAPI.lua_setfield(L, -2, "pi");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("pi"));
 			LuaAPI.lua_pushnumber(L, LuaConf.HUGE_VAL);
-			LuaAPI.lua_setfield(L, -2, "huge");
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("huge"));
 			#if LUA_COMPAT_MOD
-			LuaAPI.lua_getfield(L, -1, "fmod");
-			LuaAPI.lua_setfield(L, -2, "mod");
+			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("fmod"));
+			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("mod"));
 			#endif
 			return 1;
 		}

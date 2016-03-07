@@ -13,6 +13,9 @@ namespace KopiLua
 		private TValue[] values = null;
 		private int index = -1;
 		
+		public Value value = new Value();
+		public int tt;
+		
 		public void set_index(int index)
 		{
 			this.index = index;
@@ -23,83 +26,91 @@ namespace KopiLua
 			this.values = (TValue[])array;
 			Debug.Assert(this.values != null);
 		}
-		
-		public TValue this[int offset]
+
+        //TValue this[int offset] get
+        public TValue get(int offset)
+        {
+            return this.values[this.index + offset];
+        }
+
+        //TValue this[uint offset] get
+		public TValue get(uint offset)
 		{
-			get { return this.values[this.index + offset]; }
+			return this.values[this.index + (int)offset];
 		}
 		
-		/*
-		public TValue this[uint offset]
-		{
-			get { return this.values[this.index + (int)offset]; }
-		}
-		*/
-		
-		public static TValue operator +(TValue value, int offset)
-		{
-			return value.values[value.index + offset];
-		}
-		
-		public static TValue operator +(int offset, TValue value)
-		{
-			return value.values[value.index + offset];
-		}
-		
-		public static TValue operator -(TValue value, int offset)
-		{
-			return value.values[value.index - offset];
-		}
-		
-		public static int operator -(TValue value, TValue[] array)
-		{
-			Debug.Assert(value.values == array);
-			return value.index;
-		}
-		
-		public static int operator -(TValue a, TValue b)
-		{
-			Debug.Assert(a.values == b.values);
-			return a.index - b.index;
-		}
-		
-		public static bool operator <(TValue a, TValue b)
+        public static TValue plus(TValue value, int offset)
+        {
+            return value.values[value.index + offset];
+        }
+
+        //operator +
+        public static TValue plus(int offset, TValue value)
+        {
+            return value.values[value.index + offset];
+        }
+
+        public static TValue minus(TValue value, int offset)
+        {
+            return value.values[value.index - offset];
+        }
+
+        //operator -
+        public static int minus(TValue value, TValue[] array)
+        {
+            Debug.Assert(value.values == array);
+            return value.index;
+        }
+
+        //operator -
+        public static int minus(TValue a, TValue b)
+        {
+            Debug.Assert(a.values == b.values);
+            return a.index - b.index;
+        }
+
+        //operator <
+		public static bool lessThan(TValue a, TValue b)
 		{
 			Debug.Assert(a.values == b.values);
 			return a.index < b.index;
 		}
-		
-		public static bool operator <=(TValue a, TValue b)
+
+        //operator <=
+        public static bool lessEqual(TValue a, TValue b)
+        {
+            Debug.Assert(a.values == b.values);
+            return a.index <= b.index;
+        }
+
+        //operator >
+        public static bool greaterThan(TValue a, TValue b)
+        {
+            Debug.Assert(a.values == b.values);
+            return a.index > b.index;
+        }
+
+        //operator >=
+        public static bool greaterEqual(TValue a, TValue b)
+        {
+            Debug.Assert(a.values == b.values);
+            return a.index >= b.index;
+        }
+        
+        public static TValue inc(ref TValue value)
 		{
-			Debug.Assert(a.values == b.values);
-			return a.index <= b.index;
-		}
-		
-		public static bool operator >(TValue a, TValue b)
-		{
-			Debug.Assert(a.values == b.values);
-			return a.index > b.index;
-		}
-		
-		public static bool operator >=(TValue a, TValue b)
-		{
-			Debug.Assert(a.values == b.values);
-			return a.index >= b.index;
-		}
-		
-		public static TValue inc(ref TValue value)
-		{
-			value = value[1];
-			return value[-1];
+			value = value.get(1);
+			return value.get(-1);
 		}
 		
 		public static TValue dec(ref TValue value)
 		{
-			value = value[-1];
-			return value[1];
+			value = value.get(-1);
+			return value.get(1);
 		}
 		
-		public static implicit operator int(TValue value)
+        //implicit operator int
+		public static int toInt(TValue value)
 		{
 			return value.index;
 		}
@@ -143,8 +154,5 @@ namespace KopiLua
 			this.value = value;
 			this.tt = tt;
 		}
-		
-		public Value value = new Value();
-		public int tt;
 	}
 }

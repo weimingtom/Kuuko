@@ -3,23 +3,15 @@
  ** Lua Parser
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class expdesc
 	{
-		public void Copy(expdesc e)
-		{
-			this.k = e.k;
-			this.u.Copy(e.u);
-			this.t = e.t;
-			this.f = e.f;
-		}
-
-		public expkind k;
 		public class _u
 		{
+			public _s s = new _s();
+			public double nval; /*Double*/ /*lua_Number*/
+			
 			public void Copy(_u u)
 			{
 				this.s.Copy(u.s);
@@ -28,19 +20,29 @@ namespace KopiLua
 
 			public class _s
 			{
+				public int info, aux;
+				
 				public void Copy(_s s)
 				{
 					this.info = s.info;
 					this.aux = s.aux;
 				}
-				public int info, aux;
 			}
-			public _s s = new _s();
-			public Double/*lua_Number*/ nval;
 		}
+		
 		public _u u = new _u();
 
 		public int t;  /* patch list of `exit when true' */
 		public int f;  /* patch list of `exit when false' */
+		
+		public expkind k;
+		
+		public void Copy(expdesc e)
+		{
+			this.k = e.k;
+			this.u.Copy(e.u);
+			this.t = e.t;
+			this.f = e.f;
+		}
 	}
 }

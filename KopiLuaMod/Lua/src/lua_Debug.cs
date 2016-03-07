@@ -4,8 +4,6 @@
  ** Lua.org, PUC-Rio, Brazil (http://www.lua.org)
  ** See Copyright Notice at the end of this file
  */
-using System;
-
 namespace KopiLua
 {
 	public class lua_Debug
@@ -19,7 +17,7 @@ namespace KopiLua
 		public int nups;		/* (u) number of upvalues */
 		public int linedefined;	/* (S) */
 		public int lastlinedefined;	/* (S) */
-		public CharPtr short_src = new char[LuaConf.LUA_IDSIZE]; /* (S) */
+		public CharPtr short_src = CharPtr.toCharPtr(new char[LuaConf.LUA_IDSIZE]); /* (S) */
 		/* private part */
 		public int i_ci;  /* active function */
 	}

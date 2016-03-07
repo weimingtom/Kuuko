@@ -250,7 +250,7 @@ namespace KopiLua
 			Destination.Write( Tools.sprintf( Format, Parameters ) );
 		}
 
-		internal static Regex r = new Regex(@"\%(\d*\$)?([\'\#\-\+ ]*)(\d*)(?:\.(\d+))?([hl])?([dioxXucsfeEgGpn%])");
+		private static Regex r = new Regex(@"\%(\d*\$)?([\'\#\-\+ ]*)(\d*)(?:\.(\d+))?([hl])?([dioxXucsfeEgGpn%])");
 
 		#endregion
 		#region sprintf
@@ -583,18 +583,24 @@ namespace KopiLua
 			{
 				w = Convert.ToString( UnboxToLong( Value, true ), 8 );
 
-				if ( Left2Right || Padding == ' ' )
+				if (Left2Right || Padding == ' ')
 				{
-					if ( Alternate && w != "0" )
-						w = "0" + w;
-					w = String.Format( lengthFormat, w );
+                    if (Alternate && !w.Equals("0"))
+                    {
+                        w = "0" + w;
+                    }
+                    w = String.Format(lengthFormat, w);
 				}
 				else
 				{
-					if ( FieldLength != int.MinValue )
-						w = w.PadLeft( FieldLength - ( Alternate && w != "0" ? 1 : 0 ), Padding );
-					if ( Alternate && w != "0" )
-						w = "0" + w;
+                    if (FieldLength != int.MinValue)
+                    {
+                        w = w.PadLeft(FieldLength - (Alternate && !w.Equals("0") ? 1 : 0), Padding);
+                    }
+                    if (Alternate && !w.Equals("0"))
+                    {
+                        w = "0" + w;
+                    }
 				}
 			}
 
@@ -617,25 +623,30 @@ namespace KopiLua
 			                                              FieldPrecision.ToString() :
 			                                              String.Empty ) + "}";
 
-			if ( IsNumericType( Value ) )
-			{
-				w = String.Format( numberFormat, Value );
+            if (IsNumericType(Value))
+            {
+                w = String.Format(numberFormat, Value);
 
-				if ( Left2Right || Padding == ' ' )
-				{
-					if ( Alternate )
-						w = ( NativeFormat == "x" ? "0x" : "0X" ) + w;
-					w = String.Format( lengthFormat, w );
-				}
-				else
-				{
-					if ( FieldLength != int.MinValue )
-						w = w.PadLeft( FieldLength - ( Alternate ? 2 : 0 ), Padding );
-					if ( Alternate )
-						w = ( NativeFormat == "x" ? "0x" : "0X" ) + w;
-				}
-			}
-
+                if (Left2Right || Padding == ' ')
+                {
+                    if (Alternate)
+                    {
+                        w = (NativeFormat.Equals("x") ? "0x" : "0X") + w;
+                    }
+                    w = String.Format(lengthFormat, w);
+                }
+                else
+                {
+                    if (FieldLength != int.MinValue)
+                    {
+                        w = w.PadLeft(FieldLength - (Alternate ? 2 : 0), Padding);
+                    }
+                    if (Alternate)
+                    {
+                        w = (NativeFormat.Equals("x") ? "0x" : "0X") + w;
+                    }
+                }
+            }
 			return w;
 		}
 		#endregion
