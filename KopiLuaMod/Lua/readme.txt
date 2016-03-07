@@ -84,3 +84,31 @@ LuaMem.luaM_freearray<Int32>(L, f.lineinfo);
 public const uint MAX_SIZET	= uint.MaxValue - 2;
 public const UInt32/*lu_mem*/ MAX_LUMEM = /*lu_mem*/UInt32.MaxValue - 2;
 public const int MAX_INT = (/*Int32*/int.MaxValue - 2);  /* maximum value of an int (-2 for safety) */
+
+-----------------------
+
+public final class RefObject<T>
+{
+	public T argvalue;
+	public RefObject(T refarg)
+	{
+		argvalue = refarg;
+	}
+}
+
+
+UInt32
+delegate
+#if #else #endif
+ulong
+[Conditional("DEBUG")]
+sizeof
+private readonly static Byte[] luaP_opmodes = {  //remove comment
+unchecked
+private static priority_[] priority =  //remove comment
+switch (argv[i][1]) //string switch
+using (MemoryStream stream = new MemoryStream())
+goto
+switch (m.Groups[2].Value) //string switch
+public struct Value //user-defined value types.
+
