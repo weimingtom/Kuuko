@@ -78,7 +78,7 @@ namespace KopiLua
 			lua_State L = z.L;
 			CharPtr buff;
 			LuaLimits.lua_unlock(L);
-			buff = z.reader(L, z.data, out size);
+			buff = z.reader.exec(L, z.data, out size);
 			LuaLimits.lua_lock(L);
 			if (CharPtr.isEqual(buff, null) || size == 0) 
 			{

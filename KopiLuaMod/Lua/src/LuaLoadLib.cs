@@ -39,212 +39,212 @@ namespace KopiLua
 		}
 
 
-		#if LUA_DL_DLOPEN
-		/*
-		 ** {========================================================================
-		 ** This is an implementation of loadlib based on the dlfcn interface.
-		 ** The dlfcn interface is available in Linux, SunOS, Solaris, IRIX, FreeBSD,
-		 ** NetBSD, AIX 4.2, HPUX 11, and  probably most other Unix flavors, at least
-		 ** as an emulation layer on top of native functions.
-		 ** =========================================================================
-		 */
+		//#if LUA_DL_DLOPEN		
+//		/*
+//		 ** {========================================================================
+//		 ** This is an implementation of loadlib based on the dlfcn interface.
+//		 ** The dlfcn interface is available in Linux, SunOS, Solaris, IRIX, FreeBSD,
+//		 ** NetBSD, AIX 4.2, HPUX 11, and  probably most other Unix flavors, at least
+//		 ** as an emulation layer on top of native functions.
+//		 ** =========================================================================
+//		 */
+//
+//		//#include <dlfcn.h>
+//
+//		static void ll_unloadlib (void *lib)
+//		{
+//			dlclose(lib);
+//		}
+//
+//		static void *ll_load (lua_State L, readonly CharPtr path)
+//		{
+//			void *lib = dlopen(path, RTLD_NOW);
+//			if (lib == null)
+//			{
+//				lua_pushstring(L, dlerror());
+//			}
+//			return lib;
+//		}
+//
+//		static lua_CFunction ll_sym (lua_State L, void *lib, readonly CharPtr sym)
+//		{
+//			lua_CFunction f = (lua_CFunction)dlsym(lib, sym);
+//			if (f == null)
+//			{
+//				lua_pushstring(L, dlerror());
+//			}
+//			return f;
+//		}
+//
+//		/* }====================================================== */
+//
+//
+//
+//		//#elif defined(LUA_DL_DLL)
+//		/*
+//		 ** {======================================================================
+//		 ** This is an implementation of loadlib for Windows using native functions.
+//		 ** =======================================================================
+//		 */
+//
+//		//#include <windows.h>
+//
+//
+//		//#undef setprogdir
+//
+//		static void setprogdir (lua_State L)
+//		{
+//			char buff[MAX_PATH + 1];
+//			char *lb;
+//			DWORD nsize = sizeof(buff)/GetUnmanagedSize(typeof(char));
+//			DWORD n = GetModuleFileNameA(null, buff, nsize);
+//			if (n == 0 || n == nsize || (lb = strrchr(buff, '\\')) == null)
+//			{
+//				luaL_error(L, "unable to get ModuleFileName");
+//			}
+//			else
+//			{
+//				*lb = '\0';
+//				luaL_gsub(L, lua_tostring(L, -1), LUA_EXECDIR, buff);
+//				lua_remove(L, -2);  /* remove original string */
+//			}
+//		}
+//
+//		static void pusherror (lua_State L)
+//		{
+//			int error = GetLastError();
+//			char buffer[128];
+//			if (FormatMessageA(FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM,
+//			                   null, error, 0, buffer, sizeof(buffer), null))
+//			{
+//				lua_pushstring(L, buffer);
+//			}
+//			else
+//			{
+//				lua_pushfstring(L, "system error %d\n", error);
+//			}
+//		}
+//
+//		static void ll_unloadlib(void *lib)
+//		{
+//			FreeLibrary((HINSTANCE)lib);
+//		}
+//
+//		static void *ll_load (lua_State L, readonly CharPtr path)
+//		{
+//			HINSTANCE lib = LoadLibraryA(path);
+//			if (lib == null)
+//			{
+//				pusherror(L);
+//			}
+//			return lib;
+//		}
+//
+//		static lua_CFunction ll_sym (lua_State L, void *lib, readonly CharPtr sym)
+//		{
+//			lua_CFunction f = (lua_CFunction)GetProcAddress((HINSTANCE)lib, sym);
+//			if (f == null)
+//			{
+//				pusherror(L);
+//			}
+//			return f;
+//		}
+//
+//		/* }====================================================== */
+//
+//		#elif LUA_DL_DYLD
+//		/*
+//		 ** {======================================================================
+//		 ** Native Mac OS X / Darwin Implementation
+//		 ** =======================================================================
+//		 */
+//
+//		//#include <mach-o/dyld.h>
+//
+//
+//		/* Mac appends a `_' before C function names */
+//		//#undef POF
+//		//#define POF	"_" LUA_POF
+//
+//		static void pusherror (lua_State L)
+//		{
+//			CharPtr err_str;
+//			CharPtr err_file;
+//			NSLinkEditErrors err;
+//			int err_num;
+//			NSLinkEditError(err, err_num, err_file, err_str);
+//			lua_pushstring(L, err_str);
+//		}
+//
+//
+//		static CharPtr errorfromcode (NSObjectFileImageReturnCode ret)
+//		{
+//			switch (ret)
+//			{
+//				case NSObjectFileImageInappropriateFile:
+//					{
+//						return "file is not a bundle";
+//					}
+//				case NSObjectFileImageArch:
+//					{
+//						return "library is for wrong CPU type";
+//					}
+//				case NSObjectFileImageFormat:
+//					{
+//						return "bad format";
+//					}
+//				case NSObjectFileImageAccess:
+//					{
+//						return "cannot access file";
+//					}
+//				case NSObjectFileImageFailure:
+//				default:
+//					{
+//						return "unable to load library";
+//					}
+//			}
+//		}
+//
+//		static void ll_unloadlib (void *lib)
+//		{
+//			NSUnLinkModule((NSModule)lib, NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES);
+//		}
+//
+//		static void *ll_load (lua_State L, readonly CharPtr path)
+//		{
+//			NSObjectFileImage img;
+//			NSObjectFileImageReturnCode ret;
+//			/* this would be a rare case, but prevents crashing if it happens */
+//			if(!_dyld_present()) {
+//				lua_pushliteral(L, "dyld not present");
+//				return null;
+//			}
+//			ret = NSCreateObjectFileImageFromFile(path, img);
+//			if (ret == NSObjectFileImageSuccess) {
+//				NSModule mod = NSLinkModule(img, path, NSLINKMODULE_OPTION_PRIVATE |
+//				                            NSLINKMODULE_OPTION_RETURN_ON_ERROR);
+//				NSDestroyObjectFileImage(img);
+//				if (mod == null) pusherror(L);
+//				return mod;
+//			}
+//			lua_pushstring(L, errorfromcode(ret));
+//			return null;
+//		}
+//
+//		static lua_CFunction ll_sym (lua_State L, void *lib, readonly CharPtr sym)
+//		{
+//			NSSymbol nss = NSLookupSymbolInModule((NSModule)lib, sym);
+//			if (nss == null)
+//			{
+//				lua_pushfstring(L, "symbol " + LUA_QS + " not found", sym);
+//				return null;
+//			}
+//			return (lua_CFunction)NSAddressOfSymbol(nss);
+//		}
+//
+//		/* }====================================================== */
 
-		//#include <dlfcn.h>
-
-		static void ll_unloadlib (void *lib)
-		{
-			dlclose(lib);
-		}
-
-		static void *ll_load (lua_State L, readonly CharPtr path)
-		{
-			void *lib = dlopen(path, RTLD_NOW);
-			if (lib == null)
-			{
-				lua_pushstring(L, dlerror());
-			}
-			return lib;
-		}
-
-		static lua_CFunction ll_sym (lua_State L, void *lib, readonly CharPtr sym)
-		{
-			lua_CFunction f = (lua_CFunction)dlsym(lib, sym);
-			if (f == null)
-			{
-				lua_pushstring(L, dlerror());
-			}
-			return f;
-		}
-
-		/* }====================================================== */
-
-
-
-		//#elif defined(LUA_DL_DLL)
-		/*
-		 ** {======================================================================
-		 ** This is an implementation of loadlib for Windows using native functions.
-		 ** =======================================================================
-		 */
-
-		//#include <windows.h>
-
-
-		//#undef setprogdir
-
-		static void setprogdir (lua_State L)
-		{
-			char buff[MAX_PATH + 1];
-			char *lb;
-			DWORD nsize = sizeof(buff)/GetUnmanagedSize(typeof(char));
-			DWORD n = GetModuleFileNameA(null, buff, nsize);
-			if (n == 0 || n == nsize || (lb = strrchr(buff, '\\')) == null)
-			{
-				luaL_error(L, "unable to get ModuleFileName");
-			}
-			else
-			{
-				*lb = '\0';
-				luaL_gsub(L, lua_tostring(L, -1), LUA_EXECDIR, buff);
-				lua_remove(L, -2);  /* remove original string */
-			}
-		}
-
-		static void pusherror (lua_State L)
-		{
-			int error = GetLastError();
-			char buffer[128];
-			if (FormatMessageA(FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM,
-			                   null, error, 0, buffer, sizeof(buffer), null))
-			{
-				lua_pushstring(L, buffer);
-			}
-			else
-			{
-				lua_pushfstring(L, "system error %d\n", error);
-			}
-		}
-
-		static void ll_unloadlib(void *lib)
-		{
-			FreeLibrary((HINSTANCE)lib);
-		}
-
-		static void *ll_load (lua_State L, readonly CharPtr path)
-		{
-			HINSTANCE lib = LoadLibraryA(path);
-			if (lib == null)
-			{
-				pusherror(L);
-			}
-			return lib;
-		}
-
-		static lua_CFunction ll_sym (lua_State L, void *lib, readonly CharPtr sym)
-		{
-			lua_CFunction f = (lua_CFunction)GetProcAddress((HINSTANCE)lib, sym);
-			if (f == null)
-			{
-				pusherror(L);
-			}
-			return f;
-		}
-
-		/* }====================================================== */
-
-		#elif LUA_DL_DYLD
-		/*
-		 ** {======================================================================
-		 ** Native Mac OS X / Darwin Implementation
-		 ** =======================================================================
-		 */
-
-		//#include <mach-o/dyld.h>
-
-
-		/* Mac appends a `_' before C function names */
-		//#undef POF
-		//#define POF	"_" LUA_POF
-
-		static void pusherror (lua_State L)
-		{
-			CharPtr err_str;
-			CharPtr err_file;
-			NSLinkEditErrors err;
-			int err_num;
-			NSLinkEditError(err, err_num, err_file, err_str);
-			lua_pushstring(L, err_str);
-		}
-
-
-		static CharPtr errorfromcode (NSObjectFileImageReturnCode ret)
-		{
-			switch (ret)
-			{
-				case NSObjectFileImageInappropriateFile:
-					{
-						return "file is not a bundle";
-					}
-				case NSObjectFileImageArch:
-					{
-						return "library is for wrong CPU type";
-					}
-				case NSObjectFileImageFormat:
-					{
-						return "bad format";
-					}
-				case NSObjectFileImageAccess:
-					{
-						return "cannot access file";
-					}
-				case NSObjectFileImageFailure:
-				default:
-					{
-						return "unable to load library";
-					}
-			}
-		}
-
-		static void ll_unloadlib (void *lib)
-		{
-			NSUnLinkModule((NSModule)lib, NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES);
-		}
-
-		static void *ll_load (lua_State L, readonly CharPtr path)
-		{
-			NSObjectFileImage img;
-			NSObjectFileImageReturnCode ret;
-			/* this would be a rare case, but prevents crashing if it happens */
-			if(!_dyld_present()) {
-				lua_pushliteral(L, "dyld not present");
-				return null;
-			}
-			ret = NSCreateObjectFileImageFromFile(path, img);
-			if (ret == NSObjectFileImageSuccess) {
-				NSModule mod = NSLinkModule(img, path, NSLINKMODULE_OPTION_PRIVATE |
-				                            NSLINKMODULE_OPTION_RETURN_ON_ERROR);
-				NSDestroyObjectFileImage(img);
-				if (mod == null) pusherror(L);
-				return mod;
-			}
-			lua_pushstring(L, errorfromcode(ret));
-			return null;
-		}
-
-		static lua_CFunction ll_sym (lua_State L, void *lib, readonly CharPtr sym)
-		{
-			NSSymbol nss = NSLookupSymbolInModule((NSModule)lib, sym);
-			if (nss == null)
-			{
-				lua_pushfstring(L, "symbol " + LUA_QS + " not found", sym);
-				return null;
-			}
-			return (lua_CFunction)NSAddressOfSymbol(nss);
-		}
-
-		/* }====================================================== */
-
-		#else
+		//#else
 		/*
 		 ** {======================================================
 		 ** Fallback for other systems
@@ -276,7 +276,7 @@ namespace KopiLua
 		}
 
 		/* }====================================================== */
-		#endif
+		//#endif
 
 		private static object ll_register (lua_State L, CharPtr path)
 		{
@@ -718,38 +718,92 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] pk_funcs = {
-			new luaL_Reg(CharPtr.toCharPtr("loadlib"), ll_loadlib),
-			new luaL_Reg(CharPtr.toCharPtr("seeall"), ll_seeall),
+			new luaL_Reg(CharPtr.toCharPtr("loadlib"), new LuaLoadLib_delegate("ll_loadlib")),
+			new luaL_Reg(CharPtr.toCharPtr("seeall"), new LuaLoadLib_delegate("ll_seeall")),
 			new luaL_Reg(null, null)
 		};
 
 		private readonly static luaL_Reg[] ll_funcs = {
-			new luaL_Reg(CharPtr.toCharPtr("module"), ll_module),
-			new luaL_Reg(CharPtr.toCharPtr("require"), ll_require),
+			new luaL_Reg(CharPtr.toCharPtr("module"), new LuaLoadLib_delegate("ll_module")),
+			new luaL_Reg(CharPtr.toCharPtr("require"), new LuaLoadLib_delegate("ll_require")),
 			new luaL_Reg(null, null)
 		};
 
 		public readonly static lua_CFunction[] loaders = {
-			loader_preload,
-			loader_Lua,
-			loader_C,
-			loader_Croot,
+			new LuaLoadLib_delegate("loader_preload"),
+			new LuaLoadLib_delegate("loader_Lua"),
+			new LuaLoadLib_delegate("loader_C"),
+			new LuaLoadLib_delegate("loader_Croot"),
 			null
 		};
+		
+		public class LuaLoadLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaLoadLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("ll_loadlib".Equals(name))
+				{
+					return ll_loadlib(L);
+				} 
+				else if ("ll_seeall".Equals(name)) 
+				{
+					return ll_seeall(L);
+				} 
+				else if ("ll_module".Equals(name)) 
+				{
+					return ll_module(L);
+				} 
+				else if ("ll_require".Equals(name)) 
+				{
+				    return ll_require(L);
+				}
+				else if ("loader_preload".Equals(name))
+				{
+				    return loader_preload(L);
+				}
+				else if ("loader_Lua".Equals(name))
+				{
+					return loader_Lua(L);
+				}
+				else if ("loader_C".Equals(name))
+				{
+					return loader_C(L);
+				}
+				else if ("loader_Croot".Equals(name))
+				{
+					return loader_Croot(L);
+				}
+				else if ("gctm".Equals(name))
+				{
+					return gctm(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
 		
 		public static int luaopen_package(lua_State L)
 		{
 			int i;
 			/* create new type _LOADLIB */
 			LuaAuxLib.luaL_newmetatable(L, CharPtr.toCharPtr("_LOADLIB"));
-			Lua.lua_pushcfunction(L, gctm);
+			Lua.lua_pushcfunction(L, new LuaLoadLib_delegate("gctm"));
 			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__gc"));
 			/* create `package' table */
 			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_LOADLIBNAME), pk_funcs);
-			#if LUA_COMPAT_LOADLIB
-			lua_getfield(L, -1, "loadlib");
-			lua_setfield(L, LUA_GLOBALSINDEX, "loadlib");
-			#endif
+			//#if LUA_COMPAT_LOADLIB
+//			lua_getfield(L, -1, "loadlib");
+//			lua_setfield(L, LUA_GLOBALSINDEX, "loadlib");
+			//#endif
 			LuaAPI.lua_pushvalue(L, -1);
 			LuaAPI.lua_replace(L, Lua.LUA_ENVIRONINDEX);
 			/* create `loaders' table */

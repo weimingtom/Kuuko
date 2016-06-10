@@ -371,13 +371,22 @@ namespace KopiLua
 			return null;  /* to avoid warnings */
 		}
 
+		public class generic_reader_delegate : lua_Reader
+		{
+			public CharPtr exec(lua_State L, object ud, out int/*uint*/ sz)
+			{
+				return generic_reader(L, ud, out sz);
+			}
+		}
+		
+		
 		private static int luaB_load(lua_State L) 
 		{
 			int status;
 			CharPtr cname = LuaAuxLib.luaL_optstring(L, 2, CharPtr.toCharPtr("=(load)"));
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TFUNCTION);
 			LuaAPI.lua_settop(L, 3);  /* function, eventual name, plus one reserved slot */
-			status = LuaAPI.lua_load(L, generic_reader, null, cname);
+			status = LuaAPI.lua_load(L, new generic_reader_delegate(), null, cname);
 			return load_aux(L, status);
 		}
 
@@ -408,7 +417,7 @@ namespace KopiLua
 			int i, e, n;
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TTABLE);
 			i = LuaAuxLib.luaL_optint(L, 2, 1);
-			e = LuaAuxLib.luaL_opt_integer(L, LuaAuxLib.luaL_checkint, 3, LuaAuxLib.luaL_getn(L, 1));
+			e = LuaAuxLib.luaL_opt_integer(L, new LuaAuxLib.luaL_checkint_delegate(), 3, LuaAuxLib.luaL_getn(L, 1));
 			if (i > e) 
 			{
 				return 0;  /* empty range */
@@ -543,34 +552,196 @@ namespace KopiLua
 
 
 		private readonly static luaL_Reg[] base_funcs = {
-			new luaL_Reg(CharPtr.toCharPtr("assert"), luaB_assert),
-			new luaL_Reg(CharPtr.toCharPtr("collectgarbage"), luaB_collectgarbage),
-			new luaL_Reg(CharPtr.toCharPtr("dofile"), luaB_dofile),
-			new luaL_Reg(CharPtr.toCharPtr("error"), luaB_error),
-			new luaL_Reg(CharPtr.toCharPtr("gcinfo"), luaB_gcinfo),
-			new luaL_Reg(CharPtr.toCharPtr("getfenv"), luaB_getfenv),
-			new luaL_Reg(CharPtr.toCharPtr("getmetatable"), luaB_getmetatable),
-			new luaL_Reg(CharPtr.toCharPtr("loadfile"), luaB_loadfile),
-			new luaL_Reg(CharPtr.toCharPtr("load"), luaB_load),
-			new luaL_Reg(CharPtr.toCharPtr("loadstring"), luaB_loadstring),
-			new luaL_Reg(CharPtr.toCharPtr("next"), luaB_next),
-			new luaL_Reg(CharPtr.toCharPtr("pcall"), luaB_pcall),
-			new luaL_Reg(CharPtr.toCharPtr("print"), luaB_print),
-			new luaL_Reg(CharPtr.toCharPtr("rawequal"), luaB_rawequal),
-			new luaL_Reg(CharPtr.toCharPtr("rawget"), luaB_rawget),
-			new luaL_Reg(CharPtr.toCharPtr("rawset"), luaB_rawset),
-			new luaL_Reg(CharPtr.toCharPtr("select"), luaB_select),
-			new luaL_Reg(CharPtr.toCharPtr("setfenv"), luaB_setfenv),
-			new luaL_Reg(CharPtr.toCharPtr("setmetatable"), luaB_setmetatable),
-			new luaL_Reg(CharPtr.toCharPtr("tonumber"), luaB_tonumber),
-			new luaL_Reg(CharPtr.toCharPtr("tostring"), luaB_tostring),
-			new luaL_Reg(CharPtr.toCharPtr("type"), luaB_type),
-			new luaL_Reg(CharPtr.toCharPtr("unpack"), luaB_unpack),
-			new luaL_Reg(CharPtr.toCharPtr("xpcall"), luaB_xpcall),
+			new luaL_Reg(CharPtr.toCharPtr("assert"), new LuaBaseLib_delegate("luaB_assert")),
+			new luaL_Reg(CharPtr.toCharPtr("collectgarbage"), new LuaBaseLib_delegate("luaB_collectgarbage")),
+			new luaL_Reg(CharPtr.toCharPtr("dofile"), new LuaBaseLib_delegate("luaB_dofile")),
+			new luaL_Reg(CharPtr.toCharPtr("error"), new LuaBaseLib_delegate("luaB_error")),
+			new luaL_Reg(CharPtr.toCharPtr("gcinfo"), new LuaBaseLib_delegate("luaB_gcinfo")),
+			new luaL_Reg(CharPtr.toCharPtr("getfenv"), new LuaBaseLib_delegate("luaB_getfenv")),
+			new luaL_Reg(CharPtr.toCharPtr("getmetatable"), new LuaBaseLib_delegate("luaB_getmetatable")),
+			new luaL_Reg(CharPtr.toCharPtr("loadfile"), new LuaBaseLib_delegate("luaB_loadfile")),
+			new luaL_Reg(CharPtr.toCharPtr("load"), new LuaBaseLib_delegate("luaB_load")),
+			new luaL_Reg(CharPtr.toCharPtr("loadstring"), new LuaBaseLib_delegate("luaB_loadstring")),
+			new luaL_Reg(CharPtr.toCharPtr("next"), new LuaBaseLib_delegate("luaB_next")),
+			new luaL_Reg(CharPtr.toCharPtr("pcall"), new LuaBaseLib_delegate("luaB_pcall")),
+			new luaL_Reg(CharPtr.toCharPtr("print"), new LuaBaseLib_delegate("luaB_print")),
+			new luaL_Reg(CharPtr.toCharPtr("rawequal"), new LuaBaseLib_delegate("luaB_rawequal")),
+			new luaL_Reg(CharPtr.toCharPtr("rawget"), new LuaBaseLib_delegate("luaB_rawget")),
+			new luaL_Reg(CharPtr.toCharPtr("rawset"), new LuaBaseLib_delegate("luaB_rawset")),
+			new luaL_Reg(CharPtr.toCharPtr("select"), new LuaBaseLib_delegate("luaB_select")),
+			new luaL_Reg(CharPtr.toCharPtr("setfenv"), new LuaBaseLib_delegate("luaB_setfenv")),
+			new luaL_Reg(CharPtr.toCharPtr("setmetatable"), new LuaBaseLib_delegate("luaB_setmetatable")),
+			new luaL_Reg(CharPtr.toCharPtr("tonumber"), new LuaBaseLib_delegate("luaB_tonumber")),
+			new luaL_Reg(CharPtr.toCharPtr("tostring"), new LuaBaseLib_delegate("luaB_tostring")),
+			new luaL_Reg(CharPtr.toCharPtr("type"), new LuaBaseLib_delegate("luaB_type")),
+			new luaL_Reg(CharPtr.toCharPtr("unpack"), new LuaBaseLib_delegate("luaB_unpack")),
+			new luaL_Reg(CharPtr.toCharPtr("xpcall"), new LuaBaseLib_delegate("luaB_xpcall")),
 			new luaL_Reg(null, null)
 		};
 
-
+		public class LuaBaseLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaBaseLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("luaB_assert".Equals(name))
+				{
+					return luaB_assert(L);
+				}
+				else if ("luaB_collectgarbage".Equals(name))
+				{
+					return luaB_collectgarbage(L);
+				}
+				else if ("luaB_dofile".Equals(name))
+				{
+					return luaB_dofile(L);
+				}
+				else if ("luaB_error".Equals(name))
+				{
+					return luaB_error(L);
+				}
+				else if ("luaB_gcinfo".Equals(name))
+				{
+					return luaB_gcinfo(L);
+				}
+				else if ("luaB_getfenv".Equals(name))
+				{
+					return luaB_getfenv(L);
+				}
+				else if ("luaB_getmetatable".Equals(name))
+				{
+					return luaB_getmetatable(L);
+				}
+				else if ("luaB_loadfile".Equals(name))
+				{
+					return luaB_loadfile(L);
+				}
+				else if ("luaB_load".Equals(name))
+				{
+					return luaB_load(L);
+				}
+				else if ("luaB_loadstring".Equals(name))
+				{
+					return luaB_loadstring(L);
+				}
+				else if ("luaB_next".Equals(name))
+				{
+					return luaB_next(L);
+				}
+				else if ("luaB_pcall".Equals(name))
+				{
+					return luaB_pcall(L);
+				}
+				else if ("luaB_print".Equals(name))
+				{
+					return luaB_print(L);
+				}
+				else if ("luaB_rawequal".Equals(name))
+				{
+					return luaB_rawequal(L);
+				}
+				else if ("luaB_rawget".Equals(name))
+				{
+					return luaB_rawget(L);
+				}
+				else if ("luaB_rawset".Equals(name))
+				{
+					return luaB_rawset(L);
+				}
+				else if ("luaB_select".Equals(name))
+				{
+					return luaB_select(L);
+				}
+				else if ("luaB_setfenv".Equals(name))
+				{
+					return luaB_setfenv(L);
+				}
+				else if ("luaB_setmetatable".Equals(name))
+				{
+					return luaB_setmetatable(L);
+				}
+				else if ("luaB_tonumber".Equals(name))
+				{
+					return luaB_tonumber(L);
+				}
+				else if ("luaB_tostring".Equals(name))
+				{
+					return luaB_tostring(L);
+				}
+				else if ("luaB_type".Equals(name))
+				{
+					return luaB_type(L);
+				}
+				else if ("luaB_unpack".Equals(name))
+				{
+					return luaB_unpack(L);
+				}
+				else if ("luaB_xpcall".Equals(name))
+				{
+					return luaB_xpcall(L);
+				}
+				if ("luaB_cocreate".Equals(name))
+				{
+					return luaB_cocreate(L);
+				}
+				else if ("luaB_coresume".Equals(name))
+				{
+					return luaB_coresume(L);
+				}
+				else if ("luaB_corunning".Equals(name))
+				{
+					return luaB_corunning(L);
+				}
+				else if ("luaB_costatus".Equals(name))
+				{
+					return luaB_costatus(L);
+				}
+				else if ("luaB_cowrap".Equals(name))
+				{
+					return luaB_cowrap(L);
+				}
+				else if ("luaB_yield".Equals(name))
+				{
+					return luaB_yield(L);
+				}
+				else if ("luaB_ipairs".Equals(name))
+				{
+					return luaB_ipairs(L);
+				}
+				else if ("ipairsaux".Equals(name))
+				{
+					return ipairsaux(L);
+				}
+				else if ("luaB_pairs".Equals(name))
+				{
+					return luaB_pairs(L);
+				}
+				else if ("luaB_next".Equals(name))
+				{
+					return luaB_next(L);
+				}
+				else if ("luaB_newproxy".Equals(name))
+				{
+					return luaB_newproxy(L);
+				}
+				else if ("luaB_auxwrap".Equals(name))
+				{
+					return luaB_auxwrap(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+		
+		
 		/*
 		 ** {======================================================
 		 ** Coroutine library
@@ -716,7 +887,7 @@ namespace KopiLua
 		private static int luaB_cowrap(lua_State L) 
 		{
 			luaB_cocreate(L);
-			LuaAPI.lua_pushcclosure(L, luaB_auxwrap, 1);
+			LuaAPI.lua_pushcclosure(L, new LuaBaseLib_delegate("luaB_auxwrap"), 1);
 			return 1;
 		}
 
@@ -735,15 +906,17 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] co_funcs = {
-			new luaL_Reg(CharPtr.toCharPtr("create"), luaB_cocreate),
-			new luaL_Reg(CharPtr.toCharPtr("resume"), luaB_coresume),
-			new luaL_Reg(CharPtr.toCharPtr("running"), luaB_corunning),
-			new luaL_Reg(CharPtr.toCharPtr("status"), luaB_costatus),
-			new luaL_Reg(CharPtr.toCharPtr("wrap"), luaB_cowrap),
-			new luaL_Reg(CharPtr.toCharPtr("yield"), luaB_yield),
+			new luaL_Reg(CharPtr.toCharPtr("create"), new LuaBaseLib_delegate("luaB_cocreate")),
+			new luaL_Reg(CharPtr.toCharPtr("resume"), new LuaBaseLib_delegate("luaB_coresume")),
+			new luaL_Reg(CharPtr.toCharPtr("running"), new LuaBaseLib_delegate("luaB_corunning")),
+			new luaL_Reg(CharPtr.toCharPtr("status"), new LuaBaseLib_delegate("luaB_costatus")),
+			new luaL_Reg(CharPtr.toCharPtr("wrap"), new LuaBaseLib_delegate("luaB_cowrap")),
+			new luaL_Reg(CharPtr.toCharPtr("yield"), new LuaBaseLib_delegate("luaB_yield")),
 			new luaL_Reg(null, null)
 		};
 
+
+		
 		/* }====================================================== */
 
 		private static void auxopen(lua_State L, CharPtr name, lua_CFunction f, lua_CFunction u) 
@@ -763,15 +936,15 @@ namespace KopiLua
 			Lua.lua_pushliteral(L, CharPtr.toCharPtr(Lua.LUA_VERSION));
 			Lua.lua_setglobal(L, CharPtr.toCharPtr("_VERSION"));  /* set global _VERSION */
 			/* `ipairs' and `pairs' need auxliliary functions as upvalues */
-			auxopen(L, CharPtr.toCharPtr("ipairs"), luaB_ipairs, ipairsaux);
-			auxopen(L, CharPtr.toCharPtr("pairs"), luaB_pairs, luaB_next);
+			auxopen(L, CharPtr.toCharPtr("ipairs"), new LuaBaseLib_delegate("luaB_ipairs"), new LuaBaseLib_delegate("ipairsaux"));
+			auxopen(L, CharPtr.toCharPtr("pairs"), new LuaBaseLib_delegate("luaB_pairs"), new LuaBaseLib_delegate("luaB_next"));
 			/* `newproxy' needs a weaktable as upvalue */
 			LuaAPI.lua_createtable(L, 0, 1);  /* new table `w' */
 			LuaAPI.lua_pushvalue(L, -1);  /* `w' will be its own metatable */
 			LuaAPI.lua_setmetatable(L, -2);
 			Lua.lua_pushliteral(L, CharPtr.toCharPtr("kv"));
 			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("__mode"));  /* metatable(w).__mode = "kv" */
-			LuaAPI.lua_pushcclosure(L, luaB_newproxy, 1);
+			LuaAPI.lua_pushcclosure(L, new LuaBaseLib_delegate("luaB_newproxy"), 1);
 			Lua.lua_setglobal(L, CharPtr.toCharPtr("newproxy"));  /* set global `newproxy' */
 		}
 

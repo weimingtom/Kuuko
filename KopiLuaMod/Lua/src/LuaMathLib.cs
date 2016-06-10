@@ -252,37 +252,168 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] mathlib = {
-			new luaL_Reg(CharPtr.toCharPtr("abs"), math_abs),
-			new luaL_Reg(CharPtr.toCharPtr("acos"), math_acos),
-			new luaL_Reg(CharPtr.toCharPtr("asin"), math_asin),
-			new luaL_Reg(CharPtr.toCharPtr("atan2"), math_atan2),
-			new luaL_Reg(CharPtr.toCharPtr("atan"), math_atan),
-			new luaL_Reg(CharPtr.toCharPtr("ceil"), math_ceil),
-			new luaL_Reg(CharPtr.toCharPtr("cosh"), math_cosh),
-			new luaL_Reg(CharPtr.toCharPtr("cos"), math_cos),
-			new luaL_Reg(CharPtr.toCharPtr("deg"), math_deg),
-			new luaL_Reg(CharPtr.toCharPtr("exp"), math_exp),
-			new luaL_Reg(CharPtr.toCharPtr("floor"), math_floor),
-			new luaL_Reg(CharPtr.toCharPtr("fmod"), math_fmod),
-			new luaL_Reg(CharPtr.toCharPtr("frexp"), math_frexp),
-			new luaL_Reg(CharPtr.toCharPtr("ldexp"), math_ldexp),
-			new luaL_Reg(CharPtr.toCharPtr("log10"), math_log10),
-			new luaL_Reg(CharPtr.toCharPtr("log"), math_log),
-			new luaL_Reg(CharPtr.toCharPtr("max"), math_max),
-			new luaL_Reg(CharPtr.toCharPtr("min"), math_min),
-			new luaL_Reg(CharPtr.toCharPtr("modf"), math_modf),
-			new luaL_Reg(CharPtr.toCharPtr("pow"), math_pow),
-			new luaL_Reg(CharPtr.toCharPtr("rad"), math_rad),
-			new luaL_Reg(CharPtr.toCharPtr("random"), math_random),
-			new luaL_Reg(CharPtr.toCharPtr("randomseed"), math_randomseed),
-			new luaL_Reg(CharPtr.toCharPtr("sinh"), math_sinh),
-			new luaL_Reg(CharPtr.toCharPtr("sin"), math_sin),
-			new luaL_Reg(CharPtr.toCharPtr("sqrt"), math_sqrt),
-			new luaL_Reg(CharPtr.toCharPtr("tanh"), math_tanh),
-			new luaL_Reg(CharPtr.toCharPtr("tan"), math_tan),
+			new luaL_Reg(CharPtr.toCharPtr("abs"), new LuaMathLib_delegate("math_abs")),
+			new luaL_Reg(CharPtr.toCharPtr("acos"), new LuaMathLib_delegate("math_acos")),
+			new luaL_Reg(CharPtr.toCharPtr("asin"), new LuaMathLib_delegate("math_asin")),
+			new luaL_Reg(CharPtr.toCharPtr("atan2"), new LuaMathLib_delegate("math_atan2")),
+			new luaL_Reg(CharPtr.toCharPtr("atan"), new LuaMathLib_delegate("math_atan")),
+			new luaL_Reg(CharPtr.toCharPtr("ceil"), new LuaMathLib_delegate("math_ceil")),
+			new luaL_Reg(CharPtr.toCharPtr("cosh"), new LuaMathLib_delegate("math_cosh")),
+			new luaL_Reg(CharPtr.toCharPtr("cos"), new LuaMathLib_delegate("math_cos")),
+			new luaL_Reg(CharPtr.toCharPtr("deg"), new LuaMathLib_delegate("math_deg")),
+			new luaL_Reg(CharPtr.toCharPtr("exp"), new LuaMathLib_delegate("math_exp")),
+			new luaL_Reg(CharPtr.toCharPtr("floor"), new LuaMathLib_delegate("math_floor")),
+			new luaL_Reg(CharPtr.toCharPtr("fmod"), new LuaMathLib_delegate("math_fmod")),
+			new luaL_Reg(CharPtr.toCharPtr("frexp"), new LuaMathLib_delegate("math_frexp")),
+			new luaL_Reg(CharPtr.toCharPtr("ldexp"), new LuaMathLib_delegate("math_ldexp")),
+			new luaL_Reg(CharPtr.toCharPtr("log10"), new LuaMathLib_delegate("math_log10")),
+			new luaL_Reg(CharPtr.toCharPtr("log"), new LuaMathLib_delegate("math_log")),
+			new luaL_Reg(CharPtr.toCharPtr("max"), new LuaMathLib_delegate("math_max")),
+			new luaL_Reg(CharPtr.toCharPtr("min"), new LuaMathLib_delegate("math_min")),
+			new luaL_Reg(CharPtr.toCharPtr("modf"), new LuaMathLib_delegate("math_modf")),
+			new luaL_Reg(CharPtr.toCharPtr("pow"), new LuaMathLib_delegate("math_pow")),
+			new luaL_Reg(CharPtr.toCharPtr("rad"), new LuaMathLib_delegate("math_rad")),
+			new luaL_Reg(CharPtr.toCharPtr("random"), new LuaMathLib_delegate("math_random")),
+			new luaL_Reg(CharPtr.toCharPtr("randomseed"), new LuaMathLib_delegate("math_randomseed")),
+			new luaL_Reg(CharPtr.toCharPtr("sinh"), new LuaMathLib_delegate("math_sinh")),
+			new luaL_Reg(CharPtr.toCharPtr("sin"), new LuaMathLib_delegate("math_sin")),
+			new luaL_Reg(CharPtr.toCharPtr("sqrt"), new LuaMathLib_delegate("math_sqrt")),
+			new luaL_Reg(CharPtr.toCharPtr("tanh"), new LuaMathLib_delegate("math_tanh")),
+			new luaL_Reg(CharPtr.toCharPtr("tan"), new LuaMathLib_delegate("math_tan")),
 			new luaL_Reg(null, null)
 		};
 
+		public class LuaMathLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaMathLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("math_abs".Equals(name))
+				{
+					return math_abs(L);
+				} 
+				else if ("math_acos".Equals(name)) 
+				{
+					return math_acos(L);
+				} 
+				else if ("math_asin".Equals(name)) 
+				{
+					return math_asin(L);
+				} 
+				else if ("math_atan2".Equals(name)) 
+				{
+				    return math_atan2(L);
+				}
+				else if ("math_atan".Equals(name))
+				{
+				    return math_atan(L);
+				}
+				else if ("math_ceil".Equals(name))
+				{
+					return math_ceil(L);
+				}
+				else if ("math_cosh".Equals(name))
+				{
+					return math_cosh(L);
+				}
+				else if ("math_cos".Equals(name))
+				{
+					return math_cos(L);
+				}
+				else if ("math_deg".Equals(name))
+				{
+					return math_deg(L);
+				}
+				else if ("math_exp".Equals(name))
+				{
+					return math_exp(L);
+				}
+				else if ("math_floor".Equals(name))
+				{
+					return math_floor(L);
+				}
+				else if ("math_fmod".Equals(name))
+				{
+					return math_fmod(L);
+				}
+				else if ("math_frexp".Equals(name))
+				{
+					return math_frexp(L);
+				}
+				else if ("math_ldexp".Equals(name))
+				{
+					return math_ldexp(L);
+				}
+				else if ("math_log10".Equals(name))
+				{
+					return math_log10(L);
+				}
+				else if ("math_log".Equals(name))
+				{
+					return math_log(L);
+				}
+				else if ("math_max".Equals(name))
+				{
+					return math_max(L);
+				}
+				else if ("math_min".Equals(name))
+				{
+					return math_min(L);
+				}
+				else if ("math_modf".Equals(name))
+				{
+					return math_modf(L);
+				}
+				else if ("math_pow".Equals(name))
+				{
+					return math_pow(L);
+				}
+				else if ("math_rad".Equals(name))
+				{
+					return math_rad(L);
+				}
+				else if ("math_random".Equals(name))
+				{
+					return math_random(L);
+				}
+				else if ("math_randomseed".Equals(name))
+				{
+					return math_randomseed(L);
+				}
+				else if ("math_sinh".Equals(name))
+				{
+					return math_sinh(L);
+				}
+				else if ("math_sin".Equals(name))
+				{
+					return math_sin(L);
+				}
+				else if ("math_sqrt".Equals(name))
+				{
+					return math_sqrt(L);
+				}
+				else if ("math_tanh".Equals(name))
+				{
+					return math_tanh(L);
+				}
+				else if ("math_tan".Equals(name))
+				{
+					return math_tan(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+		
+		
 		/*
 		 ** Open math library
 		 */
@@ -293,10 +424,10 @@ namespace KopiLua
 			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("pi"));
 			LuaAPI.lua_pushnumber(L, LuaConf.HUGE_VAL);
 			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("huge"));
-			#if LUA_COMPAT_MOD
+			//#if LUA_COMPAT_MOD
 			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("fmod"));
 			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("mod"));
-			#endif
+			//#endif
 			return 1;
 		}
 	}

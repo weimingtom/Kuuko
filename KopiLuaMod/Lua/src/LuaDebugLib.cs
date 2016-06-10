@@ -261,6 +261,14 @@ namespace KopiLua
 			}
 		}
 
+		public class hookf_delegate : lua_Hook
+		{
+			public void exec(lua_State L, lua_Debug ar)
+			{
+				hookf(L, ar);
+			}
+		}
+		
 		private static int makemask(CharPtr smask, int count) 
 		{
 			int mask = 0;
@@ -333,7 +341,8 @@ namespace KopiLua
 				CharPtr smask = LuaAuxLib.luaL_checkstring(L, arg + 2);
 				LuaAuxLib.luaL_checktype(L, arg + 1, Lua.LUA_TFUNCTION);
 				count = LuaAuxLib.luaL_optint(L, arg + 3, 0);
-				func = hookf; mask = makemask(smask, count);
+				func = new hookf_delegate();
+				mask = makemask(smask, count);
 			}
 			gethooktable(L);
 			LuaAPI.lua_pushlightuserdata(L, L1);
@@ -351,7 +360,7 @@ namespace KopiLua
 			CharPtr buff = CharPtr.toCharPtr(new char[5]);
 			int mask = LuaDebug.lua_gethookmask(L1);
 			lua_Hook hook = LuaDebug.lua_gethook(L1);
-			if (hook != null && hook != hookf)  /* external hook? */
+			if (hook != null && (hook is hookf_delegate))  /* external hook? */
 			{
 				Lua.lua_pushliteral(L, CharPtr.toCharPtr("external hook"));
 			}
@@ -474,22 +483,96 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] dblib = {
-			new luaL_Reg(CharPtr.toCharPtr("debug"), db_debug),
-			new luaL_Reg(CharPtr.toCharPtr("getfenv"), db_getfenv),
-			new luaL_Reg(CharPtr.toCharPtr("gethook"), db_gethook),
-			new luaL_Reg(CharPtr.toCharPtr("getinfo"), db_getinfo),
-			new luaL_Reg(CharPtr.toCharPtr("getlocal"), db_getlocal),
-			new luaL_Reg(CharPtr.toCharPtr("getregistry"), db_getregistry),
-			new luaL_Reg(CharPtr.toCharPtr("getmetatable"), db_getmetatable),
-			new luaL_Reg(CharPtr.toCharPtr("getupvalue"), db_getupvalue),
-			new luaL_Reg(CharPtr.toCharPtr("setfenv"), db_setfenv),
-			new luaL_Reg(CharPtr.toCharPtr("sethook"), db_sethook),
-			new luaL_Reg(CharPtr.toCharPtr("setlocal"), db_setlocal),
-			new luaL_Reg(CharPtr.toCharPtr("setmetatable"), db_setmetatable),
-			new luaL_Reg(CharPtr.toCharPtr("setupvalue"), db_setupvalue),
-			new luaL_Reg(CharPtr.toCharPtr("traceback"), db_errorfb),
+			new luaL_Reg(CharPtr.toCharPtr("debug"), new LuaDebugLib_delegate("db_debug")),
+			new luaL_Reg(CharPtr.toCharPtr("getfenv"), new LuaDebugLib_delegate("db_getfenv")),
+			new luaL_Reg(CharPtr.toCharPtr("gethook"), new LuaDebugLib_delegate("db_gethook")),
+			new luaL_Reg(CharPtr.toCharPtr("getinfo"), new LuaDebugLib_delegate("db_getinfo")),
+			new luaL_Reg(CharPtr.toCharPtr("getlocal"), new LuaDebugLib_delegate("db_getlocal")),
+			new luaL_Reg(CharPtr.toCharPtr("getregistry"), new LuaDebugLib_delegate("db_getregistry")),
+			new luaL_Reg(CharPtr.toCharPtr("getmetatable"), new LuaDebugLib_delegate("db_getmetatable")),
+			new luaL_Reg(CharPtr.toCharPtr("getupvalue"), new LuaDebugLib_delegate("db_getupvalue")),
+			new luaL_Reg(CharPtr.toCharPtr("setfenv"), new LuaDebugLib_delegate("db_setfenv")),
+			new luaL_Reg(CharPtr.toCharPtr("sethook"), new LuaDebugLib_delegate("db_sethook")),
+			new luaL_Reg(CharPtr.toCharPtr("setlocal"), new LuaDebugLib_delegate("db_setlocal")),
+			new luaL_Reg(CharPtr.toCharPtr("setmetatable"), new LuaDebugLib_delegate("db_setmetatable")),
+			new luaL_Reg(CharPtr.toCharPtr("setupvalue"), new LuaDebugLib_delegate("db_setupvalue")),
+			new luaL_Reg(CharPtr.toCharPtr("traceback"), new LuaDebugLib_delegate("db_errorfb")),
 			new luaL_Reg(null, null)
 		};
+		
+		public class LuaDebugLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaDebugLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("db_debug".Equals(name))
+				{
+					return db_debug(L);
+				} 
+				else if ("db_getfenv".Equals(name)) 
+				{
+					return db_getfenv(L);
+				} 
+				else if ("db_gethook".Equals(name)) 
+				{
+					return db_gethook(L);
+				} 
+				else if ("db_getinfo".Equals(name)) 
+				{
+				    return db_getinfo(L);
+				}
+				else if ("db_getlocal".Equals(name))
+				{
+				    return db_getlocal(L);
+				}
+				else if ("db_getregistry".Equals(name))
+				{
+					return db_getregistry(L);
+				}
+				else if ("db_getmetatable".Equals(name))
+				{
+					return db_getmetatable(L);
+				}
+				else if ("db_getupvalue".Equals(name))
+				{
+					return db_getupvalue(L);
+				}
+				else if ("db_setfenv".Equals(name))
+				{
+					return db_setfenv(L);
+				}
+				else if ("db_sethook".Equals(name))
+				{
+					return db_sethook(L);
+				}
+				else if ("db_setlocal".Equals(name))
+				{
+					return db_setlocal(L);
+				}
+				else if ("db_setmetatable".Equals(name))
+				{
+					return db_setmetatable(L);
+				}
+				else if ("db_setupvalue".Equals(name))
+				{
+					return db_setupvalue(L);
+				}
+				else if ("db_errorfb".Equals(name))
+				{
+					return db_errorfb(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
 
 
 		public static int luaopen_debug (lua_State L) {

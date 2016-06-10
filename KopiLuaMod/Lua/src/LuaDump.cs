@@ -50,7 +50,7 @@ namespace KopiLua
 			if (D.status == 0)
 			{
 				LuaLimits.lua_unlock(D.L);
-				D.status = D.writer(D. L, b, size, D.data);
+				D.status = D.writer.exec(D. L, b, size, D.data);
 				LuaLimits.lua_lock(D.L);
 			}
 		}

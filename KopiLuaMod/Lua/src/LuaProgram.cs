@@ -27,13 +27,21 @@ namespace KopiLua
 			LuaDebug.lua_sethook(L, null, 0, 0);
 			LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("interrupted!"));
 		}
+		
+		public class lstop_delegate : lua_Hook
+		{
+			public void exec(lua_State L, lua_Debug ar)
+			{
+				lstop(L, ar);
+			}
+		}
 
 
 		static void laction(int i)
 		{
 			//signal(i, SIG_DFL); /* if another SIGINT happens before lstop,
 			//						  terminate process (default action) */
-			LuaDebug.lua_sethook(globalL, lstop, Lua.LUA_MASKCALL | Lua.LUA_MASKRET | Lua.LUA_MASKCOUNT, 1);
+			LuaDebug.lua_sethook(globalL, new lstop_delegate(), Lua.LUA_MASKCALL | Lua.LUA_MASKRET | Lua.LUA_MASKCOUNT, 1);
 		}
 
 		static void print_usage()
@@ -105,7 +113,7 @@ namespace KopiLua
 		{
 			int status;
 			int base_ = LuaAPI.lua_gettop(L) - narg;  /* function index */
-			Lua.lua_pushcfunction(L, traceback);  /* push traceback function */
+			Lua.lua_pushcfunction(L, new traceback_delegate());  /* push traceback function */
 			LuaAPI.lua_insert(L, base_);  /* put it under chunk and args */
 			//signal(SIGINT, laction);
 			status = LuaAPI.lua_pcall(L, narg, ((clear != 0) ? 0 : Lua.LUA_MULTRET), base_);
@@ -315,7 +323,8 @@ namespace KopiLua
 				{
 					return i;
 				}
-				switch (argv[i][1])
+				char ch = argv[i][1];
+				switch (ch)
 				{  
 					/* option */
 					case '-':
@@ -394,7 +403,8 @@ namespace KopiLua
 					continue;
 				}
 				LuaLimits.lua_assert(argv[i][0] == '-');
-				switch (argv[i][1])
+				char ch = argv[i][1];
+				switch (ch)
 				{  
 					/* option */
 					case 'e':
@@ -514,6 +524,23 @@ namespace KopiLua
 			return 0;
 		}
 
+		public class pmain_delegate : lua_CFunction
+		{
+			public int exec(lua_State L)
+			{
+				return pmain(L);
+			}
+		}
+		
+		public class traceback_delegate : lua_CFunction
+		{
+			public int exec(lua_State L)
+			{
+				return traceback(L);
+			}
+		}
+		
+		
 		public static int MainLua(string[] args)
 		{
 			// prepend the exe name to the arg list as it's done in C
@@ -533,7 +560,7 @@ namespace KopiLua
 			}
 			s.argc = args.Length;
 			s.argv = args;
-			status = LuaAPI.lua_cpcall(L, pmain, s);
+			status = LuaAPI.lua_cpcall(L, new pmain_delegate(), s);
 			report(L, status);
 			LuaState.lua_close(L);
 			return (status != 0) || (s.status != 0) ? LuaConf.EXIT_FAILURE : LuaConf.EXIT_SUCCESS;

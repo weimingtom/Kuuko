@@ -184,7 +184,15 @@ namespace KopiLua
 			LuaString.luaS_fix(LuaString.luaS_newliteral(L, CharPtr.toCharPtr(LuaMem.MEMERRMSG)));
 			g.GCthreshold = 4 * g.totalbytes;
 		}
-
+		
+		public class f_luaopen_delegate : Pfunc
+		{
+			public void exec(lua_State L, object ud)
+			{
+				f_luaopen(L, ud);
+			}
+		}
+		
 		private static void preinit_state(lua_State L, global_State g) 
 		{
 			G_set(L, g);
@@ -253,7 +261,7 @@ namespace KopiLua
 			lua_State L;
 			global_State g;
 			//object l = f(ud, null, 0, (uint)state_size(typeof(LG)));
-			object l = f(typeof(LG));
+			object l = f.exec(typeof(LG));
 			if (l == null) 
 			{
 				return null;
@@ -296,7 +304,7 @@ namespace KopiLua
 			{
 				g.mt[i] = null;
 			}
-			if (LuaDo.luaD_rawrunprotected(L, f_luaopen, null) != 0)
+			if (LuaDo.luaD_rawrunprotected(L, new f_luaopen_delegate(), null) != 0)
 			{
 				/* memory allocation error: free partial state */
 				close_state(L);
@@ -314,6 +322,14 @@ namespace KopiLua
 			//UNUSED(ud);
 			LuaGC.luaC_callGCTM(L);  /* call GC metamethods for all udata */
 		}
+		
+		public class callallgcTM_delegate : Pfunc
+		{
+			public void exec(lua_State L, object ud)
+			{
+				callallgcTM(L, ud);
+			}
+		}      
 
 		public static void lua_close (lua_State L) 
 		{
@@ -328,7 +344,7 @@ namespace KopiLua
 				L.ci = L.base_ci[0];
 				L.base_ = L.top = L.ci.base_;
 				L.nCcalls = L.baseCcalls = 0;
-			} while (LuaDo.luaD_rawrunprotected(L, callallgcTM, null) != 0);
+			} while (LuaDo.luaD_rawrunprotected(L, new callallgcTM_delegate(), null) != 0);
 			LuaLimits.lua_assert(G(L).tmudata == null);
 			LuaConf.luai_userstateclose(L);
 			close_state(L);

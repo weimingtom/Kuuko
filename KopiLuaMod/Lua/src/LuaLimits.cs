@@ -59,40 +59,40 @@ namespace KopiLua
 
 		/* internal assertions for in-house debugging */
 
-		#if lua_assert
+		//#if lua_assert
 
-		[Conditional("DEBUG")]
-		public static void lua_assert(bool c) 
-		{
-			Debug.Assert(c);
-		}
-
-		[Conditional("DEBUG")]
-		public static void lua_assert(int c) 
-		{ 
-			Debug.Assert(c != 0); 
-		}
-
-		public static object check_exp(bool c, object e)		
-		{
-			lua_assert(c); 
-			return e;
-		}
-		public static object check_exp(int c, object e) 
-		{ 
-			lua_assert(c != 0); 
-			return e; 
-		}
+//		[Conditional("DEBUG")]
+//		public static void lua_assert(bool c) 
+//		{
+//			Debug.Assert(c);
+//		}
+//
+//		[Conditional("DEBUG")]
+//		public static void lua_assert(int c) 
+//		{ 
+//			Debug.Assert(c != 0); 
+//		}
+//
+//		public static object check_exp(bool c, object e)		
+//		{
+//			lua_assert(c); 
+//			return e;
+//		}
+//		public static object check_exp(int c, object e) 
+//		{ 
+//			lua_assert(c != 0); 
+//			return e; 
+//		}
 		
-		#else
+		//#else
 
-		[Conditional("DEBUG")]
+		//[Conditional("DEBUG")]
 		public static void lua_assert(bool c) 
 		{
 			
 		}
 
-		[Conditional("DEBUG")]
+		//[Conditional("DEBUG")]
 		public static void lua_assert(int c) 
 		{
 			
@@ -107,9 +107,9 @@ namespace KopiLua
 			return e; 
 		}
 
-		#endif
+		//#endif
 
-		[Conditional("DEBUG")]
+		//[Conditional("DEBUG")]
 		public static void api_check(object o, bool e)		
 		{
 			lua_assert(e);
@@ -214,7 +214,7 @@ namespace KopiLua
 		/* minimum size for string buffer */
 		public const int LUA_MINBUFFER = 32;
 
-		#if !lua_lock
+		//#if !lua_lock
 		public static void lua_lock(lua_State L) 
 		{
 			
@@ -223,15 +223,15 @@ namespace KopiLua
 		{
 			
 		}
-		#endif
+		//#endif
 		
-		#if !luai_threadyield
+		//#if !luai_threadyield
 		public static void luai_threadyield(lua_State L)     
 		{
 			lua_unlock(L); 
 			lua_lock(L);
 		}
-		#endif
+		//#endif
 
 		/*
 		 ** macro to control inclusion of some hard tests on stack reallocation

@@ -257,23 +257,23 @@ namespace KopiLua
 								CharPtr.toCharPtr("unfinished long comment"), (int)RESERVED.TK_EOS);
 							break;  /* to avoid warnings */
 						}
-					#if LUA_COMPAT_LSTR
-					case '[': 
-						{
-							if (skip_sep(ls) == sep) 
-							{
-								save_and_next(ls);  /* skip 2nd `[' */
-								cont++;
-								#if LUA_COMPAT_LSTR
-								if (sep == 0)
-								{
-									luaX_lexerror(ls, "nesting of [[...]] is deprecated", '[');
-								}
-								#endif
-							}
-							break;
-						}
-					#endif
+					//#if LUA_COMPAT_LSTR
+//					case '[': 
+//						{
+//							if (skip_sep(ls) == sep) 
+//							{
+//								save_and_next(ls);  /* skip 2nd `[' */
+//								cont++;
+//								//#if LUA_COMPAT_LSTR
+//								if (sep == 0)
+//								{
+//									luaX_lexerror(ls, "nesting of [[...]] is deprecated", '[');
+//								}
+//								//#endif
+//							}
+//							break;
+//						}
+					//#endif
 					case ']':
 						{
 							if (skip_sep(ls) == sep)

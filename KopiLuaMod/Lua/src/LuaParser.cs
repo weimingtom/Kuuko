@@ -641,11 +641,11 @@ namespace KopiLua
 							{  
 								/* param . `...' */
 								LuaLex.luaX_next(ls);
-								#if LUA_COMPAT_VARARG
+								//#if LUA_COMPAT_VARARG
 								/* use `arg' as default name */
 								new_localvarliteral(ls, CharPtr.toCharPtr("arg"), nparams++);
 								f.is_vararg = LuaObject.VARARG_HASARG | LuaObject.VARARG_NEEDSARG;
-								#endif
+								//#endif
 								f.is_vararg |= LuaObject.VARARG_ISVARARG;
 								break;
 							}

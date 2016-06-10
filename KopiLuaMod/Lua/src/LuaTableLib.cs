@@ -177,7 +177,7 @@ namespace KopiLua
 			CharPtr sep = LuaAuxLib.luaL_optlstring(L, 2, CharPtr.toCharPtr(""), out lsep);
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TTABLE);
 			i = LuaAuxLib.luaL_optint(L, 3, 1);
-			last = LuaAuxLib.luaL_opt_integer(L, LuaAuxLib.luaL_checkint, 4, LuaAuxLib.luaL_getn(L, 1));
+			last = LuaAuxLib.luaL_opt_integer(L, new LuaAuxLib.luaL_checkint_delegate(), 4, LuaAuxLib.luaL_getn(L, 1));
 			LuaAuxLib.luaL_buffinit(L, b);
 			for (; i < last; i++) 
 			{
@@ -353,15 +353,15 @@ namespace KopiLua
 		/* }====================================================== */
 
 		private readonly static luaL_Reg[] tab_funcs = {
-			new luaL_Reg(CharPtr.toCharPtr("concat"), tconcat),
-			new luaL_Reg(CharPtr.toCharPtr("foreach"), _foreach),
-			new luaL_Reg(CharPtr.toCharPtr("foreachi"), foreachi),
-			new luaL_Reg(CharPtr.toCharPtr("getn"), getn),
-			new luaL_Reg(CharPtr.toCharPtr("maxn"), maxn),
-			new luaL_Reg(CharPtr.toCharPtr("insert"), tinsert),
-			new luaL_Reg(CharPtr.toCharPtr("remove"), tremove),
-			new luaL_Reg(CharPtr.toCharPtr("setn"), setn),
-			new luaL_Reg(CharPtr.toCharPtr("sort"), sort),
+			new luaL_Reg(CharPtr.toCharPtr("concat"), new LuaTableLib_delegate("tconcat")),
+			new luaL_Reg(CharPtr.toCharPtr("foreach"), new LuaTableLib_delegate("_foreach")),
+			new luaL_Reg(CharPtr.toCharPtr("foreachi"), new LuaTableLib_delegate("foreachi")),
+			new luaL_Reg(CharPtr.toCharPtr("getn"), new LuaTableLib_delegate("getn")),
+			new luaL_Reg(CharPtr.toCharPtr("maxn"), new LuaTableLib_delegate("maxn")),
+			new luaL_Reg(CharPtr.toCharPtr("insert"), new LuaTableLib_delegate("tinsert")),
+			new luaL_Reg(CharPtr.toCharPtr("remove"), new LuaTableLib_delegate("tremove")),
+			new luaL_Reg(CharPtr.toCharPtr("setn"), new LuaTableLib_delegate("setn")),
+			new luaL_Reg(CharPtr.toCharPtr("sort"), new LuaTableLib_delegate("sort")),
 			new luaL_Reg(null, null)
 		};
 
@@ -369,6 +369,60 @@ namespace KopiLua
 		{
 			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_TABLIBNAME), tab_funcs);
 			return 1;
+		}
+		
+		public class LuaTableLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaTableLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("tconcat".Equals(name))
+				{
+					return tconcat(L);
+				} 
+				else if ("_foreach".Equals(name)) 
+				{
+					return _foreach(L);
+				} 
+				else if ("foreachi".Equals(name)) 
+				{
+					return foreachi(L);
+				} 
+				else if ("getn".Equals(name)) 
+				{
+				    return getn(L);
+				}
+				else if ("maxn".Equals(name))
+				{
+				    return maxn(L);
+				}
+				else if ("tinsert".Equals(name))
+				{
+					return tinsert(L);
+				}
+				else if ("tremove".Equals(name))
+				{
+					return tremove(L);
+				}
+				else if ("setn".Equals(name))
+				{
+					return setn(L);
+				}
+				else if ("sort".Equals(name))
+				{
+					return sort(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
 		}
 	}
 }

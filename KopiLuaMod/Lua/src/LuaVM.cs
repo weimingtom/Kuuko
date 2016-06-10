@@ -568,7 +568,7 @@ namespace KopiLua
 			if (LuaObject.ttisnumber(rb) && LuaObject.ttisnumber(rc))
 			{
 				Double/*lua_Number*/ nb = LuaObject.nvalue(rb), nc = LuaObject.nvalue(rc);
-				LuaObject.setnvalue(ra, op(nb, nc));
+				LuaObject.setnvalue(ra, op.exec(nb, nc));
 			}
 			else
 			{
@@ -814,32 +814,32 @@ namespace KopiLua
 						}
 					case OpCode.OP_ADD: 
 						{
-							arith_op(L, LuaConf.luai_numadd, TMS.TM_ADD, base_, i, k, ra, pc);
+							arith_op(L, new LuaConf.luai_numadd_delegate(), TMS.TM_ADD, base_, i, k, ra, pc);
 							continue;
 						}
 					case OpCode.OP_SUB: 
 						{
-							arith_op(L, LuaConf.luai_numsub, TMS.TM_SUB, base_, i, k, ra, pc);
+							arith_op(L, new LuaConf.luai_numsub_delegate(), TMS.TM_SUB, base_, i, k, ra, pc);
 							continue;
 						}
 					case OpCode.OP_MUL: 
 						{
-							arith_op(L, LuaConf.luai_nummul, TMS.TM_MUL, base_, i, k, ra, pc);
+							arith_op(L, new LuaConf.luai_nummul_delegate(), TMS.TM_MUL, base_, i, k, ra, pc);
 							continue;
 						}
 					case OpCode.OP_DIV: 
 						{
-							arith_op(L, LuaConf.luai_numdiv, TMS.TM_DIV, base_, i, k, ra, pc);
+							arith_op(L, new LuaConf.luai_numdiv_delegate(), TMS.TM_DIV, base_, i, k, ra, pc);
 							continue;
 						}
 					case OpCode.OP_MOD: 
 						{
-							arith_op(L, LuaConf.luai_nummod, TMS.TM_MOD, base_, i, k, ra, pc);
+							arith_op(L, new LuaConf.luai_nummod_delegate(), TMS.TM_MOD, base_, i, k, ra, pc);
 							continue;
 						}
 					case OpCode.OP_POW: 
 						{
-							arith_op(L, LuaConf.luai_numpow, TMS.TM_POW, base_, i, k, ra, pc);
+							arith_op(L, new LuaConf.luai_numpow_delegate(), TMS.TM_POW, base_, i, k, ra, pc);
 							continue;
 						}
 					case OpCode.OP_UNM: 

@@ -179,30 +179,30 @@ namespace KopiLua
 			else 
 			{
 				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("strftime not implemented yet")); // todo: implement this - mjf
-				#if false
-				CharPtr cc = new char[3];
-				luaL_Buffer b;
-				cc[0] = '%'; 
-				cc[2] = '\0';
-				luaL_buffinit(L, b);
-				for (; s[0] != 0; s.inc()) 
-				{
-					if (s[0] != '%' || s[1] == '\0')  /* no conversion specifier? */
-					{
-						luaL_addchar(b, s[0]);
-					}
-					else 
-					{
-						uint reslen;
-						CharPtr buff = new char[200];  /* should be big enough for any conversion result */
-						s.inc();
-						cc[1] = s[0];
-						reslen = strftime(buff, buff.Length, cc, stm);
-						luaL_addlstring(b, buff, reslen);
-					}
-				}
-				luaL_pushresult(b);
-				#endif // #if 0
+				//#if false
+//				CharPtr cc = new char[3];
+//				luaL_Buffer b;
+//				cc[0] = '%'; 
+//				cc[2] = '\0';
+//				luaL_buffinit(L, b);
+//				for (; s[0] != 0; s.inc()) 
+//				{
+//					if (s[0] != '%' || s[1] == '\0')  /* no conversion specifier? */
+//					{
+//						luaL_addchar(b, s[0]);
+//					}
+//					else 
+//					{
+//						uint reslen;
+//						CharPtr buff = new char[200];  /* should be big enough for any conversion result */
+//						s.inc();
+//						cc[1] = s[0];
+//						reslen = strftime(buff, buff.Length, cc, stm);
+//						luaL_addlstring(b, buff, reslen);
+//					}
+//				}
+//				luaL_pushresult(b);
+				//#endif // #if 0
 			}
 			return 1;
 		}
@@ -264,20 +264,83 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] syslib = {
-			new luaL_Reg(CharPtr.toCharPtr("clock"), os_clock),
-			new luaL_Reg(CharPtr.toCharPtr("date"), os_date),
-			new luaL_Reg(CharPtr.toCharPtr("difftime"), os_difftime),
-			new luaL_Reg(CharPtr.toCharPtr("execute"), os_execute),
-			new luaL_Reg(CharPtr.toCharPtr("exit"), os_exit),
-			new luaL_Reg(CharPtr.toCharPtr("getenv"), os_getenv),
-			new luaL_Reg(CharPtr.toCharPtr("remove"), os_remove),
-			new luaL_Reg(CharPtr.toCharPtr("rename"), os_rename),
-			new luaL_Reg(CharPtr.toCharPtr("setlocale"), os_setlocale),
-			new luaL_Reg(CharPtr.toCharPtr("time"), os_time),
-			new luaL_Reg(CharPtr.toCharPtr("tmpname"), os_tmpname),
+			new luaL_Reg(CharPtr.toCharPtr("clock"), new LuaOSLib_delegate("os_clock")),
+			new luaL_Reg(CharPtr.toCharPtr("date"), new LuaOSLib_delegate("os_date")),
+			new luaL_Reg(CharPtr.toCharPtr("difftime"), new LuaOSLib_delegate("os_difftime")),
+			new luaL_Reg(CharPtr.toCharPtr("execute"), new LuaOSLib_delegate("os_execute")),
+			new luaL_Reg(CharPtr.toCharPtr("exit"), new LuaOSLib_delegate("os_exit")),
+			new luaL_Reg(CharPtr.toCharPtr("getenv"), new LuaOSLib_delegate("os_getenv")),
+			new luaL_Reg(CharPtr.toCharPtr("remove"), new LuaOSLib_delegate("os_remove")),
+			new luaL_Reg(CharPtr.toCharPtr("rename"), new LuaOSLib_delegate("os_rename")),
+			new luaL_Reg(CharPtr.toCharPtr("setlocale"), new LuaOSLib_delegate("os_setlocale")),
+			new luaL_Reg(CharPtr.toCharPtr("time"), new LuaOSLib_delegate("os_time")),
+			new luaL_Reg(CharPtr.toCharPtr("tmpname"), new LuaOSLib_delegate("os_tmpname")),
 			new luaL_Reg(null, null)
 		};
 
+		public class LuaOSLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaOSLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("os_clock".Equals(name))
+				{
+					return os_clock(L);
+				} 
+				else if ("os_date".Equals(name)) 
+				{
+					return os_date(L);
+				} 
+				else if ("os_difftime".Equals(name)) 
+				{
+					return os_difftime(L);
+				} 
+				else if ("os_execute".Equals(name)) 
+				{
+				    return os_execute(L);
+				}
+				else if ("os_exit".Equals(name))
+				{
+				    return os_exit(L);
+				}
+				else if ("os_getenv".Equals(name))
+				{
+					return os_getenv(L);
+				}
+				else if ("os_remove".Equals(name))
+				{
+					return os_remove(L);
+				}
+				else if ("os_rename".Equals(name))
+				{
+					return os_rename(L);
+				}
+				else if ("os_setlocale".Equals(name))
+				{
+					return os_setlocale(L);
+				}
+				else if ("os_time".Equals(name))
+				{
+					return os_time(L);
+				}
+				else if ("os_tmpname".Equals(name))
+				{
+					return os_tmpname(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+		
+		
 		/* }====================================================== */
 
 		public static int luaopen_os (lua_State L) 

@@ -919,6 +919,14 @@ namespace KopiLua
 			LuaDo.luaD_call(L, c.func, c.nresults);
 		}
 
+		public class f_call_delegate : Pfunc
+		{
+			public void exec(lua_State L, object ud)
+			{
+				f_call(L, ud);
+			}
+		}       
+		
 		public static int lua_pcall(lua_State L, int nargs, int nresults, int errfunc) 
 		{
 			CallS c = new CallS();
@@ -939,7 +947,7 @@ namespace KopiLua
 			}
 			c.func = TValue.minus(L.top, (nargs + 1));  /* function to be called */
 			c.nresults = nresults;
-			status = LuaDo.luaD_pcall(L, f_call, c, LuaDo.savestack(L, c.func), func);
+			status = LuaDo.luaD_pcall(L, new f_call_delegate(), c, LuaDo.savestack(L, c.func), func);
 			adjustresults(L, nresults);
 			LuaLimits.lua_unlock(L);
 			return status;
@@ -958,6 +966,14 @@ namespace KopiLua
 			LuaDo.luaD_call(L, TValue.minus(L.top, 2), 0);
 		}
 
+		public class f_Ccall_delegate : Pfunc
+		{
+			public void exec(lua_State L, object ud)
+			{
+				f_Ccall(L, ud);
+			}
+		}
+		
 		public static int lua_cpcall(lua_State L, lua_CFunction func, object ud) 
 		{
 			CCallS c = new CCallS();
@@ -965,7 +981,7 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			c.func = func;
 			c.ud = ud;
-			status = LuaDo.luaD_pcall(L, f_Ccall, c, LuaDo.savestack(L, L.top), 0);
+			status = LuaDo.luaD_pcall(L, new f_Ccall_delegate(), c, LuaDo.savestack(L, L.top), 0);
 			LuaLimits.lua_unlock(L);
 			return status;
 		}

@@ -137,7 +137,7 @@ namespace KopiLua
 		{
 			LuaAPI.lua_getfenv(L, 1);
 			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("__close"));
-			return (LuaAPI.lua_tocfunction(L, -1))(L);
+			return (LuaAPI.lua_tocfunction(L, -1)).exec(L);
 		}
 
 		private static int io_close(lua_State L) 
@@ -254,7 +254,7 @@ namespace KopiLua
 		{
 			LuaAPI.lua_pushvalue(L, idx);
 			LuaAPI.lua_pushboolean(L, toclose);  /* close/not close file when finished */
-			LuaAPI.lua_pushcclosure(L, io_readline, 2);
+			LuaAPI.lua_pushcclosure(L, new LuaIOLib_delegate("io_readline"), 2);
 		}
 
 		private static int f_lines(lua_State L) 
@@ -582,32 +582,142 @@ namespace KopiLua
 
 
 		private readonly static luaL_Reg[] iolib = {
-			new luaL_Reg(CharPtr.toCharPtr("close"), io_close),
-			new luaL_Reg(CharPtr.toCharPtr("flush"), io_flush),
-			new luaL_Reg(CharPtr.toCharPtr("input"), io_input),
-			new luaL_Reg(CharPtr.toCharPtr("lines"), io_lines),
-			new luaL_Reg(CharPtr.toCharPtr("open"), io_open),
-			new luaL_Reg(CharPtr.toCharPtr("output"), io_output),
-			new luaL_Reg(CharPtr.toCharPtr("popen"), io_popen),
-			new luaL_Reg(CharPtr.toCharPtr("read"), io_read),
-			new luaL_Reg(CharPtr.toCharPtr("tmpfile"), io_tmpfile),
-			new luaL_Reg(CharPtr.toCharPtr("type"), io_type),
-			new luaL_Reg(CharPtr.toCharPtr("write"), io_write),
+			new luaL_Reg(CharPtr.toCharPtr("close"), new LuaIOLib_delegate("io_close")),
+			new luaL_Reg(CharPtr.toCharPtr("flush"), new LuaIOLib_delegate("io_flush")),
+			new luaL_Reg(CharPtr.toCharPtr("input"), new LuaIOLib_delegate("io_input")),
+			new luaL_Reg(CharPtr.toCharPtr("lines"), new LuaIOLib_delegate("io_lines")),
+			new luaL_Reg(CharPtr.toCharPtr("open"), new LuaIOLib_delegate("io_open")),
+			new luaL_Reg(CharPtr.toCharPtr("output"), new LuaIOLib_delegate("io_output")),
+			new luaL_Reg(CharPtr.toCharPtr("popen"), new LuaIOLib_delegate("io_popen")),
+			new luaL_Reg(CharPtr.toCharPtr("read"), new LuaIOLib_delegate("io_read")),
+			new luaL_Reg(CharPtr.toCharPtr("tmpfile"), new LuaIOLib_delegate("io_tmpfile")),
+			new luaL_Reg(CharPtr.toCharPtr("type"), new LuaIOLib_delegate("io_type")),
+			new luaL_Reg(CharPtr.toCharPtr("write"), new LuaIOLib_delegate("io_write")),
 			new luaL_Reg(null, null)
 		};
 
 		private readonly static luaL_Reg[] flib = {
-			new luaL_Reg(CharPtr.toCharPtr("close"), io_close),
-			new luaL_Reg(CharPtr.toCharPtr("flush"), f_flush),
-			new luaL_Reg(CharPtr.toCharPtr("lines"), f_lines),
-			new luaL_Reg(CharPtr.toCharPtr("read"), f_read),
-			new luaL_Reg(CharPtr.toCharPtr("seek"), f_seek),
-			new luaL_Reg(CharPtr.toCharPtr("setvbuf"), f_setvbuf),
-			new luaL_Reg(CharPtr.toCharPtr("write"), f_write),
-			new luaL_Reg(CharPtr.toCharPtr("__gc"), io_gc),
-			new luaL_Reg(CharPtr.toCharPtr("__tostring"), io_tostring),
+			new luaL_Reg(CharPtr.toCharPtr("close"), new LuaIOLib_delegate("io_close")),
+			new luaL_Reg(CharPtr.toCharPtr("flush"), new LuaIOLib_delegate("f_flush")),
+			new luaL_Reg(CharPtr.toCharPtr("lines"), new LuaIOLib_delegate("f_lines")),
+			new luaL_Reg(CharPtr.toCharPtr("read"), new LuaIOLib_delegate("f_read")),
+			new luaL_Reg(CharPtr.toCharPtr("seek"), new LuaIOLib_delegate("f_seek")),
+			new luaL_Reg(CharPtr.toCharPtr("setvbuf"), new LuaIOLib_delegate("f_setvbuf")),
+			new luaL_Reg(CharPtr.toCharPtr("write"), new LuaIOLib_delegate("f_write")),
+			new luaL_Reg(CharPtr.toCharPtr("__gc"), new LuaIOLib_delegate("io_gc")),
+			new luaL_Reg(CharPtr.toCharPtr("__tostring"), new LuaIOLib_delegate("io_tostring")),
 			new luaL_Reg(null, null)
 		};
+		
+		public class LuaIOLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaIOLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("io_close".Equals(name))
+				{
+					return io_close(L);
+				} 
+				else if ("io_flush".Equals(name)) 
+				{
+					return io_flush(L);
+				} 
+				else if ("io_input".Equals(name)) 
+				{
+					return io_input(L);
+				} 
+				else if ("io_lines".Equals(name)) 
+				{
+				    return io_lines(L);
+				}
+				else if ("io_open".Equals(name))
+				{
+				    return io_open(L);
+				}
+				else if ("io_output".Equals(name))
+				{
+					return io_output(L);
+				}
+				else if ("io_popen".Equals(name))
+				{
+					return io_popen(L);
+				}
+				else if ("io_read".Equals(name))
+				{
+					return io_read(L);
+				}
+				else if ("io_tmpfile".Equals(name))
+				{
+					return io_tmpfile(L);
+				}
+				else if ("io_type".Equals(name))
+				{
+					return io_type(L);
+				}
+				else if ("io_write".Equals(name))
+				{
+					return io_write(L);
+				}
+				else if ("f_flush".Equals(name))
+				{
+					return f_flush(L);
+				}
+				else if ("f_lines".Equals(name))
+				{
+					return f_lines(L);
+				}
+				else if ("f_read".Equals(name))
+				{
+					return f_read(L);
+				}
+				else if ("f_seek".Equals(name))
+				{
+					return f_seek(L);
+				}
+				else if ("f_setvbuf".Equals(name))
+				{
+					return f_setvbuf(L);
+				}
+				else if ("f_write".Equals(name))
+				{
+					return f_write(L);
+				}
+				else if ("io_gc".Equals(name))
+				{
+					return io_gc(L);
+				}
+				else if ("io_tostring".Equals(name))
+		        {
+		         	return io_tostring(L);
+		        }
+				else if ("io_fclose".Equals(name))
+				{
+					return io_fclose(L);
+				}
+				else if ("io_noclose".Equals(name))
+				{
+					return io_noclose(L);
+				}
+				else if ("io_pclose".Equals(name))
+				{
+					return io_pclose(L);
+				}
+				else if ("io_readline".Equals(name))
+				{
+					return io_readline(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
 
 		private static void createmeta(lua_State L) 
 		{
@@ -641,18 +751,18 @@ namespace KopiLua
 		{
 			createmeta(L);
 			/* create (private) environment (with fields IO_INPUT, IO_OUTPUT, __close) */
-			newfenv(L, io_fclose);
+			newfenv(L, new LuaIOLib_delegate("io_fclose"));
 			LuaAPI.lua_replace(L, Lua.LUA_ENVIRONINDEX);
 			/* open library */
 			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_IOLIBNAME), iolib);
 			/* create (and set) default files */
-			newfenv(L, io_noclose);  /* close function for default files */
+			newfenv(L, new LuaIOLib_delegate("io_noclose"));  /* close function for default files */
 			createstdfile(L, LuaConf.stdin, IO_INPUT, CharPtr.toCharPtr("stdin"));
 			createstdfile(L, LuaConf.stdout, IO_OUTPUT, CharPtr.toCharPtr("stdout"));
 			createstdfile(L, LuaConf.stderr, 0, CharPtr.toCharPtr("stderr"));
 			Lua.lua_pop(L, 1);  /* pop environment for default files */
 			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("popen"));
-			newfenv(L, io_pclose);  /* create environment for 'popen' */
+			newfenv(L, new LuaIOLib_delegate("io_pclose"));  /* create environment for 'popen' */
 			LuaAPI.lua_setfenv(L, -2);  /* set fenv for 'popen' */
 			Lua.lua_pop(L, 1);  /* pop 'popen' */
 			return 1;

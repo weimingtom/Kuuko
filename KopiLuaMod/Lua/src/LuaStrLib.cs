@@ -187,6 +187,14 @@ namespace KopiLua
 			LuaAuxLib.luaL_addlstring((luaL_Buffer)B, (CharPtr)b, size);
 			return 0;
 		}
+		
+		public class writer_delegate : lua_Writer
+		{
+			public int exec(lua_State L, CharPtr p, int/*uint*/ sz, object ud)
+			{
+				return writer(L, p, sz, ud);
+			}
+		}
 
 		private static int str_dump(lua_State L) 
 		{
@@ -194,7 +202,7 @@ namespace KopiLua
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TFUNCTION);
 			LuaAPI.lua_settop(L, 1);
 			LuaAuxLib.luaL_buffinit(L, b);
-			if (LuaAPI.lua_dump(L, writer, b) != 0)
+			if (LuaAPI.lua_dump(L, new writer_delegate(), b) != 0)
 			{
 				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("unable to dump given function"));
 			}
@@ -855,7 +863,7 @@ namespace KopiLua
 			LuaAuxLib.luaL_checkstring(L, 2);
 			LuaAPI.lua_settop(L, 2);
 			LuaAPI.lua_pushinteger(L, 0);
-			LuaAPI.lua_pushcclosure(L, gmatch_aux, 3);
+			LuaAPI.lua_pushcclosure(L, new LuaStrLib_delegate("gmatch_aux"), 3);
 			return 1;
 		}
 
@@ -1193,24 +1201,106 @@ namespace KopiLua
 		}
 
 		private readonly static luaL_Reg[] strlib = {
-			new luaL_Reg(CharPtr.toCharPtr("byte"), str_byte),
-			new luaL_Reg(CharPtr.toCharPtr("char"), str_char),
-			new luaL_Reg(CharPtr.toCharPtr("dump"), str_dump),
-			new luaL_Reg(CharPtr.toCharPtr("find"), str_find),
-			new luaL_Reg(CharPtr.toCharPtr("format"), str_format),
-			new luaL_Reg(CharPtr.toCharPtr("gfind"), gfind_nodef),
-			new luaL_Reg(CharPtr.toCharPtr("gmatch"), gmatch),
-			new luaL_Reg(CharPtr.toCharPtr("gsub"), str_gsub),
-			new luaL_Reg(CharPtr.toCharPtr("len"), str_len),
-			new luaL_Reg(CharPtr.toCharPtr("lower"), str_lower),
-			new luaL_Reg(CharPtr.toCharPtr("match"), str_match),
-			new luaL_Reg(CharPtr.toCharPtr("rep"), str_rep),
-			new luaL_Reg(CharPtr.toCharPtr("reverse"), str_reverse),
-			new luaL_Reg(CharPtr.toCharPtr("sub"), str_sub),
-			new luaL_Reg(CharPtr.toCharPtr("upper"), str_upper),
+			new luaL_Reg(CharPtr.toCharPtr("byte"), new LuaStrLib_delegate("str_byte")),
+			new luaL_Reg(CharPtr.toCharPtr("char"), new LuaStrLib_delegate("str_char")),
+			new luaL_Reg(CharPtr.toCharPtr("dump"), new LuaStrLib_delegate("str_dump")),
+			new luaL_Reg(CharPtr.toCharPtr("find"), new LuaStrLib_delegate("str_find")),
+			new luaL_Reg(CharPtr.toCharPtr("format"), new LuaStrLib_delegate("str_format")),
+			new luaL_Reg(CharPtr.toCharPtr("gfind"), new LuaStrLib_delegate("gfind_nodef")),
+			new luaL_Reg(CharPtr.toCharPtr("gmatch"), new LuaStrLib_delegate("gmatch")),
+			new luaL_Reg(CharPtr.toCharPtr("gsub"), new LuaStrLib_delegate("str_gsub")),
+			new luaL_Reg(CharPtr.toCharPtr("len"), new LuaStrLib_delegate("str_len")),
+			new luaL_Reg(CharPtr.toCharPtr("lower"), new LuaStrLib_delegate("str_lower")),
+			new luaL_Reg(CharPtr.toCharPtr("match"), new LuaStrLib_delegate("str_match")),
+			new luaL_Reg(CharPtr.toCharPtr("rep"), new LuaStrLib_delegate("str_rep")),
+			new luaL_Reg(CharPtr.toCharPtr("reverse"), new LuaStrLib_delegate("str_reverse")),
+			new luaL_Reg(CharPtr.toCharPtr("sub"), new LuaStrLib_delegate("str_sub")),
+			new luaL_Reg(CharPtr.toCharPtr("upper"), new LuaStrLib_delegate("str_upper")),
 			new luaL_Reg(null, null)
 		};
 
+		public class LuaStrLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaStrLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("str_byte".Equals(name))
+				{
+					return str_byte(L);
+				} 
+				else if ("str_char".Equals(name)) 
+				{
+					return str_char(L);
+				} 
+				else if ("str_dump".Equals(name)) 
+				{
+					return str_dump(L);
+				} 
+				else if ("str_find".Equals(name)) 
+				{
+				    return str_find(L);
+				}
+				else if ("str_format".Equals(name))
+				{
+				    return str_format(L);
+				}
+				else if ("gfind_nodef".Equals(name))
+				{
+					return gfind_nodef(L);
+				}
+				else if ("gmatch".Equals(name))
+				{
+					return gmatch(L);
+				}
+				else if ("str_gsub".Equals(name))
+				{
+					return str_gsub(L);
+				}
+				else if ("str_len".Equals(name))
+				{
+					return str_len(L);
+				}
+				else if ("str_lower".Equals(name))
+				{
+					return str_lower(L);
+				}
+				else if ("str_match".Equals(name))
+				{
+					return str_match(L);
+				}
+				else if ("str_rep".Equals(name))
+				{
+					return str_rep(L);
+				}
+				else if ("str_reverse".Equals(name))
+				{
+					return str_reverse(L);
+				}
+				else if ("str_sub".Equals(name))
+				{
+					return str_sub(L);
+				}
+				else if ("str_upper".Equals(name))
+				{
+					return str_upper(L);
+				}
+				else if ("gmatch_aux".Equals(name))
+				{
+					return gmatch_aux(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+		
 		private static void createmetatable(lua_State L) 
 		{
 			LuaAPI.lua_createtable(L, 0, 1);  /* create metatable for strings */
@@ -1229,10 +1319,10 @@ namespace KopiLua
 		public static int luaopen_string(lua_State L) 
 		{
 			LuaAuxLib.luaL_register(L, CharPtr.toCharPtr(LuaLib.LUA_STRLIBNAME), strlib);
-			#if LUA_COMPAT_GFIND
+			//#if LUA_COMPAT_GFIND
 			LuaAPI.lua_getfield(L, -1, CharPtr.toCharPtr("gmatch"));
 			LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("gfind"));
-			#endif
+			//#endif
 			createmetatable(L);
 			return 1;
 		}

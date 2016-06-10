@@ -98,17 +98,18 @@ public final class RefObject<T>
 
 
 UInt32
-delegate
-#if #else #endif
+(x) delegate
+(x) #if #else #endif
 ulong
-[Conditional("DEBUG")]
+(x) [Conditional("DEBUG")]
 sizeof
-private readonly static Byte[] luaP_opmodes = {  //remove comment
+(x) private readonly static Byte[] luaP_opmodes = {  //remove comment
 unchecked
 private static priority_[] priority =  //remove comment
 switch (argv[i][1]) //string switch
 using (MemoryStream stream = new MemoryStream())
 goto
-switch (m.Groups[2].Value) //string switch
+(x) switch (m.Groups[2].Value) //string switch
 public struct Value //user-defined value types.
-
+out <var>
+Type t

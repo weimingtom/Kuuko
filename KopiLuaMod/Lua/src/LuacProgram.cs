@@ -201,6 +201,14 @@ namespace KopiLua
 			//UNUSED(L);
 			return ((LuaConf.fwrite(p, (int)size, 1, (Stream)u) != 1) && (size != 0)) ? 1 : 0;
 		}
+		
+		public class writer_delegate : lua_Writer
+		{
+			public int exec(lua_State L, CharPtr p, int/*uint*/ sz, object ud)
+			{
+				return writer(L, p, sz, ud);
+			}
+		}
 
 		static int pmain(lua_State L)
 		{
@@ -234,7 +242,7 @@ namespace KopiLua
                     cannot(CharPtr.toCharPtr("open"));
                 }
                 LuaLimits.lua_lock(L);
-				LuaDump.luaU_dump(L, f, writer, D, stripping);
+                LuaDump.luaU_dump(L, f, new writer_delegate(), D, stripping);
 				LuaLimits.lua_unlock(L);
                 if (LuaConf.ferror(D) != 0)
                 {
@@ -275,12 +283,20 @@ namespace KopiLua
 			}
 			s.argc = argc;
 			s.argv = args;
-			if (LuaAPI.lua_cpcall(L,pmain,s) != 0) 
+			if (LuaAPI.lua_cpcall(L, new pmain_delegate(), s) != 0)
 			{
 				fatal(Lua.lua_tostring(L,-1));
 			}
 			LuaState.lua_close(L);
 			return LuaConf.EXIT_SUCCESS;
+		}
+		
+		public class pmain_delegate : lua_CFunction
+		{
+			public int exec(lua_State L)
+			{
+				return pmain(L);
+			}
 		}
 	}
 }

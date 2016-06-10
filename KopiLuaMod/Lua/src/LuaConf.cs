@@ -89,7 +89,7 @@ namespace KopiLua
 		 ** hierarchy or if you want to install your libraries in
 		 ** non-conventional directories.
 		 */
-		#if _WIN32
+		//#if _WIN32
 		/*
 		 ** In Windows, any exclamation mark ('!') in the path is replaced by the
 		 ** path of the directory of the executable file of the current process.
@@ -102,16 +102,16 @@ namespace KopiLua
 		public const string LUA_CPATH_DEFAULT =
 			".\\?.dll;"  + LUA_CDIR + "?.dll;" + LUA_CDIR + "loadall.dll";
 
-		#else
-		public const string LUA_ROOT	= "/usr/local/";
-		public const string LUA_LDIR	= LUA_ROOT + "share/lua/5.1/";
-		public const string LUA_CDIR	= LUA_ROOT + "lib/lua/5.1/";
-		public const string LUA_PATH_DEFAULT  =
-			"./?.lua;"  + LUA_LDIR + "?.lua;"  + LUA_LDIR + "?/init.lua;" +
-			LUA_CDIR + "?.lua;"  + LUA_CDIR + "?/init.lua";
-		public const string LUA_CPATH_DEFAULT =
-			"./?.so;"  + LUA_CDIR + "?.so;" + LUA_CDIR + "loadall.so";
-		#endif
+		//#else
+//		public const string LUA_ROOT	= "/usr/local/";
+//		public const string LUA_LDIR	= LUA_ROOT + "share/lua/5.1/";
+//		public const string LUA_CDIR	= LUA_ROOT + "lib/lua/5.1/";
+//		public const string LUA_PATH_DEFAULT  =
+//			"./?.lua;"  + LUA_LDIR + "?.lua;"  + LUA_LDIR + "?/init.lua;" +
+//			LUA_CDIR + "?.lua;"  + LUA_CDIR + "?/init.lua";
+//		public const string LUA_CPATH_DEFAULT =
+//			"./?.so;"  + LUA_CDIR + "?.so;" + LUA_CDIR + "loadall.so";
+		//#endif
 
 
 		/*
@@ -119,11 +119,11 @@ namespace KopiLua
 		 ** CHANGE it if your machine does not use "/" as the directory separator
 		 ** and is not Windows. (On Windows Lua automatically uses "\".)
 		 */
-		#if _WIN32
+		//#if _WIN32
 		public const string LUA_DIRSEP = "\\";
-		#else
-		public const string LUA_DIRSEP = "/";
-		#endif
+		//#else
+//		public const string LUA_DIRSEP = "/";
+		//#endif
 
 
 		/*
@@ -238,19 +238,19 @@ namespace KopiLua
 		 ** CHANGE it if you have a better definition for non-POSIX/non-Windows
 		 ** systems.
 		 */
-		#if LUA_USE_ISATTY
+		//#if LUA_USE_ISATTY
 		//#include <unistd.h>
 		//#define lua_stdin_is_tty()	isatty(0)
-		#elif LUA_WIN
+		//#elif LUA_WIN
 		//#include <io.h>
 		//#include <stdio.h>
 		//#define lua_stdin_is_tty()	_isatty(_fileno(stdin))
-		#else
-		public static int lua_stdin_is_tty() 
+		//#else
+		public static int lua_stdin_is_tty()
 		{ 
 			return 1; 
 		}  /* assume stdin is a tty */
-		#endif
+		//#endif
 
 		/*
 		@@ LUA_PROMPT is the default prompt used by stand-alone Lua.
@@ -283,7 +283,7 @@ namespace KopiLua
 		 ** CHANGE them if you want to improve this functionality (e.g., by using
 		 ** GNU readline and history facilities).
 		 */
-		#if LUA_USE_READLINE
+		//#if LUA_USE_READLINE
 		//#include <stdio.h>
 		//#include <readline/readline.h>
 		//#include <readline/history.h>
@@ -292,7 +292,7 @@ namespace KopiLua
 		//	if (lua_strlen(L,idx) > 0)  /* non-empty line? */ \
 		//	  add_history(lua_tostring(L, idx));  /* add it to history */
 		//#define lua_freeline(L,b)	((void)L, free(b))
-		#else
+		//#else
 		public static bool lua_readline(lua_State L, CharPtr b, CharPtr p)
 		{
 			fputs(p, stdout);
@@ -309,7 +309,7 @@ namespace KopiLua
 		{
 			
 		}
-		#endif
+		//#endif
 
 		//#endif
 
@@ -393,17 +393,17 @@ namespace KopiLua
 		 ** a bit, but may be quite useful when debugging C code that interfaces
 		 ** with Lua. A useful redefinition is to use assert.h.
 		 */
-		#if LUA_USE_APICHECK
-		public static void luai_apicheck(lua_State L, bool o)	
-		{
-			Debug.Assert(o);
-		}
-		
-		public static void luai_apicheck(lua_State L, int o) 
-		{
-			Debug.Assert(o != 0);
-		}
-		#else
+		//#if LUA_USE_APICHECK
+//		public static void luai_apicheck(lua_State L, bool o)	
+//		{
+//			Debug.Assert(o);
+//		}
+//		
+//		public static void luai_apicheck(lua_State L, int o) 
+//		{
+//			Debug.Assert(o != 0);
+//		}
+		//#else
 		public static void luai_apicheck(lua_State L, bool o)	
 		{
 			
@@ -413,7 +413,7 @@ namespace KopiLua
 		{
 						
 		}
-		#endif
+		//#endif
 
 
 		/*
@@ -597,7 +597,7 @@ namespace KopiLua
 		/*
 		@@ The luai_num* macros define the primitive operations over numbers.
 		 */
-		#if LUA_CORE
+		//#if LUA_CORE
 		//#include <math.h>
 
 		public static Double/*lua_Number*/ luai_numadd(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
@@ -605,14 +605,38 @@ namespace KopiLua
 			return ((a) + (b)); 
 		}
 		
+		public class luai_numadd_delegate : op_delegate 
+		{
+			public Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
+			{
+				return luai_numadd(a, b);
+			}
+		}
+		
 		public static Double/*lua_Number*/ luai_numsub(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
 		{ 
 			return ((a) - (b)); 
+		}
+
+		public class luai_numsub_delegate : op_delegate 
+		{
+			public Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
+			{
+				return luai_numsub(a, b);
+			}
 		}
 		
 		public static Double/*lua_Number*/ luai_nummul(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
 		{ 
 			return ((a) * (b)); 
+		}
+
+		public class luai_nummul_delegate : op_delegate 
+		{
+			public Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
+			{
+				return luai_nummul(a, b);
+			}
 		}
 		
 		public static Double/*lua_Number*/ luai_numdiv(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
@@ -620,14 +644,38 @@ namespace KopiLua
 			return ((a) / (b)); 
 		}
 		
+		public class luai_numdiv_delegate : op_delegate 
+		{
+			public Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
+			{
+				return luai_numdiv(a, b);
+			}
+		}
+		
 		public static Double/*lua_Number*/ luai_nummod(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
 		{ 
 			return ((a) - Math.Floor((a) / (b)) * (b)); 
 		}
 		
+		public class luai_nummod_delegate : op_delegate 
+		{
+			public Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
+			{
+				return luai_nummod(a, b);
+			}
+		}
+		
 		public static Double/*lua_Number*/ luai_numpow(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
 		{ 
 			return (Math.Pow(a, b)); 
+		}
+		
+		public class luai_numpow_delegate : op_delegate 
+		{
+			public Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b) 
+			{
+				return luai_numpow(a, b);
+			}
 		}
 		
 		public static Double/*lua_Number*/ luai_numunm(Double/*lua_Number*/ a) 
@@ -655,7 +703,7 @@ namespace KopiLua
 			return /*lua_Number*/Double.IsNaN(a); 
 		}
 		
-		#endif
+		//#endif
 
 
 		/*
@@ -775,27 +823,26 @@ namespace KopiLua
 		 ** insecure) or if you want the original tmpnam anyway.  By default, Lua
 		 ** uses tmpnam except when POSIX is available, where it uses mkstemp.
 		 */
-		#if loslib_c || luaall_c
+		//#if loslib_c || luaall_c
+		//#if LUA_USE_MKSTEMP
+//		//#include <unistd.h>
+//		public const int LUA_TMPNAMBUFSIZE = 32;
+//		//#define lua_tmpnam(b,e)	{ \
+//		//    strcpy(b, "/tmp/lua_XXXXXX"); \
+//		//    e = mkstemp(b); \
+//		//    if (e != -1) close(e); \
+//		//    e = (e == -1); }
+//
+//		//#else
+//		public const int LUA_TMPNAMBUFSIZE	= L_tmpnam;
+//		
+//		public static void lua_tmpnam(CharPtr b, int e)
+//		{ 
+//			e = (tmpnam(b) == null) ? 1 : 0; 
+//		}
+		//#endif
 
-		#if LUA_USE_MKSTEMP
-		//#include <unistd.h>
-		public const int LUA_TMPNAMBUFSIZE = 32;
-		//#define lua_tmpnam(b,e)	{ \
-		//    strcpy(b, "/tmp/lua_XXXXXX"); \
-		//    e = mkstemp(b); \
-		//    if (e != -1) close(e); \
-		//    e = (e == -1); }
-
-		#else
-		public const int LUA_TMPNAMBUFSIZE	= L_tmpnam;
-		
-		public static void lua_tmpnam(CharPtr b, int e)
-		{ 
-			e = (tmpnam(b) == null) ? 1 : 0; 
-		}
-		#endif
-
-		#endif
+		//#endif
 
 
 		/*
@@ -897,17 +944,16 @@ namespace KopiLua
 		 ** CHANGE them if your system supports long long or does not support long.
 		 */
 
-		#if LUA_USELONGLONG
+		//#if LUA_USELONGLONG
+//		public const string LUA_INTFRMLEN = "ll";
+//		//#define LUA_INTFRM_T		long long
 
-		public const string LUA_INTFRMLEN = "ll";
-		//#define LUA_INTFRM_T		long long
-
-		#else
+		//#else
 
 		public const string LUA_INTFRMLEN = "l";
 		//#define LUA_INTFRM_T		long			/* declared in dotnet build with using statement */
 
-		#endif
+		//#endif
 
 
 
@@ -1915,5 +1961,9 @@ namespace KopiLua
 		}
 	}
 
-	public delegate Double/*lua_Number*/ op_delegate(Double/*lua_Number*/ a, Double/*lua_Number*/ b);
+	//public delegate Double/*lua_Number*/ op_delegate(Double/*lua_Number*/ a, Double/*lua_Number*/ b);
+	public interface op_delegate
+	{
+		Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b);
+	}	
 }

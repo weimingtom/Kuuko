@@ -16,17 +16,17 @@ namespace KopiLua
 
 	public class LuaAuxLib
 	{
-		#if LUA_COMPAT_GETN
-		public static int luaL_getn(lua_State L, int t);
-		public static void luaL_setn(lua_State L, int t, int n);
-		#else
+		//#if LUA_COMPAT_GETN
+//		public static int luaL_getn(lua_State L, int t);
+//		public static void luaL_setn(lua_State L, int t, int n);
+		//#else
 		public static int luaL_getn(lua_State L, int i) {return (int)LuaAPI.lua_objlen(L, i);}
 		public static void luaL_setn(lua_State L, int i, int j) {} /* no op! */
-		#endif
+		//#endif
 
-		#if LUA_COMPAT_OPENLIB
+		//#if LUA_COMPAT_OPENLIB
 		//#define luaI_openlib	luaL_openlib
-		#endif
+		//#endif
 
 		/* extra error code for `luaL_load' */
 		public const int LUA_ERRFILE = (Lua.LUA_ERRERR+1);
@@ -60,6 +60,14 @@ namespace KopiLua
 			return /*(int)*/luaL_checkinteger(L, n);
 		}
 		
+		public class luaL_checkint_delegate : luaL_opt_delegate_integer
+		{
+			public int/*Int32*//*lua_Integer*/ exec(lua_State L, int narg)
+			{
+				return luaL_checkint(L, narg);
+			}
+		}
+			
 		public static int luaL_optint(lua_State L, int n, int/*Int32*//*lua_Integer*/ d) 
 		{
 			return /*(int)*/luaL_optinteger(L, n, d); 
@@ -93,12 +101,12 @@ namespace KopiLua
 
 		public static double/*Double*//*lua_Number*/ luaL_opt(lua_State L, luaL_opt_delegate f, int n, Double/*lua_Number*/ d)
 		{
-			return Lua.lua_isnoneornil(L, (n != 0) ? d : f(L, n)) ? 1 : 0;
+			return Lua.lua_isnoneornil(L, (n != 0) ? d : f.exec(L, n)) ? 1 : 0;
 		}
 
 		public static int/*Int32*//*lua_Integer*/ luaL_opt_integer(lua_State L, luaL_opt_delegate_integer f, int n, Double/*lua_Number*/ d)
 		{
-			return (int/*Int32*//*lua_Integer*/)(Lua.lua_isnoneornil(L, n) ? d : f(L, (n)));
+			return (int/*Int32*//*lua_Integer*/)(Lua.lua_isnoneornil(L, n) ? d : f.exec(L, (n)));
 		}
 
 		/*
@@ -351,9 +359,17 @@ namespace KopiLua
 			return d;
 		}
 
+		public class luaL_checknumber_delegate : luaL_opt_delegate
+		{
+			public double/*Double*//*lua_Number*/ exec(lua_State L, int narg) 
+			{
+				return luaL_checknumber(L, narg);
+			}
+		}
+		
 		public static double/*Double*//*lua_Number*/ luaL_optnumber(lua_State L, int narg, Double/*lua_Number*/ def)
 		{
-			return luaL_opt(L, luaL_checknumber, narg, def);
+			return luaL_opt(L, new luaL_checknumber_delegate(), narg, def);
 		}
 
 		public static int/*Int32*//*lua_Integer*/ luaL_checkinteger(lua_State L, int narg)
@@ -363,10 +379,18 @@ namespace KopiLua
 			tag_error(L, narg, Lua.LUA_TNUMBER);
 			return d;
 		}
+		
+		public class luaL_checkinteger_delegate : luaL_opt_delegate_integer
+		{
+			public int/*Int32*//*lua_Integer*/ exec(lua_State L, int narg)
+			{
+				return luaL_checkinteger(L, narg);
+			}
+		}
 
 		public static int/*Int32*//*lua_Integer*/ luaL_optinteger(lua_State L, int narg, int/*Int32*//*lua_Integer*/ def)
 		{
-			return luaL_opt_integer(L, luaL_checkinteger, narg, def);
+			return luaL_opt_integer(L, new luaL_checkinteger_delegate(), narg, def);
 		}
 
 		public static int luaL_getmetafield(lua_State L, int obj, CharPtr event_) 
@@ -461,76 +485,76 @@ namespace KopiLua
 		 ** =======================================================
 		 */
 		
-		#if LUA_COMPAT_GETN
+		//#if LUA_COMPAT_GETN
 
-		static int checkint(lua_State L, int topop) 
-		{
-			int n = (lua_type(L, -1) == LUA_TNUMBER) ? lua_tointeger(L, -1) : -1;
-			lua_pop(L, topop);
-			return n;
-		}
+//		static int checkint(lua_State L, int topop) 
+//		{
+//			int n = (lua_type(L, -1) == LUA_TNUMBER) ? lua_tointeger(L, -1) : -1;
+//			lua_pop(L, topop);
+//			return n;
+//		}
+//
+//		static void getsizes(lua_State L) 
+//		{
+//			lua_getfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");
+//			if (lua_isnil(L, -1)) 
+//			{  
+//				/* no `size' table? */
+//				lua_pop(L, 1);  /* remove nil */
+//				lua_newtable(L);  /* create it */
+//				lua_pushvalue(L, -1);  /* `size' will be its own metatable */
+//				lua_setmetatable(L, -2);
+//				lua_pushliteral(L, "kv");
+//				lua_setfield(L, -2, "__mode");  /* metatable(N).__mode = "kv" */
+//				lua_pushvalue(L, -1);
+//				lua_setfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");  /* store in register */
+//			}
+//		}
+//
+//		public static void luaL_setn(lua_State L, int t, int n) 
+//		{
+//			t = abs_index(L, t);
+//			lua_pushliteral(L, "n");
+//			lua_rawget(L, t);
+//			if (checkint(L, 1) >= 0) 
+//			{  
+//				/* is there a numeric field `n'? */
+//				lua_pushliteral(L, "n");  /* use it */
+//				lua_pushinteger(L, n);
+//				lua_rawset(L, t);
+//			}
+//			else 
+//			{  
+//				/* use `sizes' */
+//				getsizes(L);
+//				lua_pushvalue(L, t);
+//				lua_pushinteger(L, n);
+//				lua_rawset(L, -3);  /* sizes[t] = n */
+//				lua_pop(L, 1);  /* remove `sizes' */
+//			}
+//		}
+//
+//		public static int luaL_getn(lua_State L, int t) 
+//		{
+//			int n;
+//			t = abs_index(L, t);
+//			lua_pushliteral(L, "n");  /* try t.n */
+//			lua_rawget(L, t);
+//			if ((n = checkint(L, 1)) >= 0) 
+//			{
+//				return n;
+//			}
+//			getsizes(L);  /* else try sizes[t] */
+//			lua_pushvalue(L, t);
+//			lua_rawget(L, -2);
+//			if ((n = checkint(L, 2)) >= 0) 
+//			{
+//				return n;
+//			}
+//			return (int)lua_objlen(L, t);
+//		}
 
-		static void getsizes(lua_State L) 
-		{
-			lua_getfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");
-			if (lua_isnil(L, -1)) 
-			{  
-				/* no `size' table? */
-				lua_pop(L, 1);  /* remove nil */
-				lua_newtable(L);  /* create it */
-				lua_pushvalue(L, -1);  /* `size' will be its own metatable */
-				lua_setmetatable(L, -2);
-				lua_pushliteral(L, "kv");
-				lua_setfield(L, -2, "__mode");  /* metatable(N).__mode = "kv" */
-				lua_pushvalue(L, -1);
-				lua_setfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");  /* store in register */
-			}
-		}
-
-		public static void luaL_setn(lua_State L, int t, int n) 
-		{
-			t = abs_index(L, t);
-			lua_pushliteral(L, "n");
-			lua_rawget(L, t);
-			if (checkint(L, 1) >= 0) 
-			{  
-				/* is there a numeric field `n'? */
-				lua_pushliteral(L, "n");  /* use it */
-				lua_pushinteger(L, n);
-				lua_rawset(L, t);
-			}
-			else 
-			{  
-				/* use `sizes' */
-				getsizes(L);
-				lua_pushvalue(L, t);
-				lua_pushinteger(L, n);
-				lua_rawset(L, -3);  /* sizes[t] = n */
-				lua_pop(L, 1);  /* remove `sizes' */
-			}
-		}
-
-		public static int luaL_getn(lua_State L, int t) 
-		{
-			int n;
-			t = abs_index(L, t);
-			lua_pushliteral(L, "n");  /* try t.n */
-			lua_rawget(L, t);
-			if ((n = checkint(L, 1)) >= 0) 
-			{
-				return n;
-			}
-			getsizes(L);  /* else try sizes[t] */
-			lua_pushvalue(L, t);
-			lua_rawget(L, -2);
-			if ((n = checkint(L, 2)) >= 0) 
-			{
-				return n;
-			}
-			return (int)lua_objlen(L, t);
-		}
-
-		#endif
+		//#endif
 
 		/* }====================================================== */
 
@@ -835,7 +859,7 @@ namespace KopiLua
 				lf.extraline = 0;
 			}
 			LuaConf.ungetc(c, lf.f);
-			status = LuaAPI.lua_load(L, getF, lf, Lua.lua_tostring(L, -1));
+			status = LuaAPI.lua_load(L, new getF_delegate(), lf, Lua.lua_tostring(L, -1));
 			readstatus = LuaConf.ferror(lf.f);
 			if (CharPtr.isNotEqual(filename, null)) 
 			{
@@ -865,7 +889,7 @@ namespace KopiLua
 			LoadS ls = new LoadS();
 			ls.s = new CharPtr(buff);
 			ls.size = size;
-			return LuaAPI.lua_load(L, getS, ls, name);
+			return LuaAPI.lua_load(L, new getS_delegate(), ls, name);
 		}
 
 		public static int luaL_loadstring(lua_State L, CharPtr s) 
@@ -879,6 +903,14 @@ namespace KopiLua
 		{
 			return System.Activator.CreateInstance(t);
 		}
+		
+		public class l_alloc_delegate : lua_Alloc
+		{
+			public object exec(Type t)
+			{
+				return l_alloc(t);
+			}
+		}
 
 		private static int panic(lua_State L) 
 		{
@@ -890,12 +922,60 @@ namespace KopiLua
 
 		public static lua_State luaL_newstate()
 		{
-			lua_State L = LuaState.lua_newstate(l_alloc, null);
-			if (L != null) LuaAPI.lua_atpanic(L, panic);
+			lua_State L = LuaState.lua_newstate(new l_alloc_delegate(), null);
+			if (L != null) LuaAPI.lua_atpanic(L, new LuaAuxLib_delegate("panic"));
 			return L;
+		}
+		
+		
+		public class LuaAuxLib_delegate : lua_CFunction
+		{
+			private string name;
+			
+			public LuaAuxLib_delegate(string name)
+			{
+				this.name = name;
+			}
+			
+			public int exec(lua_State L)
+			{
+				if ("panic".Equals(name))
+				{
+					return panic(L);
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+		
+		public class getF_delegate : lua_Reader
+		{
+			public CharPtr exec(lua_State L, object ud, out int/*uint*/ sz)
+			{
+				return getF(L, ud, out sz);
+			}
+		}
+		
+		public class getS_delegate : lua_Reader
+		{
+			public CharPtr exec(lua_State L, object ud, out int/*uint*/ sz)
+			{
+				return getS(L, ud, out sz);
+			}
 		}
 	}
 
-	public delegate double/*Double*//*lua_Number*/ luaL_opt_delegate(lua_State L, int narg);
-	public delegate int/*Int32*//*lua_Integer*/ luaL_opt_delegate_integer(lua_State L, int narg);
+	//public delegate double/*Double*//*lua_Number*/ luaL_opt_delegate(lua_State L, int narg);
+	//public delegate int/*Int32*//*lua_Integer*/ luaL_opt_delegate_integer(lua_State L, int narg);
+
+	public interface luaL_opt_delegate
+	{
+		double/*Double*//*lua_Number*/ exec(lua_State L, int narg);
+	}
+	public interface luaL_opt_delegate_integer
+	{
+		int/*Int32*//*lua_Integer*/ exec(lua_State L, int narg);
+	}
 }

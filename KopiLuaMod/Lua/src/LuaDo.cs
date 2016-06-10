@@ -23,9 +23,9 @@ namespace KopiLua
 			}
 			else
 			{
-				#if HARDSTACKTESTS
-				luaD_reallocstack(L, L.stacksize - EXTRA_STACK - 1);
-				#endif
+				//#if HARDSTACKTESTS
+//				luaD_reallocstack(L, L.stacksize - EXTRA_STACK - 1);
+				//#endif
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace KopiLua
 				{
 					resetstack(L, errcode);
 					LuaLimits.lua_unlock(L);
-					LuaState.G(L).panic(L);
+					LuaState.G(L).panic.exec(L);
 				}
 				Environment.Exit(LuaConf.EXIT_FAILURE);
 			}
@@ -144,19 +144,19 @@ namespace KopiLua
 			f(L, ud)
 		  );
 			 * */
-			#if CATCH_EXCEPTIONS
+			//#if CATCH_EXCEPTIONS
 			try
-				#endif
+			//#endif
 			{
-				f(L, ud);
+				f.exec(L, ud);
 			}
-			#if CATCH_EXCEPTIONS
+			//#if CATCH_EXCEPTIONS
 			catch
 			{
 				if (lj.status == 0)
 					lj.status = -1;
 			}
-			#endif
+			//#endif
 			L.errorJmp = lj.previous;  /* restore old error handler */
 			return lj.status;
 		}
@@ -253,7 +253,7 @@ namespace KopiLua
 				LuaLimits.lua_assert(TValue.lessEqual(L.ci.top, L.stack_last));
 				L.allowhook = 0;  /* cannot call hooks inside a hook */
 				LuaLimits.lua_unlock(L);
-				hook(L, ar);
+				hook.exec(L, ar);
 				LuaLimits.lua_lock(L);
 				LuaLimits.lua_assert(L.allowhook == 0);
 				L.allowhook = 1;
@@ -271,7 +271,7 @@ namespace KopiLua
 			TValue/*StkId*/ base_, fixed_;
 			for (; actual < nfixargs; ++actual)
 				LuaObject.setnilvalue(/*StkId*/TValue.inc(ref L.top));
-			#if LUA_COMPAT_VARARG
+			//#if LUA_COMPAT_VARARG
 			if ((p.is_vararg & LuaObject.VARARG_NEEDSARG) != 0)
 			{ /* compat. with old-style vararg? */
 				int nvar = actual - nfixargs;  /* number of extra arguments */
@@ -283,7 +283,7 @@ namespace KopiLua
 				/* store counter in field `n' */
 				LuaObject.setnvalue(LuaTable.luaH_setstr(L, htab, LuaString.luaS_newliteral(L, CharPtr.toCharPtr("n"))), LuaLimits.cast_num(nvar));
 			}
-			#endif
+			//#endif
 			/* move fixed parameters to final position */
 			fixed_ = TValue.minus(L.top, actual);  /* first fixed argument */
 			base_ = L.top;  /* final position of first argument */
@@ -400,7 +400,7 @@ namespace KopiLua
                     luaD_callhook(L, Lua.LUA_HOOKCALL, -1);
                 }
                 LuaLimits.lua_unlock(L);
-				n = LuaState.curr_func(L).c.f(L);  /* do the actual call */
+				n = LuaState.curr_func(L).c.f.exec(L);  /* do the actual call */
 				LuaLimits.lua_lock(L);
                 if (n < 0)  /* yielding? */
                 {
@@ -522,7 +522,14 @@ namespace KopiLua
 			LuaVM.luaV_execute(L, CallInfo.minus(L.ci, L.base_ci));
 		}
 
-
+		public class resume_delegate : Pfunc
+		{
+			public void exec(lua_State L, object ud)
+			{
+				resume(L, ud);
+			}
+		}
+		
 		private static int resume_error(lua_State L, CharPtr msg) 
         {
 			L.top = L.ci.base_;
@@ -548,7 +555,7 @@ namespace KopiLua
             LuaConf.luai_userstateresume(L, nargs);
 			LuaLimits.lua_assert(L.errfunc == 0);
 			L.baseCcalls = ++L.nCcalls;
-			status = luaD_rawrunprotected(L, resume, TValue.minus(L.top, nargs));
+			status = luaD_rawrunprotected(L, new resume_delegate(), TValue.minus(L.top, nargs));
 			if (status != 0) 
             {  
                 /* error? */
@@ -628,6 +635,14 @@ namespace KopiLua
 			incr_top(L);
 		}
 
+		public class f_parser_delegate : Pfunc
+		{
+			public void exec(lua_State L, object ud)
+			{
+				f_parser(L, ud);
+			}
+		}
+		
 		public static int luaD_protectedparser(lua_State L, ZIO z, CharPtr name) 
 		{
 			SParser p = new SParser();
@@ -635,14 +650,23 @@ namespace KopiLua
 			p.z = z; 
 			p.name = new CharPtr(name);
 			LuaZIO.luaZ_initbuffer(L, p.buff);
-			status = luaD_pcall(L, f_parser, p, savestack(L, L.top), L.errfunc);
+			status = luaD_pcall(L, new f_parser_delegate(), p, savestack(L, L.top), L.errfunc);
 			LuaZIO.luaZ_freebuffer(L, p.buff);
 			return status;
 		}
 	}
 
 	/* type of protected functions, to be ran by `runprotected' */
-	public delegate void Pfunc(lua_State L, object ud);
-
-	public delegate void luai_jmpbuf(int/*Int32*//*lua_Integer*/ b);
+	//public delegate void Pfunc(lua_State L, object ud);
+	//public delegate void luai_jmpbuf(int/*Int32*//*lua_Integer*/ b);
+	
+	public interface Pfunc
+	{
+		void exec(lua_State L, object ud);
+	}               
+	
+	public interface luai_jmpbuf
+	{
+		void exec(int/*Int32*//*lua_Integer*/ b);
+	}  
 }
