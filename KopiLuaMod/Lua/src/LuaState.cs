@@ -296,7 +296,7 @@ namespace KopiLua
 			g.grayagain = null;
 			g.weak = null;
 			g.tmudata = null;
-			g.totalbytes = (uint)LuaConf.GetUnmanagedSize(typeof(LG));
+			g.totalbytes = (long/*uint*/)LuaConf.GetUnmanagedSize(typeof(LG));
 			g.gcpause = LuaConf.LUAI_GCPAUSE;
 			g.gcstepmul = LuaConf.LUAI_GCMUL;
 			g.gcdept = 0;

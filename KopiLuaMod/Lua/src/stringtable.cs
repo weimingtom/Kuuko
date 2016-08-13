@@ -10,7 +10,7 @@ namespace KopiLua
 	public class stringtable
 	{
 		public GCObject[] hash;
-		public UInt32/*lu_mem*/ nuse;  /* number of elements */
+		public long/*UInt32*//*lu_mem*/ nuse;  /* number of elements */
 		public int size;
 	}
 }

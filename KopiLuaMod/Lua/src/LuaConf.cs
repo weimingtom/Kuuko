@@ -21,6 +21,8 @@ namespace KopiLua
 
 	public class LuaConf
 	{
+		public const bool CATCH_EXCEPTIONS = false;
+		
 		/*
 		 ** ==================================================================
 		 ** Search for "@@" to find all configurable definitions.
@@ -1275,10 +1277,10 @@ namespace KopiLua
 
 
 
-		public static int memcmp(CharPtr ptr1, CharPtr ptr2, uint size) 
-		{ 
-			return memcmp(ptr1, ptr2, (int)size); 
-		}
+		//public static int memcmp(CharPtr ptr1, CharPtr ptr2, uint size) 
+		//{ 
+		//	return memcmp(ptr1, ptr2, (int)size); 
+		//}
 		
 		public static int memcmp(CharPtr ptr1, CharPtr ptr2, int size)
 		{
@@ -1299,9 +1301,9 @@ namespace KopiLua
 			return 0;
 		}
 
-		public static CharPtr memchr(CharPtr ptr, char c, uint count)
+		public static CharPtr memchr(CharPtr ptr, char c, int/*uint*/ count)
 		{
-			for (uint i = 0; i < count; i++)
+			for (/*uint*/int i = 0; i < count; i++)
 			{	
 				if (ptr.get(i) == c)
 				{
@@ -1693,7 +1695,7 @@ namespace KopiLua
 			return 0;
 		}
 
-		public static int setvbuf(Stream stream, CharPtr buffer, int mode, uint size)
+		public static int setvbuf(Stream stream, CharPtr buffer, int mode, int/*uint*/ size)
 		{
 			Debug.Assert(false, "setvbuf not implemented yet - mjf");
 			return 0;
@@ -1723,10 +1725,10 @@ namespace KopiLua
 			}
 		}
 
-		public static void memcpy(CharPtr ptr1, CharPtr ptr2, uint size) 
-		{ 
-			memcpy(ptr1, ptr2, (int)size); 
-		}
+		//public static void memcpy(CharPtr ptr1, CharPtr ptr2, uint size) 
+		//{ 
+		//	memcpy(ptr1, ptr2, (int)size); 
+		//}
 		
 		public static void memcpy(CharPtr ptr1, CharPtr ptr2, int size)
 		{
@@ -1741,8 +1743,8 @@ namespace KopiLua
 			return f; 
 		}
 
-		public const double HUGE_VAL = System.Double.MaxValue;
-		public const uint SHRT_MAX = System.UInt16.MaxValue;
+		public const double HUGE_VAL = /*System.*/Double.MaxValue;
+		public const int/*uint*/ SHRT_MAX = /*System.UInt16*/short.MaxValue;
 
 		public const int _IONBF = 0;
 		public const int _IOFBF = 1;
@@ -1955,6 +1957,10 @@ namespace KopiLua
 			else if (t == typeof(Single))
 			{
 				return 4;
+			}
+			else if (t == typeof(long))
+			{
+				return 8;
 			}
 			Debug.Assert(false, "Trying to get unknown sized of unmanaged type " + t.ToString());
 			return 0;

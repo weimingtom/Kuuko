@@ -10,7 +10,7 @@ namespace KopiLua
 {
 	public class InstructionPtr
 	{
-		public UInt32[]/*Instruction[]*/ codes;
+		public long[]/*UInt32[]*//*Instruction[]*/ codes;
 		public int pc;
 		
 		public InstructionPtr()
@@ -19,7 +19,7 @@ namespace KopiLua
 			this.pc = -1;
 		}
 		
-		public InstructionPtr(UInt32[]/*Instruction[]*/ codes, int pc)
+		public InstructionPtr(long[]/*UInt32[]*//*Instruction[]*/ codes, int pc)
 		{
 			this.codes = codes;
 			this.pc = pc;
@@ -35,11 +35,11 @@ namespace KopiLua
 		}
 
         //UInt32/*Instruction*/ this[int index]
-        public UInt32/*Instruction*/ get(int index)
+        public long/*UInt32*//*Instruction*/ get(int index)
         {
                 return this.codes[pc + index];
         }
-        public void set(int index, UInt32/*Instruction*/ val)
+        public void set(int index, long/*UInt32*//*Instruction*/ val)
         {
             this.codes[pc + index] = val;
         }

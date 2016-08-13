@@ -128,11 +128,11 @@ namespace KopiLua
 
 		private static void PrintCode(Proto f)
 		{
-			UInt32[]/*Instruction[]*/ code = f.code;
+			long[]/*UInt32[]*//*Instruction[]*/ code = f.code;
 			int pc, n = f.sizecode;
 			for (pc = 0; pc < n; pc++)
 			{
-				UInt32/*Instruction*/ i = f.code[pc];
+				long/*UInt32*//*Instruction*/ i = f.code[pc];
 				OpCode o = LuaOpCodes.GET_OPCODE(i);
 				int a = LuaOpCodes.GETARG_A(i);
 				int b = LuaOpCodes.GETARG_B(i);
@@ -309,7 +309,7 @@ namespace KopiLua
 			LuaConf.printf(CharPtr.toCharPtr("\n%s <%s:%d,%d> (%d Instruction%s, %d bytes at %p)\n"),
                	(f.linedefined == 0) ? "main" : "function", s,
                	f.linedefined, f.lastlinedefined,
-               	f.sizecode, SS(f.sizecode), f.sizecode * LuaConf.GetUnmanagedSize(typeof(UInt32/*Instruction*/)), LuaConf.VOID(f));
+               	f.sizecode, SS(f.sizecode), f.sizecode * LuaConf.GetUnmanagedSize(typeof(long/*UInt32*//*Instruction*/)), LuaConf.VOID(f));
             LuaConf.printf(CharPtr.toCharPtr("%d%s param%s, %d slot%s, %d upvalue%s, "),
                	f.numparams, (f.is_vararg != 0) ? "+" : "", SS(f.numparams),
             	f.maxstacksize, SS(f.maxstacksize), f.nups, SS(f.nups));

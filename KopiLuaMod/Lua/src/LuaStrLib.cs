@@ -129,7 +129,7 @@ namespace KopiLua
 			{
 				posi = 1;
 			}
-			if ((uint)pose > l) 
+			if ((int/*uint*/)pose > l) 
 			{
 				pose = (int)l;
 			}
@@ -523,7 +523,7 @@ namespace KopiLua
 			int/*uint*/ len;
 			l = check_capture(ms, l);
 			len = /*(uint)*/ms.capture[l].len;
-			if ((uint)CharPtr.minus(ms.src_end, s) >= len &&
+			if ((int/*uint*/)CharPtr.minus(ms.src_end, s) >= len &&
 			    LuaConf.memcmp(ms.capture[l].init, s, len) == 0)
 			{
 				return CharPtr.plus(s, len);
@@ -675,8 +675,8 @@ namespace KopiLua
 			}
 		}
 
-		private static CharPtr lmemfind(CharPtr s1, uint l1,
-			CharPtr s2, uint l2) 
+		private static CharPtr lmemfind(CharPtr s1, int/*uint*/ l1,
+			CharPtr s2, int/*uint*/ l2) 
 		{
 			if (l2 == 0) 
 			{
@@ -701,7 +701,7 @@ namespace KopiLua
 					else 
 					{  
 						/* correct `l1' and `s1' to try again */
-						l1 -= (uint)CharPtr.minus(init, s1);
+						l1 -= (/*uint*/int)CharPtr.minus(init, s1);
 						s1 = init;
 					}
 				}
@@ -763,7 +763,7 @@ namespace KopiLua
 			{
 				init = 0;
 			}
-			else if ((uint)(init) > l1)
+			else if ((int/*uint*/)(init) > l1)
 			{
                 init = (int/*Int32*//*ptrdiff_t*/)l1;
 			}
@@ -772,7 +772,7 @@ namespace KopiLua
 			{  
 				/* or no special characters? */
 				/* do a plain search */
-				CharPtr s2 = lmemfind(CharPtr.plus(s, init), (uint)(l1-init), p, (uint)(l2));
+				CharPtr s2 = lmemfind(CharPtr.plus(s, init), (/*uint*/int)(l1 - init), p, (/*uint*/int)(l2));
 				if (CharPtr.isNotEqual(s2, null)) 
 				{
 					LuaAPI.lua_pushinteger(L, CharPtr.minus(s2, s) + 1);
@@ -1057,7 +1057,7 @@ namespace KopiLua
 			{
 				p = p.next();  /* skip flags */
 			}
-			if ((uint)(CharPtr.minus(p, strfrmt)) >= (FLAGS.Length+1))
+			if ((int/*uint*/)(CharPtr.minus(p, strfrmt)) >= (FLAGS.Length + 1))
 			{
 				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("invalid format (repeated flags)"));
 			}

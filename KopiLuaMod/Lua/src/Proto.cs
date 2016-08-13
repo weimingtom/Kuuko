@@ -16,7 +16,7 @@ namespace KopiLua
 		public int index = 0;
 		
 		public TValue[] k;  /* constants used by the function */
-		public UInt32/*Instruction*/[] code;
+		public long[]/*UInt32[]*//*Instruction[]*/ code;
 		public /*new*/ Proto[] p;  /* functions defined inside the function */
 		public int[] lineinfo;  /* map from opcodes to source lines */
 		public LocVar[] locvars;  /* information about local variables */

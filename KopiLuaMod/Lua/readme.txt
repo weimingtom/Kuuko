@@ -97,6 +97,65 @@ public final class RefObject<T>
 }
 
 
+------------------------------
+input:
+  =100 * -1
+
+code:
+public static TValue luaH_getnum(Table t, int key)
+{
+	/* (1 <= key && key <= t.sizearray) */
+	if ((uint)(key-1) < (uint)t.sizearray)
+	{
+		return t.array[key-1];
+	}
+	else 
+			
+			
+if key < 0, will be this
+
+if ((uint)(key-1) < (uint)t.sizearray)
+=>
+if ((uint)(-100-1) < (uint)0)
+=>
+if (false)
+
+so I modify it :
+
+public static TValue luaH_getnum(Table t, int key)
+{
+	/* (1 <= key && key <= t.sizearray) */
+	if ((long/*uint*/)((key - 1) & 0xffffffff) < (long/*uint*/)(t.sizearray & 0xffffffff))
+	{
+		return t.array[key - 1];
+	}
+	else 
+	{
+
+------------------------------
+
+		public static bool CanIndex(Type t)
+		{
+			if (t == typeof(char))
+			{
+				return false;
+			}
+			if (t == typeof(byte))
+			{
+				return false;
+			}
+			if (t == typeof(int))
+			{
+				return false;
+			}
+			if (t == typeof(uint))
+			{
+				return false;
+			}
+			
+------------------------------
+			
+
 UInt32
 (x) delegate
 (x) #if #else #endif
@@ -113,3 +172,7 @@ goto
 public struct Value //user-defined value types.
 out <var>
 Type t
+uint (!!!remove not finish!!!)
+todo: ref/out remove
+ulong
+uint64

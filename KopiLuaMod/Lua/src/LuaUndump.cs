@@ -115,7 +115,7 @@ namespace KopiLua
 
 		private static TString LoadString(LoadState S)
 		{
-			int/*uint*/ size = (int/*uint*/)LoadVar(S, typeof(uint));
+			int/*uint*/ size = (int/*uint*/)LoadVar(S, typeof(int/*uint*/));
 			if (size == 0)
 			{
 				return null;
@@ -131,9 +131,9 @@ namespace KopiLua
 		private static void LoadCode(LoadState S, Proto f)
 		{
 			int n = LoadInt(S);
-			f.code = LuaMem.luaM_newvector<UInt32/*Instruction*/>(S.L, n);
+			f.code = LuaMem.luaM_newvector<long/*UInt32*//*Instruction*/>(S.L, n);
 			f.sizecode = n;
-			f.code = (UInt32[]/*Instruction[]*/)LoadVector(S, typeof(UInt32/*Instruction*/), n);
+			f.code = (long[]/*UInt32[]*//*Instruction[]*/)LoadVector(S, typeof(long/*UInt32*//*Instruction*/), n);
 		}
 
 		private static void LoadConstants(LoadState S, Proto f)
@@ -307,9 +307,9 @@ namespace KopiLua
 			h.inc();
 			h.set(0, (char)sizeof(int));
 			h.inc();
-			h.set(0, (char)sizeof(uint));
+			h.set(0, (char)sizeof(long/*uint*/));
 			h.inc();
-			h.set(0, (char)sizeof(UInt32/*Instruction*/));
+			h.set(0, (char)sizeof(long/*UInt32*//*Instruction*/));
 			h.inc();
 			h.set(0, (char)sizeof(Double/*lua_Number*/));
 			h.inc();

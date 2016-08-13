@@ -198,11 +198,16 @@ namespace KopiLua
 			{
 				return false;
 			}
+			/*
 			if (t == typeof(uint))
 			{
 				return false;
-			}
+			}*/
 			if (t == typeof(LocVar))
+			{
+				return false;
+			}
+			if (t == typeof(long))
 			{
 				return false;
 			}
@@ -210,13 +215,13 @@ namespace KopiLua
 		}
 
 		public static void AddTotalBytes(lua_State L, int num_bytes) 
-		{ 
-			LuaState.G(L).totalbytes += (uint)num_bytes; 
+		{
+			LuaState.G(L).totalbytes += (int/*uint*/)num_bytes; 
 		}
 		
 		public static void SubtractTotalBytes(lua_State L, int num_bytes) 
 		{ 
-			LuaState.G(L).totalbytes -= (uint)num_bytes; 
+			LuaState.G(L).totalbytes -= (int/*uint*/)num_bytes; 
 		}
 
 		//static void AddTotalBytes(lua_State L, uint num_bytes) {G(L).totalbytes += num_bytes;}

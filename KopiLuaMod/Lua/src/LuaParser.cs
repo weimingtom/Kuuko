@@ -611,8 +611,8 @@ namespace KopiLua
 			while ((testnext(ls, ',')!=0) || (testnext(ls, ';')!=0));
 			check_match(ls, '}', '{', line);
 			lastlistfield(fs, cc);
-			LuaOpCodes.SETARG_B(new InstructionPtr(fs.f.code, pc), LuaObject.luaO_int2fb((uint)cc.na)); /* set initial array size */
-			LuaOpCodes.SETARG_C(new InstructionPtr(fs.f.code, pc), LuaObject.luaO_int2fb((uint)cc.nh));  /* set initial table size */
+			LuaOpCodes.SETARG_B(new InstructionPtr(fs.f.code, pc), LuaObject.luaO_int2fb((int/*uint*/)cc.na)); /* set initial array size */
+			LuaOpCodes.SETARG_C(new InstructionPtr(fs.f.code, pc), LuaObject.luaO_int2fb((int/*uint*/)cc.nh));  /* set initial table size */
 		}
 
 		/* }====================================================================== */
@@ -1035,7 +1035,7 @@ namespace KopiLua
 		 ** subexpr . (simpleexp | unop subexpr) { binop subexpr }
 		 ** where `binop' is any binary operator with a priority higher than `limit'
 		 */
-		private static BinOpr subexpr(LexState ls, expdesc v, uint limit) 
+		private static BinOpr subexpr(LexState ls, expdesc v, int/*uint*/ limit) 
 		{
 			BinOpr op = new BinOpr();
 			UnOpr uop = new UnOpr();

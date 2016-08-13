@@ -34,10 +34,10 @@ namespace KopiLua
         }
 
         //TValue this[uint offset] get
-		public TValue get(uint offset)
-		{
-			return this.values[this.index + (int)offset];
-		}
+		//public TValue get(uint offset)
+		//{
+		//	return this.values[this.index + (int)offset];
+		//}
 		
         public static TValue plus(TValue value, int offset)
         {

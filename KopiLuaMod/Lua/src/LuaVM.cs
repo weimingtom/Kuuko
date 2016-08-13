@@ -523,32 +523,32 @@ namespace KopiLua
 		//#define KBx(i)	check_exp(getBMode(GET_OPCODE(i)) == OpArgMask.OpArgK, k+GETARG_Bx(i))
 
 		// todo: implement proper checks, as above
-		public static TValue RA(lua_State L, TValue/*StkId*/ base_, UInt32/*Instruction*/ i) 
+		public static TValue RA(lua_State L, TValue/*StkId*/ base_, long/*UInt32*//*Instruction*/ i) 
 		{ 
 			return TValue.plus(base_, LuaOpCodes.GETARG_A(i)); 
 		}
 		
-		public static TValue RB(lua_State L, TValue/*StkId*/ base_, UInt32/*Instruction*/ i) 
+		public static TValue RB(lua_State L, TValue/*StkId*/ base_, long/*UInt32*//*Instruction*/ i) 
 		{ 
 			return TValue.plus(base_, LuaOpCodes.GETARG_B(i)); 
 		}
 		
-		public static TValue RC(lua_State L, TValue/*StkId*/ base_, UInt32/*Instruction*/ i) 
+		public static TValue RC(lua_State L, TValue/*StkId*/ base_, long/*UInt32*//*Instruction*/ i) 
 		{ 
 			return TValue.plus(base_, LuaOpCodes.GETARG_C(i)); 
 		}
 		
-		public static TValue RKB(lua_State L, TValue/*StkId*/ base_, UInt32/*Instruction*/ i, TValue[] k) 
+		public static TValue RKB(lua_State L, TValue/*StkId*/ base_, long/*UInt32*//*Instruction*/ i, TValue[] k) 
 		{ 
 			return LuaOpCodes.ISK(LuaOpCodes.GETARG_B(i)) != 0 ? k[LuaOpCodes.INDEXK(LuaOpCodes.GETARG_B(i))] : TValue.plus(base_, LuaOpCodes.GETARG_B(i)); 
 		}
 		
-		public static TValue RKC(lua_State L, TValue/*StkId*/ base_, UInt32/*Instruction*/ i, TValue[] k) 
+		public static TValue RKC(lua_State L, TValue/*StkId*/ base_, long/*UInt32*//*Instruction*/ i, TValue[] k) 
 		{ 
 			return LuaOpCodes.ISK(LuaOpCodes.GETARG_C(i)) != 0 ? k[LuaOpCodes.INDEXK(LuaOpCodes.GETARG_C(i))] : TValue.plus(base_, LuaOpCodes.GETARG_C(i)); 
 		}
 		
-		public static TValue KBx(lua_State L, UInt32/*Instruction*/ i, TValue[] k) 
+		public static TValue KBx(lua_State L, long/*UInt32*//*Instruction*/ i, TValue[] k) 
 		{ 
 			return k[LuaOpCodes.GETARG_Bx(i)]; 
 		}
@@ -561,7 +561,7 @@ namespace KopiLua
 
 		//#define Protect(x)	{ L.savedpc = pc; {x;}; base = L.base_; }
 
-		public static void arith_op(lua_State L, op_delegate op, TMS tm, TValue/*StkId*/ base_, UInt32/*Instruction*/ i, TValue[] k, TValue/*StkId*/ ra, InstructionPtr pc)
+		public static void arith_op(lua_State L, op_delegate op, TMS tm, TValue/*StkId*/ base_, long/*UInt32*//*Instruction*/ i, TValue[] k, TValue/*StkId*/ ra, InstructionPtr pc)
 		{
 			TValue rb = RKB(L, base_, i, k);
 			TValue rc = RKC(L, base_, i, k);
@@ -580,7 +580,7 @@ namespace KopiLua
 			}
 		}
 
-		private static void Dump(int pc, UInt32/*Instruction*/ i)
+		private static void Dump(int pc, long/*UInt32*//*Instruction*/ i)
 		{
 			int A = LuaOpCodes.GETARG_A(i);
 			int B = LuaOpCodes.GETARG_B(i);
@@ -677,7 +677,7 @@ namespace KopiLua
 			/* main loop of interpreter */
 			for (;;) 
 			{
-				/*const*/ UInt32/*Instruction*/ i = InstructionPtr.inc(ref pc).get(0);
+				/*const*/ long/*UInt32*//*Instruction*/ i = InstructionPtr.inc(ref pc).get(0);
 				TValue/*StkId*/ ra;
 				if (((L.hookmask & (Lua.LUA_MASKLINE | Lua.LUA_MASKCOUNT)) != 0) &&
 				    (((--L.hookcount) == 0) || ((L.hookmask & Lua.LUA_MASKLINE) != 0)))
@@ -1153,7 +1153,7 @@ namespace KopiLua
 							}
 							if (c == 0)
 							{
-								c = LuaLimits.cast_int(pc.get(0));
+								c = LuaLimits.cast_int_instruction(pc.get(0));
 								InstructionPtr.inc(ref pc);
 							}
 							runtime_check(L, LuaObject.ttistable(ra));

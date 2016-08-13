@@ -171,7 +171,7 @@ namespace KopiLua
 
 		public static void luaF_freeproto(lua_State L, Proto f) 
 		{
-			LuaMem.luaM_freearray<UInt32/*Instruction*/>(L, f.code);
+			LuaMem.luaM_freearray<long/*UInt32*//*Instruction*/>(L, f.code);
 			LuaMem.luaM_freearray<Proto>(L, f.p);
 			LuaMem.luaM_freearray<TValue>(L, f.k);
 			LuaMem.luaM_freearray<Int32>(L, f.lineinfo);

@@ -359,7 +359,7 @@ namespace KopiLua
 
 		public static int ceillog2(int x)	
 		{
-			return luaO_log2((uint)(x-1)) + 1;
+			return luaO_log2((/*uint*/int)(x - 1)) + 1;
 		}
 		
 		/*
@@ -367,7 +367,7 @@ namespace KopiLua
 		 ** (eeeeexxx), where the real value is (1xxx) * 2^(eeeee - 1) if
 		 ** eeeee != 0 and (xxx) otherwise.
 		 */
-		public static int luaO_int2fb(uint x) 
+		public static int luaO_int2fb(int/*uint*/ x) 
 		{
 			int e = 0;  /* expoent */
 			while (x >= 16) 
@@ -410,7 +410,7 @@ namespace KopiLua
 			8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
 		};
 
-		public static int luaO_log2(uint x) 
+		public static int luaO_log2(long/*uint*/ x) 
 		{
 			int l = -1;
 			while (x >= 256) 

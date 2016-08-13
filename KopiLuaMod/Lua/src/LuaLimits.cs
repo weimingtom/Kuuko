@@ -33,10 +33,9 @@ namespace KopiLua
 		//typedef unsigned char lu_byte;
 
 
-		public const uint MAX_SIZET	= uint.MaxValue - 2;
+		public const int/*uint*/ MAX_SIZET	= /*uint*/int.MaxValue - 2;
 
-		public const UInt32/*lu_mem*/ MAX_LUMEM = /*lu_mem*/UInt32.MaxValue - 2;
-
+		public const int/*UInt32*//*lu_mem*/ MAX_LUMEM = /*lu_mem*//*UInt32*/int.MaxValue - 2;
 
 		public const int MAX_INT = (/*Int32*/int.MaxValue - 2);  /* maximum value of an int (-2 for safety) */
 
@@ -167,7 +166,7 @@ namespace KopiLua
 			return (int)i; 
 		}
 		
-		public static int cast_int(UInt32/*Instruction*/ i) 
+		public static int cast_int_instruction(long/*UInt32*//*Instruction*/ i) 
 		{ 
 			return Convert.ToInt32(i); 
 		}

@@ -179,7 +179,7 @@ namespace KopiLua
 			}
 			else  /* no register to put value or register already has the value */
 			{
-				i.set(0, (uint)LuaOpCodes.CREATE_ABC(OpCode.OP_TEST, LuaOpCodes.GETARG_B(i.get(0)), 0, LuaOpCodes.GETARG_C(i.get(0))));
+				i.set(0, (/*uint*/long)(LuaOpCodes.CREATE_ABC(OpCode.OP_TEST, LuaOpCodes.GETARG_B(i.get(0)), 0, LuaOpCodes.GETARG_C(i.get(0))) &0xffffffff) );
 			}
 			
 			return 1;
@@ -1110,7 +1110,7 @@ namespace KopiLua
 			/* put new instruction in code array */
 			LuaMem.luaM_growvector(fs.L, ref f.code, fs.pc, ref f.sizecode,
 				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
-			f.code[fs.pc] = (uint)i;
+			f.code[fs.pc] = (long/*uint*/)i;
 			/* save corresponding line information */
 			LuaMem.luaM_growvector(fs.L, ref f.lineinfo, fs.pc, ref f.sizelineinfo,
 				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));

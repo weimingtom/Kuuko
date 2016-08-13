@@ -323,7 +323,7 @@ namespace KopiLua
 			LuaAuxLib.luaL_buffinit(L, b);
 			for (;;) 
 			{
-				uint l;
+				int/*uint*/ l;
 				CharPtr p = LuaAuxLib.luaL_prepbuffer(b);
 				if (CharPtr.isEqual(LuaConf.fgets(p, f), null))
 				{  
@@ -331,7 +331,7 @@ namespace KopiLua
 					LuaAuxLib.luaL_pushresult(b);  /* close buffer */
 					return (LuaAPI.lua_objlen(L, -1) > 0) ? 1 : 0;  /* check whether read something */
 				}
-				l = (uint)LuaConf.strlen(p);
+				l = (int/*uint*/)LuaConf.strlen(p);
 				if (l == 0 || p.get(l - 1) != '\n')
 				{
 					LuaAuxLib.luaL_addsize(b, (int)l);
@@ -345,10 +345,10 @@ namespace KopiLua
 			}
 		}
 
-		private static int read_chars(lua_State L, Stream f, uint n) 
+		private static int read_chars(lua_State L, Stream f, long/*uint*/ n) 
 		{
-			uint rlen;  /* how much to read */
-			uint nr;  /* number of chars actually read */
+			long/*uint*/ rlen;  /* how much to read */
+			int/*uint*/ nr;  /* number of chars actually read */
 			luaL_Buffer b = new luaL_Buffer();
 			LuaAuxLib.luaL_buffinit(L, b);
 			rlen = LuaConf.LUAL_BUFFERSIZE;  /* try to read that much each time */
@@ -359,7 +359,7 @@ namespace KopiLua
 				{
 					rlen = n;  /* cannot read more than asked */
 				}
-				nr = (uint)LuaConf.fread(p, LuaConf.GetUnmanagedSize(typeof(char)), (int)rlen, f);
+				nr = (int/*uint*/)LuaConf.fread(p, LuaConf.GetUnmanagedSize(typeof(char)), (int)rlen, f);
 				LuaAuxLib.luaL_addsize(b, (int)nr);
 				n -= nr;  /* still have to read `n' chars */
 			} while (n > 0 && nr == rlen);  /* until end of count or eof */
@@ -388,7 +388,7 @@ namespace KopiLua
 				{
 					if (LuaAPI.lua_type(L, n) == Lua.LUA_TNUMBER)
 					{
-						uint l = (uint)LuaAPI.lua_tointeger(L, n);
+						int/*uint*/ l = (int/*uint*/)LuaAPI.lua_tointeger(L, n);
 						success = (l == 0) ? test_eof(L, f) : read_chars(L, f, l);
 					}
 					else 
@@ -409,7 +409,7 @@ namespace KopiLua
 								}
 							case 'a':  /* file */
 								{
-									read_chars(L, f, ~((uint)0));  /* read MAX_uint chars */
+								read_chars(L, f, /*~((uint)0*/ (long)((~(int)0) & 0xffffffff) );  /* read MAX_uint chars */
 									success = 1; /* always success */
 									break;
 								}
@@ -548,7 +548,7 @@ namespace KopiLua
 			Stream f = tofile(L);
 			int op = LuaAuxLib.luaL_checkoption(L, 2, null, modenames);
 			int/*Int32*//*lua_Integer*/ sz = LuaAuxLib.luaL_optinteger(L, 3, LuaConf.LUAL_BUFFERSIZE);
-			int res = LuaConf.setvbuf(f, null, mode[op], (uint)sz);
+			int res = LuaConf.setvbuf(f, null, mode[op], (/*uint*/int)sz);
 			return pushresult(L, (res == 0) ? 1 : 0, null);
 		}
 		

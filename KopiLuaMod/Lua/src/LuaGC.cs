@@ -606,7 +606,7 @@ namespace KopiLua
 						g.gray = p.gclist;
 						traverseproto(g, p);
 						return LuaConf.GetUnmanagedSize(typeof(Proto)) +
-							LuaConf.GetUnmanagedSize(typeof(UInt32/*Instruction*/)) * p.sizecode +
+							LuaConf.GetUnmanagedSize(typeof(long/*UInt32*//*Instruction*/)) * p.sizecode +
 							LuaConf.GetUnmanagedSize(typeof(Proto)) * p.sizep +
 							LuaConf.GetUnmanagedSize(typeof(TValue)) * p.sizek +
 							LuaConf.GetUnmanagedSize(typeof(int)) * p.sizelineinfo +
@@ -785,7 +785,7 @@ namespace KopiLua
 		{
 			global_State g = LuaState.G(L);
 			/* check size of string hash */
-			if (g.strt.nuse < (int/*UInt32*//*lu_int32*/)(g.strt.size / 4) &&
+			if (g.strt.nuse < (long/*UInt32*//*lu_int32*/)(g.strt.size / 4) &&
 			    g.strt.size > LuaLimits.MINSTRTABSIZE * 2)
 			{
 				LuaString.luaS_resize(L, g.strt.size / 2);  /* table is too big */

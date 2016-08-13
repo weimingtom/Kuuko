@@ -58,10 +58,10 @@ namespace KopiLua
         }
 
         //Node this[uint offset]
-        public Node get(uint offset)
-        {
-            return this.values[this.index + (int)offset];
-        }
+        //public Node get(uint offset)
+        //{
+        //    return this.values[this.index + (int)offset];
+        //}
 
         //operator -
 		public static int minus(Node n1, Node n2)

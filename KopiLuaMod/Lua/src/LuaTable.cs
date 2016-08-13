@@ -558,9 +558,9 @@ namespace KopiLua
 		public static TValue luaH_getnum(Table t, int key)
 		{
 			/* (1 <= key && key <= t.sizearray) */
-			if ((uint)(key-1) < (uint)t.sizearray)
+			if ((long/*uint*/)((key - 1) & 0xffffffff) < (long/*uint*/)(t.sizearray & 0xffffffff))
 			{
-				return t.array[key-1];
+				return t.array[key - 1];
 			}
 			else 
 			{
@@ -715,16 +715,16 @@ namespace KopiLua
 			}
 		}
 
-		public static int unbound_search(Table t, uint j) 
+		public static int unbound_search(Table t, int/*uint*/ j) 
 		{
-			uint i = j;  /* i is zero or a present index */
+			int/*uint*/ i = j;  /* i is zero or a present index */
 			j++;
 			/* find `i' and `j' such that i is present and j is not */
 			while (!LuaObject.ttisnil(luaH_getnum(t, (int)j)))
 			{
 				i = j;
 				j *= 2;
-				if (j > (uint)LuaLimits.MAX_INT)
+				if (j > (int/*uint*/)LuaLimits.MAX_INT)
 				{  
 					/* overflow? */
 					/* table was built with bad purposes: resort to linear search */
@@ -739,7 +739,7 @@ namespace KopiLua
 			/* now do a binary search between them */
 			while (j - i > 1) 
 			{
-				uint m = (i + j) / 2;
+				int/*uint*/ m = (i + j) / 2;
 				if (LuaObject.ttisnil(luaH_getnum(t, (int)m))) 
 				{
 					j = m;
@@ -758,14 +758,14 @@ namespace KopiLua
 		 */
 		public static int luaH_getn(Table t) 
 		{
-			uint j = (uint)t.sizearray;
+			int/*uint*/ j = (int/*uint*/)t.sizearray;
 			if (j > 0 && LuaObject.ttisnil(t.array[j - 1]))
 			{
 				/* there is a boundary in the array part: (binary) search for it */
-				uint i = 0;
+				int/*uint*/ i = 0;
 				while (j - i > 1) 
 				{
-					uint m = (i + j) / 2;
+					int/*uint*/ m = (i + j) / 2;
 					if (LuaObject.ttisnil(t.array[m - 1])) 
 					{
 						j = m;

@@ -380,7 +380,7 @@ namespace KopiLua
 			return luaG_checkopenop(pt.code[pc + 1]); 
 		}
 
-		public static int luaG_checkopenop(UInt32/*Instruction*/ i)
+		public static int luaG_checkopenop(long/*UInt32*//*Instruction*/ i)
 		{
 			switch (LuaOpCodes.GET_OPCODE(i))
 			{
@@ -436,7 +436,7 @@ namespace KopiLua
 			return 1;
 		}
 
-		private static UInt32/*Instruction*/ symbexec(Proto pt, int lastpc, int reg)
+		private static long/*UInt32*//*Instruction*/ symbexec(Proto pt, int lastpc, int reg)
 		{
 			int pc;
 			int last;  /* stores position of last instruction that changed `reg' */
@@ -448,7 +448,7 @@ namespace KopiLua
 			}
 			for (pc = 0; pc < lastpc; pc++)
 			{
-				UInt32/*Instruction*/ i = pt.code[pc];
+				long/*UInt32*//*Instruction*/ i = pt.code[pc];
 				OpCode op = LuaOpCodes.GET_OPCODE(i);
 				int a = LuaOpCodes.GETARG_A(i);
 				int b = 0;
@@ -505,7 +505,7 @@ namespace KopiLua
 					   go all the way back to the first of them (if any) */
 									for (j = 0; j < dest; j++) 
 									{
-										UInt32/*Instruction*/ d = pt.code[dest - 1 - j];
+										long/*UInt32*//*Instruction*/ d = pt.code[dest - 1 - j];
 										if (!(LuaOpCodes.GET_OPCODE(d) == OpCode.OP_SETLIST && LuaOpCodes.GETARG_C(d) == 0)) 
 										{
 											break;
@@ -774,7 +774,7 @@ namespace KopiLua
 				/* a Lua function? */
 				Proto p = LuaState.ci_func(ci).l.p;
 				int pc = currentpc(L, ci);
-				UInt32/*Instruction*/ i;
+				long/*UInt32*//*Instruction*/ i;
 				name = LuaFunc.luaF_getlocalname(p, stackpos + 1, pc);
 				if (CharPtr.isNotEqual(name, null))  /* is a local? */
 				{
@@ -830,7 +830,7 @@ namespace KopiLua
 
 		private static CharPtr getfuncname(lua_State L, CallInfo ci, ref CharPtr name) 
 		{
-			UInt32/*Instruction*/ i;
+			long/*UInt32*//*Instruction*/ i;
 			if ((LuaState.isLua(ci) && ci.tailcalls > 0) || !LuaState.isLua(CallInfo.minus(ci, 1)))
 			{
 				return null;  /* calling function is not Lua (or is unknown) */

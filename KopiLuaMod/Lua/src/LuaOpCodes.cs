@@ -62,27 +62,32 @@ namespace KopiLua
 		//public const int MAXARG_sBx			= System.Int32.MaxValue;
 		//#endif
 
-		public const uint MAXARG_A = (uint)((1 << (int)SIZE_A) -1);
-		public const uint MAXARG_B = (uint)((1 << (int)SIZE_B) -1);
-		public const uint MAXARG_C = (uint)((1 << (int)SIZE_C) -1);
+		//public const uint MAXARG_A = (uint)((1 << (int)SIZE_A) -1);
+		//public const uint MAXARG_B = (uint)((1 << (int)SIZE_B) -1);
+		//public const uint MAXARG_C = (uint)((1 << (int)SIZE_C) -1);
+		public const long MAXARG_A = (long)(((1 << (int)SIZE_A) -1) & 0xffffffff);
+		public const long MAXARG_B = (long)(((1 << (int)SIZE_B) -1) & 0xffffffff);
+		public const long MAXARG_C = (long)(((1 << (int)SIZE_C) -1) & 0xffffffff);
 
 		/* creates a mask with `n' 1 bits at position `p' */
 		//public static int MASK1(int n, int p) { return ((~((~(Instruction)0) << n)) << p); }
-		public static uint MASK1(int n, int p) 
+		public static long/*uint*/ MASK1(int n, int p) 
 		{ 
-			return (uint)((~((~0) << n)) << p); 
+			//return (uint)((~((~0) << n)) << p); 
+			return (long)(((~((~0) << n)) << p) & 0xffffffff);
 		}
 
 		/* creates a mask with `n' 0 bits at position `p' */
-		public static uint MASK0(int n, int p) 
+		public static long/*uint*/ MASK0(int n, int p) 
 		{ 
-			return (uint)(~MASK1(n, p)); 
+			//return (uint)(~MASK1(n, p)); 
+			return (long)((~MASK1(n, p)) & 0xffffffff);
 		}
 
 		/*
 		 ** the following macros help to manipulate instructions
 		 */
-		public static OpCode GET_OPCODE(UInt32/*Instruction*/ i)
+		public static OpCode GET_OPCODE(long/*UInt32*//*Instruction*/ i)
 		{
 			return (OpCode)((i >> POS_OP) & MASK1(SIZE_OP, 0));
 		}
@@ -92,14 +97,14 @@ namespace KopiLua
 			return GET_OPCODE(i.get(0)); 
 		}
 
-		public static void SET_OPCODE(ref UInt32/*Instruction*/ i, UInt32/*Instruction*/ o)
+		public static void SET_OPCODE(ref long/*UInt32*//*Instruction*/ i, long/*UInt32*//*Instruction*/ o)
 		{
-			i = (UInt32/*Instruction*/)(i & MASK0(SIZE_OP, POS_OP)) | ((o << POS_OP) & MASK1(SIZE_OP, POS_OP));
+			i = (long/*UInt32*//*Instruction*/)(i & MASK0(SIZE_OP, POS_OP)) | ((o << POS_OP) & MASK1(SIZE_OP, POS_OP));
 		}
 		
-		public static void SET_OPCODE(ref UInt32/*Instruction*/ i, OpCode opcode)
+		public static void SET_OPCODE(ref long/*UInt32*//*Instruction*/ i, OpCode opcode)
 		{
-			i = (UInt32/*Instruction*/)(i & MASK0(SIZE_OP, POS_OP)) | (((uint)opcode << POS_OP) & MASK1(SIZE_OP, POS_OP));
+			i = (long/*UInt32*//*Instruction*/)(i & MASK0(SIZE_OP, POS_OP)) | (((long/*uint*/)opcode << POS_OP) & MASK1(SIZE_OP, POS_OP));
 		}
 		
 		public static void SET_OPCODE(InstructionPtr i, OpCode opcode) 
@@ -107,7 +112,7 @@ namespace KopiLua
 			SET_OPCODE(ref i.codes[i.pc], opcode); 
 		}
 
-		public static int GETARG_A(UInt32/*Instruction*/ i)
+		public static int GETARG_A(long/*UInt32*//*Instruction*/ i)
 		{
 			return (int)((i >> POS_A) & MASK1(SIZE_A, 0));
 		}
@@ -119,10 +124,10 @@ namespace KopiLua
 
 		public static void SETARG_A(InstructionPtr i, int u)
 		{
-			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_A, POS_A)) | ((u << POS_A) & MASK1(SIZE_A, POS_A))));
+			i.set(0, (long/*UInt32*//*Instruction*/)((i.get(0) & MASK0(SIZE_A, POS_A)) | ((u << POS_A) & MASK1(SIZE_A, POS_A))));
 		}
 
-		public static int GETARG_B(UInt32/*Instruction*/ i)
+		public static int GETARG_B(long/*UInt32*//*Instruction*/ i)
 		{
 			return (int)((i >> POS_B) & MASK1(SIZE_B, 0));
 		}
@@ -134,10 +139,10 @@ namespace KopiLua
 
 		public static void SETARG_B(InstructionPtr i, int b)
 		{
-			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_B, POS_B)) | ((b << POS_B) & MASK1(SIZE_B, POS_B))));
+			i.set(0, (long/*UInt32*//*Instruction*/)((i.get(0) & MASK0(SIZE_B, POS_B)) | ((b << POS_B) & MASK1(SIZE_B, POS_B))));
 		}
 
-		public static int GETARG_C(UInt32/*Instruction*/ i)
+		public static int GETARG_C(long/*UInt32*//*Instruction*/ i)
 		{
 			return (int)((i>>POS_C) & MASK1(SIZE_C,0));
 		}
@@ -149,10 +154,10 @@ namespace KopiLua
 
 		public static void SETARG_C(InstructionPtr i, int b)
 		{
-			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_C, POS_C)) | ((b << POS_C) & MASK1(SIZE_C, POS_C))));
+			i.set(0, (long/*UInt32*//*Instruction*/)((i.get(0) & MASK0(SIZE_C, POS_C)) | ((b << POS_C) & MASK1(SIZE_C, POS_C))));
 		}
 
-		public static int GETARG_Bx(UInt32/*Instruction*/ i)
+		public static int GETARG_Bx(long/*UInt32*//*Instruction*/ i)
 		{
 			return (int)((i>>POS_Bx) & MASK1(SIZE_Bx,0));
 		}
@@ -164,10 +169,10 @@ namespace KopiLua
 
 		public static void SETARG_Bx(InstructionPtr i, int b)
 		{
-			i.set(0, (UInt32/*Instruction*/)((i.get(0) & MASK0(SIZE_Bx, POS_Bx)) | ((b << POS_Bx) & MASK1(SIZE_Bx, POS_Bx))));
+			i.set(0, (long/*UInt32*//*Instruction*/)((i.get(0) & MASK0(SIZE_Bx, POS_Bx)) | ((b << POS_Bx) & MASK1(SIZE_Bx, POS_Bx))));
 		}
 
-		public static int GETARG_sBx(UInt32/*Instruction*/ i)
+		public static int GETARG_sBx(long/*UInt32*//*Instruction*/ i)
 		{
 			return (GETARG_Bx(i) - MAXARG_sBx);
 		}
@@ -182,11 +187,13 @@ namespace KopiLua
 			SETARG_Bx(i, b + MAXARG_sBx);
 		}
 
+		//FIXME:long
 		public static int CREATE_ABC(OpCode o, int a, int b, int c)
 		{
 			return (int)(((int)o << POS_OP) | (a << POS_A) | (b << POS_B) | (c << POS_C));
 		}
 
+		//FIXME:long
 		public static int CREATE_ABx(OpCode o, int a, int bc)
 		{
 			int result = (int)(((int)o << POS_OP) | (a << POS_A) | (bc << POS_Bx));

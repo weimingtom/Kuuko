@@ -1064,7 +1064,7 @@ namespace KopiLua
 					}
 				case Lua.LUA_GCSTEP:
 					{
-						UInt32/*lu_mem*/ a = ((UInt32/*lu_mem*/)data << 10);
+						long/*UInt32*//*lu_mem*/ a = ((long/*UInt32*//*lu_mem*/)data << 10);
 						if (a <= g.totalbytes)
 						{
 							g.GCthreshold = /*(uint)*/(g.totalbytes - a);

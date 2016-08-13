@@ -144,19 +144,38 @@ namespace KopiLua
 			f(L, ud)
 		  );
 			 * */
-			//#if CATCH_EXCEPTIONS
-			try
-			//#endif
+			if (LuaConf.CATCH_EXCEPTIONS)
 			{
-				f.exec(L, ud);
-			}
-			//#if CATCH_EXCEPTIONS
-			catch
+				//#if CATCH_EXCEPTIONS
+				try
+				//#endif
+				{
+					f.exec(L, ud);
+				}
+				//#if CATCH_EXCEPTIONS
+				catch
+				{
+					if (lj.status == 0) 
+					{
+						lj.status = -1;
+					}
+				}
+				//#endif
+			} 
+			else
 			{
-				if (lj.status == 0)
-					lj.status = -1;
+				try
+				{
+					f.exec(L, ud);
+				}
+				catch (LuaException /*e*/)
+				{
+					if (lj.status == 0) 
+					{
+						lj.status = -1;
+					}
+				}
 			}
-			//#endif
 			L.errorJmp = lj.previous;  /* restore old error handler */
 			return lj.status;
 		}
