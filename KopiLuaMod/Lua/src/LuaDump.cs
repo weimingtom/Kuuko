@@ -16,10 +16,10 @@ namespace KopiLua
 	{
 		public static void DumpMem(object b, DumpState D)
 		{
-			//SizeOf<T>()
+			//FIXME:SizeOf<T>()
 			int size = Marshal.SizeOf(b);
 			IntPtr ptr = Marshal.AllocHGlobal(size);
-			//StructureToPtr<T>(T, IntPtr, Boolean)
+			//FIXME:StructureToPtr<T>(T, IntPtr, Boolean)
 			Marshal.StructureToPtr(b, ptr, false);
 			byte[] bytes = new byte[size];
 			Marshal.Copy(ptr, bytes, 0, size);
