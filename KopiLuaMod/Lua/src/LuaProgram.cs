@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -548,7 +549,9 @@ namespace KopiLua
 			// code above
 			List<string> newargs = new List<string>(args);
 			//FIXME:
-			newargs.Insert(0, "lua"/*Assembly.GetExecutingAssembly().Location*/);
+            string[] arguments = Environment.GetCommandLineArgs(); 
+            //Console.WriteLine(String.Format("GetCommandLineArgs: {0}", String.Join(", ", arguments)));
+            newargs.Insert(0, arguments[0]/*Assembly.GetExecutingAssembly().Location*/);
 			args = (string[])newargs.ToArray();
 
 			int status;

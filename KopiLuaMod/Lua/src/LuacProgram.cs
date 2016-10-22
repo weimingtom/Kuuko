@@ -262,8 +262,10 @@ namespace KopiLua
 			// so that we don't have to change any of the args indexing
 			// code above
 			List<string> newargs = new List<string>(args);
-			//FIXME:
-			newargs.Insert(0, "lua"/*Assembly.GetExecutingAssembly().Location*/);
+            //FIXME:
+            string[] arguments = Environment.GetCommandLineArgs();
+            //Console.WriteLine(String.Format("GetCommandLineArgs: {0}", String.Join(", ", arguments)));
+            newargs.Insert(0, arguments[0]/*Assembly.GetExecutingAssembly().Location*/);
 			args = (string[])newargs.ToArray();
 
 			lua_State L;
