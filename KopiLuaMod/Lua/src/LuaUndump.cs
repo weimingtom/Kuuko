@@ -52,6 +52,7 @@ namespace KopiLua
 
 		public static object LoadMem(LoadState S, Type t)
 		{
+			//FIXME:SizeOf<T>()
 			int size = Marshal.SizeOf(t);
 			CharPtr str = CharPtr.toCharPtr(new char[size]);
 			LoadBlock(S, str, size);
@@ -61,6 +62,7 @@ namespace KopiLua
 				bytes[i] = (byte)str.chars[i];
 			}
 			GCHandle pinnedPacket = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+			//FIXME:PtrToStructure<T>(IntPtr)
 			object b = Marshal.PtrToStructure(pinnedPacket.AddrOfPinnedObject(), t);
 			pinnedPacket.Free();
 			return b;

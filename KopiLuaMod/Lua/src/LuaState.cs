@@ -127,6 +127,7 @@ namespace KopiLua
 
 		public static int state_size(object x) 
 		{ 
+			//FIXME:SizeOf<T>()
 			return Marshal.SizeOf(x) + LuaConf.LUAI_EXTRASPACE; 
 		}
 		
