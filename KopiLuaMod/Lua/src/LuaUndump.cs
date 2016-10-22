@@ -5,6 +5,7 @@
  */
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace KopiLua
@@ -67,12 +68,14 @@ namespace KopiLua
 
 		public static object LoadMem(LoadState S, Type t, int n)
 		{
-			ArrayList array = new ArrayList();
+			//FIXME:
+			List<object> array = new List<object>();
 			for (int i = 0; i < n; i++)
 			{
 				array.Add(LoadMem(S, t));
 			}
-			return array.ToArray(t);
+			//FIXME:
+			return array.ToArray();
 		}
 		
 		public static Byte/*lu_byte*/ LoadByte(LoadState S) 

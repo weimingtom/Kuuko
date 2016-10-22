@@ -5,7 +5,7 @@
  */
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+//using System.Runtime.Serialization.Formatters.Binary;
 
 namespace KopiLua
 {
@@ -172,6 +172,8 @@ namespace KopiLua
 			{
 				using (MemoryStream stream = new MemoryStream())
 				{
+					//FIXME:
+					/*
 					BinaryFormatter formatter = new BinaryFormatter();
 					formatter.Serialize(stream, b);
 					stream.Flush();
@@ -182,6 +184,7 @@ namespace KopiLua
 						chars[i] = (char)bytes[i];
 					}
 					b = new CharPtr(chars);
+					*/
 				}
 			}
 			LuaAuxLib.luaL_addlstring((luaL_Buffer)B, (CharPtr)b, size);

@@ -1634,7 +1634,8 @@ namespace KopiLua
 			try
 			{
 				stream.Flush();
-				stream.Close();
+				//FIXME:
+				//stream.Close();
 			}
 			catch 
 			{
@@ -1655,7 +1656,8 @@ namespace KopiLua
 
 		public static int fclose(Stream stream)
 		{
-			stream.Close();
+			//FIXME:
+			//stream.Close();
 			return 0;
 		}
 
