@@ -60,11 +60,11 @@ namespace KopiLua
 			}
 		}
 
-		public static T[] luaM_reallocvector<T>(lua_State L, ref T[] v, int oldn, int n)
+		public static T[] luaM_reallocvector<T>(lua_State L, /*ref*/ T[][] v, int oldn, int n)
 		{
-			Debug.Assert((v == null && oldn == 0) || (v.Length == oldn));
-			v = luaM_reallocv<T>(L, v, n);
-			return v;
+			Debug.Assert((v[0] == null && oldn == 0) || (v[0].Length == oldn));
+			v[0] = luaM_reallocv<T>(L, v[0], n);
+			return v[0];
 		}
 
 

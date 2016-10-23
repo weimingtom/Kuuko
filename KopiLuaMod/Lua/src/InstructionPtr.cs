@@ -44,17 +44,17 @@ namespace KopiLua
             this.codes[pc + index] = val;
         }
 
-		public static InstructionPtr inc(ref InstructionPtr ptr)
+        public static InstructionPtr inc(/*ref*/ InstructionPtr[] ptr)
 		{
-			InstructionPtr result = new InstructionPtr(ptr.codes, ptr.pc);
-			ptr.pc++;
+        	InstructionPtr result = new InstructionPtr(ptr[0].codes, ptr[0].pc);
+			ptr[0].pc++;
 			return result;
 		}
 		
-		public static InstructionPtr dec(ref InstructionPtr ptr)
+        public static InstructionPtr dec(/*ref*/ InstructionPtr[] ptr)
 		{
-			InstructionPtr result = new InstructionPtr(ptr.codes, ptr.pc);
-			ptr.pc--;
+        	InstructionPtr result = new InstructionPtr(ptr[0].codes, ptr[0].pc);
+			ptr[0].pc--;
 			return result;
 		}
 

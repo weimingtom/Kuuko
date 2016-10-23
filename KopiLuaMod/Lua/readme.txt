@@ -156,23 +156,23 @@ public static TValue luaH_getnum(Table t, int key)
 ------------------------------
 			
 
-UInt32
+(x) UInt32   -> long
 (x) delegate
 (x) #if #else #endif
-ulong
+(x) ulong
 (x) [Conditional("DEBUG")]
 sizeof
 (x) private readonly static Byte[] luaP_opmodes = {  //remove comment
-unchecked
-private static priority_[] priority =  //remove comment
-switch (argv[i][1]) //string switch
+(x) unchecked
+(x) private static priority_[] priority =  //remove comment
+(x) switch (argv[i][1]) //string switch
 using (MemoryStream stream = new MemoryStream())
 goto
 (x) switch (m.Groups[2].Value) //string switch
 public struct Value //user-defined value types.
-out <var>
+(x) out <var>
 Type t
-uint (!!!remove not finish!!!)
-todo: ref/out remove
-ulong
+(x?) uint (!!!remove not finish!!!)
+ref remove (!!!remove ref not finish, search 'ref<space key>' !!!)
 uint64
+int64

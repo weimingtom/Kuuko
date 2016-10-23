@@ -250,7 +250,10 @@ namespace KopiLua
 			LoadConstants(S,f);
 			LoadDebug(S,f);
 			IF(LuaDebug.luaG_checkcode(f) == 0 ? 1 : 0, "bad code");
-			/*StkId*/TValue.dec(ref S.L.top);
+			TValue[] top = new TValue[1];
+			top[0] = S.L.top;
+			/*StkId*/TValue.dec(/*ref*/ top);
+			S.L.top = top[0];
 			S.L.nCcalls--;
 			return f;
 		}

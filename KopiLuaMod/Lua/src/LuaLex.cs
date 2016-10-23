@@ -192,7 +192,11 @@ namespace KopiLua
 			char old = ls.decpoint;
 			ls.decpoint = '.'; // (cv ? cv.decimal_point[0] : '.');
 			buffreplace(ls, old, ls.decpoint);  /* try updated decimal separator */
-			if (LuaObject.luaO_str2d(LuaZIO.luaZ_buffer(ls.buff), out seminfo.r) == 0)
+			double[] r = new double[1];
+			r[0] = seminfo.r;
+			int ret = LuaObject.luaO_str2d(LuaZIO.luaZ_buffer(ls.buff), r);
+			seminfo.r = r[0];
+			if (ret == 0)
 			{
 				/* format error with correct decimal point: no more options */
 				buffreplace(ls, ls.decpoint, '.');  /* undo change (for error message) */
@@ -218,7 +222,11 @@ namespace KopiLua
 			}
 			save(ls, '\0');
 			buffreplace(ls, '.', ls.decpoint);  /* follow locale for decimal point */
-			if (LuaObject.luaO_str2d(LuaZIO.luaZ_buffer(ls.buff), out seminfo.r) == 0)  /* format error? */
+			double[] r = new double[1];
+			r[0] = seminfo.r;
+			int ret = LuaObject.luaO_str2d(LuaZIO.luaZ_buffer(ls.buff), r);
+			seminfo.r = r[0];
+			if (ret == 0)  /* format error? */
 			{
 				trydecpoint(ls, seminfo); /* try to update decimal point separator */
 			}

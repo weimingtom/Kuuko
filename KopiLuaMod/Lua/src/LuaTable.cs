@@ -164,11 +164,11 @@ namespace KopiLua
 			if (LuaObject.ttisnumber(key))
 			{
 				Double/*lua_Number*/ n = LuaObject.nvalue(key);
-				int k;
-				LuaConf.lua_number2int(out k, n);
-				if (LuaConf.luai_numeq(LuaLimits.cast_num(k), n))
+				int[] k = new int[1];
+				LuaConf.lua_number2int(/*out*/ k, n);
+				if (LuaConf.luai_numeq(LuaLimits.cast_num(k[0]), n))
 				{
-					return k;
+					return k[0];
 				}
 			}
 			return -1;  /* `key' did not match some condition */
@@ -250,32 +250,32 @@ namespace KopiLua
 		 ** ==============================================================
 		 */
 
-		private static int computesizes(int[] nums, ref int narray) 
+		private static int computesizes(int[] nums, /*ref*/ int[] narray)
 		{
 			int i;
 			int twotoi;  /* 2^i */
 			int a = 0;  /* number of elements smaller than 2^i */
 			int na = 0;  /* number of elements to go to array part */
 			int n = 0;  /* optimal size for array part */
-			for (i = 0, twotoi = 1; twotoi/2 < narray; i++, twotoi *= 2) 
+			for (i = 0, twotoi = 1; twotoi / 2 < narray[0]; i++, twotoi *= 2)
 			{
 				if (nums[i] > 0) 
 				{
 					a += nums[i];
-					if (a > twotoi/2) 
+					if (a > twotoi / 2) 
 					{  
 						/* more than half elements present? */
 						n = twotoi;  /* optimal size (till now) */
 						na = a;  /* all elements smaller than n will go to array part */
 					}
 				}
-				if (a == narray) 
+				if (a == narray[0])
 				{
 					break;  /* all elements already counted */
 				}
 			}
-			narray = n;
-			LuaLimits.lua_assert(narray / 2 <= na && na <= narray);
+			narray[0] = n;
+			LuaLimits.lua_assert(narray[0] / 2 <= na && na <= narray[0]);
 			return na;
 		}
 
@@ -327,7 +327,7 @@ namespace KopiLua
 			return ause;
 		}
 
-		private static int numusehash(Table t, int[] nums, ref int pnasize) 
+		private static int numusehash(Table t, int[] nums, /*ref*/ int[] pnasize)
 		{
 			int totaluse = 0;  /* total number of elements */
 			int ause = 0;  /* summation of `nums' */
@@ -341,14 +341,17 @@ namespace KopiLua
 					totaluse++;
 				}
 			}
-			pnasize += ause;
+			pnasize[0] += ause;
 			return totaluse;
 		}
 
 		private static void setarrayvector(lua_State L, Table t, int size) 
 		{
 			int i;
-			LuaMem.luaM_reallocvector<TValue>(L, ref t.array, t.sizearray, size/*, TValue*/);
+			TValue[][] array_ref = new TValue[1][];
+			array_ref[0] = t.array;
+			LuaMem.luaM_reallocvector<TValue>(L, /*ref*/ array_ref, t.sizearray, size/*, TValue*/);
+			t.array = array_ref[0];
 			for (i = t.sizearray; i < size; i++)
 			{
 				LuaObject.setnilvalue(t.array[i]);
@@ -413,7 +416,10 @@ namespace KopiLua
 					}
 				}
 				/* shrink array */
-				LuaMem.luaM_reallocvector<TValue>(L, ref t.array, oldasize, nasize/*, TValue*/);
+				TValue[][] array_ref = new TValue[1][];
+				array_ref[0] = t.array;
+				LuaMem.luaM_reallocvector<TValue>(L, /*ref*/ array_ref, oldasize, nasize/*, TValue*/);
+				t.array = array_ref[0];
 			}
 			/* re-insert elements from hash part */
 			for (i = LuaObject.twoto(oldhsize) - 1; i >= 0; i--)
@@ -438,7 +444,8 @@ namespace KopiLua
 
 		private static void rehash(lua_State L, Table t, TValue ek) 
 		{
-			int nasize, na;
+			int[] nasize = new int[1];
+			int na;
 			int[] nums = new int[MAXBITS + 1];  /* nums[i] = number of keys between 2^(i-1) and 2^i */
 			int i;
 			int totaluse;
@@ -446,16 +453,16 @@ namespace KopiLua
 			{
 				nums[i] = 0;  /* reset counts */
 			}
-			nasize = numusearray(t, nums);  /* count keys in array part */
-			totaluse = nasize;  /* all those keys are integer keys */
-			totaluse += numusehash(t, nums, ref nasize);  /* count keys in hash part */
+			nasize[0] = numusearray(t, nums);  /* count keys in array part */
+			totaluse = nasize[0];  /* all those keys are integer keys */
+			totaluse += numusehash(t, nums, /*ref*/ nasize);  /* count keys in hash part */
 			/* count extra key */
-			nasize += countint(ek, nums);
+			nasize[0] += countint(ek, nums);
 			totaluse++;
 			/* compute new size for array part */
-			na = computesizes(nums, ref nasize);
+			na = computesizes(nums, /*ref*/ nasize);
 			/* resize the table to new computed sizes */
-			resize(L, t, nasize, totaluse - na);
+			resize(L, t, nasize[0], totaluse - na);
 		}
 
 		/*
@@ -620,12 +627,12 @@ namespace KopiLua
 					}
 				case Lua.LUA_TNUMBER:
 					{
-						int k;
+						int[] k = new int[1];
 						Double/*lua_Number*/ n = LuaObject.nvalue(key);
-						LuaConf.lua_number2int(out k, n);
-						if (LuaConf.luai_numeq(LuaLimits.cast_num(k), LuaObject.nvalue(key))) /* index is int? */
+						LuaConf.lua_number2int(/*out*/ k, n);
+						if (LuaConf.luai_numeq(LuaLimits.cast_num(k[0]), LuaObject.nvalue(key))) /* index is int? */
 						{
-							return luaH_getnum(t, k);  /* use specialized version */
+							return luaH_getnum(t, k[0]);  /* use specialized version */
 						}
 						/* else go through ... actually on second thoughts don't, because this is C#*/
 						Node node = mainposition(t, key);

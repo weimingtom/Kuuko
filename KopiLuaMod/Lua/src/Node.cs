@@ -70,16 +70,16 @@ namespace KopiLua
 			return n1.index - n2.index;
 		}
 		
-		public static Node inc(ref Node node)
+		public static Node inc(/*ref*/ Node[] node)
 		{
-			node = node.get(1);
-			return node.get(-1);
+			node[0] = node[0].get(1);
+			return node[0].get(-1);
 		}
 		
-		public static Node dec(ref Node node)
+		public static Node dec(/*ref*/ Node[] node)
 		{
-			node = node.get(-1);
-			return node.get(1);
+			node[0] = node[0].get(-1);
+			return node[0].get(1);
 		}
 		
         //operator >

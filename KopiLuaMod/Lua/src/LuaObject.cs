@@ -456,27 +456,28 @@ namespace KopiLua
 			}
 		}
 
-		public static int luaO_str2d(CharPtr s, out Double/*lua_Number*/ result)
+		public static int luaO_str2d(CharPtr s, /*out*/ Double[]/*lua_Number*/ result)
 		{
-			CharPtr endptr;
-			result = LuaConf.lua_str2number(s, out endptr);
-			if (CharPtr.isEqual(endptr, s)) 
+			CharPtr[] endptr = new CharPtr[1];
+			endptr[0] = new CharPtr();
+			result[0] = LuaConf.lua_str2number(s, /*out*/ endptr);
+			if (CharPtr.isEqual(endptr[0], s))
 			{
 				return 0;  /* conversion failed */
 			}
-			if (endptr.get(0) == 'x' || endptr.get(0) == 'X')  /* maybe an hexadecimal constant? */
+			if (endptr[0].get(0) == 'x' || endptr[0].get(0) == 'X')  /* maybe an hexadecimal constant? */
 			{
-				result = LuaLimits.cast_num(LuaConf.strtoul(s, out endptr, 16));
+				result[0] = LuaLimits.cast_num(LuaConf.strtoul(s, /*out*/ endptr, 16));
 			}
-			if (endptr.get(0) == '\0') 
+			if (endptr[0].get(0) == '\0') 
 			{
 				return 1;  /* most common case */
 			}
-			while (LuaConf.isspace(endptr.get(0))) 
+			while (LuaConf.isspace(endptr[0].get(0))) 
 			{
-				endptr = endptr.next();
+				endptr[0] = endptr[0].next();
 			}
-			if (endptr.get(0) != '\0') 
+			if (endptr[0].get(0) != '\0') 
 			{
 				return 0;  /* invalid trailing characters? */
 			}

@@ -18,9 +18,9 @@ namespace KopiLua
 	{
 		private static int str_len(lua_State L) 
 		{
-			int/*uint*/ l;
-			LuaAuxLib.luaL_checklstring(L, 1, out l);
-			LuaAPI.lua_pushinteger(L, /*(int)*/l);
+			int[]/*uint*/ l = new int[1];
+			LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
+			LuaAPI.lua_pushinteger(L, /*(int)*/l[0]);
 			return 1;
 		}
 
@@ -36,17 +36,17 @@ namespace KopiLua
 
 		private static int str_sub(lua_State L) 
 		{
-			int/*uint*/ l;
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
-			int/*Int32*//*ptrdiff_t*/ start = posrelat(LuaAuxLib.luaL_checkinteger(L, 2), l);
-			int/*Int32*//*ptrdiff_t*/ end = posrelat(LuaAuxLib.luaL_optinteger(L, 3, -1), l);
+			int[]/*uint*/ l = new int[1];
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
+			int/*Int32*//*ptrdiff_t*/ start = posrelat(LuaAuxLib.luaL_checkinteger(L, 2), l[0]);
+			int/*Int32*//*ptrdiff_t*/ end = posrelat(LuaAuxLib.luaL_optinteger(L, 3, -1), l[0]);
 			if (start < 1) 
 			{
 				start = 1;
 			}
-			if (end > (int/*Int32*//*ptrdiff_t*/)l) 
+			if (end > (int/*Int32*//*ptrdiff_t*/)l[0]) 
 			{
-				end = (int/*Int32*//*ptrdiff_t*/)l;
+				end = (int/*Int32*//*ptrdiff_t*/)l[0];
 			}
 			if (start <= end)
 			{
@@ -61,13 +61,13 @@ namespace KopiLua
 
 		private static int str_reverse(lua_State L) 
 		{
-			int/*uint*/ l;
+			int[]/*uint*/ l = new int[1];
 			luaL_Buffer b = new luaL_Buffer();
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
 			LuaAuxLib.luaL_buffinit(L, b);
-			while ((l--) != 0) 
+			while ((l[0]--) != 0)
 			{
-				LuaAuxLib.luaL_addchar(b, s.get(l));
+				LuaAuxLib.luaL_addchar(b, s.get(l[0]));
 			}
 			LuaAuxLib.luaL_pushresult(b);
 			return 1;
@@ -75,12 +75,12 @@ namespace KopiLua
 
 		private static int str_lower(lua_State L) 
 		{
-			int/*uint*/ l;
+			int[]/*uint*/ l = new int[1];
 			int/*uint*/ i;
 			luaL_Buffer b = new luaL_Buffer();
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
 			LuaAuxLib.luaL_buffinit(L, b);
-			for (i = 0; i < l; i++)
+			for (i = 0; i < l[0]; i++)
 			{
 				LuaAuxLib.luaL_addchar(b, LuaConf.tolower(s.get(i)));
 			}
@@ -90,12 +90,12 @@ namespace KopiLua
 
 		private static int str_upper(lua_State L) 
 		{
-			int/*uint*/ l;
+			int[]/*uint*/ l = new int[1];
 			int/*uint*/ i;
 			luaL_Buffer b = new luaL_Buffer();
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
 			LuaAuxLib.luaL_buffinit(L, b);
-			for (i = 0; i < l; i++)
+			for (i = 0; i < l[0]; i++)
 			{
 				LuaAuxLib.luaL_addchar(b, LuaConf.toupper(s.get(i)));
 			}
@@ -105,14 +105,14 @@ namespace KopiLua
 
 		private static int str_rep(lua_State L) 
 		{
-			int/*uint*/ l;
+			int[]/*uint*/ l = new int[1];
 			luaL_Buffer b = new luaL_Buffer();
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
 			int n = LuaAuxLib.luaL_checkint(L, 2);
 			LuaAuxLib.luaL_buffinit(L, b);
 			while (n-- > 0)
 			{
-				LuaAuxLib.luaL_addlstring(b, s, l);
+				LuaAuxLib.luaL_addlstring(b, s, l[0]);
 			}
 			LuaAuxLib.luaL_pushresult(b);
 			return 1;
@@ -120,18 +120,18 @@ namespace KopiLua
 
 		private static int str_byte(lua_State L)
 		{
-			int/*uint*/ l;
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
-			int/*Int32*//*ptrdiff_t*/ posi = posrelat(LuaAuxLib.luaL_optinteger(L, 2, 1), l);
-            int/*Int32*//*ptrdiff_t*/ pose = posrelat(LuaAuxLib.luaL_optinteger(L, 3, posi), l);
+			int[]/*uint*/ l = new int[1];
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
+			int/*Int32*//*ptrdiff_t*/ posi = posrelat(LuaAuxLib.luaL_optinteger(L, 2, 1), l[0]);
+            int/*Int32*//*ptrdiff_t*/ pose = posrelat(LuaAuxLib.luaL_optinteger(L, 3, posi), l[0]);
 			int n, i;
 			if (posi <= 0) 
 			{
 				posi = 1;
 			}
-			if ((int/*uint*/)pose > l) 
+			if ((int/*uint*/)pose > l[0])
 			{
-				pose = (int)l;
+				pose = (int)l[0];
 			}
 			if (posi > pose) 
 			{
@@ -755,28 +755,29 @@ namespace KopiLua
 
 		private static int str_find_aux(lua_State L, int find) 
 		{
-			int/*uint*/ l1, l2;
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l1);
-			CharPtr p = LuaAuxLib.luaL_checklstring(L, 2, out l2);
-            int/*Int32*//*ptrdiff_t*/ init = posrelat(LuaAuxLib.luaL_optinteger(L, 3, 1), l1) - 1;
+			int[]/*uint*/ l1 = new int[1];
+			int[]/*uint*/ l2 = new int[1];
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l1);
+			CharPtr p = LuaAuxLib.luaL_checklstring(L, 2, /*out*/ l2);
+            int/*Int32*//*ptrdiff_t*/ init = posrelat(LuaAuxLib.luaL_optinteger(L, 3, 1), l1[0]) - 1;
 			if (init < 0) 
 			{
 				init = 0;
 			}
-			else if ((int/*uint*/)(init) > l1)
+            else if ((int/*uint*/)(init) > l1[0])
 			{
-                init = (int/*Int32*//*ptrdiff_t*/)l1;
+                init = (int/*Int32*//*ptrdiff_t*/)l1[0];
 			}
 			if ((find != 0) && ((LuaAPI.lua_toboolean(L, 4) != 0) ||  /* explicit request? */
 				CharPtr.isEqual(LuaConf.strpbrk(p, CharPtr.toCharPtr(SPECIALS)), null)))
 			{  
 				/* or no special characters? */
 				/* do a plain search */
-				CharPtr s2 = lmemfind(CharPtr.plus(s, init), (/*uint*/int)(l1 - init), p, (/*uint*/int)(l2));
+				CharPtr s2 = lmemfind(CharPtr.plus(s, init), (/*uint*/int)(l1[0] - init), p, (/*uint*/int)(l2[0]));
 				if (CharPtr.isNotEqual(s2, null)) 
 				{
 					LuaAPI.lua_pushinteger(L, CharPtr.minus(s2, s) + 1);
-					LuaAPI.lua_pushinteger(L, (int)(CharPtr.minus(s2, s) + l2));
+					LuaAPI.lua_pushinteger(L, (int)(CharPtr.minus(s2, s) + l2[0]));
 					return 2;
 				}
 			}
@@ -792,7 +793,7 @@ namespace KopiLua
 				CharPtr s1 = CharPtr.plus(s, init);
 				ms.L = L;
 				ms.src_init = s;
-				ms.src_end = CharPtr.plus(s, l1);
+				ms.src_end = CharPtr.plus(s, l1[0]);
 				do 
 				{
 					CharPtr res;
@@ -829,13 +830,13 @@ namespace KopiLua
 		private static int gmatch_aux(lua_State L) 
 		{
 			MatchState ms = new MatchState();
-			int/*uint*/ ls;
-			CharPtr s = LuaAPI.lua_tolstring(L, Lua.lua_upvalueindex(1), out ls);
+			int[]/*uint*/ ls = new int[1];
+			CharPtr s = LuaAPI.lua_tolstring(L, Lua.lua_upvalueindex(1), /*out*/ ls);
 			CharPtr p = Lua.lua_tostring(L, Lua.lua_upvalueindex(2));
 			CharPtr src;
 			ms.L = L;
 			ms.src_init = s;
-			ms.src_end = CharPtr.plus(s, ls);
+			ms.src_end = CharPtr.plus(s, ls[0]);
 			for (src = CharPtr.plus(s, /*(uint)*/LuaAPI.lua_tointeger(L, Lua.lua_upvalueindex(3)));
                  CharPtr.lessEqual(src, ms.src_end);
 			     src = src.next()) 
@@ -876,9 +877,10 @@ namespace KopiLua
 		private static void add_s(MatchState ms, luaL_Buffer b, CharPtr s,
 			CharPtr e) 
 		{
-			int/*uint*/ l, i;
-			CharPtr news = LuaAPI.lua_tolstring(ms.L, 3, out l);
-			for (i = 0; i < l; i++) 
+			int[]/*uint*/ l = new int[1];
+			int i;
+			CharPtr news = LuaAPI.lua_tolstring(ms.L, 3, /*out*/ l);
+			for (i = 0; i < l[0]; i++)
 			{
 				if (news.get(i) != L_ESC)
 				{
@@ -947,11 +949,11 @@ namespace KopiLua
 
 		private static int str_gsub(lua_State L) 
 		{
-			int/*uint*/ srcl;
-			CharPtr src = LuaAuxLib.luaL_checklstring(L, 1, out srcl);
+			int[]/*uint*/ srcl = new int[1];
+			CharPtr src = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ srcl);
 			CharPtr p = LuaAuxLib.luaL_checkstring(L, 2);
 			int tr = LuaAPI.lua_type(L, 3);
-			int max_s = LuaAuxLib.luaL_optint(L, 4, (int)(srcl + 1));
+			int max_s = LuaAuxLib.luaL_optint(L, 4, (int)(srcl[0] + 1));
 			int anchor = 0;
 			if (p.get(0) == '^')
 			{
@@ -967,7 +969,7 @@ namespace KopiLua
 			LuaAuxLib.luaL_buffinit(L, b);
 			ms.L = L;
 			ms.src_init = src;
-			ms.src_end = CharPtr.plus(src, srcl);
+			ms.src_end = CharPtr.plus(src, srcl[0]);
 			while (n < max_s) 
 			{
 				CharPtr e;
@@ -1014,10 +1016,10 @@ namespace KopiLua
 
 		private static void addquoted (lua_State L, luaL_Buffer b, int arg) 
 		{
-			int/*uint*/ l;
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, out l);
+			int[]/*uint*/ l = new int[1];
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, /*out*/ l);
 			LuaAuxLib.luaL_addchar(b, '"');
-			while ((l--) != 0) 
+			while ((l[0]--) != 0)
 			{
 				switch (s.get(0)) 
 				{
@@ -1105,9 +1107,9 @@ namespace KopiLua
 		private static int str_format(lua_State L) 
 		{
 			int arg = 1;
-			int/*uint*/ sfl;
-			CharPtr strfrmt = LuaAuxLib.luaL_checklstring(L, arg, out sfl);
-			CharPtr strfrmt_end = CharPtr.plus(strfrmt, sfl);
+			int[]/*uint*/ sfl = new int[1];
+			CharPtr strfrmt = LuaAuxLib.luaL_checklstring(L, arg, /*out*/ sfl);
+			CharPtr strfrmt_end = CharPtr.plus(strfrmt, sfl[0]);
 			luaL_Buffer b = new luaL_Buffer();
 			LuaAuxLib.luaL_buffinit(L, b);
             while (CharPtr.lessThan(strfrmt, strfrmt_end)) 
@@ -1171,9 +1173,9 @@ namespace KopiLua
 							}
 						case 's':
 							{
-								int/*uint*/ l;
-								CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, out l);
-								if (CharPtr.isEqual(LuaConf.strchr(form, '.'), null) && l >= 100)
+								int[]/*uint*/ l = new int[1];
+								CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, /*out*/ l);
+								if (CharPtr.isEqual(LuaConf.strchr(form, '.'), null) && l[0] >= 100)
 								{
 									/* no precision and string is too long to be formatted;
 									 keep original string */

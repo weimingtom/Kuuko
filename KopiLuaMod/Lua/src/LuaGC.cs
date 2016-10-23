@@ -29,16 +29,16 @@ namespace KopiLua
 		/*
 		 ** some userful bit tricks
 		 */
-		public static int resetbits(ref Byte/*lu_byte*/ x, int m)
+		public static int resetbits(/*ref*/ Byte[]/*lu_byte*/ x, int m)
 		{ 
-			x &= (Byte/*lu_byte*/)~m; 
-			return x; 
+			x[0] &= (Byte/*lu_byte*/)~m;
+			return x[0]; 
 		}
 		
-		public static int setbits(ref Byte/*lu_byte*/ x, int m) 
+		public static int setbits(/*ref*/ Byte[]/*lu_byte*/ x, int m)
 		{ 
-			x |= (Byte/*lu_byte*/)m; 
-			return x; 
+			x[0] |= (Byte/*lu_byte*/)m;
+			return x[0];
 		}
 		
 		public static bool testbits(Byte/*lu_byte*/ x, int m) 
@@ -56,14 +56,14 @@ namespace KopiLua
 			return (bitmask(b1) | bitmask(b2));
 		}
 		
-		public static int l_setbit(ref Byte/*lu_byte*/ x, int b) 
+		public static int l_setbit(/*ref*/ Byte[]/*lu_byte*/ x, int b)
 		{ 
-			return setbits(ref x, bitmask(b)); 
+			return setbits(/*ref*/ x, bitmask(b)); 
 		}
 		
-		public static int resetbit(ref Byte/*lu_byte*/ x, int b) 
+		public static int resetbit(/*ref*/ Byte[]/*lu_byte*/ x, int b)
 		{ 
-			return resetbits(ref x, bitmask(b)); 
+			return resetbits(/*ref*/ x, bitmask(b)); 
 		}
 		
 		public static bool testbit(Byte/*lu_byte*/ x, int b) 
@@ -71,14 +71,14 @@ namespace KopiLua
 			return testbits(x, bitmask(b)); 
 		}
 		
-		public static int set2bits(ref Byte/*lu_byte*/ x, int b1, int b2) 
+		public static int set2bits(/*ref*/ Byte[]/*lu_byte*/ x, int b1, int b2)
 		{ 
-			return setbits(ref x, (bit2mask(b1, b2))); 
+			return setbits(/*ref*/ x, (bit2mask(b1, b2))); 
 		}
 		
-		public static int reset2bits(ref Byte/*lu_byte*/ x, int b1, int b2) 
+		public static int reset2bits(/*ref*/ Byte[]/*lu_byte*/ x, int b1, int b2)
 		{ 
-			return resetbits(ref x, (bit2mask(b1, b2))); 
+			return resetbits(/*ref*/ x, (bit2mask(b1, b2))); 
 		}
 		
 		public static bool test2bits(Byte/*lu_byte*/ x, int b1, int b2) 
@@ -139,7 +139,11 @@ namespace KopiLua
 		
 		public static void gray2black(GCObject x) 
 		{ 
-			l_setbit(ref x.getGch().marked, BLACKBIT); 
+			Byte[] marked_ref = new Byte[1];
+			GCheader gcheader = x.getGch();
+			marked_ref[0] = gcheader.marked;
+			l_setbit(/*ref*/ marked_ref, BLACKBIT); 
+			gcheader.marked = marked_ref[0];
 		}
 
 		public static bool valiswhite(TValue x) 
@@ -208,17 +212,29 @@ namespace KopiLua
 
 		public static void white2gray(GCObject x) 
 		{ 
-			reset2bits(ref x.getGch().marked, WHITE0BIT, WHITE1BIT); 
+			Byte[] marked_ref = new Byte[1];
+			GCheader gcheader = x.getGch();
+			marked_ref[0] = gcheader.marked;
+			reset2bits(/*ref*/ marked_ref, WHITE0BIT, WHITE1BIT); 
+			gcheader.marked = marked_ref[0];
 		}
 		
 		public static void black2gray(GCObject x) 
 		{ 
-			resetbit(ref x.getGch().marked, BLACKBIT); 
+			Byte[] marked_ref = new Byte[1];
+			GCheader gcheader = x.getGch();
+			marked_ref[0] = gcheader.marked;
+			resetbit(/*ref*/ marked_ref, BLACKBIT); 
+			gcheader.marked = marked_ref[0];
 		}
 
 		public static void stringmark(TString s) 
 		{
-			reset2bits(ref s.getTsv().marked, WHITE0BIT, WHITE1BIT);
+			Byte[] marked_ref = new Byte[1];
+			GCheader gcheader = s.getGch();
+			marked_ref[0] = gcheader.marked;
+			reset2bits(/*ref*/ marked_ref, WHITE0BIT, WHITE1BIT);
+			gcheader.marked = marked_ref[0];
 		}
 
 		public static bool isfinalized(Udata_uv u) 
@@ -229,7 +245,10 @@ namespace KopiLua
 		public static void markfinalized(Udata_uv u)
 		{
 			Byte/*lu_byte*/ marked = u.marked;	// can't pass properties in as ref
-			l_setbit(ref marked, FINALIZEDBIT);
+			Byte[] marked_ref = new Byte[1];
+			marked_ref[0] = marked;
+			l_setbit(/*ref*/ marked_ref, FINALIZEDBIT);
+			marked = marked_ref[0];
 			u.marked = marked;
 		}
 
@@ -534,25 +553,28 @@ namespace KopiLua
 
 		private static void traversestack (global_State g, lua_State l) 
 		{
-			TValue/*StkId*/ o, lim;
-			CallInfo ci;
+			TValue[]/*StkId*/ o = new TValue[1];
+			o[0] = new TValue();
+			TValue/*StkId*/ lim;
+			CallInfo[] ci = new CallInfo[1];
+			ci[0] = new CallInfo();
 			markvalue(g, LuaState.gt(l));
 			lim = l.top;
-			for (ci = l.base_ci[0]; CallInfo.lessEqual(ci, l.ci); CallInfo.inc(ref ci))
+			for (ci[0] = l.base_ci[0]; CallInfo.lessEqual(ci[0], l.ci); CallInfo.inc(/*ref*/ ci))
 			{
-				LuaLimits.lua_assert(TValue.lessEqual(ci.top, l.stack_last));
-				if (TValue.lessThan(lim, ci.top)) 
+				LuaLimits.lua_assert(TValue.lessEqual(ci[0].top, l.stack_last));
+				if (TValue.lessThan(lim, ci[0].top)) 
 				{
-					lim = ci.top;
+					lim = ci[0].top;
 				}
 			}
-			for (o = l.stack[0]; TValue.lessThan(o, l.top); /*StkId*/TValue.inc(ref o))
+			for (o[0] = l.stack[0]; TValue.lessThan(o[0], l.top); /*StkId*/TValue.inc(/*ref*/ o))
 			{
-				markvalue(g, o);
+				markvalue(g, o[0]);
 			}
-			for (; TValue.lessEqual(o, lim); /*StkId*/TValue.inc(ref o))
+			for (; TValue.lessEqual(o[0], lim); /*StkId*/TValue.inc(/*ref*/ o))
 			{
-				LuaObject.setnilvalue(o);
+				LuaObject.setnilvalue(o[0]);
 			}
 			checkstacksizes(l, lim);
 		}

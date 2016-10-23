@@ -412,22 +412,40 @@ namespace KopiLua
 			lastfunc = f;
 			removevars(ls, 0);
 			LuaCode.luaK_ret(fs, 0, 0);  /* final return */
-			LuaMem.luaM_reallocvector(L, ref f.code, f.sizecode, fs.pc/*, typeof(Instruction)*/);
+			long[][] code_ref = new long[1][];
+			code_ref[0] = f.code;
+			LuaMem.luaM_reallocvector(L, /*ref*/ code_ref, f.sizecode, fs.pc/*, typeof(Instruction)*/);
+			f.code = code_ref[0];
 			f.sizecode = fs.pc;
-			LuaMem.luaM_reallocvector(L, ref f.lineinfo, f.sizelineinfo, fs.pc/*, typeof(int)*/);
+			int[][] lineinfo_ref = new int[1][];
+			lineinfo_ref[0] = f.lineinfo;
+			LuaMem.luaM_reallocvector(L, /*ref*/ lineinfo_ref, f.sizelineinfo, fs.pc/*, typeof(int)*/);
+			f.lineinfo = lineinfo_ref[0];
 			f.sizelineinfo = fs.pc;
-			LuaMem.luaM_reallocvector(L, ref f.k, f.sizek, fs.nk/*, TValue*/);
+			TValue[][] k_ref = new TValue[1][];
+			k_ref[0] = f.k;
+			LuaMem.luaM_reallocvector(L, /*ref*/ k_ref, f.sizek, fs.nk/*, TValue*/);
+			f.k = k_ref[0];
 			f.sizek = fs.nk;
-			LuaMem.luaM_reallocvector(L, ref f.p, f.sizep, fs.np/*, Proto*/);
+			Proto[][] p_ref = new Proto[1][];
+			p_ref[0] = f.p;
+			LuaMem.luaM_reallocvector(L, /*ref*/ p_ref, f.sizep, fs.np/*, Proto*/);
+			f.p = p_ref[0];
 			f.sizep = fs.np;
 			for (int i = 0; i < f.p.Length; i++)
 			{
 				f.p[i].protos = f.p;
 				f.p[i].index = i;
 			}
-			LuaMem.luaM_reallocvector(L, ref f.locvars, f.sizelocvars, fs.nlocvars/*, LocVar*/);
+			LocVar[][] locvars_ref = new LocVar[1][];
+			locvars_ref[0] = f.locvars;
+			LuaMem.luaM_reallocvector(L, /*ref*/ locvars_ref, f.sizelocvars, fs.nlocvars/*, LocVar*/);
+			f.locvars = locvars_ref[0];
 			f.sizelocvars = fs.nlocvars;
-			LuaMem.luaM_reallocvector(L, ref f.upvalues, f.sizeupvalues, f.nups/*, TString*/);
+			TString[][] upvalues_ref = new TString[1][];
+			upvalues_ref[0] = f.upvalues;
+			LuaMem.luaM_reallocvector(L, /*ref*/ upvalues_ref, f.sizeupvalues, f.nups/*, TString*/);
+			f.upvalues = upvalues_ref[0];
 			f.sizeupvalues = f.nups;
 			LuaLimits.lua_assert(LuaDebug.luaG_checkcode(f));
 			LuaLimits.lua_assert(fs.bl == null);
@@ -888,7 +906,7 @@ namespace KopiLua
 						FuncState fs = ls.fs;
 						check_condition(ls, fs.f.is_vararg != 0,
 							CharPtr.toCharPtr("cannot use " + LuaConf.LUA_QL("...") + " outside a vararg function"));
-						fs.f.is_vararg &= unchecked((Byte/*lu_byte*/)(~LuaObject.VARARG_NEEDSARG));  /* don't need 'arg' */
+						fs.f.is_vararg &= /*unchecked*/((Byte/*lu_byte*/)((~LuaObject.VARARG_NEEDSARG) & 0xff));  /* don't need 'arg' */
 						init_exp(v, expkind.VVARARG, LuaCode.luaK_codeABC(fs, OpCode.OP_VARARG, 0, 1, 0));
 						break;
 					}
@@ -1007,26 +1025,32 @@ namespace KopiLua
 			}
 		}
 		
-		private static priority_[] priority = {  /* ORDER OPR */
+		/* ORDER OPR */
+		/* `+' `-' `/' `%' */
+		/* power and concat (right associative) */
+		/* equality and inequality */
+		/* order */
+		/* logical (and/or) */
+		private static priority_[] priority = {  
 			new priority_(6, 6),
 			new priority_(6, 6),
 			new priority_(7, 7),
 			new priority_(7, 7),
-			new priority_(7, 7),				/* `+' `-' `/' `%' */
+			new priority_(7, 7),				
 
 			new priority_(10, 9),
-			new priority_(5, 4),				/* power and concat (right associative) */
+			new priority_(5, 4),				
 
 			new priority_(3, 3),
-			new priority_(3, 3),				/* equality and inequality */
+			new priority_(3, 3),				
 
 			new priority_(3, 3),
 			new priority_(3, 3),
 			new priority_(3, 3),
-			new priority_(3, 3),				/* order */
+			new priority_(3, 3),				
 
 			new priority_(2, 2),
-			new priority_(1, 1)					/* logical (and/or) */
+			new priority_(1, 1)					
 		};
 
 		public const int UNARY_PRIORITY	= 8;  /* priority for unary operators */

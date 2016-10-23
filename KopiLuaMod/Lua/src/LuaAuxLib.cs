@@ -51,8 +51,8 @@ namespace KopiLua
 		
 		public static CharPtr luaL_optstring(lua_State L, int n, CharPtr d)
 		{
-			int/*uint*/ len;
-			return luaL_optlstring(L, n, d, out len);
+			int[]/*uint*/ len = new int[1];
+			return luaL_optlstring(L, n, d, /*out*/ len);
 		}
 		
 		public static int luaL_checkint(lua_State L, int n)	
@@ -316,13 +316,13 @@ namespace KopiLua
 
 		public static CharPtr luaL_checklstring(lua_State L, int narg)
 		{
-			int/*uint*/ len;
-			return luaL_checklstring(L, narg, out len);
+			int[]/*uint*/ len = new int[1];
+			return luaL_checklstring(L, narg, /*out*/ len);
 		}
 		
-		public static CharPtr luaL_checklstring(lua_State L, int narg, out int/*uint*/ len)
+		public static CharPtr luaL_checklstring(lua_State L, int narg, /*out*/ int[]/*uint*/ len)
 		{
-			CharPtr s = LuaAPI.lua_tolstring(L, narg, out len);
+			CharPtr s = LuaAPI.lua_tolstring(L, narg, /*out*/ len);
 			if (CharPtr.isEqual(s, null)) 
 			{
 				tag_error(L, narg, Lua.LUA_TSTRING);
@@ -332,20 +332,20 @@ namespace KopiLua
 
 		public static CharPtr luaL_optlstring(lua_State L, int narg, CharPtr def)
 		{
-			int/*uint*/ len;
-			return luaL_optlstring (L, narg, def, out len);
+			int[]/*uint*/ len = new int[1];
+			return luaL_optlstring(L, narg, def, /*out*/ len);
 		}
 		
-		public static CharPtr luaL_optlstring(lua_State L, int narg, CharPtr def, out int/*uint*/ len)
+		public static CharPtr luaL_optlstring(lua_State L, int narg, CharPtr def, /*out*/ int[]/*uint*/ len)
 		{
 			if (Lua.lua_isnoneornil(L, narg))
 			{
-				len = /*(uint)*/((CharPtr.isNotEqual(def, null)) ? LuaConf.strlen(def) : 0);
+				len[0] = /*(uint)*/((CharPtr.isNotEqual(def, null)) ? LuaConf.strlen(def) : 0);
 				return def;
 			}
 			else
 			{
-				return luaL_checklstring(L, narg, out len);
+				return luaL_checklstring(L, narg, /*out*/ len);
 			}
 		}
 
@@ -701,18 +701,18 @@ namespace KopiLua
 		public static void luaL_addvalue(luaL_Buffer B) 
 		{
 			lua_State L = B.L;
-			int/*uint*/ vl;
-			CharPtr s = LuaAPI.lua_tolstring(L, -1, out vl);
-			if (vl <= bufffree(B))
+			int[]/*uint*/ vl = new int[1];
+			CharPtr s = LuaAPI.lua_tolstring(L, -1, /*out*/ vl);
+			if (vl[0] <= bufffree(B))
 			{
 				/* fit into buffer? */
 				CharPtr dst = new CharPtr(B.buffer.chars, B.buffer.index + B.p);
 				CharPtr src = new CharPtr(s.chars, s.index);
-				for (int/*uint*/ i = 0; i < vl; i++)
+				for (int/*uint*/ i = 0; i < vl[0]; i++)
 				{
 					dst.set(i, src.get(i));
 				}
-				B.p += /*(int)*/vl;
+				B.p += /*(int)*/vl[0];
 				Lua.lua_pop(L, 1);  /* remove from stack */
 			}
 			else
@@ -780,23 +780,23 @@ namespace KopiLua
 		 ** Load functions
 		 ** =======================================================
 		 */
-		public static CharPtr getF(lua_State L, object ud, out int/*uint*/ size) 
+		public static CharPtr getF(lua_State L, object ud, /*out*/ int[]/*uint*/ size)
 		{
-			size = 0;
+			size[0] = 0;
 			LoadF lf = (LoadF)ud;
 			//(void)L;
 			if (lf.extraline != 0) 
 			{
 				lf.extraline = 0;
-				size = 1;
+				size[0] = 1;
 				return CharPtr.toCharPtr("\n");
 			}
 			if (LuaConf.feof(lf.f) != 0) 
 			{
 				return null;
 			}
-			size = /*(uint)*/LuaConf.fread(lf.buff, 1, lf.buff.chars.Length, lf.f);
-			return (size > 0) ? new CharPtr(lf.buff) : null;
+			size[0] = /*(uint)*/LuaConf.fread(lf.buff, 1, lf.buff.chars.Length, lf.f);
+			return (size[0] > 0) ? new CharPtr(lf.buff) : null;
 		}
 
 		private static int errfile(lua_State L, CharPtr what, int fnameindex) 
@@ -874,12 +874,12 @@ namespace KopiLua
 			return status;
 		}
 
-		static CharPtr getS(lua_State L, object ud, out int/*uint*/ size) 
+		static CharPtr getS(lua_State L, object ud, /*out*/ int[]/*uint*/ size)
 		{
 			LoadS ls = (LoadS)ud;
 			//(void)L;
 			//if (ls.size == 0) return null;
-			size = ls.size;
+			size[0] = ls.size;
 			ls.size = 0;
 			return ls.s;
 		}
@@ -952,17 +952,17 @@ namespace KopiLua
 		
 		public class getF_delegate : lua_Reader
 		{
-			public CharPtr exec(lua_State L, object ud, out int/*uint*/ sz)
+			public CharPtr exec(lua_State L, object ud, /*out*/ int[]/*uint*/ sz)
 			{
-				return getF(L, ud, out sz);
+				return getF(L, ud, /*out*/ sz);
 			}
 		}
 		
 		public class getS_delegate : lua_Reader
 		{
-			public CharPtr exec(lua_State L, object ud, out int/*uint*/ sz)
+			public CharPtr exec(lua_State L, object ud, /*out*/ int[]/*uint*/ sz)
 			{
-				return getS(L, ud, out sz);
+				return getS(L, ud, /*out*/ sz);
 			}
 		}
 	}

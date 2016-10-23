@@ -34,7 +34,10 @@ namespace KopiLua
 		public static void luaS_fix(TString s)
 		{
 			Byte/*lu_byte*/ marked = s.getTsv().marked;	// can't pass properties in as ref
-			LuaGC.l_setbit(ref marked, LuaGC.FIXEDBIT);
+			Byte[] marked_ref = new Byte[1];
+			marked_ref[0] = marked;
+			LuaGC.l_setbit(/*ref*/ marked_ref, LuaGC.FIXEDBIT);
+			marked = marked_ref[0];
 			s.getTsv().marked = marked;
 		}
 

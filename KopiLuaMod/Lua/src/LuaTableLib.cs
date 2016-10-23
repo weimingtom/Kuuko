@@ -172,9 +172,9 @@ namespace KopiLua
 		private static int tconcat(lua_State L) 
 		{
 			luaL_Buffer b = new luaL_Buffer();
-			int/*uint*/ lsep;
+			int[]/*uint*/ lsep = new int[1];
 			int i, last;
-			CharPtr sep = LuaAuxLib.luaL_optlstring(L, 2, CharPtr.toCharPtr(""), out lsep);
+			CharPtr sep = LuaAuxLib.luaL_optlstring(L, 2, CharPtr.toCharPtr(""), /*out*/ lsep);
 			LuaAuxLib.luaL_checktype(L, 1, Lua.LUA_TTABLE);
 			i = LuaAuxLib.luaL_optint(L, 3, 1);
 			last = LuaAuxLib.luaL_opt_integer(L, new LuaAuxLib.luaL_checkint_delegate(), 4, LuaAuxLib.luaL_getn(L, 1));
@@ -182,7 +182,7 @@ namespace KopiLua
 			for (; i < last; i++) 
 			{
 				addfield(L, b, i);
-				LuaAuxLib.luaL_addlstring(b, sep, lsep);
+				LuaAuxLib.luaL_addlstring(b, sep, lsep[0]);
 			}
 			if (i == last)  /* add last value (if interval was not empty) */
 			{
@@ -225,15 +225,15 @@ namespace KopiLua
 			}
 		}
 
-		private static int auxsort_loop1(lua_State L, ref int i)
+		private static int auxsort_loop1(lua_State L, /*ref*/ int[] i)
 		{
-			LuaAPI.lua_rawgeti(L, 1, ++i);
+			LuaAPI.lua_rawgeti(L, 1, ++i[0]);
 			return sort_comp(L, -1, -2);
 		}
 
-		private static int auxsort_loop2(lua_State L, ref int j)
+		private static int auxsort_loop2(lua_State L, /*ref*/ int[] j)
 		{
-			LuaAPI.lua_rawgeti(L, 1, --j);
+			LuaAPI.lua_rawgeti(L, 1, --j[0]);
 			return sort_comp(L, -3, -1);
 		}
 
@@ -285,15 +285,24 @@ namespace KopiLua
 				LuaAPI.lua_rawgeti(L, 1, i);  /* Pivot */
 				LuaAPI.lua_pushvalue(L, -1);
 				LuaAPI.lua_rawgeti(L, 1, u - 1);
-				set2(L, i, u-1);
+				set2(L, i, u - 1);
 				/* a[l] <= P == a[u-1] <= a[u], only need to sort from l+1 to u-2 */
-				i = l; j = u-1;
+				i = l; 
+				j = u - 1;
 				for (;;) 
 				{  
 					/* invariant: a[l..i] <= P <= a[j..u] */
 					/* repeat ++i until a[i] >= P */
-					while (auxsort_loop1(L, ref i) != 0) 
+					while (true) 
 					{
+						int[] i_ref = new int[1];
+						i_ref[0] = i;
+						int ret_1 = auxsort_loop1(L, /*ref*/ i_ref);
+						i = i_ref[0];
+						if (!(ret_1 != 0))
+						{
+							break;
+						}
 						if (i > u) 
 						{
 							LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("invalid order function for sorting"));
@@ -301,8 +310,16 @@ namespace KopiLua
 						Lua.lua_pop(L, 1);  /* remove a[i] */
 					}
 					/* repeat --j until a[j] <= P */
-					while (auxsort_loop2(L, ref j) != 0) 
+					while (true) 
 					{
+						int[] j_ref = new int[1];
+						j_ref[0] = i;
+						int ret_2 = auxsort_loop2(L, /*ref*/ j_ref);
+						j = j_ref[0];
+						if (!(ret_2 != 0))
+						{
+							break;
+						}
 						if (j < l) 
 						{
 							LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("invalid order function for sorting"));

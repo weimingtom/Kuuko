@@ -92,21 +92,22 @@ namespace KopiLua
 		public static int lua_getstack (lua_State L, int level, lua_Debug ar) 
 		{
 			int status;
-			CallInfo ci;
+			CallInfo[] ci = new CallInfo[1];
+			ci[0] = new CallInfo();
 			LuaLimits.lua_lock(L);
-			for (ci = L.ci; level > 0 && CallInfo.greaterThan(ci, L.base_ci[0]); CallInfo.dec(ref ci))
+			for (ci[0] = L.ci; level > 0 && CallInfo.greaterThan(ci[0], L.base_ci[0]); CallInfo.dec(/*ref*/ ci))
 			{
 				level--;
-				if (LuaState.f_isLua(ci))  /* Lua function? */
+				if (LuaState.f_isLua(ci[0]))  /* Lua function? */
 				{
-					level -= ci.tailcalls;  /* skip lost tail calls */
+					level -= ci[0].tailcalls;  /* skip lost tail calls */
 				}
 			}
-			if (level == 0 && CallInfo.greaterThan(ci, L.base_ci[0]))
+			if (level == 0 && CallInfo.greaterThan(ci[0], L.base_ci[0]))
 			{  
 				/* level found? */
 				status = 1;
-				ar.i_ci = CallInfo.minus(ci, L.base_ci[0]);
+				ar.i_ci = CallInfo.minus(ci[0], L.base_ci[0]);
 			}
 			else if (level < 0) 
 			{  
@@ -172,7 +173,10 @@ namespace KopiLua
 			{
 				LuaObject.setobjs2s(L, ci.base_.get(n - 1), TValue.minus(L.top, 1));
 			}
-			/*StkId*/TValue.dec(ref L.top);  /* pop value */
+			TValue[] top = new TValue[1];
+			top[0] = L.top;
+			/*StkId*/TValue.dec(/*ref*/ top);  /* pop value */
+			L.top = top[0];
 			LuaLimits.lua_unlock(L);
 			return name;
 		}
@@ -291,7 +295,10 @@ namespace KopiLua
 				LuaConf.luai_apicheck(L, LuaObject.ttisfunction(func));
 				what = what.next();  /* skip the '>' */
 				f = LuaObject.clvalue(func);
-				/*StkId*/TValue.dec(ref L.top);  /* pop function */
+				TValue[] top = new TValue[1];
+				top[0] = L.top;
+				/*StkId*/TValue.dec(/*ref*/ top);  /* pop function */
+				L.top = top[0];
 			}
 			else if (ar.i_ci != 0) 
 			{  
@@ -835,7 +842,10 @@ namespace KopiLua
 			{
 				return null;  /* calling function is not Lua (or is unknown) */
 			}
-			CallInfo.dec(ref ci);  /* calling function */
+			CallInfo[] ci_ref = new CallInfo[1];
+			ci_ref[0] = ci;
+			CallInfo.dec(/*ref*/ ci_ref);  /* calling function */
+			ci = ci_ref[0];
 			i = LuaState.ci_func(ci).l.p.code[currentpc(L, ci)];
 			if (LuaOpCodes.GET_OPCODE(i) == OpCode.OP_CALL || LuaOpCodes.GET_OPCODE(i) == OpCode.OP_TAILCALL ||
 			    LuaOpCodes.GET_OPCODE(i) == OpCode.OP_TFORLOOP)
@@ -851,10 +861,11 @@ namespace KopiLua
 		/* only ANSI way to check whether a pointer points to an array */
 		private static int isinstack (CallInfo ci, TValue o) 
 		{
-			TValue/*StkId*/ p;
-			for (p = ci.base_; TValue.lessThan(p, ci.top); /*StkId*/TValue.inc(ref p))
+			TValue[]/*StkId*/ p = new TValue[1];
+			p[0] = new TValue();
+			for (p[0] = ci.base_; TValue.lessThan(p[0], ci.top); /*StkId*/TValue.inc(/*ref*/ p))
 			{
-				if (o == p) 
+				if (o == p[0])
 				{
 					return 1;
 				}

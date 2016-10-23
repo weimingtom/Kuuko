@@ -169,8 +169,8 @@ namespace KopiLua
 
 		public static CharPtr lua_tostring(lua_State L, int i)
 		{
-			int/*uint*/ blah;
-			return LuaAPI.lua_tolstring(L, i, out blah);
+			int[]/*uint*/ blah = new int[1];
+			return LuaAPI.lua_tolstring(L, i, /*out*/ blah);
 		}
 
 		////#define lua_open()	luaL_newstate()
@@ -255,7 +255,7 @@ namespace KopiLua
 	}
 	public interface lua_Reader
 	{
-		CharPtr exec(lua_State L, object ud, out int/*uint*/ sz);
+		CharPtr exec(lua_State L, object ud, /*out*/ int[]/*uint*/ sz);
 	}
 	
 	/*

@@ -61,18 +61,19 @@ namespace KopiLua
 			else 
 			{
 				CharPtr s1 = LuaAuxLib.luaL_checkstring(L, 1);
-				CharPtr s2;
-				ulong n;
+				CharPtr[] s2 = new CharPtr[1];
+				s2[0] = new CharPtr();
+				long/*ulong*/ n;
 				LuaAuxLib.luaL_argcheck(L, 2 <= base_ && base_ <= 36, 2, "base out of range");
-				n = LuaConf.strtoul(s1, out s2, base_);
-				if (CharPtr.isNotEqual(s1, s2)) 
+				n = LuaConf.strtoul(s1, /*out*/ s2, base_);
+				if (CharPtr.isNotEqual(s1, s2[0]))
 				{  
 					/* at least one valid digit? */
-					while (LuaConf.isspace((byte)(s2.get(0)))) 
+					while (LuaConf.isspace((byte)(s2[0].get(0))))
 					{
-						s2 = s2.next();  /* skip trailing spaces */
+						s2[0] = s2[0].next();  /* skip trailing spaces */
 					}
-					if (s2.get(0) == '\0') 
+					if (s2[0].get(0) == '\0') 
 					{  
 						/* no invalid trailing characters? */
 						LuaAPI.lua_pushnumber(L, (Double/*lua_Number*/)n);
@@ -329,10 +330,10 @@ namespace KopiLua
 
 		private static int luaB_loadstring(lua_State L) 
 		{
-			int/*uint*/ l;
-			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, out l);
+			int[]/*uint*/ l = new int[1];
+			CharPtr s = LuaAuxLib.luaL_checklstring(L, 1, /*out*/ l);
 			CharPtr chunkname = LuaAuxLib.luaL_optstring(L, 2, s);
-			return load_aux(L, LuaAuxLib.luaL_loadbuffer(L, s, l, chunkname));
+			return load_aux(L, LuaAuxLib.luaL_loadbuffer(L, s, l[0], chunkname));
 		}
 
 		private static int luaB_loadfile(lua_State L) 
@@ -347,7 +348,7 @@ namespace KopiLua
 		 ** stack top. Instead, it keeps its resulting string in a
 		 ** reserved slot inside the stack.
 		 */
-		private static CharPtr generic_reader(lua_State L, object ud, out int/*uint*/ size) 
+		private static CharPtr generic_reader(lua_State L, object ud, /*out*/ int[]/*uint*/ size)
 		{
 			//(void)ud;  /* to avoid warnings */
 			LuaAuxLib.luaL_checkstack(L, 2, CharPtr.toCharPtr("too many nested functions"));
@@ -355,17 +356,17 @@ namespace KopiLua
 			LuaAPI.lua_call(L, 0, 1);  /* call it */
 			if (Lua.lua_isnil(L, -1))
 			{
-				size = 0;
+				size[0] = 0;
 				return null;
 			}
 			else if (LuaAPI.lua_isstring(L, -1) != 0)
 			{
 				LuaAPI.lua_replace(L, 3);  /* save string in a reserved stack slot */
-				return LuaAPI.lua_tolstring(L, 3, out size);
+				return LuaAPI.lua_tolstring(L, 3, /*out*/ size);
 			}
 			else
 			{
-				size = 0;
+				size[0] = 0;
 				LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("reader function must return a string"));
 			}
 			return null;  /* to avoid warnings */
@@ -373,9 +374,9 @@ namespace KopiLua
 
 		public class generic_reader_delegate : lua_Reader
 		{
-			public CharPtr exec(lua_State L, object ud, out int/*uint*/ sz)
+			public CharPtr exec(lua_State L, object ud, /*out*/ int[]/*uint*/ sz)
 			{
-				return generic_reader(L, ud, out sz);
+				return generic_reader(L, ud, /*out*/ sz);
 			}
 		}
 		

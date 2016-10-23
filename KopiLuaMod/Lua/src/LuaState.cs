@@ -157,7 +157,11 @@ namespace KopiLua
 			L1.stack_last = L1.stack[L1.stacksize - EXTRA_STACK - 1];
 			/* initialize first ci */
 			L1.ci.func = L1.top;
-			LuaObject.setnilvalue(/*StkId*/TValue.inc(ref L1.top));  /* `function' entry for this `ci' */
+			TValue[] top = new TValue[1];
+			top[0] = L1.top;
+			TValue ret = /*StkId*/TValue.inc(/*ref*/ top);
+			L1.top = top[0];
+			LuaObject.setnilvalue(ret);  /* `function' entry for this `ci' */
 			L1.base_ = L1.ci.base_ = L1.top;
 			L1.ci.top = TValue.plus(L1.top, Lua.LUA_MINSTACK);
 		}
@@ -273,7 +277,10 @@ namespace KopiLua
 			g.currentwhite = (Byte/*lu_byte*/)LuaGC.bit2mask(LuaGC.WHITE0BIT, LuaGC.FIXEDBIT);
 			L.marked = LuaGC.luaC_white(g);
 			Byte/*lu_byte*/ marked = L.marked;	// can't pass properties in as ref
-			LuaGC.set2bits(ref marked, LuaGC.FIXEDBIT, LuaGC.SFIXEDBIT);
+			Byte[] marked_ref = new Byte[1];
+			marked_ref[0] = marked;
+			LuaGC.set2bits(/*ref*/ marked_ref, LuaGC.FIXEDBIT, LuaGC.SFIXEDBIT);
+			marked = marked_ref[0];
 			L.marked = marked;
 			preinit_state(L, g);
 			g.frealloc = f;

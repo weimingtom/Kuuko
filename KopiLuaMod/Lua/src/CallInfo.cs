@@ -84,16 +84,16 @@ namespace KopiLua
             return ci1.index >= ci2.index;
         }
     
-        public static CallInfo inc(ref CallInfo value)
+        public static CallInfo inc(/*ref*/ CallInfo[] value)
         {
-        	value = value.get(1);
-        	return value.get(-1);
+        	value[0] = value[0].get(1);
+        	return value[0].get(-1);
         }
     
-        public static CallInfo dec(ref CallInfo value)
+        public static CallInfo dec(/*ref*/ CallInfo[] value)
         {
-        	value = value.get(-1);
-        	return value.get(1);
+        	value[0] = value[0].get(-1);
+        	return value[0].get(1);
         }
     }
 }

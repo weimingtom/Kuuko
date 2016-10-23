@@ -69,16 +69,16 @@ namespace KopiLua
 			LuaAPI.lua_setfield(L, -2, i);
 		}
 
-		private static lua_State getthread(lua_State L, out int arg) 
+		private static lua_State getthread(lua_State L, /*out*/ int[] arg)
 		{
 			if (Lua.lua_isthread(L, 1)) 
 			{
-				arg = 1;
+				arg[0] = 1;
 				return LuaAPI.lua_tothread(L, 1);
 			}
 			else 
 			{
-				arg = 0;
+				arg[0] = 0;
 				return L;
 			}
 		}
@@ -100,31 +100,31 @@ namespace KopiLua
 		private static int db_getinfo(lua_State L) 
 		{
 			lua_Debug ar = new lua_Debug();
-			int arg;
-			lua_State L1 = getthread(L, out arg);
-			CharPtr options = LuaAuxLib.luaL_optstring(L, arg + 2, CharPtr.toCharPtr("flnSu"));
-			if (LuaAPI.lua_isnumber(L, arg + 1) != 0)
+			int[] arg = new int[1];
+			lua_State L1 = getthread(L, /*out*/ arg);
+			CharPtr options = LuaAuxLib.luaL_optstring(L, arg[0] + 2, CharPtr.toCharPtr("flnSu"));
+			if (LuaAPI.lua_isnumber(L, arg[0] + 1) != 0)
 			{
-				if (LuaDebug.lua_getstack(L1, (int)LuaAPI.lua_tointeger(L, arg + 1), ar) == 0)
+				if (LuaDebug.lua_getstack(L1, (int)LuaAPI.lua_tointeger(L, arg[0] + 1), ar) == 0)
 				{
 					LuaAPI.lua_pushnil(L);  /* level out of range */
 					return 1;
 				}
 			}
-			else if (Lua.lua_isfunction(L, arg + 1)) 
+			else if (Lua.lua_isfunction(L, arg[0] + 1))
 			{
 				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(">%s"), options);
 				options = Lua.lua_tostring(L, -1);
-				LuaAPI.lua_pushvalue(L, arg + 1);
+				LuaAPI.lua_pushvalue(L, arg[0] + 1);
 				LuaAPI.lua_xmove(L, L1, 1);
 			}
 			else
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 1, CharPtr.toCharPtr("function or level expected"));
+				return LuaAuxLib.luaL_argerror(L, arg[0] + 1, CharPtr.toCharPtr("function or level expected"));
 			}
 			if (LuaDebug.lua_getinfo(L1, options, ar) == 0)
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 2, CharPtr.toCharPtr("invalid option"));
+				return LuaAuxLib.luaL_argerror(L, arg[0] + 2, CharPtr.toCharPtr("invalid option"));
 			}
 			LuaAPI.lua_createtable(L, 0, 2);
 			if (CharPtr.isNotEqual(LuaConf.strchr(options, 'S'), null))
@@ -161,15 +161,15 @@ namespace KopiLua
 		
 		private static int db_getlocal(lua_State L) 
 		{
-			int arg;
-			lua_State L1 = getthread(L, out arg);
+			int[] arg = new int[1];
+			lua_State L1 = getthread(L, /*out*/ arg);
 			lua_Debug ar = new lua_Debug();
 			CharPtr name;
-			if (LuaDebug.lua_getstack(L1, LuaAuxLib.luaL_checkint(L, arg + 1), ar) == 0)  /* out of range? */
+			if (LuaDebug.lua_getstack(L1, LuaAuxLib.luaL_checkint(L, arg[0] + 1), ar) == 0)  /* out of range? */
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 1, CharPtr.toCharPtr("level out of range"));
+				return LuaAuxLib.luaL_argerror(L, arg[0] + 1, CharPtr.toCharPtr("level out of range"));
 			}
-			name = LuaDebug.lua_getlocal(L1, ar, LuaAuxLib.luaL_checkint(L, arg + 2));
+			name = LuaDebug.lua_getlocal(L1, ar, LuaAuxLib.luaL_checkint(L, arg[0] + 2));
 			if (CharPtr.isNotEqual(name, null)) 
 			{
 				LuaAPI.lua_xmove(L1, L, 1);
@@ -186,17 +186,17 @@ namespace KopiLua
 
 		private static int db_setlocal(lua_State L) 
 		{
-			int arg;
-			lua_State L1 = getthread(L, out arg);
+			int[] arg = new int[1];
+			lua_State L1 = getthread(L, /*out*/ arg);
 			lua_Debug ar = new lua_Debug();
-			if (LuaDebug.lua_getstack(L1, LuaAuxLib.luaL_checkint(L, arg + 1), ar) == 0)  /* out of range? */
+			if (LuaDebug.lua_getstack(L1, LuaAuxLib.luaL_checkint(L, arg[0] + 1), ar) == 0)  /* out of range? */
 			{
-				return LuaAuxLib.luaL_argerror(L, arg + 1, CharPtr.toCharPtr("level out of range"));
+				return LuaAuxLib.luaL_argerror(L, arg[0] + 1, CharPtr.toCharPtr("level out of range"));
 			}
-			LuaAuxLib.luaL_checkany(L, arg + 3);
-			LuaAPI.lua_settop(L, arg + 3);
+			LuaAuxLib.luaL_checkany(L, arg[0] + 3);
+			LuaAPI.lua_settop(L, arg[0] + 3);
 			LuaAPI.lua_xmove(L, L1, 1);
-			LuaAPI.lua_pushstring(L, LuaDebug.lua_setlocal(L1, ar, LuaAuxLib.luaL_checkint(L, arg + 2)));
+			LuaAPI.lua_pushstring(L, LuaDebug.lua_setlocal(L1, ar, LuaAuxLib.luaL_checkint(L, arg[0] + 2)));
 			return 1;
 		}
 
@@ -326,27 +326,28 @@ namespace KopiLua
 
 		private static int db_sethook(lua_State L) 
 		{
-			int arg, mask, count;
+			int[] arg = new int[1];
+			int mask, count;
 			lua_Hook func;
-			lua_State L1 = getthread(L, out arg);
-			if (Lua.lua_isnoneornil(L, arg + 1)) 
+			lua_State L1 = getthread(L, /*out*/ arg);
+			if (Lua.lua_isnoneornil(L, arg[0] + 1)) 
 			{
-				LuaAPI.lua_settop(L, arg + 1);
+				LuaAPI.lua_settop(L, arg[0] + 1);
 				func = null; 
 				mask = 0; 
 				count = 0;  /* turn off hooks */
 			}
 			else 
 			{
-				CharPtr smask = LuaAuxLib.luaL_checkstring(L, arg + 2);
-				LuaAuxLib.luaL_checktype(L, arg + 1, Lua.LUA_TFUNCTION);
-				count = LuaAuxLib.luaL_optint(L, arg + 3, 0);
+				CharPtr smask = LuaAuxLib.luaL_checkstring(L, arg[0] + 2);
+				LuaAuxLib.luaL_checktype(L, arg[0] + 1, Lua.LUA_TFUNCTION);
+				count = LuaAuxLib.luaL_optint(L, arg[0] + 3, 0);
 				func = new hookf_delegate();
 				mask = makemask(smask, count);
 			}
 			gethooktable(L);
 			LuaAPI.lua_pushlightuserdata(L, L1);
-			LuaAPI.lua_pushvalue(L, arg + 1);
+			LuaAPI.lua_pushvalue(L, arg[0] + 1);
 			LuaAPI.lua_rawset(L, -3);  /* set new hook */
 			Lua.lua_pop(L, 1);  /* remove hook table */
 			LuaDebug.lua_sethook(L1, func, mask, count);  /* set hooks */
@@ -355,8 +356,8 @@ namespace KopiLua
 
 		private static int db_gethook(lua_State L) 
 		{
-			int arg;
-			lua_State L1 = getthread(L, out arg);
+			int[] arg = new int[1];
+			lua_State L1 = getthread(L, /*out*/ arg);
 			CharPtr buff = CharPtr.toCharPtr(new char[5]);
 			int mask = LuaDebug.lua_gethookmask(L1);
 			lua_Hook hook = LuaDebug.lua_gethook(L1);
@@ -404,23 +405,23 @@ namespace KopiLua
 		{
 			int level;
 			bool firstpart = true;  /* still before eventual `...' */
-			int arg;
-			lua_State L1 = getthread(L, out arg);
+			int[] arg = new int[1];
+			lua_State L1 = getthread(L, /*out*/ arg);
 			lua_Debug ar = new lua_Debug();
-			if (LuaAPI.lua_isnumber(L, arg + 2) != 0)
+			if (LuaAPI.lua_isnumber(L, arg[0] + 2) != 0)
 			{
-				level = (int)LuaAPI.lua_tointeger(L, arg + 2);
+				level = (int)LuaAPI.lua_tointeger(L, arg[0] + 2);
 				Lua.lua_pop(L, 1);
 			}
 			else
 			{
 				level = (L == L1) ? 1 : 0;  /* level 0 may be this own function */
 			}
-			if (LuaAPI.lua_gettop(L) == arg)
+			if (LuaAPI.lua_gettop(L) == arg[0])
 			{
 				Lua.lua_pushliteral(L, CharPtr.toCharPtr(""));
 			}
-			else if (LuaAPI.lua_isstring(L, arg + 1) == 0) 
+			else if (LuaAPI.lua_isstring(L, arg[0] + 1) == 0) 
 			{
 				return 1;  /* message is not a string */
 			}
@@ -476,9 +477,9 @@ namespace KopiLua
 							ar.short_src, ar.linedefined);
 					}
 				}
-				LuaAPI.lua_concat(L, LuaAPI.lua_gettop(L) - arg);
+				LuaAPI.lua_concat(L, LuaAPI.lua_gettop(L) - arg[0]);
 			}
-			LuaAPI.lua_concat(L, LuaAPI.lua_gettop(L) - arg);
+			LuaAPI.lua_concat(L, LuaAPI.lua_gettop(L) - arg[0]);
 			return 1;
 		}
 

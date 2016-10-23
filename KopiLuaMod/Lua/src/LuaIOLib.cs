@@ -490,9 +490,9 @@ namespace KopiLua
 				}
 				else 
 				{
-					int/*uint*/ l;
-					CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, out l);
-					status = ((status != 0) && (LuaConf.fwrite(s, LuaConf.GetUnmanagedSize(typeof(char)), (int)l, f) == l)) ? 1 : 0;
+					int[]/*uint*/ l = new int[1];
+					CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, /*out*/ l);
+					status = ((status != 0) && (LuaConf.fwrite(s, LuaConf.GetUnmanagedSize(typeof(char)), (int)l[0], f) == l[0])) ? 1 : 0;
 				}
 			}
 			return pushresult(L, status, null);

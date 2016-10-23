@@ -97,16 +97,16 @@ namespace KopiLua
             return a.index >= b.index;
         }
         
-        public static TValue inc(ref TValue value)
+        public static TValue inc(/*ref*/ TValue[] value)
 		{
-			value = value.get(1);
-			return value.get(-1);
+        	value[0] = value[0].get(1);
+        	return value[0].get(-1);
 		}
 		
-		public static TValue dec(ref TValue value)
+        public static TValue dec(/*ref*/ TValue[] value)
 		{
-			value = value.get(-1);
-			return value.get(1);
+			value[0] = value[0].get(-1);
+			return value[0].get(1);
 		}
 		
         //implicit operator int

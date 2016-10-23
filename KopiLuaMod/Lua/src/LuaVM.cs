@@ -22,9 +22,9 @@ namespace KopiLua
 			return ((LuaObject.ttype(o) == Lua.LUA_TSTRING) || (luaV_tostring(L, o) != 0)) ? 1 : 0;
 		}
 
-		public static int tonumber(ref TValue/*StkId*/ o, TValue n)
+		public static int tonumber(/*ref*/ TValue[]/*StkId*/ o, TValue n)
 		{
-			return ((LuaObject.ttype(o) == Lua.LUA_TNUMBER || (((o) = luaV_tonumber(o, n)) != null))) ? 1 : 0;
+			return ((LuaObject.ttype(o[0]) == Lua.LUA_TNUMBER || (((o[0]) = luaV_tonumber(o[0], n)) != null))) ? 1 : 0;
 		}
 
 		public static int equalobj(lua_State L, TValue o1, TValue o2) 
@@ -37,14 +37,14 @@ namespace KopiLua
 
 		public static TValue luaV_tonumber(TValue obj, TValue n) 
 		{
-			Double/*lua_Number*/ num;
+			Double[]/*lua_Number*/ num = new Double[1];
 			if (LuaObject.ttisnumber(obj)) 
 			{
 				return obj;
 			}
-			if (LuaObject.ttisstring(obj) && (LuaObject.luaO_str2d(LuaObject.svalue(obj), out num) != 0))
+			if (LuaObject.ttisstring(obj) && (LuaObject.luaO_str2d(LuaObject.svalue(obj), /*out*/ num) != 0))
 			{
-				LuaObject.setnvalue(n, num);
+				LuaObject.setnvalue(n, num[0]);
 				return n;
 			}
 			else
@@ -105,7 +105,10 @@ namespace KopiLua
 			L.top = TValue.plus(L.top, 3);
 			LuaDo.luaD_call(L, TValue.minus(L.top, 3), 1);
 			res = LuaDo.restorestack(L, result);
-			/*StkId*/TValue.dec(ref L.top);
+			TValue[] top = new TValue[1];
+			top[0] = L.top;
+			/*StkId*/TValue.dec(/*ref*/ top);
+			L.top = top[0];
 			LuaObject.setobjs2s(L, res, L.top);
 		}
 
@@ -677,7 +680,11 @@ namespace KopiLua
 			/* main loop of interpreter */
 			for (;;) 
 			{
-				/*const*/ long/*UInt32*//*Instruction*/ i = InstructionPtr.inc(ref pc).get(0);
+				InstructionPtr[] pc_ref = new InstructionPtr[1];
+				pc_ref[0] = pc;
+				InstructionPtr ret = InstructionPtr.inc(/*ref*/ pc_ref);
+				pc = pc_ref[0];
+				/*const*/ long/*UInt32*//*Instruction*/ i = ret.get(0);
 				TValue/*StkId*/ ra;
 				if (((L.hookmask & (Lua.LUA_MASKLINE | Lua.LUA_MASKCOUNT)) != 0) &&
 				    (((--L.hookcount) == 0) || ((L.hookmask & Lua.LUA_MASKLINE) != 0)))
@@ -714,7 +721,10 @@ namespace KopiLua
 							LuaObject.setbvalue(ra, LuaOpCodes.GETARG_B(i));
 							if (LuaOpCodes.GETARG_C(i) != 0) 
 							{
-								InstructionPtr.inc(ref pc);  /* skip next instruction (if C) */
+								InstructionPtr[] pc_ref2 = new InstructionPtr[1];
+								pc_ref2[0] = pc;
+								InstructionPtr.inc(/*ref*/ pc_ref2);  /* skip next instruction (if C) */
+								pc = pc_ref2[0];
 							}
 							continue;
 						}
@@ -723,7 +733,11 @@ namespace KopiLua
 							TValue rb = RB(L, base_, i);
 							do 
 							{
-								LuaObject.setnilvalue(/*StkId*/TValue.dec(ref rb));
+								TValue[] rb_ref = new TValue[1];
+								rb_ref[0] = rb;
+								TValue ret2 = /*StkId*/TValue.dec(/*ref*/ rb_ref);
+								rb = rb_ref[0];
+								LuaObject.setnilvalue(ret2);
 							} while (TValue.greaterEqual(rb, ra));
 							continue;
 						}
@@ -925,7 +939,10 @@ namespace KopiLua
 								dojump(L, pc, LuaOpCodes.GETARG_sBx(pc.get(0)));
 							base_ = L.base_;
 							//);
-							InstructionPtr.inc(ref pc);
+							InstructionPtr[] pc_ref2 = new InstructionPtr[1];
+							pc_ref2[0] = pc;
+							InstructionPtr.inc(/*ref*/ pc_ref2);
+							pc = pc_ref2[0];
 							continue;
 						}
 					case OpCode.OP_LT: 
@@ -938,7 +955,10 @@ namespace KopiLua
 							}
 							base_ = L.base_;
 							//);
-							InstructionPtr.inc(ref pc);
+							InstructionPtr[] pc_ref3 = new InstructionPtr[1];
+							pc_ref3[0] = pc;
+							InstructionPtr.inc(/*ref*/ pc_ref3);
+							pc = pc_ref3[0];
 							continue;
 						}
 					case OpCode.OP_LE: 
@@ -951,7 +971,10 @@ namespace KopiLua
 							}
 							base_ = L.base_;
 							//);
-							InstructionPtr.inc(ref pc);
+							InstructionPtr[] pc_ref4 = new InstructionPtr[1];
+							pc_ref4[0] = pc;
+							InstructionPtr.inc(/*ref*/ pc_ref4);
+							pc = pc_ref4[0];
 							continue;
 						}
 					case OpCode.OP_TEST: 
@@ -960,7 +983,10 @@ namespace KopiLua
 							{
 								dojump(L, pc, LuaOpCodes.GETARG_sBx(pc.get(0)));
 							}
-							InstructionPtr.inc(ref pc);
+							InstructionPtr[] pc_ref5 = new InstructionPtr[1];
+							pc_ref5[0] = pc;
+							InstructionPtr.inc(/*ref*/ pc_ref5);
+							pc = pc_ref5[0];
 							continue;
 						}
 					case OpCode.OP_TESTSET: 
@@ -971,7 +997,10 @@ namespace KopiLua
 								LuaObject.setobjs2s(L, ra, rb);
 								dojump(L, pc, LuaOpCodes.GETARG_sBx(pc.get(0)));
 							}
-							InstructionPtr.inc(ref pc);
+							InstructionPtr[] pc_ref6 = new InstructionPtr[1];
+							pc_ref6[0] = pc;
+							InstructionPtr.inc(/*ref*/ pc_ref6);
+							pc = pc_ref6[0];
 							continue;
 						}
 					case OpCode.OP_CALL: 
@@ -1037,7 +1066,10 @@ namespace KopiLua
 										LuaLimits.lua_assert(L.top == TValue.plus(L.base_, LuaObject.clvalue(func).l.p.maxstacksize));
 										ci.savedpc = InstructionPtr.Assign(L.savedpc);
 										ci.tailcalls++;  /* one more call lost */
-										CallInfo.dec(ref L.ci);  /* remove new frame */
+										CallInfo[] ci_ref3 = new CallInfo[1];
+										ci_ref3[0] = L.ci;
+										CallInfo.dec(/*ref*/ ci_ref3);  /* remove new frame */
+										L.ci = ci_ref3[0];
 										goto reentry;
 									}
 								case LuaDo.PCRC:
@@ -1101,17 +1133,36 @@ namespace KopiLua
 							TValue plimit = TValue.plus(ra, 1);
 							TValue pstep = TValue.plus(ra, 2);
 							L.savedpc = InstructionPtr.Assign(pc);  /* next steps may throw errors */
-							if (tonumber(ref init, ra) == 0)
+							int retxxx;
+							TValue[] init_ref = new TValue[1];
+							init_ref[0] = init;
+							retxxx = tonumber(/*ref*/ init_ref, ra);
+							init = init_ref[0];
+							if (retxxx == 0)
 							{
 								LuaDebug.luaG_runerror(L, CharPtr.toCharPtr(LuaConf.LUA_QL("for") + " initial value must be a number"));
-							}
-							else if (tonumber(ref plimit, TValue.plus(ra, 1)) == 0)
+							} 
+							else 
 							{
-                                LuaDebug.luaG_runerror(L, CharPtr.toCharPtr(LuaConf.LUA_QL("for") + " limit must be a number"));
-							}
-							else if (tonumber(ref pstep, TValue.plus(ra, 2)) == 0)
-							{
-								LuaDebug.luaG_runerror(L, CharPtr.toCharPtr(LuaConf.LUA_QL("for") + " step must be a number"));
+								TValue[] plimit_ref = new TValue[1];
+								plimit_ref[0] = plimit;
+								retxxx = tonumber(/*ref*/ plimit_ref, TValue.plus(ra, 1));
+								plimit = plimit_ref[0];
+								if (retxxx == 0)
+								{
+	                                LuaDebug.luaG_runerror(L, CharPtr.toCharPtr(LuaConf.LUA_QL("for") + " limit must be a number"));
+								}
+								else
+								{
+									TValue[] pstep_ref = new TValue[1];
+									pstep_ref[0] = pstep;
+									retxxx = tonumber(/*ref*/ pstep_ref, TValue.plus(ra, 2));
+									pstep = pstep_ref[0];									
+									if (retxxx == 0)
+									{
+										LuaDebug.luaG_runerror(L, CharPtr.toCharPtr(LuaConf.LUA_QL("for") + " step must be a number"));
+									}
+								}
 							}
 							LuaObject.setnvalue(ra, LuaConf.luai_numsub(LuaObject.nvalue(ra), LuaObject.nvalue(pstep)));
 							dojump(L, pc, LuaOpCodes.GETARG_sBx(i));
@@ -1137,7 +1188,10 @@ namespace KopiLua
 								LuaObject.setobjs2s(L, TValue.minus(cb, 1), cb);  /* save control variable */
 								dojump(L, pc, LuaOpCodes.GETARG_sBx(pc.get(0)));  /* jump back */
 							}
-							InstructionPtr.inc(ref pc);
+							InstructionPtr[] pc_ref3 = new InstructionPtr[1];
+							pc_ref3[0] = pc;
+							InstructionPtr.inc(/*ref*/ pc_ref3);
+							pc = pc_ref3[0];
 							continue;
 						}
 					case OpCode.OP_SETLIST: 
@@ -1154,7 +1208,10 @@ namespace KopiLua
 							if (c == 0)
 							{
 								c = LuaLimits.cast_int_instruction(pc.get(0));
-								InstructionPtr.inc(ref pc);
+								InstructionPtr[] pc_ref5 = new InstructionPtr[1];
+								pc_ref5[0] = pc;
+								InstructionPtr.inc(/*ref*/ pc_ref5);
+								pc = pc_ref5[0];
 							}
 							runtime_check(L, LuaObject.ttistable(ra));
 							h = LuaObject.hvalue(ra);
@@ -1185,7 +1242,7 @@ namespace KopiLua
 							nup = p.nups;
 							ncl = LuaFunc.luaF_newLclosure(L, nup, cl.getEnv());
 							ncl.l.p = p;
-							for (j = 0; j < nup; j++, InstructionPtr.inc(ref pc)) 
+							for (j = 0; j < nup;) 
 							{
 								if (LuaOpCodes.GET_OPCODE(pc.get(0)) == OpCode.OP_GETUPVAL)
 								{
@@ -1196,6 +1253,12 @@ namespace KopiLua
 									LuaLimits.lua_assert(LuaOpCodes.GET_OPCODE(pc.get(0)) == OpCode.OP_MOVE);
 									ncl.l.upvals[j] = LuaFunc.luaF_findupval(L, TValue.plus(base_, LuaOpCodes.GETARG_B(pc.get(0))));
 								}
+								
+								j++; 
+								InstructionPtr[] pc_ref4 = new InstructionPtr[1];
+								pc_ref4[0] = pc;
+								InstructionPtr.inc(/*ref*/ pc_ref4);
+								pc = pc_ref4[0];
 							}
 							LuaObject.setclvalue(L, ra, ncl);
 							//Protect(

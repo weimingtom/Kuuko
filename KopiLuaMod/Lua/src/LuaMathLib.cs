@@ -103,9 +103,9 @@ namespace KopiLua
 
 		private static int math_modf(lua_State L) 
 		{
-			double ip;
-			double fp = LuaConf.modf(LuaAuxLib.luaL_checknumber(L, 1), out ip);
-			LuaAPI.lua_pushnumber(L, ip);
+			double[] ip = new double[1];
+			double fp = LuaConf.modf(LuaAuxLib.luaL_checknumber(L, 1), /*out*/ ip);
+			LuaAPI.lua_pushnumber(L, ip[0]);
 			LuaAPI.lua_pushnumber(L, fp);
 			return 2;
 		}
@@ -154,9 +154,9 @@ namespace KopiLua
 
 		private static int math_frexp(lua_State L)
 		{
-			int e;
-			LuaAPI.lua_pushnumber(L, LuaConf.frexp(LuaAuxLib.luaL_checknumber(L, 1), out e));
-			LuaAPI.lua_pushinteger(L, e);
+			int[] e = new int[1];
+			LuaAPI.lua_pushnumber(L, LuaConf.frexp(LuaAuxLib.luaL_checknumber(L, 1), /*out*/ e));
+			LuaAPI.lua_pushinteger(L, e[0]);
 			return 2;
 		}
 

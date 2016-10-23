@@ -188,9 +188,9 @@ namespace KopiLua
 		{
 			if (status == Lua.LUA_ERRSYNTAX)
 			{
-				int/*uint*/ lmsg;
-				CharPtr msg = LuaAPI.lua_tolstring(L, -1, out lmsg);
-				CharPtr tp = CharPtr.plus(msg, lmsg - (LuaConf.strlen(LuaConf.LUA_QL("<eof>"))));
+				int[]/*uint*/ lmsg = new int[1];
+				CharPtr msg = LuaAPI.lua_tolstring(L, -1, /*out*/ lmsg);
+				CharPtr tp = CharPtr.plus(msg, lmsg[0] - (LuaConf.strlen(LuaConf.LUA_QL("<eof>"))));
 				if (CharPtr.isEqual(LuaConf.strstr(msg, LuaConf.LUA_QL("<eof>")), tp))
 				{
 					Lua.lua_pop(L, 1);
@@ -314,7 +314,7 @@ namespace KopiLua
 		/* check that argument has no extra characters at the end */
 		//#define notail(x)	{if ((x)[2] != '\0') return -1;}
 
-		static int collectargs(string[] argv, ref int pi, ref int pv, ref int pe)
+		static int collectargs(string[] argv, /*ref*/ int[] pi, /*ref*/ int[] pv, /*ref*/ int[] pe)
 		{
 			int i;
 			for (i = 1; i < argv.Length; i++)
@@ -345,23 +345,23 @@ namespace KopiLua
 							{
 								return -1;
 							}
-							pi = 1;
+							pi[0] = 1;
 							if (argv[i].Length != 2) 
 							{
 								return -1;
 							}
-							pv = 1;
+							pv[0] = 1;
 							break;
 						}
 					case 'v':
 						{
 							if (argv[i].Length != 2) return -1;
-							pv = 1;
+							pv[0] = 1;
 							break;
 						}
 					case 'e':
 						{
-							pe = 1;
+							pe[0] = 1;
 							if (argv[i].Length == 2)
 							{
 								i++;
@@ -466,7 +466,12 @@ namespace KopiLua
 			Smain s = (Smain)LuaAPI.lua_touserdata(L, 1);
 			string[] argv = s.argv;
 			int script;
-			int has_i = 0, has_v = 0, has_e = 0;
+			int[] has_i = new int[1];
+			int[] has_v = new int[1];
+			int[] has_e = new int[1];
+			has_i[0] = 0;
+			has_v[0] = 0;
+			has_e[0] = 0;
 			globalL = L;
 			if ((argv.Length > 0) && (!argv[0].Equals(""))) 
 			{
@@ -480,7 +485,7 @@ namespace KopiLua
 			{
 				return 0;
 			}
-			script = collectargs(argv, ref has_i, ref has_v, ref has_e);
+			script = collectargs(argv, /*ref*/ has_i, /*ref*/ has_v, /*ref*/ has_e);
 			if (script < 0)
 			{  
 				/* invalid args? */
@@ -488,7 +493,7 @@ namespace KopiLua
 				s.status = 1;
 				return 0;
 			}
-			if (has_v != 0) 
+			if (has_v[0] != 0)
 			{
 				print_version();
 			}
@@ -505,11 +510,11 @@ namespace KopiLua
 			{
 				return 0;
 			}
-			if (has_i != 0)
+			if (has_i[0] != 0)
 			{
 				dotty(L);
 			}
-			else if ((script == 0) && (has_e == 0) && (has_v == 0))
+			else if ((script == 0) && (has_e[0] == 0) && (has_v[0] == 0))
 			{
 				if (LuaConf.lua_stdin_is_tty() != 0)
 				{

@@ -61,7 +61,10 @@ namespace KopiLua
 			{
 				buff.buffer = new CharPtr();
 			}
-			LuaMem.luaM_reallocvector(L, ref buff.buffer.chars, /*(int)*/buff.buffsize, size);
+			char[][] chars_ref = new char[1][];
+			chars_ref[0] = buff.buffer.chars;
+			LuaMem.luaM_reallocvector(L, /*ref*/ chars_ref, /*(int)*/buff.buffsize, size);
+			buff.buffer.chars = chars_ref[0];
 			buff.buffsize = /*(uint)*/buff.buffer.chars.Length;
 		}
 
@@ -74,17 +77,17 @@ namespace KopiLua
 
 		public static int luaZ_fill(ZIO z) 
 		{
-			int/*uint*/ size;
+			int[]/*uint*/ size = new int[1];
 			lua_State L = z.L;
 			CharPtr buff;
 			LuaLimits.lua_unlock(L);
-			buff = z.reader.exec(L, z.data, out size);
+			buff = z.reader.exec(L, z.data, /*out*/ size);
 			LuaLimits.lua_lock(L);
-			if (CharPtr.isEqual(buff, null) || size == 0) 
+			if (CharPtr.isEqual(buff, null) || size[0] == 0) 
 			{
 				return EOZ;
 			}
-			z.n = size - 1;
+			z.n = size[0] - 1;
 			z.p = new CharPtr(buff);
 			int result = char2int(z.p.get(0));
 			z.p.inc();

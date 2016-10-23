@@ -559,18 +559,18 @@ namespace KopiLua
 
 		private const string number_chars = "0123456789+-eE.";
 		
-		public static double lua_str2number(CharPtr s, out CharPtr end)
+		public static double lua_str2number(CharPtr s, /*out*/ CharPtr[] end)
 		{
-			end = new CharPtr(s.chars, s.index);
+			end[0] = new CharPtr(s.chars, s.index);
 			string str = "";
-			while (end.get(0) == ' ')
+			while (end[0].get(0) == ' ')
 			{
-				end = end.next();
+				end[0] = end[0].next();
 			}
-			while (number_chars.IndexOf(end.get(0)) >= 0)
+			while (number_chars.IndexOf(end[0].get(0)) >= 0)
 			{
-				str += end.get(0);
-				end = end.next();
+				str += end[0].get(0);
+				end[0] = end[0].next();
 			}
 
 			try
@@ -591,7 +591,7 @@ namespace KopiLua
 			}
 			catch
 			{
-				end = new CharPtr(s.chars, s.index);
+				end[0] = new CharPtr(s.chars, s.index);
 				return 0;
 			}
 		}
@@ -747,15 +747,15 @@ namespace KopiLua
 		//#endif
 
 		/*private*/
-		public static void lua_number2int(out int i, Double/*lua_Number*/ d) 
+		public static void lua_number2int(/*out*/ int[] i, Double/*lua_Number*/ d)
 		{ 
-			i = (int)d; 
+			i[0] = (int)d;
 		}
 		
 		/*private*/
-		public static void lua_number2integer(out int i, Double/*lua_Number*/ n) 
+		public static void lua_number2integer(/*out*/ int[] i, Double/*lua_Number*/ n)
 		{ 
-			i = (int)n; 
+			i[0] = (int)n;
 		}
 
 		/* }================================================================== */
@@ -1073,48 +1073,48 @@ namespace KopiLua
 			return Char.ToUpper((char)c); 
 		}
 
-		public static ulong strtoul(CharPtr s, out CharPtr end, int base_)
+		public static long/*ulong*/ strtoul(CharPtr s, /*out*/ CharPtr[] end, int base_)
 		{
 			try
 			{
-				end = new CharPtr(s.chars, s.index);
+				end[0] = new CharPtr(s.chars, s.index);
 
 				// skip over any leading whitespace
-				while (end.get(0) == ' ')
+				while (end[0].get(0) == ' ')
 				{
-					end = end.next();
+					end[0] = end[0].next();
 				}
 
 				// ignore any leading 0x
-				if ((end.get(0) == '0') && (end.get(1) == 'x'))
+				if ((end[0].get(0) == '0') && (end[0].get(1) == 'x'))
 				{
-					end = end.next().next();
+					end[0] = end[0].next().next();
 				}
-				else if ((end.get(0) == '0') && (end.get(1) == 'X'))
+				else if ((end[0].get(0) == '0') && (end[0].get(1) == 'X'))
 				{
-					end = end.next().next();
+					end[0] = end[0].next().next();
 				}
 
 				// do we have a leading + or - sign?
 				bool negate = false;
-				if (end.get(0) == '+')
+				if (end[0].get(0) == '+')
 				{
-					end = end.next();
+					end[0] = end[0].next();
 				}
-				else if (end.get(0) == '-')
+				else if (end[0].get(0) == '-')
 				{
 					negate = true;
-					end = end.next();
+					end[0] = end[0].next();
 				}
 
 				// loop through all chars
 				bool invalid = false;
 				bool had_digits = false;
-				ulong result = 0;
+				long/*ulong*/ result = 0;
 				while (true)
 				{
 					// get this char
-					char ch = end.get(0);
+					char ch = end[0].get(0);
 
 					// which digit is this?
 					int this_digit = 0;
@@ -1139,31 +1139,31 @@ namespace KopiLua
 					else
 					{
 						had_digits = true;
-						result = result * (ulong)base_ + (ulong)this_digit;
+						result = result * (long/*ulong*/)base_ + (long/*ulong*/)this_digit;
 					}
 
-					end = end.next();
+					end[0] = end[0].next();
 				}
 
 				// were any of the digits invalid?
 				if (invalid || (!had_digits))
 				{
-					end = s;
-					return System.UInt64.MaxValue;
+					end[0] = s;
+					return /*UInt64.MaxValue*/Int64.MaxValue;
 				}
 
 				// if the value was a negative then negate it here
 				if (negate)
 				{
-					result = (ulong)-(long)result;
+					result = (long/*ulong*/)-(long)result;
 				}
 
 				// ok, we're done
-				return (ulong)result;
+				return (long/*ulong*/)result;
 			}
 			catch
 			{
-				end = s;
+				end[0] = s;
 				return 0;
 			}
 		}
@@ -1424,9 +1424,9 @@ namespace KopiLua
 			return a - quotient * b;
 		}
 
-		public static Double/*lua_Number*/ modf(Double/*lua_Number*/ a, out Double/*lua_Number*/ b)
+		public static Double/*lua_Number*/ modf(Double/*lua_Number*/ a, /*out*/ Double[]/*lua_Number*/ b)
 		{
-			b = Math.Floor(a);
+			b[0] = Math.Floor(a);
 			return a - Math.Floor(a);
 		}
 
@@ -1562,10 +1562,10 @@ namespace KopiLua
 			return str;
 		}
 
-		public static double frexp(double x, out int expptr)
+		public static double frexp(double x, /*out*/ int[] expptr)
 		{
-			expptr = (int)Math.Log(x, 2) + 1;
-			double s = x / Math.Pow(2, expptr);
+			expptr[0] = (int)Math.Log(x, 2) + 1;
+			double s = x / Math.Pow(2, expptr[0]);
 			return s;
 		}
 

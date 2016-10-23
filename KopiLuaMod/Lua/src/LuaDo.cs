@@ -32,7 +32,10 @@ namespace KopiLua
 		public static void incr_top(lua_State L)
 		{
 			luaD_checkstack(L, 1);
-			/*StkId*/TValue.inc(ref L.top);
+			TValue[] top = new TValue[1];
+			top[0] = L.top;
+			/*StkId*/TValue.inc(/*ref*/ top);
+			L.top = top[0];
 		}
 
 		// in the original C code these values save and restore the stack by number of bytes. marshalling sizeof
@@ -204,7 +207,10 @@ namespace KopiLua
 			TValue[] oldstack = L.stack;
 			int realsize = newsize + 1 + LuaState.EXTRA_STACK;
 			LuaLimits.lua_assert(TValue.toInt(L.stack_last) == L.stacksize - LuaState.EXTRA_STACK - 1);
-			LuaMem.luaM_reallocvector(L, ref L.stack, L.stacksize, realsize/*, TValue*/);
+			TValue[][] stack = new TValue[1][];
+			stack[0] = L.stack;
+			LuaMem.luaM_reallocvector(L, /*ref*/ stack, L.stacksize, realsize/*, TValue*/);
+			L.stack = stack[0];
 			L.stacksize = realsize;
 			L.stack_last = L.stack[newsize];
 			correctstack(L, oldstack);
@@ -213,7 +219,10 @@ namespace KopiLua
 		public static void luaD_reallocCI (lua_State L, int newsize) 
 		{
 			CallInfo oldci = L.base_ci[0];
-			LuaMem.luaM_reallocvector(L, ref L.base_ci, L.size_ci, newsize/*, CallInfo*/);
+			CallInfo[][] base_ci = new CallInfo[1][];
+			base_ci[0] = L.base_ci;
+			LuaMem.luaM_reallocvector(L, /*ref*/ base_ci, L.size_ci, newsize/*, CallInfo*/);
+			L.base_ci = base_ci[0];
 			L.size_ci = newsize;
 			L.ci = L.base_ci[CallInfo.minus(L.ci, oldci)];
 			L.end_ci = L.base_ci[L.size_ci - 1];
@@ -245,7 +254,10 @@ namespace KopiLua
 					LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("stack overflow"));
 				}
 			}
-			CallInfo.inc(ref L.ci);
+			CallInfo[] ci_ref = new CallInfo[1];
+			ci_ref[0] = L.ci;
+			CallInfo.inc(/*ref*/ ci_ref);
+			L.ci = ci_ref[0];
 			return L.ci;
 		}
 
@@ -288,8 +300,14 @@ namespace KopiLua
 			int nfixargs = p.numparams;
 			Table htab = null;
 			TValue/*StkId*/ base_, fixed_;
-			for (; actual < nfixargs; ++actual)
-				LuaObject.setnilvalue(/*StkId*/TValue.inc(ref L.top));
+			for (; actual < nfixargs; ++actual) 
+			{
+				TValue[] top = new TValue[1];
+				top[0] = L.top;
+				TValue ret = /*StkId*/TValue.inc(/*ref*/ top);
+				L.top = top[0];
+				LuaObject.setnilvalue(ret);
+			}
 			//#if LUA_COMPAT_VARARG
 			if ((p.is_vararg & LuaObject.VARARG_NEEDSARG) != 0)
 			{ /* compat. with old-style vararg? */
@@ -308,14 +326,21 @@ namespace KopiLua
 			base_ = L.top;  /* final position of first argument */
 			for (i = 0; i < nfixargs; i++) 
             {
-				LuaObject.setobjs2s(L, /*StkId*/TValue.inc(ref L.top), TValue.plus(fixed_, i));
+				TValue[] top = new TValue[1];
+				top[0] = L.top;
+				TValue ret = /*StkId*/TValue.inc(/*ref*/ top);
+				L.top = top[0];
+				LuaObject.setobjs2s(L, ret, TValue.plus(fixed_, i));
 				LuaObject.setnilvalue(TValue.plus(fixed_, i));
 			}
 			/* add `arg' parameter */
 			if (htab != null) 
             {
 				TValue/*StkId*/ top = L.top;
-				/*StkId*/TValue.inc(ref L.top);
+				TValue[] top_ref = new TValue[1];
+				top_ref[0] = L.top;
+				/*StkId*/TValue.inc(/*ref*/ top_ref);
+				L.top = top_ref[0];
 				LuaObject.sethvalue(L, top, htab);
 				LuaLimits.lua_assert(LuaGC.iswhite(LuaState.obj2gco(htab)));
 			}
@@ -327,14 +352,18 @@ namespace KopiLua
 		{
 			/*const*/
 			TValue tm = LuaTM.luaT_gettmbyobj(L, func, TMS.TM_CALL);
-			TValue/*StkId*/ p;
+			TValue[]/*StkId*/ p = new TValue[1];
+			p[0] = new TValue();
 			int/*Int32*//*ptrdiff_t*/ funcr = savestack(L, func);
             if (!LuaObject.ttisfunction(tm))
             {
                 LuaDebug.luaG_typeerror(L, func, CharPtr.toCharPtr("call"));
             }
             /* Open a hole inside the stack at `func' */
-            for (p = L.top; TValue.greaterThan(p, func); /*StkId*/TValue.dec(ref p)) LuaObject.setobjs2s(L, p, TValue.minus(p, 1));
+            for (p[0] = L.top; TValue.greaterThan(p[0], func); /*StkId*/TValue.dec(/*ref*/ p))
+            {
+            	LuaObject.setobjs2s(L, p[0], TValue.minus(p[0], 1));
+            }
 			incr_top(L);
 			func = restorestack(L, funcr);  /* previous call may change stack */
 			LuaObject.setobj2s(L, func, tm);  /* tag method is the new function to be called */
@@ -345,9 +374,15 @@ namespace KopiLua
 
 		public static CallInfo inc_ci(lua_State L)
 		{
-			if (L.ci == L.end_ci) return growCI(L);
+			if (L.ci == L.end_ci) 
+			{
+				return growCI(L);
+			}
 			//   (condhardstacktests(luaD_reallocCI(L, L.size_ci)), ++L.ci))
-			CallInfo.inc(ref L.ci);
+			CallInfo[] ci_ref = new CallInfo[1];
+			ci_ref[0] = L.ci;
+			CallInfo.inc(/*ref*/ ci_ref);
+			L.ci = ci_ref[0];
 			return L.ci;
 		}
 
@@ -365,7 +400,9 @@ namespace KopiLua
             {  
                 /* Lua function? prepare its call */
 				CallInfo ci;
-				TValue/*StkId*/ st, base_;
+				TValue[]/*StkId*/ st = new TValue[1];
+				st[0] = new TValue();
+				TValue/*StkId*/ base_;
 				Proto p = cl.p;
 				luaD_checkstack(L, p.maxstacksize);
 				func = restorestack(L, funcr);
@@ -393,14 +430,21 @@ namespace KopiLua
 				L.savedpc = new InstructionPtr(p.code, 0);  /* starting point */
 				ci.tailcalls = 0;
 				ci.nresults = nresults;
-				for (st = L.top; TValue.lessThan(st, ci.top); /*StkId*/TValue.inc(ref st))
-					LuaObject.setnilvalue(st);
+				for (st[0] = L.top; TValue.lessThan(st[0], ci.top); /*StkId*/TValue.inc(/*ref*/ st))
+				{
+					LuaObject.setnilvalue(st[0]);
+				}
 				L.top = ci.top;
 				if ((L.hookmask & Lua.LUA_MASKCALL) != 0)
 				{
-					InstructionPtr.inc(ref L.savedpc);  /* hooks assume 'pc' is already incremented */
+					InstructionPtr[] savedpc_ref = new InstructionPtr[1];
+					savedpc_ref[0] = L.savedpc;
+					InstructionPtr.inc(/*ref*/ savedpc_ref);  /* hooks assume 'pc' is already incremented */
+					L.savedpc = savedpc_ref[0];
 					luaD_callhook(L, Lua.LUA_HOOKCALL, -1);
-					InstructionPtr.dec(ref L.savedpc);  /* correct 'pc' */
+					savedpc_ref[0] = L.savedpc;
+					InstructionPtr.dec(/*ref*/ savedpc_ref);  /* correct 'pc' */
+					L.savedpc = savedpc_ref[0];
 				}
 				return PCRLUA;
 			}
@@ -453,8 +497,13 @@ namespace KopiLua
 			int wanted, i;
 			CallInfo ci;
 			if ((L.hookmask & Lua.LUA_MASKRET) != 0)
+			{
 				firstResult = callrethooks(L, firstResult);
-			ci = CallInfo.dec(ref L.ci);
+			}
+			CallInfo[] ci_ref = new CallInfo[1];
+			ci_ref[0] = L.ci;
+			ci = CallInfo.dec(/*ref*/ ci_ref);
+			L.ci = ci_ref[0];
 			res = ci.func;  /* res == final position of 1st result */
 			wanted = ci.nresults;
 			L.base_ = CallInfo.minus(ci, 1).base_;  /* restore base */
@@ -468,7 +517,11 @@ namespace KopiLua
 			}
             while (i-- > 0)
             {
-                LuaObject.setnilvalue(/*StkId*/TValue.inc(ref res));
+            	TValue[] res_ref = new TValue[1];
+            	res_ref[0] = res;
+            	TValue ret = /*StkId*/TValue.inc(/*ref*/ res_ref);
+            	res = res_ref[0];
+            	LuaObject.setnilvalue(ret);
             }
             L.top = res;
 			return (wanted - Lua.LUA_MULTRET);  /* 0 iff wanted == LUA_MULTRET */
