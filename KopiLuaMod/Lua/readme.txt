@@ -166,13 +166,13 @@ sizeof
 (x) unchecked
 (x) private static priority_[] priority =  //remove comment
 (x) switch (argv[i][1]) //string switch
-using (MemoryStream stream = new MemoryStream())
+(x) using (MemoryStream stream = new MemoryStream())
 goto
 (x) switch (m.Groups[2].Value) //string switch
 public struct Value //user-defined value types.
 (x) out <var>
 Type t
 (x?) uint (!!!remove not finish!!!)
-ref remove (!!!remove ref not finish, search 'ref<space key>' !!!)
+(x) ref remove (!!!remove ref not finish, search 'ref<space key>' !!!)
 uint64
 int64
