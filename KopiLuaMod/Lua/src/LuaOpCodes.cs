@@ -97,19 +97,22 @@ namespace KopiLua
 			return GET_OPCODE(i.get(0)); 
 		}
 
-		public static void SET_OPCODE(ref long/*UInt32*//*Instruction*/ i, long/*UInt32*//*Instruction*/ o)
+		public static void SET_OPCODE(/*ref*/ long[]/*UInt32*//*Instruction*/ i, long/*UInt32*//*Instruction*/ o)
 		{
-			i = (long/*UInt32*//*Instruction*/)(i & MASK0(SIZE_OP, POS_OP)) | ((o << POS_OP) & MASK1(SIZE_OP, POS_OP));
+		    i[0] = (long/*UInt32*//*Instruction*/)(i[0] & MASK0(SIZE_OP, POS_OP)) | ((o << POS_OP) & MASK1(SIZE_OP, POS_OP));
 		}
 		
-		public static void SET_OPCODE(ref long/*UInt32*//*Instruction*/ i, OpCode opcode)
+		public static void SET_OPCODE(/*ref*/ long[]/*UInt32*//*Instruction*/ i, OpCode opcode)
 		{
-			i = (long/*UInt32*//*Instruction*/)(i & MASK0(SIZE_OP, POS_OP)) | (((long/*uint*/)opcode << POS_OP) & MASK1(SIZE_OP, POS_OP));
+		    i[0] = (long/*UInt32*//*Instruction*/)(i[0] & MASK0(SIZE_OP, POS_OP)) | (((long/*uint*/)opcode << POS_OP) & MASK1(SIZE_OP, POS_OP));
 		}
 		
 		public static void SET_OPCODE(InstructionPtr i, OpCode opcode) 
 		{ 
-			SET_OPCODE(ref i.codes[i.pc], opcode); 
+			long[] c_ref = new long[1];
+			c_ref[0] = i.codes[i.pc];
+			SET_OPCODE(/*ref*/ c_ref, opcode);
+			i.codes[i.pc] = c_ref[0];
 		}
 
 		public static int GETARG_A(long/*UInt32*//*Instruction*/ i)

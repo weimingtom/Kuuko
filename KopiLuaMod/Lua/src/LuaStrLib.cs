@@ -170,7 +170,8 @@ namespace KopiLua
 		{
 			if (b.GetType() != typeof(CharPtr))
 			{
-				using (MemoryStream stream = new MemoryStream())
+				MemoryStream stream = new MemoryStream();
+				try
 				{
 					BinaryFormatter formatter = new BinaryFormatter();
 					formatter.Serialize(stream, b);
@@ -182,6 +183,13 @@ namespace KopiLua
 						chars[i] = (char)bytes[i];
 					}
 					b = new CharPtr(chars);
+				} 
+				finally
+				{
+					if (stream != null)
+					{
+						stream.Dispose();
+					}
 				}
 			}
 			LuaAuxLib.luaL_addlstring((luaL_Buffer)B, (CharPtr)b, size);

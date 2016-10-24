@@ -1203,13 +1203,13 @@ namespace KopiLua
 			LuaLimits.lua_unlock(L);
 		}
 
-		public static lua_Alloc lua_getallocf(lua_State L, ref object ud)
+		public static lua_Alloc lua_getallocf(lua_State L, /*ref*/ object[] ud)
 		{
 			lua_Alloc f;
 			LuaLimits.lua_lock(L);
-			if (ud != null)
+			if (ud[0] != null)
 			{
-				ud = LuaState.G(L).ud;
+				ud[0] = LuaState.G(L).ud;
 			}
 			f = LuaState.G(L).frealloc;
 			LuaLimits.lua_unlock(L);
@@ -1248,7 +1248,7 @@ namespace KopiLua
 			return u.user_data;
 		}
 
-		static CharPtr aux_upvalue(TValue/*StkId*/ fi, int n, ref TValue val) 
+		static CharPtr aux_upvalue(TValue/*StkId*/ fi, int n, /*ref*/ TValue[] val)
 		{
 			Closure f;
 			if (!LuaObject.ttisfunction(fi))
@@ -1262,7 +1262,7 @@ namespace KopiLua
 				{
 					return null;
 				}
-				val = f.c.upvalue[n - 1];
+				val[0] = f.c.upvalue[n - 1];
 				return CharPtr.toCharPtr("");
 			}
 			else
@@ -1272,7 +1272,7 @@ namespace KopiLua
 				{
 					return null;
 				}
-				val = f.l.upvals[n-1].v;
+				val[0] = f.l.upvals[n - 1].v;
 				return LuaObject.getstr(p.upvalues[n - 1]);
 			}
 		}
@@ -1282,7 +1282,10 @@ namespace KopiLua
 			CharPtr name;
 			TValue val = new TValue();
 			LuaLimits.lua_lock(L);
-			name = aux_upvalue(index2adr(L, funcindex), n, ref val);
+			TValue[] val_ref = new TValue[1];
+			val_ref[0] = val;
+			name = aux_upvalue(index2adr(L, funcindex), n, /*ref*/ val_ref);
+			val = val_ref[0];
 			if (CharPtr.isNotEqual(name, null))
 			{
 				LuaObject.setobj2s(L, L.top, val);
@@ -1300,7 +1303,10 @@ namespace KopiLua
 			LuaLimits.lua_lock(L);
 			fi = index2adr(L, funcindex);
 			api_checknelems(L, 1);
-			name = aux_upvalue(fi, n, ref val);
+			TValue[] val_ref = new TValue[1];
+			val_ref[0] = val;
+			name = aux_upvalue(fi, n, /*ref*/ val_ref);
+			val = val_ref[0];
 			if (CharPtr.isNotEqual(name, null))
 			{
 				TValue[] top = new TValue[1];

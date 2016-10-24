@@ -52,11 +52,11 @@ namespace KopiLua
 			return luaM_reallocv<T>(L, null, n);
 		}
 
-		public static void luaM_growvector<T>(lua_State L, ref T[] v, int nelems, ref int size, int limit, CharPtr e)
+		public static void luaM_growvector<T>(lua_State L, /*ref*/ T[][] v, int nelems, /*ref*/ int[] size, int limit, CharPtr e)
 		{
-			if (nelems + 1 > size)
+			if (nelems + 1 > size[0])
 			{
-				v = (T[])luaM_growaux_(L, ref v, ref size, limit, e);
+				v[0] = (T[])luaM_growaux_(L, /*ref*/ v, /*ref*/ size, limit, e);
 			}
 		}
 
@@ -88,15 +88,15 @@ namespace KopiLua
 		public const int MINSIZEARRAY = 4;
 
 
-		public static T[] luaM_growaux_<T>(lua_State L, ref T[] block, ref int size,
+		public static T[] luaM_growaux_<T>(lua_State L, /*ref*/ T[][] block, /*ref*/ int[] size,
 			int limit, CharPtr errormsg)
 		{
 			T[] newblock;
 			int newsize;
-			if (size >= limit / 2)
+			if (size[0] >= limit / 2)
 			{  
 				/* cannot double it? */
-				if (size >= limit)  /* cannot grow even a little? */
+				if (size[0] >= limit)  /* cannot grow even a little? */
 				{
 					LuaDebug.luaG_runerror(L, errormsg);
 				}
@@ -104,14 +104,14 @@ namespace KopiLua
 			}
 			else
 			{
-				newsize = size * 2;
+				newsize = size[0] * 2;
 				if (newsize < MINSIZEARRAY)
 				{
 					newsize = MINSIZEARRAY;  /* minimum size */
 				}
 			}
-			newblock = luaM_reallocv<T>(L, block, newsize);
-			size = newsize;  /* update only when everything else is OK */
+			newblock = luaM_reallocv<T>(L, block[0], newsize);
+			size[0] = newsize;  /* update only when everything else is OK */
 			return newblock;
 		}
 

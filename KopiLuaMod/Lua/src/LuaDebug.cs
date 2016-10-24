@@ -260,8 +260,11 @@ namespace KopiLua
 						}
 					case 'n': 
 						{
-							ar.namewhat = (ci!=null) ? getfuncname(L, ci, ref ar.name) : null;
-							if (CharPtr.isEqual(ar.namewhat, null)) 
+							CharPtr[] name_ref = new CharPtr[1];
+							name_ref[0] = ar.name;
+							ar.namewhat = (ci != null) ? getfuncname(L, ci, /*ref*/ name_ref) : null;
+							ar.name = name_ref[0];
+							if (CharPtr.isEqual(ar.namewhat, null))
 							{
 								ar.namewhat = CharPtr.toCharPtr("");  /* not found */
 								ar.name = null;
@@ -774,7 +777,7 @@ namespace KopiLua
 
 
 		private static CharPtr getobjname(lua_State L, CallInfo ci, int stackpos,
-			ref CharPtr name) 
+		                                  /*ref*/ CharPtr[] name)
 		{
 			if (LuaState.isLua(ci))
 			{  
@@ -782,8 +785,8 @@ namespace KopiLua
 				Proto p = LuaState.ci_func(ci).l.p;
 				int pc = currentpc(L, ci);
 				long/*UInt32*//*Instruction*/ i;
-				name = LuaFunc.luaF_getlocalname(p, stackpos + 1, pc);
-				if (CharPtr.isNotEqual(name, null))  /* is a local? */
+				name[0] = LuaFunc.luaF_getlocalname(p, stackpos + 1, pc);
+				if (CharPtr.isNotEqual(name[0], null))  /* is a local? */
 				{
 					return CharPtr.toCharPtr("local");
 				}
@@ -795,7 +798,7 @@ namespace KopiLua
 						{
 							int g = LuaOpCodes.GETARG_Bx(i);  /* global index */
 							LuaLimits.lua_assert(LuaObject.ttisstring(p.k[g]));
-							name = LuaObject.svalue(p.k[g]);
+							name[0] = LuaObject.svalue(p.k[g]);
 							return CharPtr.toCharPtr("global");
 						}
 					case OpCode.OP_MOVE: 
@@ -804,26 +807,26 @@ namespace KopiLua
 							int b = LuaOpCodes.GETARG_B(i);  /* move from `b' to `a' */
 							if (b < a)
 							{
-								return getobjname(L, ci, b, ref name);  /* get name for `b' */
+								return getobjname(L, ci, b, /*ref*/ name);  /* get name for `b' */
 							}
 							break;
 						}
 					case OpCode.OP_GETTABLE: 
 						{
 							int k = LuaOpCodes.GETARG_C(i);  /* key index */
-							name = kname(p, k);
+							name[0] = kname(p, k);
 							return CharPtr.toCharPtr("field");
 						}
 					case OpCode.OP_GETUPVAL: 
 						{
 							int u = LuaOpCodes.GETARG_B(i);  /* upvalue index */
-							name = (p.upvalues != null) ? LuaObject.getstr(p.upvalues[u]) : CharPtr.toCharPtr("?");
+							name[0] = (p.upvalues != null) ? LuaObject.getstr(p.upvalues[u]) : CharPtr.toCharPtr("?");
 							return CharPtr.toCharPtr("upvalue");
 						}
 					case OpCode.OP_SELF: 
 						{
 							int k = LuaOpCodes.GETARG_C(i);  /* key index */
-							name = kname(p, k);
+							name[0] = kname(p, k);
 							return CharPtr.toCharPtr("method");
 						}
 					default: 
@@ -835,7 +838,7 @@ namespace KopiLua
 			return null;  /* no useful name found */
 		}
 
-		private static CharPtr getfuncname(lua_State L, CallInfo ci, ref CharPtr name) 
+		private static CharPtr getfuncname(lua_State L, CallInfo ci, /*ref*/ CharPtr[] name)
 		{
 			long/*UInt32*//*Instruction*/ i;
 			if ((LuaState.isLua(ci) && ci.tailcalls > 0) || !LuaState.isLua(CallInfo.minus(ci, 1)))
@@ -850,7 +853,7 @@ namespace KopiLua
 			if (LuaOpCodes.GET_OPCODE(i) == OpCode.OP_CALL || LuaOpCodes.GET_OPCODE(i) == OpCode.OP_TAILCALL ||
 			    LuaOpCodes.GET_OPCODE(i) == OpCode.OP_TFORLOOP)
 			{
-				return getobjname(L, ci, LuaOpCodes.GETARG_A(i), ref name);
+				return getobjname(L, ci, LuaOpCodes.GETARG_A(i), /*ref*/ name);
 			}
 			else
 			{
@@ -877,9 +880,12 @@ namespace KopiLua
 		{
 			CharPtr name = null;
 			CharPtr t = LuaTM.luaT_typenames[LuaObject.ttype(o)];
+			CharPtr[] name_ref = new CharPtr[1];
+			name_ref[0] = name;
 			CharPtr kind = (isinstack(L.ci, o)) != 0 ?
-				getobjname(L, L.ci, LuaLimits.cast_int(TValue.minus(o, L.base_)), ref name) :
+				getobjname(L, L.ci, LuaLimits.cast_int(TValue.minus(o, L.base_)), /*ref*/ name_ref) :
 				null;
+			name = name_ref[0];
 			if (CharPtr.isNotEqual(kind, null))
 			{
 				luaG_runerror(L, CharPtr.toCharPtr("attempt to %s %s " + LuaConf.getLUA_QS() + " (a %s value)"),

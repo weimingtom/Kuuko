@@ -139,9 +139,15 @@ namespace KopiLua
 			FuncState fs = ls.fs;
 			Proto f = fs.f;
 			int oldsize = f.sizelocvars;
-			LuaMem.luaM_growvector(ls.L, ref f.locvars, fs.nlocvars,
-			    ref f.sizelocvars, (int)LuaConf.SHRT_MAX, 
+			LocVar[][] locvars_ref = new LocVar[1][];
+			locvars_ref[0] = f.locvars;
+			int[] sizelocvars_ref = new int[1];
+			sizelocvars_ref[0] = f.sizelocvars;
+			LuaMem.luaM_growvector(ls.L, /*ref*/ locvars_ref, fs.nlocvars,
+			    /*ref*/ sizelocvars_ref, (int)LuaConf.SHRT_MAX, 
 				CharPtr.toCharPtr("too many local variables"));
+			f.sizelocvars = sizelocvars_ref[0];
+			f.locvars = locvars_ref[0];
 			while (oldsize < f.sizelocvars) 
 			{
 				f.locvars[oldsize++].varname = null;
@@ -197,8 +203,14 @@ namespace KopiLua
 			}
 			/* new one */
 			luaY_checklimit(fs, f.nups + 1, LuaConf.LUAI_MAXUPVALUES, CharPtr.toCharPtr("upvalues"));
-			LuaMem.luaM_growvector(fs.L, ref f.upvalues, f.nups, ref f.sizeupvalues, LuaLimits.MAX_INT, CharPtr.toCharPtr(""));
-			while (oldsize < f.sizeupvalues) 
+			TString[][] upvalues_ref = new TString[1][];
+			upvalues_ref[0] = f.upvalues;
+			int[] sizeupvalues_ref = new int[1];
+			sizeupvalues_ref[0] = f.sizeupvalues;
+			LuaMem.luaM_growvector(fs.L, /*ref*/ upvalues_ref, f.nups, /*ref*/ sizeupvalues_ref, LuaLimits.MAX_INT, CharPtr.toCharPtr(""));
+			f.sizeupvalues = sizeupvalues_ref[0];
+			f.upvalues = upvalues_ref[0];
+			while (oldsize < f.sizeupvalues)
 			{
 				f.upvalues[oldsize++] = null;
 			}
@@ -358,9 +370,15 @@ namespace KopiLua
 			Proto f = fs.f;
 			int oldsize = f.sizep;
 			int i;
-			LuaMem.luaM_growvector(ls.L, ref f.p, fs.np, ref f.sizep,
+			Proto[][] p_ref = new Proto[1][];
+			p_ref[0] = f.p;
+			int[] sizep_ref = new int[1];
+			sizep_ref[0] = f.sizep;
+			LuaMem.luaM_growvector(ls.L, /*ref*/ p_ref, fs.np, /*ref*/ sizep_ref,
 				LuaOpCodes.MAXARG_Bx, CharPtr.toCharPtr("constant table overflow"));
-			while (oldsize < f.sizep) 
+			f.sizep = sizep_ref[0];
+			f.p = p_ref[0];
+			while (oldsize < f.sizep)
 			{
 				f.p[oldsize++] = null;
 			}
@@ -1244,7 +1262,10 @@ namespace KopiLua
 			{
 				LuaCode.luaK_codeABC(fs, OpCode.OP_CLOSE, bl.nactvar, 0, 0);
 			}
-			LuaCode.luaK_concat(fs, ref bl.breaklist, LuaCode.luaK_jump(fs));
+			int[] breaklist_ref = new int[1];
+			breaklist_ref[0] = bl.breaklist;
+			LuaCode.luaK_concat(fs, /*ref*/ breaklist_ref, LuaCode.luaK_jump(fs));
+			bl.breaklist = breaklist_ref[0];
 		}
 
 		private static void whilestat(LexState ls, int line) 
@@ -1425,26 +1446,27 @@ namespace KopiLua
 			/* ifstat . IF cond THEN block {ELSEIF cond THEN block} [ELSE block] END */
 			FuncState fs = ls.fs;
 			int flist;
-			int escapelist = LuaCode.NO_JUMP;
+			int[] escapelist = new int[1];
+			escapelist[0] = LuaCode.NO_JUMP;
 			flist = test_then_block(ls);  /* IF cond THEN block */
 			while (ls.t.token == (int)RESERVED.TK_ELSEIF) 
 			{
-				LuaCode.luaK_concat(fs, ref escapelist, LuaCode.luaK_jump(fs));
+				LuaCode.luaK_concat(fs, /*ref*/ escapelist, LuaCode.luaK_jump(fs));
 				LuaCode.luaK_patchtohere(fs, flist);
 				flist = test_then_block(ls);  /* ELSEIF cond THEN block */
 			}
 			if (ls.t.token == (int)RESERVED.TK_ELSE) 
 			{
-				LuaCode.luaK_concat(fs, ref escapelist, LuaCode.luaK_jump(fs));
+				LuaCode.luaK_concat(fs, /*ref*/ escapelist, LuaCode.luaK_jump(fs));
 				LuaCode.luaK_patchtohere(fs, flist);
 				LuaLex.luaX_next(ls);  /* skip ELSE (after patch, for correct line info) */
 				block(ls);  /* `else' part */
 			}
 			else
 			{
-				LuaCode.luaK_concat(fs, ref escapelist, flist);
+				LuaCode.luaK_concat(fs, /*ref*/ escapelist, flist);
 			}
-			LuaCode.luaK_patchtohere(fs, escapelist);
+			LuaCode.luaK_patchtohere(fs, escapelist[0]);
 			check_match(ls, (int)RESERVED.TK_END, (int)RESERVED.TK_IF, line);
 		}
 

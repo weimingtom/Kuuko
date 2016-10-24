@@ -83,11 +83,12 @@ namespace KopiLua
 		public static int luaK_jump(FuncState fs)
 		{
 			int jpc = fs.jpc;  /* save list of jumps to here */
-			int j;
+			int[] j = new int[1];
+			j[0] = 0;
 			fs.jpc = NO_JUMP;
-			j = luaK_codeAsBx(fs, OpCode.OP_JMP, 0, NO_JUMP);
-			luaK_concat(fs, ref j, jpc);  /* keep them on hold */
-			return j;
+			j[0] = luaK_codeAsBx(fs, OpCode.OP_JMP, 0, NO_JUMP);
+			luaK_concat(fs, /*ref*/ j, jpc);  /* keep them on hold */
+			return j[0];
 		}
 
 		public static void luaK_ret(FuncState fs, int first, int nret)
@@ -232,22 +233,25 @@ namespace KopiLua
 		public static void luaK_patchtohere(FuncState fs, int list)
 		{
 			luaK_getlabel(fs);
-			luaK_concat(fs, ref fs.jpc, list);
+			int[] jpc_ref = new int[1];
+			jpc_ref[0] = fs.jpc;
+			luaK_concat(fs, /*ref*/ jpc_ref, list);
+			fs.jpc = jpc_ref[0];
 		}
 
-		public static void luaK_concat(FuncState fs, ref int l1, int l2)
+		public static void luaK_concat(FuncState fs, /*ref*/ int[] l1, int l2)
 		{
 			if (l2 == NO_JUMP) 
 			{
 				return;
 			}
-			else if (l1 == NO_JUMP)
+			else if (l1[0] == NO_JUMP)
 			{
-				l1 = l2;
+				l1[0] = l2;
 			}
 			else 
 			{
-				int list = l1;
+				int list = l1[0];
 				int next;
 				while ((next = getjump(fs, list)) != NO_JUMP)  /* find last element */
 				{
@@ -308,9 +312,15 @@ namespace KopiLua
 			{  
 				/* constant not found; create a new entry */
 				LuaObject.setnvalue(idx, LuaLimits.cast_num(fs.nk));
-				LuaMem.luaM_growvector(L, ref f.k, fs.nk, ref f.sizek,
+				TValue[][] k_ref = new TValue[1][];
+				k_ref[0] = f.k;
+				int[] sizek_ref = new int[1];
+				sizek_ref[0] = f.sizek;
+				LuaMem.luaM_growvector(L, /*ref*/ k_ref, fs.nk, /*ref*/ sizek_ref,
 					LuaOpCodes.MAXARG_Bx, CharPtr.toCharPtr("constant table overflow"));
-				while (oldsize < f.sizek) 
+				f.sizek = sizek_ref[0];
+				f.k = k_ref[0];
+				while (oldsize < f.sizek)
 				{
 					LuaObject.setnilvalue(f.k[oldsize++]);
 				}
@@ -492,7 +502,10 @@ namespace KopiLua
 			discharge2reg(fs, e, reg);
 			if (e.k == expkind.VJMP)
 			{
-				luaK_concat(fs, ref e.t, e.u.s.info);  /* put this jump in `t' list */
+				int[] t_ref = new int[1];
+				t_ref[0] = e.t;
+				luaK_concat(fs, /*ref*/ t_ref, e.u.s.info);  /* put this jump in `t' list */
+				e.t = t_ref[0];
 			}
 			if (hasjumps(e)) 
 			{
@@ -707,7 +720,10 @@ namespace KopiLua
 						break;
 					}
 			}
-			luaK_concat(fs, ref e.f, pc);  /* insert last jump in `f' list */
+			int[] f_ref = new int[1];
+			f_ref[0] = e.f;
+			luaK_concat(fs, /*ref*/ f_ref, pc);  /* insert last jump in `f' list */
+			e.f = f_ref[0];
 			luaK_patchtohere(fs, e.t);
 			e.t = NO_JUMP;
 		}
@@ -740,7 +756,10 @@ namespace KopiLua
 						break;
 					}
 			}
-			luaK_concat(fs, ref e.t, pc);  /* insert last jump in `t' list */
+			int[] t_ref = new int[1];
+			t_ref[0] = e.t;
+			luaK_concat(fs, /*ref*/ t_ref, pc);  /* insert last jump in `t' list */
+			e.t = t_ref[0];
 			luaK_patchtohere(fs, e.f);
 			e.f = NO_JUMP;
 		}
@@ -1001,7 +1020,10 @@ namespace KopiLua
 					{
 						LuaLimits.lua_assert(e1.t == NO_JUMP);  /* list must be closed */
 						luaK_dischargevars(fs, e2);
-						luaK_concat(fs, ref e2.f, e1.f);
+						int[] f_ref = new int[1];
+						f_ref[0] = e2.f;
+						luaK_concat(fs, /*ref*/ f_ref, e1.f);
+						e2.f = f_ref[0];
 						e1.Copy(e2);
 						break;
 					}
@@ -1009,7 +1031,10 @@ namespace KopiLua
 					{
 						LuaLimits.lua_assert(e1.f == NO_JUMP);  /* list must be closed */
 						luaK_dischargevars(fs, e2);
-						luaK_concat(fs, ref e2.t, e1.t);
+						int[] t_ref = new int[1];
+						t_ref[0] = e2.t;
+						luaK_concat(fs, /*ref*/ t_ref, e1.t);
+						e2.t = t_ref[0];
 						e1.Copy(e2);
 						break;
 					}
@@ -1108,12 +1133,24 @@ namespace KopiLua
 			Proto f = fs.f;
 			dischargejpc(fs);  /* `pc' will change */
 			/* put new instruction in code array */
-			LuaMem.luaM_growvector(fs.L, ref f.code, fs.pc, ref f.sizecode,
+			long[][] code_ref = new long[1][];
+			code_ref[0] = f.code;
+			int[] sizecode_ref = new int[1];
+			sizecode_ref[0] = f.sizecode;
+			LuaMem.luaM_growvector(fs.L, /*ref*/ code_ref, fs.pc, /*ref*/ sizecode_ref,
 				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
+			f.sizecode = sizecode_ref[0];
+			f.code = code_ref[0];
 			f.code[fs.pc] = (long/*uint*/)i;
 			/* save corresponding line information */
-			LuaMem.luaM_growvector(fs.L, ref f.lineinfo, fs.pc, ref f.sizelineinfo,
+			int[][] lineinfo_ref = new int[1][];
+			lineinfo_ref[0] = f.lineinfo;
+			int[] sizelineinfo_ref = new int[1];
+			sizelineinfo_ref[0] = f.sizelineinfo;
+			LuaMem.luaM_growvector(fs.L, /*ref*/ lineinfo_ref, fs.pc, /*ref*/ sizelineinfo_ref,
 				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
+			f.sizelineinfo = sizelineinfo_ref[0];
+			f.lineinfo = lineinfo_ref[0];
 			f.lineinfo[fs.pc] = line;
 			return fs.pc++;
 		}
