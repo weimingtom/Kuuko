@@ -186,7 +186,7 @@ namespace KopiLua
 
 		public static void setbvalue(TValue obj, int x) 
 		{
-			obj.value.b = x;
+            obj.value.b = x;
 			obj.tt = Lua.LUA_TBOOLEAN;
 		}
 
@@ -199,7 +199,7 @@ namespace KopiLua
 
 		public static void setuvalue(lua_State L, TValue obj, GCObject x) 
 		{
-			obj.value.gc = x;
+            obj.value.gc = x;
 			obj.tt = Lua.LUA_TUSERDATA;
 			checkliveness(LuaState.G(L), obj);
 		}
@@ -234,7 +234,7 @@ namespace KopiLua
 
 		public static void setobj(lua_State L, TValue obj1, TValue obj2) 
 		{
-			obj1.value = obj2.value;
+			obj1.value.copyFrom(obj2.value);
 			obj1.tt = obj2.tt;
 			checkliveness(LuaState.G(L), obj1);
 		}

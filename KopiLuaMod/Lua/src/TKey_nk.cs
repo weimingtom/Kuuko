@@ -18,7 +18,7 @@ namespace KopiLua
 		}
 		
 		public TKey_nk(Value value, int tt, Node next)
-		: base(value, tt)
+		: base(new Value(value), tt)
 		{
 			this.next = next;
 		}

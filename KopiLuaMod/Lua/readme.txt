@@ -169,7 +169,7 @@ sizeof
 (x) using (MemoryStream stream = new MemoryStream())
 goto
 (x) switch (m.Groups[2].Value) //string switch
-public struct Value //user-defined value types.
+(x) public struct Value //user-defined value types.
 (x) out <var>
 Type t
 (x?) uint (!!!remove not finish!!!)

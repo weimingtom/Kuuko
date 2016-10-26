@@ -127,7 +127,7 @@ namespace KopiLua
 		{
 			this.values = value.values;
 			this.index = value.index;
-			this.value = value.value; // todo: do a shallow copy here
+			this.value = new Value(value.value); // todo: do a shallow copy here
 			this.tt = value.tt;
 		}
 		
@@ -143,15 +143,15 @@ namespace KopiLua
 		{
 			this.values = null;
 			this.index = 0;
-			this.value = value;
+			this.value = new Value(value);
 			this.tt = tt;
 		}
 		
-		public TValue(TValue[] values, Value value, int tt)
+		public TValue(TValue[] values, Value valueCls, int tt)
 		{
 			this.values = values;
 			this.index = Array.IndexOf(values, this);
-			this.value = value;
+			this.value = new Value(valueCls);
 			this.tt = tt;
 		}
 	}

@@ -552,7 +552,7 @@ namespace KopiLua
 					mp = n;
 				}
 			}
-			gkey(mp).value = key.value;
+			gkey(mp).value.copyFrom(key.value);
 			gkey(mp).tt = key.tt;
 			LuaGC.luaC_barriert(L, t, key);
 			LuaLimits.lua_assert(LuaObject.ttisnil(gval(mp)));

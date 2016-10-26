@@ -16,12 +16,12 @@ namespace KopiLua
 		
 		public TKey(TKey copy)
 		{
-			this.nk = new TKey_nk(copy.nk.value, copy.nk.tt, copy.nk.next);
+			this.nk = new TKey_nk(new Value(copy.nk.value), copy.nk.tt, copy.nk.next);
 		}
 		
 		public TKey(Value value, int tt, Node next)
 		{
-			this.nk = new TKey_nk(value, tt, next);
+			this.nk = new TKey_nk(new Value(value), tt, next);
 		}
 
         public TValue getTvk()
