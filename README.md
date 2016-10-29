@@ -7,6 +7,7 @@ Copy of kopilua, for someone in heaven.
 * https://github.com/weimingtom/UniLuaMod  
 * https://github.com/weimingtom/LuaJMod  
 * https://github.com/weimingtom/jython_playground  
+* https://github.com/weimingtom/hotruby_playground  
 
 ## Porting  
 * https://github.com/weimingtom/nokscript_java  
