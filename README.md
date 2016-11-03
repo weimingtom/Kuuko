@@ -27,6 +27,8 @@ Copy of kopilua, for someone in heaven.
 ## Links  
 * http://lua-users.org/wiki/LuaImplementations  
 * https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
+* https://github.com/phodal/awesome-iot  
+  see Language  
 
 ## TODO / etc / memo   
 * http://hotruby.yukoba.jp/  
