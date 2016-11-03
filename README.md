@@ -29,6 +29,9 @@ Copy of kopilua, for someone in heaven.
 * https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
 * https://github.com/phodal/awesome-iot  
   see Language  
+* https://github.com/weimingtom/myosotis2  
+  see References   
+
 
 ## TODO / etc / memo   
 * http://hotruby.yukoba.jp/  
