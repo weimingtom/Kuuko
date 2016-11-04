@@ -37,6 +37,8 @@ Copy of kopilua, for someone in heaven.
 * http://hotruby.yukoba.jp/  
 * https://github.com/KlasBuhre/Buhrlang  
 * https://github.com/weimingtom/ChaiScript  
+* https://github.com/esrrhs/fakescript  
+* https://github.com/esrrhs/fakescript-java  
 
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
