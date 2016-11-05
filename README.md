@@ -71,3 +71,5 @@ github search 'v8 scons'
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
 * https://github.com/weimingtom/wmt_link_collections_in_Chinese  
+* https://github.com/weimingtom/wmt_software_skills  
+
