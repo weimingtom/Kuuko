@@ -47,6 +47,8 @@ Copy of kopilua, for someone in heaven.
   see Makefile  
 * https://github.com/weimingtom/lily/tree/wmt  
   see Makefile  
+* https://github.com/weimingtom/duktape  
+  see 1.5.0  
 
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
