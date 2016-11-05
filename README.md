@@ -39,6 +39,10 @@ Copy of kopilua, for someone in heaven.
 * https://github.com/weimingtom/ChaiScript  
 * https://github.com/esrrhs/fakescript  
 * https://github.com/esrrhs/fakescript-java  
+* https://github.com/rossipedia/dscript  
+* https://root.cern.ch/cint  
+* https://root.cern.ch/cling  
+* http://stackoverflow.com/questions/26514959/while-installing-cint-interpreter-running-configure-returns-a-syntax-error  
 
 ## fork  
 * https://github.com/weimingtom/ChaiScript/tree/wmt5  
@@ -49,6 +53,7 @@ Copy of kopilua, for someone in heaven.
   see Makefile  
 * https://github.com/weimingtom/duktape  
   see 1.5.0  
+* https://github.com/weimingtom/criscript
 
 ## v8 cygwin(failed in MinGW)    
 zpao/spidernode  
@@ -70,6 +75,12 @@ github search 'v8 scons'
 
 ## Mobile    
 * https://github.com/rhomobile/rhodes  
+
+## JavaScript / ECMAScript  
+* https://github.com/hak/criscript  
+* http://www.digitalmars.com/dscript/  
+* http://www.digitalmars.com/dscript/cppscript.html  
+* http://www.jsdb.org/  
 
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
