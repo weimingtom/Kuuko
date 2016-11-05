@@ -40,6 +40,10 @@ Copy of kopilua, for someone in heaven.
 * https://github.com/esrrhs/fakescript  
 * https://github.com/esrrhs/fakescript-java  
 
+## fork  
+* https://github.com/weimingtom/ChaiScript/tree/wmt5  
+  see Makefile  
+
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
 * https://github.com/weimingtom/wmt_link_collections_in_Chinese  
