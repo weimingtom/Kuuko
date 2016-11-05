@@ -50,6 +50,22 @@ Copy of kopilua, for someone in heaven.
 * https://github.com/weimingtom/duktape  
   see 1.5.0  
 
+## v8 cygwin(failed in MinGW)    
+zpao/spidernode  
+https://github.com/zpao/spidernode  
+https://github.com/zpao/spidernode/wiki/Building-node.js-on-mingw  
+V8のMinGWでのコンパイル  
+http://safx-dev.blogspot.nl/2010/08/v8mingw.html  
+https://nodejs.org/dist/node-v0.1.100.tar.gz  
+https://nodejs.org/dist/node-v0.4.0.tar.gz  
+cd deps/v8  
+scons  
+scons sample=shell  
+scons sample=shell arch=x86  
+scons -h  
+github search 'v8 scons'  
+
+
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
 * https://github.com/weimingtom/wmt_link_collections_in_Chinese  
