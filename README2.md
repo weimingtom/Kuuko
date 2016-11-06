@@ -43,6 +43,7 @@
 * https://root.cern.ch/cling  
 * http://stackoverflow.com/questions/26514959/while-installing-cint-interpreter-running-configure-returns-a-syntax-error  
 * http://www.flipcode.com/archives/Implementing_A_Scripting_Engine-Part_8_Executable_Code.shtml  
+* https://github.com/hishamhm/libscript  
 
 ## fork  
 * https://github.com/weimingtom/ChaiScript/tree/wmt5  
