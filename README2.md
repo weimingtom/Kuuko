@@ -54,7 +54,9 @@
   see Makefile  
 * https://github.com/weimingtom/duktape  
   see 1.5.0  
-* https://github.com/weimingtom/criscript
+* https://github.com/weimingtom/criscript  
+* https://github.com/weimingtom/fakescript/tree/wmt  
+  see ide/ide.pro  
 
 ## v8 cygwin(failed in MinGW)    
 zpao/spidernode  
