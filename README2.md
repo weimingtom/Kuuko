@@ -85,6 +85,10 @@ github search 'v8 scons'
 * http://www.digitalmars.com/dscript/cppscript.html  
 * http://www.jsdb.org/  
 
+## Javascript in Golang  
+* https://github.com/robertkrimen/otto  
+* https://github.com/dop251/goja  
+
 ## index  
 * https://github.com/weimingtom/wmt_todo_list  
 * https://github.com/weimingtom/wmt_link_collections_in_Chinese  
