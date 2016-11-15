@@ -7,6 +7,8 @@
 * https://github.com/google/leveldb  
 * https://github.com/dain/leveldb  
 * https://github.com/nhachicha/SnappyDB  
+* https://github.com/memcached/memcached  
+
 
 ## Trie  
 * https://github.com/payomdousti/Trie
