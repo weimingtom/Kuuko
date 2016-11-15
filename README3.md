@@ -14,3 +14,6 @@
 * https://github.com/weimingtom/jython_playground/tree/master/mysql-jdbc  
 * https://github.com/weimingtom/jython_playground/tree/master/mysqljdbc  
 * https://github.com/weimingtom/jkanji-trie-search  
+
+## Index  
+* https://github.com/weimingtom/wmt_link_collections_in_Chinese/blob/master/db.md  
