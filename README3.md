@@ -31,6 +31,7 @@
 * https://github.com/weimingtom/jython_playground/tree/master/mysqljdbc  
 * https://github.com/weimingtom/jkanji-trie-search  
 * https://github.com/weimingtom/jmemcache-daemon/tree/wmt  
+* https://github.com/weimingtom/asql-lib/tree/wmt  
 
 ## Index  
 * https://github.com/weimingtom/wmt_link_collections_in_Chinese/blob/master/db.md  
