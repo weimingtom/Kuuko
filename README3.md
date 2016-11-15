@@ -17,8 +17,9 @@
 * https://github.com/killme2008/xmemcached  
 * https://github.com/couchbase/spymemcached  
 
-## AS3  
+## MySQL AS3 Client    
 * https://github.com/weimingtom/assql  
+* https://github.com/RapidWorks/asql-lib  
 
 ## Trie  
 * https://github.com/payomdousti/Trie
