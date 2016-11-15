@@ -7,8 +7,15 @@
 * https://github.com/google/leveldb  
 * https://github.com/dain/leveldb  
 * https://github.com/nhachicha/SnappyDB  
-* https://github.com/memcached/memcached  
 
+## Java Cache / MemCached / MemCache  
+* http://www.ehcache.org/  
+* https://github.com/memcached/memcached  
+* https://github.com/callan/jmemcached  
+
+## MemCache Client  
+* https://github.com/killme2008/xmemcached  
+* https://github.com/couchbase/spymemcached  
 
 ## Trie  
 * https://github.com/payomdousti/Trie
