@@ -1,6 +1,10 @@
 # Database Engine List
 
-## Database
+## Key-value Database  
+* https://github.com/google/leveldb  
+* https://github.com/dain/leveldb  
+
+## Database fork
 * https://github.com/weimingtom/leveldb-java/tree/wmt-eclipse  
 
 ## Trie  
