@@ -20,6 +20,7 @@
 ## MySQL AS3 Client    
 * https://github.com/weimingtom/assql  
 * https://github.com/RapidWorks/asql-lib  
+* https://github.com/weimingtom/as3flexdb  
 
 ## Trie  
 * https://github.com/payomdousti/Trie
@@ -35,3 +36,4 @@
 
 ## Index  
 * https://github.com/weimingtom/wmt_link_collections_in_Chinese/blob/master/db.md  
+* https://github.com/weimingtom/asql-lib/blob/wmt/vendor/down.txt  
