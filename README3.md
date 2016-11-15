@@ -1,5 +1,8 @@
 # Database Engine List
 
+## JDBC  
+* https://github.com/xerial/sqlite-jdbc  
+
 ## Key-value Database  
 * https://github.com/google/leveldb  
 * https://github.com/dain/leveldb  
