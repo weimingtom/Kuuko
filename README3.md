@@ -20,7 +20,7 @@
 ## MySQL AS3 Client    
 * https://github.com/weimingtom/assql  
 * https://github.com/RapidWorks/asql-lib  
-* https://github.com/weimingtom/as3flexdb  
+* https://github.com/google-code-export/as3flexdb  
 
 ## Trie  
 * https://github.com/payomdousti/Trie
