@@ -8,6 +8,9 @@
 * https://github.com/weimingtom/jython_playground  
 * https://github.com/weimingtom/hotruby_playground  
 
+## YACC  
+* https://github.com/weimingtom/wmt_yacc_study  
+
 ## Porting  
 * https://github.com/weimingtom/nokscript_java  
 * https://github.com/weimingtom/SimpleScriptSystem  
