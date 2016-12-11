@@ -93,6 +93,7 @@ https://github.com/v8/v8/wiki/Embedder's%20Guide
 * http://www.digitalmars.com/dscript/  
 * http://www.digitalmars.com/dscript/cppscript.html  
 * http://www.jsdb.org/  
+* https://github.com/ericwlange/AndroidJSCore  
 
 ## Javascript in Golang  
 * https://github.com/robertkrimen/otto  
