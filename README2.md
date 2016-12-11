@@ -88,6 +88,7 @@ v8::Debug::EnableAgent()
 $ ./d8 --debugger-agent  
 $ ./d8 --remote-debugger  
 https://github.com/Buggaboo/node-jni  
+http://blog.joshgav.com/node/debugging/2016/02/04/Node-Debug-Architecture.html  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
