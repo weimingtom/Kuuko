@@ -82,6 +82,11 @@ github search 'v8 scons'
 https://github.com/v8/v8/wiki/Getting%20Started%20with%20Embedding  
 https://github.com/v8/v8/wiki/Embedder's%20Guide  
 https://github.com/borisvanschooten/glesjs  
+d8  
+https://groups.google.com/forum/#!topic/v8-users/Jd6DO80_Gnc  
+v8::Debug::EnableAgent()  
+$ ./d8 --debugger-agent  
+$ ./d8 --remote-debugger  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
