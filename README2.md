@@ -87,6 +87,7 @@ https://groups.google.com/forum/#!topic/v8-users/Jd6DO80_Gnc
 v8::Debug::EnableAgent()  
 $ ./d8 --debugger-agent  
 $ ./d8 --remote-debugger  
+https://github.com/Buggaboo/node-jni  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
