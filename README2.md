@@ -92,6 +92,7 @@ http://blog.joshgav.com/node/debugging/2016/02/04/Node-Debug-Architecture.html
 现在有多少 Node 调试的工具和方案  
 https://cnodejs.org/topic/522030c6bee8d3cb1223255d  
 https://nodejs.org/api/debugger.html  
+https://nodejs.org/dist/v4.2.1/docs/api/debugger.html  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
