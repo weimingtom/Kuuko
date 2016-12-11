@@ -89,6 +89,9 @@ $ ./d8 --debugger-agent
 $ ./d8 --remote-debugger  
 https://github.com/Buggaboo/node-jni  
 http://blog.joshgav.com/node/debugging/2016/02/04/Node-Debug-Architecture.html  
+现在有多少 Node 调试的工具和方案  
+https://cnodejs.org/topic/522030c6bee8d3cb1223255d  
+https://nodejs.org/api/debugger.html  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
