@@ -79,6 +79,8 @@ scons sample=shell
 scons sample=shell arch=x86  
 scons -h  
 github search 'v8 scons'  
+https://github.com/v8/v8/wiki/Getting%20Started%20with%20Embedding  
+https://github.com/v8/v8/wiki/Embedder's%20Guide  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
