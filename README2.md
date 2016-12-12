@@ -93,6 +93,9 @@ http://blog.joshgav.com/node/debugging/2016/02/04/Node-Debug-Architecture.html
 https://cnodejs.org/topic/522030c6bee8d3cb1223255d  
 https://nodejs.org/api/debugger.html  
 https://nodejs.org/dist/v4.2.1/docs/api/debugger.html  
+如何在iOS和Android上选择一个JavaScript 引擎进行应用开发  
+http://blog.csdn.net/kaitiren/article/details/23255195  
+https://github.com/openaphid/runtime  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
