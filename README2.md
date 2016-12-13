@@ -96,6 +96,10 @@ https://nodejs.org/dist/v4.2.1/docs/api/debugger.html
 如何在iOS和Android上选择一个JavaScript 引擎进行应用开发  
 http://blog.csdn.net/kaitiren/article/details/23255195  
 https://github.com/openaphid/runtime  
+node --inspect --debug-brk index.js  
+https://github.com/ChromeDevTools/awesome-chrome-devtools  
+https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27#.r747jmfi2  
+
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
