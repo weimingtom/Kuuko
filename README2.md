@@ -99,7 +99,9 @@ https://github.com/openaphid/runtime
 node --inspect --debug-brk index.js  
 https://github.com/ChromeDevTools/awesome-chrome-devtools  
 https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27#.r747jmfi2  
-
+How to Run Node.JS in an Android App  
+https://dzone.com/articles/how-to-run-nodejs-in-android-app  
+https://github.com/InstantWebP2P/node-android/tree/adt  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
