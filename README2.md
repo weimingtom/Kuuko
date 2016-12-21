@@ -1,4 +1,4 @@
-# Script Engine List  
+﻿# Script Engine List  
 
 ## Branch  
 * https://github.com/weimingtom/Kuuko/tree/dotnetcore  
@@ -65,7 +65,8 @@
 * https://github.com/weimingtom/fakescript/tree/wmt  
   see ide/ide.pro  
 
-## v8 cygwin(failed in MinGW)    
+## v8   
+cygwin(failed in MinGW)    
 zpao/spidernode  
 https://github.com/zpao/spidernode  
 https://github.com/zpao/spidernode/wiki/Building-node.js-on-mingw  
@@ -102,6 +103,8 @@ https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-
 How to Run Node.JS in an Android App  
 https://dzone.com/articles/how-to-run-nodejs-in-android-app  
 https://github.com/InstantWebP2P/node-android/tree/adt  
+JS引擎漏洞  
+https://github.com/tunz/js-vuln-db  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
