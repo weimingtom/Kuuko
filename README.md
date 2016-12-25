@@ -8,3 +8,9 @@ http://39miyu-chan.official.jp/
 
 ## Database Engine List  
 [README3.md](README3.md)  
+
+## Visual Novel Engine  
+[README4.md](README4.md)  
+
+## Binary read in Lua   
+[lua_hack.md](lua_hack.md)  
