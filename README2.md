@@ -105,6 +105,9 @@ https://dzone.com/articles/how-to-run-nodejs-in-android-app
 https://github.com/InstantWebP2P/node-android/tree/adt  
 JS引擎漏洞  
 https://github.com/tunz/js-vuln-db  
+j2v8  
+https://github.com/eclipsesource/J2V8  
+http://stackoverflow.com/questions/8374016/how-to-execute-javascript-on-android  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
