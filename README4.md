@@ -17,3 +17,5 @@ https://forums.fuwanovel.net/index.php?/topic/4543-lucid9-project-a-mystery-vn/?
 
 * http://git.oschina.net/SunnyRx/ADV-PROGRAM  
 https://github.com/weimingtom/adv_cocos2dx  
+
+* https://github.com/search?q=TVPScriptEngine+ExecScript&type=Code&utf8=?  
