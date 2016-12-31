@@ -155,3 +155,5 @@ https://github.com/stefanhaustein/kawt
 j2me_cldc src（见网盘）      
 j2me_cldc-1_0_4-src-winunix.zip  
 j2me_cldc-1_1-fcs-src-winunix.zip  
+http://java.coe.psu.ac.th/J2ME/  
+
