@@ -144,4 +144,14 @@ http://stackoverflow.com/questions/8374016/how-to-execute-javascript-on-android
 
 ## JVM / CLDC  
 https://github.com/seancfoley/mjvmk  
-
+j2me_cldc, search KNI_RETURNTYPE_INT  
+http://www.csie.ntu.edu.tw/~r94088/KVM_html_c/kni_8h.html  
+https://github.com/sfsy1989/j2me  
+https://github.com/wine/PSPKVM  
+https://java.net/projects/phoneme  
+http://davy.preuveneers.be/phoneme/?q=node/10  
+http://blog.csdn.net/l143007/article/details/6206888  
+https://github.com/stefanhaustein/kawt  
+j2me_cldc src（见网盘）      
+j2me_cldc-1_0_4-src-winunix.zip  
+j2me_cldc-1_1-fcs-src-winunix.zip  
