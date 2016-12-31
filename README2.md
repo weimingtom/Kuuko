@@ -141,3 +141,7 @@ http://stackoverflow.com/questions/8374016/how-to-execute-javascript-on-android
 
 ## Lua / mobdebug  
 * https://github.com/gfoot/kopiluadebug  
+
+## JVM / CLDC  
+https://github.com/seancfoley/mjvmk  
+
