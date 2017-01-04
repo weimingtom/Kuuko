@@ -22,3 +22,4 @@ https://github.com/weimingtom/adv_cocos2dx
 
 * https://github.com/topwo/JuQing  
 * https://github.com/rinkako/ProjectYuri  
+* https://github.com/yinyanfr/NovelScript  
