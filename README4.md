@@ -21,3 +21,4 @@ https://github.com/weimingtom/adv_cocos2dx
 * https://github.com/search?q=TVPScriptEngine+ExecScript&type=Code&utf8=?  
 
 * https://github.com/topwo/JuQing  
+* https://github.com/rinkako/ProjectYuri  
