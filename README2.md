@@ -161,9 +161,9 @@ http://java.coe.psu.ac.th/J2ME/
 https://github.com/weimingtom/jythonroid/blob/master/src/org/python/debug/FixMe.java  
 https://github.com/RunasSudo/PyAndroid/blob/master/app/src/main/java/org/python/core/Dexer.java  
 
-## dalvik  
+## dalvik / jvm  
 https://github.com/wicanr2/simple_jvm_and_dvm  
-https://github.com/jserv/simple-dvm
+https://github.com/jserv/simple-dvm  
 https://github.com/weimingtom/dalvik_cygwin_port  
 https://github.com/majestyhao/SimpleDalvik  
 https://github.com/weimingtom/android-dalvik-vm-on-java  
