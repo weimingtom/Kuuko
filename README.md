@@ -12,5 +12,5 @@ http://39miyu-chan.official.jp/
 ## Visual Novel Engine  
 [README4.md](README4.md)  
 
-## Binary read in Lua   
+## Lua Hack     
 [lua_hack.md](lua_hack.md)  
