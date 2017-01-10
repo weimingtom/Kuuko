@@ -42,6 +42,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/weimingtom/jillcode  
 * https://github.com/forcedotcom/jillian  
 * https://github.com/yuin/gopher-lua  
+* https://github.com/hirochachacha/plua  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
