@@ -31,6 +31,8 @@
 * https://github.com/weimingtom/Kuuko  
 * https://github.com/gerich-home/kopilua  
 * https://github.com/NLua/KopiLua  
+增加了os_date的实现（这里改成OSDate）：  
+https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs  
 * https://github.com/gfoot/kopiluadebug  
 * https://github.com/weimingtom/LuaJMod  
 * https://github.com/krka/kahlua2  
@@ -50,6 +52,15 @@
 * https://github.com/weimingtom/protoc-gen-lua  
 * https://github.com/weimingtom/android-lua  
 * https://github.com/weimingtom/as3-lua  
+* https://zhuanlan.zhihu.com/p/22476315  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
+
+## Debug  
+* https://github.com/pkulchenko/MobDebug  
+* http://studio.zerobrane.com  
+require('mobdebug').start()  
+* http://www.cnblogs.com/softidea/p/5281068.html  
+
+
