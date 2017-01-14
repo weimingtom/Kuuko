@@ -546,141 +546,303 @@ namespace KopiLua
 		{
 			s = new CharPtr(s);
 			p = new CharPtr(p);
-			init: /* using goto's to optimize tail recursion */
-			switch (p.get(0)) 
+			//init: /* using goto's to optimize tail recursion */
+			while (true)
 			{
-				case '(': 
-					{  
-						/* start capture */
-						if (p.get(1) == ')')  /* position capture? */
-						{
-							return start_capture(ms, s, CharPtr.plus(p, 2), CAP_POSITION);
+				bool init = false;
+				switch (p.get(0))
+				{
+					case '(': 
+						{  
+							/* start capture */
+							if (p.get(1) == ')')  /* position capture? */
+							{
+								return start_capture(ms, s, CharPtr.plus(p, 2), CAP_POSITION);
+							}
+							else
+							{
+								return start_capture(ms, s, CharPtr.plus(p, 1), CAP_UNFINISHED);
+							}
 						}
-						else
-						{
-							return start_capture(ms, s, CharPtr.plus(p, 1), CAP_UNFINISHED);
+					case ')': 
+						{  
+							/* end capture */
+							return end_capture(ms, s, CharPtr.plus(p, 1));
 						}
-					}
-				case ')': 
-					{  
-						/* end capture */
-						return end_capture(ms, s, CharPtr.plus(p, 1));
-					}
-				case L_ESC: 
-					{
-						switch (p.get(1)) 
+					case L_ESC: 
 						{
-							case 'b': 
-								{  
-									/* balanced string? */
-									s = matchbalance(ms, s, CharPtr.plus(p, 2));
-									if (CharPtr.isEqual(s, null)) 
-									{
-										return null;
-									}
-									p = CharPtr.plus(p, 4);
-									goto init;  /* else return match(ms, s, p+4); */
-								}
-							case 'f': 
-								{  
-									/* frontier? */
-									CharPtr ep; 
-									char previous;
-									p = CharPtr.plus(p, 2);
-									if (p.get(0) != '[')
-									{
-										LuaAuxLib.luaL_error(ms.L, CharPtr.toCharPtr("missing " + LuaConf.LUA_QL("[") + " after " +
-											LuaConf.LUA_QL("%%f") + " in pattern"));
-									}
-									ep = classend(ms, p);  /* points to what is next */
-									previous = (CharPtr.isEqual(s, ms.src_init)) ? '\0' : s.get(-1);
-									if ((matchbracketclass((byte)(previous), p, CharPtr.minus(ep, 1)) != 0) ||
-									    (matchbracketclass((byte)(s.get(0)), p, CharPtr.minus(ep, 1)) == 0))
-									{
-										return null;
-									}
-									p = ep; 
-									goto init;  /* else return match(ms, s, ep); */
-								}
-							default: 
-								{
-									if (LuaConf.isdigit((byte)(p.get(1))))
-									{
-										/* capture results (%0-%9)? */
-										s = match_capture(ms, s, (byte)(p.get(1)));
+							bool init2 = false;
+							switch (p.get(1)) 
+							{
+								case 'b': 
+									{  
+										/* balanced string? */
+										s = matchbalance(ms, s, CharPtr.plus(p, 2));
 										if (CharPtr.isEqual(s, null)) 
 										{
 											return null;
 										}
+										p = CharPtr.plus(p, 4);
+										//goto init;  /* else return match(ms, s, p+4); */
+										init2 = true;
+										break;
+									}
+								case 'f': 
+									{  
+										/* frontier? */
+										CharPtr ep; 
+										char previous;
 										p = CharPtr.plus(p, 2);
-										goto init;  /* else return match(ms, s, p+2) */
+										if (p.get(0) != '[')
+										{
+											LuaAuxLib.luaL_error(ms.L, CharPtr.toCharPtr("missing " + LuaConf.LUA_QL("[") + " after " +
+												LuaConf.LUA_QL("%%f") + " in pattern"));
+										}
+										ep = classend(ms, p);  /* points to what is next */
+										previous = (CharPtr.isEqual(s, ms.src_init)) ? '\0' : s.get(-1);
+										if ((matchbracketclass((byte)(previous), p, CharPtr.minus(ep, 1)) != 0) ||
+										    (matchbracketclass((byte)(s.get(0)), p, CharPtr.minus(ep, 1)) == 0))
+										{
+											return null;
+										}
+										p = ep; 
+										//goto init;  /* else return match(ms, s, ep); */
+										init2 = true;
+										break;
 									}
-									goto dflt;  /* case default */
-								}
-						}
-					}
-				case '\0': 
-					{  
-						/* end of pattern */
-						return s;  /* match succeeded */
-					}
-				case '$': 
-					{
-						if (p.get(1) == '\0')  /* is the `$' the last char in pattern? */
-						{
-							return (CharPtr.isEqual(s, ms.src_end)) ? s : null;  /* check end of string */
-						}
-						else 
-						{
-							goto dflt;
-						}
-					}
-				default: 
-					dflt: 
-					{  
-						/* it is a pattern item */
-						CharPtr ep = classend(ms, p);  /* points to what is next */
-                        int m = (CharPtr.lessThan(s, ms.src_end)) && (singlematch((byte)(s.get(0)), p, ep) != 0) ? 1 : 0;
-						switch (ep.get(0)) 
-						{
-							case '?': 
-								{  
-									/* optional */
-									CharPtr res;
-									if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null))
+								default: 
 									{
-										return res;
+										if (LuaConf.isdigit((byte)(p.get(1))))
+										{
+											/* capture results (%0-%9)? */
+											s = match_capture(ms, s, (byte)(p.get(1)));
+											if (CharPtr.isEqual(s, null)) 
+											{
+												return null;
+											}
+											p = CharPtr.plus(p, 2);
+											//goto init;  /* else return match(ms, s, p+2) */
+											init2 = true;
+											break;
+										}
+										//goto dflt;  /* case default */
+										{
+											//------------------dflt start--------------		                        
+											/* it is a pattern item */
+											CharPtr ep = classend(ms, p);  /* points to what is next */
+					                        int m = (CharPtr.lessThan(s, ms.src_end)) && (singlematch((byte)(s.get(0)), p, ep) != 0) ? 1 : 0;
+											bool init3 = false;
+					                        switch (ep.get(0))
+											{
+												case '?': 
+													{  
+														/* optional */
+														CharPtr res;
+														if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null))
+														{
+															return res;
+														}
+														p = CharPtr.plus(ep, 1);
+														//goto init;  /* else return match(ms, s, ep+1); */
+														init3 = true;
+														break;
+					                        		}
+												case '*': 
+													{  
+														/* 0 or more repetitions */
+														return max_expand(ms, s, p, ep);
+													}
+												case '+': 
+													{  
+														/* 1 or more repetitions */
+														return ((m!=0) ? max_expand(ms, CharPtr.plus(s, 1), p, ep) : null);
+													}
+												case '-': 
+													{  
+														/* 0 or more repetitions (minimum) */
+														return min_expand(ms, s, p, ep);
+													}
+												default: 
+					                        		{
+														if (m == 0) 
+														{
+															return null;
+														}
+														s = s.next(); 
+														p = ep; 
+														//goto init;  /* else return match(ms, s+1, ep); */
+														init3 = true;
+														break;
+					                        		}
+											}
+					                        if (init3 == true)
+					                        {
+					                        	init2 = true;
+					                        	break;
+					                        }
+					                        else
+					                        {
+					                        	break;
+					                        }
+											//------------------dflt end--------------	
+										}
 									}
-									p = CharPtr.plus(ep, 1);
-									goto init;  /* else return match(ms, s, ep+1); */
-								}
-							case '*': 
-								{  
-									/* 0 or more repetitions */
-									return max_expand(ms, s, p, ep);
-								}
-							case '+': 
-								{  
-									/* 1 or more repetitions */
-									return ((m!=0) ? max_expand(ms, CharPtr.plus(s, 1), p, ep) : null);
-								}
-							case '-': 
-								{  
-									/* 0 or more repetitions (minimum) */
-									return min_expand(ms, s, p, ep);
-								}
-							default: {
-								if (m == 0) 
-								{
-									return null;
-								}
-								s = s.next(); 
-								p = ep; 
-								goto init;  /* else return match(ms, s+1, ep); */
+							}
+							if (init2 == true)
+							{
+								init = true;
+								break;
+							}
+							else
+							{
+								break;
 							}
 						}
-					}
+					case '\0': 
+						{  
+							/* end of pattern */
+							return s;  /* match succeeded */
+						}
+					case '$': 
+						{
+							if (p.get(1) == '\0')  /* is the `$' the last char in pattern? */
+							{
+								return (CharPtr.isEqual(s, ms.src_end)) ? s : null;  /* check end of string */
+							}
+							else 
+							{
+								//goto dflt;
+								//------------------dflt start--------------		                        
+								/* it is a pattern item */
+								CharPtr ep = classend(ms, p);  /* points to what is next */
+		                        int m = (CharPtr.lessThan(s, ms.src_end)) && (singlematch((byte)(s.get(0)), p, ep) != 0) ? 1 : 0;
+								bool init2 = false;
+		                        switch (ep.get(0))
+								{
+									case '?': 
+										{  
+											/* optional */
+											CharPtr res;
+											if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null))
+											{
+												return res;
+											}
+											p = CharPtr.plus(ep, 1);
+											//goto init;  /* else return match(ms, s, ep+1); */
+											init2 = true;
+											break;
+		                        		}
+									case '*': 
+										{  
+											/* 0 or more repetitions */
+											return max_expand(ms, s, p, ep);
+										}
+									case '+': 
+										{  
+											/* 1 or more repetitions */
+											return ((m!=0) ? max_expand(ms, CharPtr.plus(s, 1), p, ep) : null);
+										}
+									case '-': 
+										{  
+											/* 0 or more repetitions (minimum) */
+											return min_expand(ms, s, p, ep);
+										}
+									default: 
+		                        		{
+											if (m == 0) 
+											{
+												return null;
+											}
+											s = s.next(); 
+											p = ep; 
+											//goto init;  /* else return match(ms, s+1, ep); */
+											init2 = true;
+											break;
+		                        		}
+								}
+		                        if (init2 == true)
+		                        {
+		                        	init = true;
+		                        	break;
+		                        }
+		                        else
+		                        {
+		                        	break;
+		                        }
+								//------------------dflt end--------------		                        
+							}
+						}
+					default: 
+//						dflt: 
+						{  
+							/* it is a pattern item */
+							CharPtr ep = classend(ms, p);  /* points to what is next */
+	                        int m = (CharPtr.lessThan(s, ms.src_end)) && (singlematch((byte)(s.get(0)), p, ep) != 0) ? 1 : 0;
+							bool init2 = false;
+	                        switch (ep.get(0))
+							{
+								case '?': 
+									{  
+										/* optional */
+										CharPtr res;
+										if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null))
+										{
+											return res;
+										}
+										p = CharPtr.plus(ep, 1);
+										//goto init;  /* else return match(ms, s, ep+1); */
+										init2 = true;
+										break;
+	                        		}
+								case '*': 
+									{  
+										/* 0 or more repetitions */
+										return max_expand(ms, s, p, ep);
+									}
+								case '+': 
+									{  
+										/* 1 or more repetitions */
+										return ((m!=0) ? max_expand(ms, CharPtr.plus(s, 1), p, ep) : null);
+									}
+								case '-': 
+									{  
+										/* 0 or more repetitions (minimum) */
+										return min_expand(ms, s, p, ep);
+									}
+								default: 
+	                        		{
+										if (m == 0) 
+										{
+											return null;
+										}
+										s = s.next(); 
+										p = ep; 
+										//goto init;  /* else return match(ms, s+1, ep); */
+										init2 = true;
+										break;
+	                        		}
+							}
+	                        if (init2 == true)
+	                        {
+	                        	init = true;
+	                        	break;
+	                        }
+	                        else
+	                        {
+	                        	break;
+	                        }
+						}
+				}
+				if (init == true) 
+				{
+					continue;
+				}
+				else
+				{
+					break;
+				}
 			}
+			return null; //FIXME:unreachable
 		}
 
 		private static CharPtr lmemfind(CharPtr s1, int/*uint*/ l1,

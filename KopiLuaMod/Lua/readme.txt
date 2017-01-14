@@ -167,7 +167,7 @@ sizeof
 (x) private static priority_[] priority =  //remove comment
 (x) switch (argv[i][1]) //string switch
 (x) using (MemoryStream stream = new MemoryStream())
-goto
+(x) goto
 (x) switch (m.Groups[2].Value) //string switch
 (x) public struct Value //user-defined value types.
 (x) out <var>

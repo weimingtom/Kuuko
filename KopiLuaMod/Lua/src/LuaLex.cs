@@ -257,6 +257,7 @@ namespace KopiLua
 			}
 			for (;;) 
 			{
+				bool endloop = false;
 				switch (ls.current) 
 				{
 					case LuaZIO.EOZ:
@@ -291,7 +292,9 @@ namespace KopiLua
 								//          cont--;
 								//          if (sep == 0 && cont >= 0) break;
 								//#endif
-								goto endloop;
+								//goto endloop;
+								endloop = true;
+								break;
 							}
 							break;
 						}
@@ -319,8 +322,11 @@ namespace KopiLua
 						}
 						break;
 				}
+				if (endloop) {
+					break;
+				}
 			} 
-endloop:
+//endloop:
 			if (seminfo != null)
 			{
 				seminfo.ts = luaX_newstring(ls, CharPtr.plus(LuaZIO.luaZ_buffer(ls.buff), (2 + sep)),
