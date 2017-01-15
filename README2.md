@@ -26,7 +26,7 @@
 * https://github.com/weimingtom/myosotis2  
 * https://github.com/weimingtom/myosotis  
 
-## Links  
+## Links / Books    
 * http://lua-users.org/wiki/LuaImplementations  
 * https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
 * https://github.com/phodal/awesome-iot  
@@ -34,6 +34,9 @@
 * https://github.com/weimingtom/myosotis2  
   see References   
 * https://github.com/dbohdan/embedded-scripting-languages  
+* 自制编译器  
+	https://github.com/aamine/cbc  
+	https://github.com/leungwensen/cbc-ubuntu-64bit  
 
 ## TODO / etc / memo   
 * http://hotruby.yukoba.jp/  
