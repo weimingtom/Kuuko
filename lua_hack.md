@@ -54,6 +54,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/weimingtom/android-lua  
 * https://github.com/weimingtom/as3-lua  
 * https://zhuanlan.zhihu.com/p/22476315  
+* https://github.com/weimingtom/metamorphose/blob/master/lua_benchmark/README.md  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
