@@ -111,6 +111,11 @@ https://github.com/tunz/js-vuln-db
 j2v8  
 https://github.com/eclipsesource/J2V8  
 http://stackoverflow.com/questions/8374016/how-to-execute-javascript-on-android  
+jxcore  
+https://github.com/jxcore/jxcore  
+https://github.com/karaxuna/jxcore-repl  
+http://sourcechord.hatenablog.com/entry/2015/09/06/203827  
+http://www.runoob.com/nodejs/nodejs-jxcore-packaging.html  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
