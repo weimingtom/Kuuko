@@ -182,9 +182,13 @@ https://github.com/codepython/full_simple_jvm
 ## GraalVM     
 https://github.com/graalvm/truffleruby  
 
-## Flash / AS3  
+## Flash / AS3 / Tamarin  
 https://github.com/lightspark/lightspark  
 https://github.com/weimingtom/papervision3d_java  
+https://github.com/nxmirrors/tamarin-central  
+https://github.com/pnkfelix/tamarin-redux  
+http://www.redtamarin.com  
+https://github.com/weimingtom/redtamarin  
 
 ## dotNet / Csharp  
 https://github.com/Ourpalm/ILRuntime  
