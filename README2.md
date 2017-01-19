@@ -182,8 +182,9 @@ https://github.com/codepython/full_simple_jvm
 ## GraalVM     
 https://github.com/graalvm/truffleruby  
 
-## Flash  
+## Flash / AS3  
 https://github.com/lightspark/lightspark  
+https://github.com/weimingtom/papervision3d_java  
 
 ## dotNet / Csharp  
 https://github.com/Ourpalm/ILRuntime  
