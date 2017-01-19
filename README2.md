@@ -143,6 +143,7 @@ http://www.runoob.com/nodejs/nodejs-jxcore-packaging.html
 * https://github.com/burtonsamograd/sxc  
 * Some see here https://github.com/weimingtom/Kuuko/tree-save/master/README2.md  
 * https://github.com/maryrosecook/littlelisp  
+* https://github.com/pixie-lang/pixie  
 
 ## IoT  
 * https://github.com/phodal/awesome-iot  
