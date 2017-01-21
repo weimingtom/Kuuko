@@ -197,3 +197,8 @@ https://github.com/Ourpalm/ILRuntime
 ## Erlang / BEAM  
 https://github.com/llaisdy/beam_languages  
 
+## Ruby  
+* Ruby原理剖析
+Ruby Under a Microscope  
+https://book.douban.com/subject/26920403/?from=tag  
+https://book.douban.com/subject/24718740/  
