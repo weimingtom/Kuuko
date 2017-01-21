@@ -202,3 +202,6 @@ https://github.com/llaisdy/beam_languages
 Ruby Under a Microscope  
 https://book.douban.com/subject/26920403/?from=tag  
 https://book.douban.com/subject/24718740/  
+* rubys/ruby2js  
+https://github.com/rubys/ruby2js  
+
