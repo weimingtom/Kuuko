@@ -194,4 +194,6 @@ https://github.com/mozilla/shumway
 ## dotNet / Csharp  
 https://github.com/Ourpalm/ILRuntime  
 
+## Erlang / BEAM  
+https://github.com/llaisdy/beam_languages  
 
