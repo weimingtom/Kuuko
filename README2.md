@@ -111,6 +111,11 @@ https://github.com/tunz/js-vuln-db
 j2v8  
 https://github.com/eclipsesource/J2V8  
 http://stackoverflow.com/questions/8374016/how-to-execute-javascript-on-android  
+jxcore  
+https://github.com/jxcore/jxcore  
+https://github.com/karaxuna/jxcore-repl  
+http://sourcechord.hatenablog.com/entry/2015/09/06/203827  
+http://www.runoob.com/nodejs/nodejs-jxcore-packaging.html  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
@@ -138,6 +143,7 @@ http://stackoverflow.com/questions/8374016/how-to-execute-javascript-on-android
 * https://github.com/burtonsamograd/sxc  
 * Some see here https://github.com/weimingtom/Kuuko/tree-save/master/README2.md  
 * https://github.com/maryrosecook/littlelisp  
+* https://github.com/pixie-lang/pixie  
 
 ## IoT  
 * https://github.com/phodal/awesome-iot  
@@ -172,3 +178,30 @@ https://github.com/majestyhao/SimpleDalvik
 https://github.com/weimingtom/android-dalvik-vm-on-java  
 https://github.com/pkirchhofer/android-dalvik  
 https://github.com/codepython/full_simple_jvm  
+
+## GraalVM     
+https://github.com/graalvm/truffleruby  
+
+## Flash / AS3 / Tamarin  
+https://github.com/lightspark/lightspark  
+https://github.com/weimingtom/papervision3d_java  
+https://github.com/nxmirrors/tamarin-central  
+https://github.com/pnkfelix/tamarin-redux  
+http://www.redtamarin.com  
+https://github.com/Corsaair/redtamarin    
+https://github.com/mozilla/shumway  
+
+## dotNet / Csharp  
+https://github.com/Ourpalm/ILRuntime  
+
+## Erlang / BEAM  
+https://github.com/llaisdy/beam_languages  
+
+## Ruby  
+* Ruby原理剖析  
+Ruby Under a Microscope  
+https://book.douban.com/subject/26920403/?from=tag  
+https://book.douban.com/subject/24718740/  
+* rubys/ruby2js  
+https://github.com/rubys/ruby2js  
+
