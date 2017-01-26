@@ -309,7 +309,7 @@ namespace KopiLua
 			LuaConf.printf(CharPtr.toCharPtr("\n%s <%s:%d,%d> (%d Instruction%s, %d bytes at %p)\n"),
                	(f.linedefined == 0) ? "main" : "function", s,
                	f.linedefined, f.lastlinedefined,
-               	f.sizecode, SS(f.sizecode), f.sizecode * LuaConf.GetUnmanagedSize(typeof(long/*UInt32*//*Instruction*/)), LuaConf.VOID(f));
+                f.sizecode, SS(f.sizecode), f.sizecode * LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LONG)), LuaConf.VOID(f)); //typeof(long/*UInt32*//*Instruction*/)
             LuaConf.printf(CharPtr.toCharPtr("%d%s param%s, %d slot%s, %d upvalue%s, "),
                	f.numparams, (f.is_vararg != 0) ? "+" : "", SS(f.numparams),
             	f.maxstacksize, SS(f.maxstacksize), f.nups, SS(f.nups));

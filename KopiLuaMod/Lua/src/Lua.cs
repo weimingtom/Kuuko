@@ -266,7 +266,7 @@ namespace KopiLua
 	//public delegate object lua_Alloc(Type t);
 	public interface lua_Alloc
 	{
-		object exec(Type t);
+		object exec(ClassType t);
 	}
 	
 	

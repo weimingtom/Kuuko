@@ -94,7 +94,7 @@ namespace KopiLua
 		 */
 		private static FilePtr newfile(lua_State L) 
 		{
-			FilePtr pf = (FilePtr)LuaAPI.lua_newuserdata(L, typeof(FilePtr));
+			FilePtr pf = (FilePtr)LuaAPI.lua_newuserdata(L, new ClassType(ClassType.TYPE_FILEPTR)); //FilePtr
 			pf.file = null;  /* file file is currently `closed' */
 			LuaAuxLib.luaL_getmetatable(L, CharPtr.toCharPtr(LuaLib.LUA_FILEHANDLE));
 			LuaAPI.lua_setmetatable(L, -2);
@@ -359,7 +359,7 @@ namespace KopiLua
 				{
 					rlen = n;  /* cannot read more than asked */
 				}
-				nr = (int/*uint*/)LuaConf.fread(p, LuaConf.GetUnmanagedSize(typeof(char)), (int)rlen, f);
+                nr = (int/*uint*/)LuaConf.fread(p, LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CHAR)), (int)rlen, f); //typeof(char)
 				LuaAuxLib.luaL_addsize(b, (int)nr);
 				n -= nr;  /* still have to read `n' chars */
 			} while (n > 0 && nr == rlen);  /* until end of count or eof */
@@ -492,7 +492,7 @@ namespace KopiLua
 				{
 					int[]/*uint*/ l = new int[1];
 					CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, /*out*/ l);
-					status = ((status != 0) && (LuaConf.fwrite(s, LuaConf.GetUnmanagedSize(typeof(char)), (int)l[0], f) == l[0])) ? 1 : 0;
+                    status = ((status != 0) && (LuaConf.fwrite(s, LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CHAR)), (int)l[0], f) == l[0])) ? 1 : 0; //typeof(char)
 				}
 			}
 			return pushresult(L, status, null);

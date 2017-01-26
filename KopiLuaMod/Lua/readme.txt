@@ -171,8 +171,13 @@ sizeof
 (x) switch (m.Groups[2].Value) //string switch
 (x) public struct Value //user-defined value types.
 (x) out <var>
-Type t
+Type t (?->see ClassType)
 (x?) uint (!!!remove not finish!!!)
 (x) ref remove (!!!remove ref not finish, search 'ref<space key>' !!!)
 uint64
 int64
+Marshal
+typeof
+System.Activator
+Int32
+

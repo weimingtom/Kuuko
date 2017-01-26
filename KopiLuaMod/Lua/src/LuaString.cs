@@ -13,7 +13,7 @@ namespace KopiLua
 	{
 		public static int sizestring(TString s) 
 		{ 
-			return ((int)s.len + 1) * LuaConf.GetUnmanagedSize(typeof(char)); 
+			return ((int)s.len + 1) * LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CHAR)); //char 
 		}
 
 		public static int sizeudata(Udata u) 
@@ -56,7 +56,7 @@ namespace KopiLua
 			// so that the garbage collector behaves identical to the C version.
 			//newhash = luaM_newvector<GCObjectRef>(L, newsize);
 			newhash = new GCObject[newsize];
-			LuaMem.AddTotalBytes(L, newsize * LuaConf.GetUnmanagedSize(typeof(GCObjectRef)));
+            LuaMem.AddTotalBytes(L, newsize * LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_GCOBJECTREF))); //typeof(GCObjectRef)
 
 			tb = LuaState.G(L).strt;
 			for (i = 0; i < newsize; i++) 
@@ -83,7 +83,7 @@ namespace KopiLua
 			//luaM_freearray(L, tb.hash);
 			if (tb.hash != null)
 			{
-				LuaMem.SubtractTotalBytes(L, tb.hash.Length * LuaConf.GetUnmanagedSize(typeof(GCObjectRef)));
+                LuaMem.SubtractTotalBytes(L, tb.hash.Length * LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_GCOBJECTREF))); //typeof(GCObjectRef)
 			}
 			tb.size = newsize;
 			tb.hash = newhash;
@@ -93,12 +93,12 @@ namespace KopiLua
 		{
 			TString ts;
 			stringtable tb;
-			if (l + 1 > LuaLimits.MAX_SIZET / LuaConf.GetUnmanagedSize(typeof(char)))
+            if (l + 1 > LuaLimits.MAX_SIZET / LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CHAR))) //typeof(char)
 			{
 				LuaMem.luaM_toobig(L);
 			}
 			ts = new TString(CharPtr.toCharPtr(new char[l + 1]));
-			LuaMem.AddTotalBytes(L, (int)(l + 1) * LuaConf.GetUnmanagedSize(typeof(char)) + LuaConf.GetUnmanagedSize(typeof(TString)));
+            LuaMem.AddTotalBytes(L, (int)(l + 1) * LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CHAR)) + LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TSTRING))); //typeof(TString)//typeof(char)
 			ts.getTsv().len = l;
             ts.getTsv().hash = h;
             ts.getTsv().marked = LuaGC.luaC_white(LuaState.G(L));
@@ -167,7 +167,7 @@ namespace KopiLua
 			return u;
 		}
 
-		public static Udata luaS_newudata(lua_State L, Type t, Table e)
+        public static Udata luaS_newudata(lua_State L, ClassType t, Table e)
 		{
 			Udata u = new Udata();
 			u.uv.marked = LuaGC.luaC_white(LuaState.G(L));  /* is not finalized */
@@ -176,7 +176,7 @@ namespace KopiLua
 			u.uv.metatable = null;
 			u.uv.env = e;
 			u.user_data = LuaMem.luaM_realloc_(L, t);
-			LuaMem.AddTotalBytes(L, LuaConf.GetUnmanagedSize(typeof(Udata)));
+            LuaMem.AddTotalBytes(L, LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_UDATA)));//typeof(Udata)
 			/* chain it on udata list (after main thread) */
 			u.uv.next = LuaState.G(L).mainthread.next;
 			LuaState.G(L).mainthread.next = LuaState.obj2gco(u);

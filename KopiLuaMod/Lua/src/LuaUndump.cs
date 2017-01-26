@@ -49,7 +49,7 @@ namespace KopiLua
 		}
 		//#endif
 
-		public static object LoadMem(LoadState S, Type t)
+		public static object LoadMem(LoadState S, ClassType t)
 		{
 			int size = Marshal.SizeOf(t);
 			CharPtr str = CharPtr.toCharPtr(new char[size]);
@@ -60,19 +60,34 @@ namespace KopiLua
 				bytes[i] = (byte)str.chars[i];
 			}
 			GCHandle pinnedPacket = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-			object b = Marshal.PtrToStructure(pinnedPacket.AddrOfPinnedObject(), t);
-			pinnedPacket.Free();
-			return b;
+            if (true)
+            {
+                object b = Marshal.PtrToStructure(pinnedPacket.AddrOfPinnedObject(), t.GetOriginalType());
+                pinnedPacket.Free();
+                return b;
+            }
+            else
+            {
+                object b = null;
+                return b;
+            }
 		}
 
-		public static object LoadMem(LoadState S, Type t, int n)
+		public static object LoadMem(LoadState S, ClassType t, int n)
 		{
 			ArrayList array = new ArrayList();
 			for (int i = 0; i < n; i++)
 			{
 				array.Add(LoadMem(S, t));
 			}
-			return array.ToArray(t);
+            if (true)
+            {
+                return array.ToArray(t.GetOriginalType());
+            }
+            else
+            {
+                return null;
+            }
 		}
 		
 		public static Byte/*lu_byte*/ LoadByte(LoadState S) 
@@ -80,12 +95,12 @@ namespace KopiLua
 			return (Byte/*lu_byte*/)LoadChar(S); 
 		}
 		
-		public static object LoadVar(LoadState S, Type t) 
+		public static object LoadVar(LoadState S, ClassType t) 
 		{ 
 			return LoadMem(S, t); 
 		}
 		
-		public static object LoadVector(LoadState S, Type t, int n) 
+		public static object LoadVector(LoadState S, ClassType t, int n) 
 		{
 			return LoadMem(S, t, n);
 		}
@@ -98,24 +113,24 @@ namespace KopiLua
 
 		private static int LoadChar(LoadState S)
 		{
-			return (char)LoadVar(S, typeof(char));
+			return (char)LoadVar(S, new ClassType(ClassType.TYPE_CHAR));
 		}
 
 		private static int LoadInt(LoadState S)
 		{
-			int x = (int)LoadVar(S, typeof(int));
+            int x = (int)LoadVar(S, new ClassType(ClassType.TYPE_INT));
 			IF (x < 0, "bad integer");
 			return x;
 		}
 
 		private static Double/*lua_Number*/ LoadNumber(LoadState S)
 		{
-			return (Double/*lua_Number*/)LoadVar(S, typeof(Double/*lua_Number*/));
+            return (Double/*lua_Number*/)LoadVar(S, new ClassType(ClassType.TYPE_DOUBLE));/*lua_Number*/
 		}
 
 		private static TString LoadString(LoadState S)
 		{
-			int/*uint*/ size = (int/*uint*/)LoadVar(S, typeof(int/*uint*/));
+			int/*uint*/ size = (int/*uint*/)LoadVar(S, new ClassType(ClassType.TYPE_INT)); //typeof(int/*uint*/)
 			if (size == 0)
 			{
 				return null;
@@ -131,16 +146,16 @@ namespace KopiLua
 		private static void LoadCode(LoadState S, Proto f)
 		{
 			int n = LoadInt(S);
-			f.code = LuaMem.luaM_newvector<long/*UInt32*//*Instruction*/>(S.L, n);
+			f.code = LuaMem.luaM_newvector<long/*UInt32*//*Instruction*/>(S.L, n, new ClassType(ClassType.TYPE_LONG));
 			f.sizecode = n;
-			f.code = (long[]/*UInt32[]*//*Instruction[]*/)LoadVector(S, typeof(long/*UInt32*//*Instruction*/), n);
+			f.code = (long[]/*UInt32[]*//*Instruction[]*/)LoadVector(S, new ClassType(ClassType.TYPE_LONG), n);
 		}
 
 		private static void LoadConstants(LoadState S, Proto f)
 		{
 			int i,n;
 			n = LoadInt(S);
-			f.k = LuaMem.luaM_newvector<TValue>(S.L, n);
+			f.k = LuaMem.luaM_newvector<TValue>(S.L, n, new ClassType(ClassType.TYPE_TVALUE));
 			f.sizek = n;
 			for (i = 0; i < n; i++) 
 			{
@@ -180,7 +195,7 @@ namespace KopiLua
 				}
 			}
 			n = LoadInt(S);
-			f.p = LuaMem.luaM_newvector<Proto>(S.L, n);
+			f.p = LuaMem.luaM_newvector<Proto>(S.L, n, new ClassType(ClassType.TYPE_PROTO));
 			f.sizep = n;
 			for (i = 0; i < n; i++) 
 			{
@@ -196,11 +211,11 @@ namespace KopiLua
 		{
 			int i, n;
 			n = LoadInt(S);
-			f.lineinfo = LuaMem.luaM_newvector<int>(S.L, n);
+			f.lineinfo = LuaMem.luaM_newvector<int>(S.L, n, new ClassType(ClassType.TYPE_INT));
 			f.sizelineinfo = n;
-			f.lineinfo = (int[])LoadVector(S, typeof(int), n);
+            f.lineinfo = (int[])LoadVector(S, new ClassType(ClassType.TYPE_INT), n); //typeof(int)
 			n = LoadInt(S);
-			f.locvars = LuaMem.luaM_newvector<LocVar>(S.L, n);
+			f.locvars = LuaMem.luaM_newvector<LocVar>(S.L, n, new ClassType(ClassType.TYPE_LOCVAR));
 			f.sizelocvars = n;
 			for (i = 0; i < n; i++) 
 			{
@@ -213,7 +228,7 @@ namespace KopiLua
 				f.locvars[i].endpc = LoadInt(S);
 			}
 			n = LoadInt(S);
-			f.upvalues = LuaMem.luaM_newvector<TString>(S.L, n);
+			f.upvalues = LuaMem.luaM_newvector<TString>(S.L, n, new ClassType(ClassType.TYPE_TSTRING));
 			f.sizeupvalues = n;
 			for (i = 0; i < n; i++) 
 			{

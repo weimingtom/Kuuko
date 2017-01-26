@@ -15,18 +15,18 @@ namespace KopiLua
 	{
 		public static int sizeCclosure(int n) 
 		{
-			return LuaConf.GetUnmanagedSize(typeof(CClosure)) + LuaConf.GetUnmanagedSize(typeof(TValue)) * (n - 1);
+            return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CCLOSURE)) + LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * (n - 1); //typeof(CClosure)//typeof(TValue)
 		}
 
 		public static int sizeLclosure(int n) 
 		{
-			return LuaConf.GetUnmanagedSize(typeof(LClosure)) + LuaConf.GetUnmanagedSize(typeof(TValue)) * (n - 1);
+            return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LCLOSURE)) + LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * (n - 1); //typeof(LClosure)//typeof(TValue)
 		}
 
 		public static Closure luaF_newCclosure(lua_State L, int nelems, Table e) 
 		{
 			//Closure c = (Closure)luaM_malloc(L, sizeCclosure(nelems));
-			Closure c = LuaMem.luaM_new<Closure>(L);
+			Closure c = LuaMem.luaM_new<Closure>(L, new ClassType(ClassType.TYPE_CLOSURE));
 			LuaMem.AddTotalBytes(L, sizeCclosure(nelems));
 			LuaGC.luaC_link(L, LuaState.obj2gco(c), Lua.LUA_TFUNCTION);
 			c.c.setIsC(1);
@@ -43,7 +43,7 @@ namespace KopiLua
 		public static Closure luaF_newLclosure(lua_State L, int nelems, Table e) 
 		{
 			//Closure c = (Closure)luaM_malloc(L, sizeLclosure(nelems));
-			Closure c = LuaMem.luaM_new<Closure>(L);
+			Closure c = LuaMem.luaM_new<Closure>(L, new ClassType(ClassType.TYPE_CLOSURE));
 			LuaMem.AddTotalBytes(L, sizeLclosure(nelems));
 			LuaGC.luaC_link(L, LuaState.obj2gco(c), Lua.LUA_TFUNCTION);
 			c.l.setIsC(0);
@@ -63,7 +63,7 @@ namespace KopiLua
 
 		public static UpVal luaF_newupval(lua_State L) 
 		{
-			UpVal uv = LuaMem.luaM_new<UpVal>(L);
+			UpVal uv = LuaMem.luaM_new<UpVal>(L, new ClassType(ClassType.TYPE_UPVAL));
 			LuaGC.luaC_link(L, LuaState.obj2gco(uv), LuaObject.LUA_TUPVAL);
 			uv.v = uv.u.value;
 			LuaObject.setnilvalue(uv.v);
@@ -90,7 +90,7 @@ namespace KopiLua
 				}
 				pp = new NextRef(p);
 			}
-			uv = LuaMem.luaM_new<UpVal>(L);  /* not found: create a new one */
+			uv = LuaMem.luaM_new<UpVal>(L, new ClassType(ClassType.TYPE_UPVAL));  /* not found: create a new one */
 			uv.tt = LuaObject.LUA_TUPVAL;
 			uv.marked = LuaGC.luaC_white(g);
 			uv.v = level;  /* current value lives in the stack */
@@ -117,7 +117,7 @@ namespace KopiLua
 			{
 				unlinkupval(uv);  /* remove from open list */
 			}
-			LuaMem.luaM_free(L, uv);  /* free upvalue */
+			LuaMem.luaM_free(L, uv, new ClassType(ClassType.TYPE_UPVAL));  /* free upvalue */
 		}
 
 		public static void luaF_close(lua_State L, TValue/*StkId*/ level)
@@ -145,7 +145,7 @@ namespace KopiLua
 
 		public static Proto luaF_newproto(lua_State L) 
 		{
-			Proto f = LuaMem.luaM_new<Proto>(L);
+			Proto f = LuaMem.luaM_new<Proto>(L, new ClassType(ClassType.TYPE_PROTO));
 			LuaGC.luaC_link(L, LuaState.obj2gco(f), LuaObject.LUA_TPROTO);
 			f.k = null;
 			f.sizek = 0;
@@ -171,13 +171,13 @@ namespace KopiLua
 
 		public static void luaF_freeproto(lua_State L, Proto f) 
 		{
-			LuaMem.luaM_freearray<long/*UInt32*//*Instruction*/>(L, f.code);
-			LuaMem.luaM_freearray<Proto>(L, f.p);
-			LuaMem.luaM_freearray<TValue>(L, f.k);
-			LuaMem.luaM_freearray<Int32>(L, f.lineinfo);
-			LuaMem.luaM_freearray<LocVar>(L, f.locvars);
-			LuaMem.luaM_freearray<TString>(L, f.upvalues);
-			LuaMem.luaM_free(L, f);
+			LuaMem.luaM_freearray<long/*UInt32*//*Instruction*/>(L, f.code, new ClassType(ClassType.TYPE_LONG));
+			LuaMem.luaM_freearray<Proto>(L, f.p, new ClassType(ClassType.TYPE_PROTO));
+			LuaMem.luaM_freearray<TValue>(L, f.k, new ClassType(ClassType.TYPE_TVALUE));
+			LuaMem.luaM_freearray<Int32>(L, f.lineinfo, new ClassType(ClassType.TYPE_INT32));
+			LuaMem.luaM_freearray<LocVar>(L, f.locvars, new ClassType(ClassType.TYPE_LOCVAR));
+			LuaMem.luaM_freearray<TString>(L, f.upvalues, new ClassType(ClassType.TYPE_TSTRING));
+			LuaMem.luaM_free(L, f, new ClassType(ClassType.TYPE_PROTO));
 		}
 
 		// we have a gc, so nothing to do

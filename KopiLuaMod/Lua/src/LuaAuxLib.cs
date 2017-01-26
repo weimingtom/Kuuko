@@ -899,14 +899,14 @@ namespace KopiLua
 
 		/* }====================================================== */
 
-		private static object l_alloc(Type t) 
+		private static object l_alloc(ClassType t) 
 		{
-			return System.Activator.CreateInstance(t);
+			return t.Alloc();
 		}
 		
 		public class l_alloc_delegate : lua_Alloc
 		{
-			public object exec(Type t)
+			public object exec(ClassType t)
 			{
 				return l_alloc(t);
 			}

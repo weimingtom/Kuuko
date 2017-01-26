@@ -317,7 +317,7 @@ namespace KopiLua
 				int[] sizek_ref = new int[1];
 				sizek_ref[0] = f.sizek;
 				LuaMem.luaM_growvector(L, /*ref*/ k_ref, fs.nk, /*ref*/ sizek_ref,
-					LuaOpCodes.MAXARG_Bx, CharPtr.toCharPtr("constant table overflow"));
+					LuaOpCodes.MAXARG_Bx, CharPtr.toCharPtr("constant table overflow"), new ClassType(ClassType.TYPE_TVALUE));
 				f.sizek = sizek_ref[0];
 				f.k = k_ref[0];
 				while (oldsize < f.sizek)
@@ -1138,7 +1138,7 @@ namespace KopiLua
 			int[] sizecode_ref = new int[1];
 			sizecode_ref[0] = f.sizecode;
 			LuaMem.luaM_growvector(fs.L, /*ref*/ code_ref, fs.pc, /*ref*/ sizecode_ref,
-				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
+				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"), new ClassType(ClassType.TYPE_LONG));
 			f.sizecode = sizecode_ref[0];
 			f.code = code_ref[0];
 			f.code[fs.pc] = (long/*uint*/)i;
@@ -1148,7 +1148,7 @@ namespace KopiLua
 			int[] sizelineinfo_ref = new int[1];
 			sizelineinfo_ref[0] = f.sizelineinfo;
 			LuaMem.luaM_growvector(fs.L, /*ref*/ lineinfo_ref, fs.pc, /*ref*/ sizelineinfo_ref,
-				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"));
+				LuaLimits.MAX_INT, CharPtr.toCharPtr("code size overflow"), new ClassType(ClassType.TYPE_INT));
 			f.sizelineinfo = sizelineinfo_ref[0];
 			f.lineinfo = lineinfo_ref[0];
 			f.lineinfo[fs.pc] = line;

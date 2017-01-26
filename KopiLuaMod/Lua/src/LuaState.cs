@@ -146,12 +146,12 @@ namespace KopiLua
 		private static void stack_init(lua_State L1, lua_State L) 
 		{
 			/* initialize CallInfo array */
-			L1.base_ci = LuaMem.luaM_newvector<CallInfo>(L, BASIC_CI_SIZE);
+			L1.base_ci = LuaMem.luaM_newvector<CallInfo>(L, BASIC_CI_SIZE, new ClassType(ClassType.TYPE_CALLINFO));
 			L1.ci = L1.base_ci[0];
 			L1.size_ci = BASIC_CI_SIZE;
 			L1.end_ci = L1.base_ci[L1.size_ci - 1];
 			/* initialize stack array */
-			L1.stack = LuaMem.luaM_newvector<TValue>(L, BASIC_STACK_SIZE + EXTRA_STACK);
+			L1.stack = LuaMem.luaM_newvector<TValue>(L, BASIC_STACK_SIZE + EXTRA_STACK, new ClassType(ClassType.TYPE_TVALUE));
 			L1.stacksize = BASIC_STACK_SIZE + EXTRA_STACK;
 			L1.top = L1.stack[0];
 			L1.stack_last = L1.stack[L1.stacksize - EXTRA_STACK - 1];
@@ -168,8 +168,8 @@ namespace KopiLua
 
 		private static void freestack(lua_State L, lua_State L1) 
 		{
-			LuaMem.luaM_freearray(L, L1.base_ci);
-			LuaMem.luaM_freearray(L, L1.stack);
+			LuaMem.luaM_freearray(L, L1.base_ci, new ClassType(ClassType.TYPE_CALLINFO));
+			LuaMem.luaM_freearray(L, L1.stack, new ClassType(ClassType.TYPE_TVALUE));
 		}
 
 		/*
@@ -227,17 +227,17 @@ namespace KopiLua
 			LuaGC.luaC_freeall(L);  /* collect all objects */
 			LuaLimits.lua_assert(g.rootgc == obj2gco(L));
 			LuaLimits.lua_assert(g.strt.nuse == 0);
-			LuaMem.luaM_freearray(L, G(L).strt.hash);
+			LuaMem.luaM_freearray(L, G(L).strt.hash, new ClassType(ClassType.TYPE_GCOBJECT));
 			LuaZIO.luaZ_freebuffer(L, g.buff);
 			freestack(L, L);
-			LuaLimits.lua_assert(g.totalbytes == LuaConf.GetUnmanagedSize(typeof(LG)));
+            LuaLimits.lua_assert(g.totalbytes == LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LG))); //typeof(LG)
 			//g.frealloc(g.ud, fromstate(L), (uint)state_size(typeof(LG)), 0);
 		}
 
 		/*private */public static lua_State luaE_newthread(lua_State L) 
 		{
 			//lua_State L1 = tostate(luaM_malloc(L, state_size(typeof(lua_State))));
-			lua_State L1 = LuaMem.luaM_new<lua_State>(L);
+			lua_State L1 = LuaMem.luaM_new<lua_State>(L, new ClassType(ClassType.TYPE_LUA_STATE));
 			LuaGC.luaC_link(L, obj2gco(L1), Lua.LUA_TTHREAD);
 			preinit_state(L1, G(L));
 			stack_init(L1, L);  /* init stack */
@@ -265,7 +265,7 @@ namespace KopiLua
 			lua_State L;
 			global_State g;
 			//object l = f(ud, null, 0, (uint)state_size(typeof(LG)));
-			object l = f.exec(typeof(LG));
+            object l = f.exec(new ClassType(ClassType.TYPE_LG)); //typeof(LG)
 			if (l == null) 
 			{
 				return null;
@@ -303,7 +303,7 @@ namespace KopiLua
 			g.grayagain = null;
 			g.weak = null;
 			g.tmudata = null;
-			g.totalbytes = (long/*uint*/)LuaConf.GetUnmanagedSize(typeof(LG));
+            g.totalbytes = (long/*uint*/)LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LG));//typeof(LG)
 			g.gcpause = LuaConf.LUAI_GCPAUSE;
 			g.gcstepmul = LuaConf.LUAI_GCMUL;
 			g.gcdept = 0;

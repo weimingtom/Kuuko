@@ -598,9 +598,9 @@ namespace KopiLua
 						{
 							black2gray(o);  /* keep it gray */
 						}
-						return LuaConf.GetUnmanagedSize(typeof(Table)) +
-							LuaConf.GetUnmanagedSize(typeof(TValue)) * h.sizearray +
-							LuaConf.GetUnmanagedSize(typeof(Node)) * LuaObject.sizenode(h);
+                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TABLE)) + //typeof(Table)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * h.sizearray + //typeof(TValue)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_NODE)) * LuaObject.sizenode(h); //typeof(Node)
 					}
 				case Lua.LUA_TFUNCTION:
 					{
@@ -618,22 +618,22 @@ namespace KopiLua
 						g.grayagain = o;
 						black2gray(o);
 						traversestack(g, th);
-						return LuaConf.GetUnmanagedSize(typeof(lua_State)) +
-							LuaConf.GetUnmanagedSize(typeof(TValue)) * th.stacksize +
-							LuaConf.GetUnmanagedSize(typeof(CallInfo)) * th.size_ci;
+                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LUA_STATE)) + //typeof(lua_State)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * th.stacksize + //typeof(TValue)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CALLINFO)) * th.size_ci; //typeof(CallInfo)
 					}
 				case LuaObject.LUA_TPROTO:
 					{
 						Proto p = LuaState.gco2p(o);
 						g.gray = p.gclist;
 						traverseproto(g, p);
-						return LuaConf.GetUnmanagedSize(typeof(Proto)) +
-							LuaConf.GetUnmanagedSize(typeof(long/*UInt32*//*Instruction*/)) * p.sizecode +
-							LuaConf.GetUnmanagedSize(typeof(Proto)) * p.sizep +
-							LuaConf.GetUnmanagedSize(typeof(TValue)) * p.sizek +
-							LuaConf.GetUnmanagedSize(typeof(int)) * p.sizelineinfo +
-							LuaConf.GetUnmanagedSize(typeof(LocVar)) * p.sizelocvars +
-							LuaConf.GetUnmanagedSize(typeof(TString)) * p.sizeupvalues;
+                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_PROTO)) + //typeof(Proto)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LONG)) * p.sizecode + //typeof(long/*UInt32*//*Instruction*/)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_PROTO)) * p.sizep + //typeof(Proto)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * p.sizek + //typeof(TValue)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_INT)) * p.sizelineinfo + //typeof(int)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LOCVAR)) * p.sizelocvars + //typeof(LocVar)
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TSTRING)) * p.sizeupvalues; //typeof(TString)
 					}
 				default: 
 					{
@@ -748,13 +748,13 @@ namespace KopiLua
 					{
 						LuaState.G(L).strt.nuse--;
 						LuaMem.SubtractTotalBytes(L, LuaString.sizestring(LuaState.gco2ts(o)));
-						LuaMem.luaM_freemem(L, LuaState.gco2ts(o));
+						LuaMem.luaM_freemem(L, LuaState.gco2ts(o), new ClassType(ClassType.TYPE_TSTRING));
 						break;
 					}
 				case Lua.LUA_TUSERDATA:
 					{
 						LuaMem.SubtractTotalBytes(L, LuaString.sizeudata(LuaState.gco2u(o)));
-						LuaMem.luaM_freemem(L, LuaState.gco2u(o));
+						LuaMem.luaM_freemem(L, LuaState.gco2u(o), new ClassType(ClassType.TYPE_UDATA));
 						break;
 					}
 				default: 

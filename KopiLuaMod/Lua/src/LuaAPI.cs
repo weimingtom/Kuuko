@@ -1236,7 +1236,7 @@ namespace KopiLua
 			return u.user_data;
 		}
 
-		public static object lua_newuserdata(lua_State L, Type t)
+		public static object lua_newuserdata(lua_State L, ClassType t)
 		{
 			Udata u;
 			LuaLimits.lua_lock(L);

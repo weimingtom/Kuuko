@@ -12,9 +12,9 @@ namespace KopiLua
 	{
 		public const string MEMERRMSG = "not enough memory";
 
-		public static T[] luaM_reallocv<T>(lua_State L, T[] block, int new_size)
+		public static T[] luaM_reallocv<T>(lua_State L, T[] block, int new_size, ClassType t)
 		{
-			return (T[])luaM_realloc_(L, block, new_size);
+			return (T[])luaM_realloc_(L, block, new_size, t);
 		}
 		
 		//#define luaM_freemem(L, b, s)	luaM_realloc_(L, (b), (s), 0)
@@ -22,48 +22,48 @@ namespace KopiLua
 		//public static void luaM_freearray(lua_State L, object b, int n, Type t) { luaM_reallocv(L, b, n, 0, Marshal.SizeOf(b)); }
 
 		// C# has it's own gc, so nothing to do here...in theory...
-		public static void luaM_freemem<T>(lua_State L, T b) 
+		public static void luaM_freemem<T>(lua_State L, T b, ClassType t) 
 		{ 
-			luaM_realloc_<T>(L, new T[] {b}, 0); 
+			luaM_realloc_<T>(L, new T[] {b}, 0, t); 
 		}
 		
-		public static void luaM_free<T>(lua_State L, T b) 
+		public static void luaM_free<T>(lua_State L, T b, ClassType t) 
 		{ 
-			luaM_realloc_<T>(L, new T[] {b}, 0); 
+			luaM_realloc_<T>(L, new T[] {b}, 0, t); 
 		}
 		
-		public static void luaM_freearray<T>(lua_State L, T[] b) 
+		public static void luaM_freearray<T>(lua_State L, T[] b, ClassType t) 
 		{ 
-			luaM_reallocv(L, b, 0); 
+			luaM_reallocv(L, b, 0, t); 
 		}
 
-		public static T luaM_malloc<T>(lua_State L) 
+		public static T luaM_malloc<T>(lua_State L, ClassType t) 
 		{ 
-			return (T)luaM_realloc_<T>(L); 
+			return (T)luaM_realloc_<T>(L, t); 
+		}
+
+        public static T luaM_new<T>(lua_State L, ClassType t) 
+		{ 
+			return (T)luaM_realloc_<T>(L, t); 
 		}
 		
-		public static T luaM_new<T>(lua_State L) 
-		{ 
-			return (T)luaM_realloc_<T>(L); 
-		}
-		
-		public static T[] luaM_newvector<T>(lua_State L, int n)
+		public static T[] luaM_newvector<T>(lua_State L, int n, ClassType t)
 		{
-			return luaM_reallocv<T>(L, null, n);
+			return luaM_reallocv<T>(L, null, n, t);
 		}
 
-		public static void luaM_growvector<T>(lua_State L, /*ref*/ T[][] v, int nelems, /*ref*/ int[] size, int limit, CharPtr e)
+		public static void luaM_growvector<T>(lua_State L, /*ref*/ T[][] v, int nelems, /*ref*/ int[] size, int limit, CharPtr e, ClassType t)
 		{
 			if (nelems + 1 > size[0])
 			{
-				v[0] = (T[])luaM_growaux_(L, /*ref*/ v, /*ref*/ size, limit, e);
+				v[0] = (T[])luaM_growaux_(L, /*ref*/ v, /*ref*/ size, limit, e, t);
 			}
 		}
 
-		public static T[] luaM_reallocvector<T>(lua_State L, /*ref*/ T[][] v, int oldn, int n)
+		public static T[] luaM_reallocvector<T>(lua_State L, /*ref*/ T[][] v, int oldn, int n, ClassType t)
 		{
 			Debug.Assert((v[0] == null && oldn == 0) || (v[0].Length == oldn));
-			v[0] = luaM_reallocv<T>(L, v[0], n);
+			v[0] = luaM_reallocv<T>(L, v[0], n, t);
 			return v[0];
 		}
 
@@ -89,7 +89,7 @@ namespace KopiLua
 
 
 		public static T[] luaM_growaux_<T>(lua_State L, /*ref*/ T[][] block, /*ref*/ int[] size,
-			int limit, CharPtr errormsg)
+			int limit, CharPtr errormsg, ClassType t)
 		{
 			T[] newblock;
 			int newsize;
@@ -110,7 +110,7 @@ namespace KopiLua
 					newsize = MINSIZEARRAY;  /* minimum size */
 				}
 			}
-			newblock = luaM_reallocv<T>(L, block[0], newsize);
+			newblock = luaM_reallocv<T>(L, block[0], newsize, t);
 			size[0] = newsize;  /* update only when everything else is OK */
 			return newblock;
 		}
@@ -124,39 +124,39 @@ namespace KopiLua
 		/*
 		 ** generic allocation routine.
 		 */
-		public static object luaM_realloc_(lua_State L, Type t)
+		public static object luaM_realloc_(lua_State L, ClassType t)
 		{
 			int unmanaged_size = (int)LuaConf.GetUnmanagedSize(t);
 			int nsize = unmanaged_size;
-			object new_obj = System.Activator.CreateInstance(t);
+			object new_obj = t.Alloc();
 			AddTotalBytes(L, nsize);
 			return new_obj;
 		}
 
-		public static object luaM_realloc_<T>(lua_State L)
+		public static object luaM_realloc_<T>(lua_State L, ClassType t)
 		{
-			int unmanaged_size = (int)LuaConf.GetUnmanagedSize(typeof(T));
+			int unmanaged_size = (int)t.GetUnmanagedSize();//LuaConf.GetUnmanagedSize(typeof(T));
 			int nsize = unmanaged_size;
-			T new_obj = (T)System.Activator.CreateInstance(typeof(T));
+            T new_obj = (T)t.Alloc();//System.Activator.CreateInstance(typeof(T));
 			AddTotalBytes(L, nsize);
 			return new_obj;
 		}
 
-		public static object luaM_realloc_<T>(lua_State L, T obj)
+		public static object luaM_realloc_<T>(lua_State L, T obj, ClassType t)
 		{
-			int unmanaged_size = (int)LuaConf.GetUnmanagedSize(typeof(T));
+			int unmanaged_size = (int)t.GetUnmanagedSize();//LuaConf.GetUnmanagedSize(typeof(T))
 			int old_size = (obj == null) ? 0 : unmanaged_size;
 			int osize = old_size * unmanaged_size;
 			int nsize = unmanaged_size;
-			T new_obj = (T)System.Activator.CreateInstance(typeof(T));
+            T new_obj = (T)t.Alloc(); //System.Activator.CreateInstance(typeof(T))
 			SubtractTotalBytes(L, osize);
 			AddTotalBytes(L, nsize);
 			return new_obj;
 		}
 
-		public static object luaM_realloc_<T>(lua_State L, T[] old_block, int new_size)
+		public static object luaM_realloc_<T>(lua_State L, T[] old_block, int new_size, ClassType t)
 		{
-			int unmanaged_size = (int)LuaConf.GetUnmanagedSize(typeof(T));
+			int unmanaged_size = (int)t.GetUnmanagedSize();//LuaConf.GetUnmanagedSize(typeof(T));
 			int old_size = (old_block == null) ? 0 : old_block.Length;
 			int osize = old_size * unmanaged_size;
 			int nsize = new_size * unmanaged_size;
@@ -169,7 +169,7 @@ namespace KopiLua
 			{
 				new_block[i] = (T)System.Activator.CreateInstance(typeof(T));
 			}
-			if (CanIndex(typeof(T)))
+			if (CanIndex(t))
 			{
 				for (int i = 0; i < new_size; i++)
 				{
@@ -184,34 +184,9 @@ namespace KopiLua
 			return new_block;
 		}
 
-		public static bool CanIndex(Type t)
+		public static bool CanIndex(ClassType t)
 		{
-			if (t == typeof(char))
-			{
-				return false;
-			}
-			if (t == typeof(byte))
-			{
-				return false;
-			}
-			if (t == typeof(int))
-			{
-				return false;
-			}
-			/*
-			if (t == typeof(uint))
-			{
-				return false;
-			}*/
-			if (t == typeof(LocVar))
-			{
-				return false;
-			}
-			if (t == typeof(long))
-			{
-				return false;
-			}
-			return true;
+            return t.CanIndex();
 		}
 
 		public static void AddTotalBytes(lua_State L, int num_bytes) 
