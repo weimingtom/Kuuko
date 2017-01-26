@@ -168,13 +168,13 @@ namespace KopiLua
 		
 		public static int cast_int_instruction(long/*UInt32*//*Instruction*/ i) 
 		{ 
-			return Convert.ToInt32(i); 
+			return ClassType.ConvertToInt32(i); 
 		}
 		
 		public static int cast_int(object i) 
 		{ 
 			Debug.Assert(false, "Can't convert int."); 
-			return Convert.ToInt32(i); 
+			return ClassType.ConvertToInt32_object(i); 
 		}
 
 		public static Double/*lua_Number*/ cast_num(int i) 
@@ -194,8 +194,9 @@ namespace KopiLua
 		
 		public static Double/*lua_Number*/ cast_num(object i) 
 		{ 
+            //FIXME:
 			Debug.Assert(false, "Can't convert number."); 
-			return Convert.ToSingle(i); 
+			return ClassType.ConvertToSingle(i); 
 		}
 
 		/*

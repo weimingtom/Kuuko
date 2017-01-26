@@ -3,11 +3,6 @@
  ** Interface from Lua to its debug API
  ** See Copyright Notice in lua.h
  */
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace KopiLua
 {
 	public class LuaDebugLib

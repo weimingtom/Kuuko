@@ -161,7 +161,7 @@ public static TValue luaH_getnum(Table t, int key)
 (x) #if #else #endif
 (x) ulong
 (x) [Conditional("DEBUG")]
-sizeof
+(x) sizeof  ->see ClassType
 (x) private readonly static Byte[] luaP_opmodes = {  //remove comment
 (x) unchecked
 (x) private static priority_[] priority =  //remove comment
@@ -171,13 +171,19 @@ sizeof
 (x) switch (m.Groups[2].Value) //string switch
 (x) public struct Value //user-defined value types.
 (x) out <var>
-Type t (?->see ClassType)
-(x?) uint (!!!remove not finish!!!)
+(x) Type t  ->see ClassType)
+(x)(x?) uint (!!!remove not finish!!!)
 (x) ref remove (!!!remove ref not finish, search 'ref<space key>' !!!)
-uint64
-int64
-Marshal
-typeof
-System.Activator
-Int32
+(x) uint64
+(x) int64
+(x) Marshal->see ClassType
+(x) typeof
+(x) GetType()->see ClassType
+(x) System.Activator->see ClassType
+(x) Int32
+(x) using System.Reflection;
+(x) using System.Runtime.Serialization.Formatters.Binary; ->See ClassType
+(x) using System.Runtime.InteropServices;->See ClassType
+ClassType move to no depend
+(x) Convert.ToInt32->see ClassType
 

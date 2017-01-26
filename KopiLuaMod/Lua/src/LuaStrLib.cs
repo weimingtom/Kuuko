@@ -4,8 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace KopiLua
 {
@@ -166,31 +164,19 @@ namespace KopiLua
 			return 1;
 		}
 
-		private static int writer(lua_State L, object b, int/*uint*/ size, object B)
+		private static int writer(lua_State L, object b, int/*uint*/ size, object B, ClassType t)
 		{
-			if (b.GetType() != typeof(CharPtr))
-			{
-				MemoryStream stream = new MemoryStream();
-				try
-				{
-					BinaryFormatter formatter = new BinaryFormatter();
-					formatter.Serialize(stream, b);
-					stream.Flush();
-					byte[] bytes = stream.GetBuffer();
-					char[] chars = new char[bytes.Length];
-					for (int i = 0; i < bytes.Length; i++)
-					{
-						chars[i] = (char)bytes[i];
-					}
-					b = new CharPtr(chars);
-				} 
-				finally
-				{
-					if (stream != null)
-					{
-						stream.Dispose();
-					}
-				}
+            //FIXME:b always is CharPtr
+            //if (b.GetType() != typeof(CharPtr))
+			if (t.GetTypeID() == ClassType.TYPE_CHARPTR)
+            {
+                byte[] bytes = t.ObjToBytes2(b);
+                char[] chars = new char[bytes.Length];
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    chars[i] = (char)bytes[i];
+                }
+                b = new CharPtr(chars);
 			}
 			LuaAuxLib.luaL_addlstring((luaL_Buffer)B, (CharPtr)b, size);
 			return 0;
@@ -200,7 +186,7 @@ namespace KopiLua
 		{
 			public int exec(lua_State L, CharPtr p, int/*uint*/ sz, object ud)
 			{
-				return writer(L, p, sz, ud);
+				return writer(L, p, sz, ud, new ClassType(ClassType.TYPE_CHARPTR));
 			}
 		}
 
@@ -1315,7 +1301,7 @@ namespace KopiLua
 						case 'i':
 							{
 								addintlen(form);
-								LuaConf.sprintf(buff, form, (Int64/*LUA_INTFRM_T*/)LuaAuxLib.luaL_checknumber(L, arg));
+								LuaConf.sprintf(buff, form, (long/*Int64*//*LUA_INTFRM_T*/)LuaAuxLib.luaL_checknumber(L, arg));
 								break;
 							}
 						case 'o':
@@ -1324,7 +1310,7 @@ namespace KopiLua
 						case 'X':
 							{
 								addintlen(form);
-								LuaConf.sprintf(buff, form, (UInt64/*UNSIGNED_LUA_INTFRM_T*/)LuaAuxLib.luaL_checknumber(L, arg));
+								LuaConf.sprintf(buff, form, (long/*UInt64*//*UNSIGNED_LUA_INTFRM_T*/)LuaAuxLib.luaL_checknumber(L, arg));
 								break;
 							}
 						case 'e':

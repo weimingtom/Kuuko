@@ -5,7 +5,6 @@
  */
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace KopiLua
 {
@@ -125,9 +124,9 @@ namespace KopiLua
 			return (GCObject)v;
 		}
 
-		public static int state_size(object x) 
-		{ 
-			return Marshal.SizeOf(x) + LuaConf.LUAI_EXTRASPACE; 
+		public static int state_size(object x, ClassType t) 
+		{
+            return t.GetMarshalSizeOf() + LuaConf.LUAI_EXTRASPACE; //Marshal.SizeOf(x) 
 		}
 		
 		/*

@@ -174,7 +174,7 @@ namespace KopiLua
 			LuaMem.luaM_freearray<long/*UInt32*//*Instruction*/>(L, f.code, new ClassType(ClassType.TYPE_LONG));
 			LuaMem.luaM_freearray<Proto>(L, f.p, new ClassType(ClassType.TYPE_PROTO));
 			LuaMem.luaM_freearray<TValue>(L, f.k, new ClassType(ClassType.TYPE_TVALUE));
-			LuaMem.luaM_freearray<Int32>(L, f.lineinfo, new ClassType(ClassType.TYPE_INT32));
+			LuaMem.luaM_freearray<int/*Int32*/>(L, f.lineinfo, new ClassType(ClassType.TYPE_INT32));
 			LuaMem.luaM_freearray<LocVar>(L, f.locvars, new ClassType(ClassType.TYPE_LOCVAR));
 			LuaMem.luaM_freearray<TString>(L, f.upvalues, new ClassType(ClassType.TYPE_TSTRING));
 			LuaMem.luaM_free(L, f, new ClassType(ClassType.TYPE_PROTO));

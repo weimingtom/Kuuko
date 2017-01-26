@@ -5,7 +5,6 @@
  */
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace KopiLua
 {
@@ -14,13 +13,9 @@ namespace KopiLua
 
 	public class LuaDump
 	{
-		public static void DumpMem(object b, DumpState D)
+		public static void DumpMem(object b, DumpState D, ClassType t)
 		{
-			int size = Marshal.SizeOf(b);
-			IntPtr ptr = Marshal.AllocHGlobal(size);
-			Marshal.StructureToPtr(b, ptr, false);
-			byte[] bytes = new byte[size];
-			Marshal.Copy(ptr, bytes, 0, size);
+            byte[] bytes = t.ObjToBytes(b);
 			char[] ch = new char[bytes.Length];
 			for (int i = 0; i < bytes.Length; i++)
 			{
@@ -30,19 +25,18 @@ namespace KopiLua
 			DumpBlock(str, /*(uint)*/str.chars.Length, D);
 		}
 
-		public static void DumpMem(object b, int n, DumpState D)
+		public static void DumpMem<T>(T[] b, int n, DumpState D, ClassType t)
 		{
-			Array array = b as Array;
-			Debug.Assert(array.Length == n);
+            Debug.Assert(b.Length == n);
 			for (int i = 0; i < n; i++)
 			{
-				DumpMem(array.GetValue(i), D);
+				DumpMem(b[i], D, t);
 			}
 		}
 
-		public static void DumpVar(object x, DumpState D)
+		public static void DumpVar(object x, DumpState D, ClassType t)
 		{
-			DumpMem(x, D);
+			DumpMem(x, D, t);
 		}
 
 		private static void DumpBlock(CharPtr b, int/*uint*/ size, DumpState D)
@@ -58,23 +52,23 @@ namespace KopiLua
 		private static void DumpChar(int y, DumpState D)
 		{
 			char x = (char)y;
-			DumpVar(x,D);
+			DumpVar(x, D, new ClassType(ClassType.TYPE_CHAR));
 		}
 
 		private static void DumpInt(int x, DumpState D)
 		{
-			DumpVar(x,D);
+			DumpVar(x, D, new ClassType(ClassType.TYPE_INT));
 		}
 
 		private static void DumpNumber(Double/*lua_Number*/ x, DumpState D)
 		{
-			DumpVar(x,D);
+			DumpVar(x, D, new ClassType(ClassType.TYPE_DOUBLE));
 		}
 
-		static void DumpVector(object b, int n, DumpState D)
+		static void DumpVector<T>(T[] b, int n, DumpState D, ClassType t)
 		{
-			DumpInt(n,D);
-			DumpMem(b, n, D);
+			DumpInt(n, D);
+			DumpMem(b, n, D, t);
 		}
 
 		private static void DumpString(TString s, DumpState D)
@@ -82,19 +76,19 @@ namespace KopiLua
 			if (s == null || CharPtr.isEqual(LuaObject.getstr(s), null))
 			{
 				int/*uint*/ size = 0;
-				DumpVar(size,D);
+				DumpVar(size, D, new ClassType(ClassType.TYPE_INT));
 			}
 			else
 			{
 				int/*uint*/ size = s.getTsv().len + 1;		/* include trailing '\0' */
-				DumpVar(size,D);
+				DumpVar(size, D, new ClassType(ClassType.TYPE_INT));
 				DumpBlock(LuaObject.getstr(s), size, D);
 			}
 		}
 
-		private static void DumpCode(Proto f,DumpState D)
+		private static void DumpCode(Proto f, DumpState D)
 		{
-			DumpVector(f.code, f.sizecode, D);
+			DumpVector(f.code, f.sizecode, D, new ClassType(ClassType.TYPE_LONG));
 		}
 
 		private static void DumpConstants(Proto f, DumpState D)
@@ -103,7 +97,7 @@ namespace KopiLua
 			DumpInt(n, D);
 			for (i = 0; i < n; i++)
 			{
-				/*const*/ TValue o=f.k[i];
+				/*const*/ TValue o = f.k[i];
 				DumpChar(LuaObject.ttype(o), D);
 				switch (LuaObject.ttype(o))
 				{
@@ -145,7 +139,7 @@ namespace KopiLua
 		{
 			int i,n;
 			n = (D.strip != 0) ? 0 : f.sizelineinfo;
-			DumpVector(f.lineinfo, n, D);
+			DumpVector(f. lineinfo, n, D, new ClassType(ClassType.TYPE_INT));
 			n = (D.strip != 0) ? 0 : f.sizelocvars;
 			DumpInt(n, D);
 			for (i = 0; i < n; i++)

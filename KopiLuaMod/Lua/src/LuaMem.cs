@@ -167,14 +167,14 @@ namespace KopiLua
 			}
 			for (int i = old_size; i < new_size; i++)
 			{
-				new_block[i] = (T)System.Activator.CreateInstance(typeof(T));
+                new_block[i] = (T)t.Alloc();// System.Activator.CreateInstance(typeof(T));
 			}
 			if (CanIndex(t))
 			{
 				for (int i = 0; i < new_size; i++)
 				{
 					ArrayElement elem = new_block[i] as ArrayElement;
-					Debug.Assert(elem != null, String.Format("Need to derive type {0} from ArrayElement", typeof(T).ToString()));
+					Debug.Assert(elem != null, String.Format("Need to derive type {0} from ArrayElement", t.GetTypeString()));
 					elem.set_index(i);
 					elem.set_array(new_block);
 				}

@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace KopiLua
 {
@@ -30,12 +31,24 @@ namespace KopiLua
         public const int TYPE_UPVAL = 20;//UpVal
         public const int TYPE_INT32 = 21;//Int32
         public const int TYPE_GCOBJECT = 22;//GCObject
+        //---
+        public const int TYPE_CHARPTR = 23;
         
         private int type = 0;
 
         public ClassType(int type)
         {
             this.type = type;
+        }
+
+        public int GetTypeID()
+        {
+            return this.type;
+        }
+
+        public string GetTypeString()
+        {
+            return this.GetOriginalType().GetType().ToString();
         }
 
         public Type GetOriginalType()
@@ -127,6 +140,10 @@ namespace KopiLua
             else if (type == TYPE_GCOBJECT)
             {
                 return typeof(GCObject);
+            }
+            else if (type == TYPE_CHARPTR)
+            {
+                return typeof(CharPtr);
             }
             return null;
         }
@@ -372,6 +389,128 @@ namespace KopiLua
             }
             Debug.Assert(false, "Trying to get unknown sized of unmanaged type " + t.ToString());
             return 0;
+        }
+
+        public int GetMarshalSizeOf()
+        {
+            //FIXME:change to hard code method
+            if (false) 
+            {
+                //original method
+                return Marshal.SizeOf(this.GetOriginalType());
+            }
+            else
+            {
+                //new method
+                return GetUnmanagedSize();
+            }
+        }
+
+        //only byValue type
+        public byte[] ObjToBytes(object b)
+        {
+            int size = Marshal.SizeOf(b);
+            IntPtr ptr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(b, ptr, false);
+            byte[] bytes = new byte[size];
+            Marshal.Copy(ptr, bytes, 0, size);
+            return bytes;
+        }
+
+        public byte[] ObjToBytes2(object b)
+        {
+            byte[] bytes = new byte[0];
+            MemoryStream stream = new MemoryStream();
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, b);
+                stream.Flush();
+                bytes = stream.GetBuffer();
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Dispose();
+                }
+            }
+            return bytes;
+        }
+
+        public object bytesToObj(byte[] bytes)
+        {
+            GCHandle pinnedPacket = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            if (true)
+            {
+                object b = Marshal.PtrToStructure(pinnedPacket.AddrOfPinnedObject(), GetOriginalType());
+                pinnedPacket.Free();
+                return b;
+            }
+            else
+            {
+                object b = null;
+                return b;
+            }
+        }
+
+        //number of ints inside a lua_Number
+        public static int GetNumInts()
+        {
+            return sizeof(Double/*lua_Number*/) / sizeof(int);
+        }
+
+        public static int SizeOfInt()
+        {
+            return sizeof(int);
+        }
+
+        public static int SizeOfLong()
+        {
+            //sizeof(long/*uint*/)
+            //sizeof(long/*UInt32*//*Instruction*/));
+            return sizeof(long);
+        }
+
+        public static int SizeOfDouble()
+        {
+            //sizeof(Double/*lua_Number*/)
+            return sizeof(double);
+        }
+
+        public static Double ConvertToSingle(object o)
+        {
+            return Convert.ToSingle(o);
+        }
+
+        public static char ConvertToChar(String str)
+        {
+            return Convert.ToChar(str);
+        }
+
+        public static int ConvertToInt32(String str)
+        {
+            return Convert.ToInt32(str);
+        }
+
+        public static int ConvertToInt32(long i)
+        {
+            return Convert.ToInt32(i);
+        }
+
+        public static int ConvertToInt32_object(object i)
+        {
+            return Convert.ToInt32(i);
+        }
+
+        public static double ConvertToDouble(String str)
+        {
+            return Convert.ToDouble(str);
+        }
+
+        public static double ConvertToInt32(object obj)
+        {
+            return Convert.ToInt32(obj);
         }
     }
 }

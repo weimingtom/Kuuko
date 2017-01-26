@@ -100,8 +100,7 @@ namespace KopiLua
 		/*
 		 ** number of ints inside a lua_Number
 		 */
-		public const int numints = sizeof(Double/*lua_Number*/) / sizeof(int);
-
+		public /*const*/static readonly int numints = ClassType.GetNumInts();
 
 		//static const Node dummynode_ = {
 		//{{null}, LUA_TNIL},  /* value */

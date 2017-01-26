@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace KopiLua
 {
@@ -262,7 +261,7 @@ namespace KopiLua
 			// so that we don't have to change any of the args indexing
 			// code above
 			List<string> newargs = new List<string>(args);
-			newargs.Insert(0, Assembly.GetExecutingAssembly().Location);
+			newargs.Insert(0, "luac");//Assembly.GetExecutingAssembly().Location);
 			args = (string[])newargs.ToArray();
 
 			lua_State L;

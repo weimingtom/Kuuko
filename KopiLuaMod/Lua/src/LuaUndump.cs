@@ -5,7 +5,6 @@
  */
 using System;
 using System.Collections;
-using System.Runtime.InteropServices;
 
 namespace KopiLua
 {
@@ -51,7 +50,7 @@ namespace KopiLua
 
 		public static object LoadMem(LoadState S, ClassType t)
 		{
-			int size = Marshal.SizeOf(t);
+            int size = t.GetMarshalSizeOf();
 			CharPtr str = CharPtr.toCharPtr(new char[size]);
 			LoadBlock(S, str, size);
 			byte[] bytes = new byte[str.chars.Length];
@@ -59,18 +58,8 @@ namespace KopiLua
 			{
 				bytes[i] = (byte)str.chars[i];
 			}
-			GCHandle pinnedPacket = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            if (true)
-            {
-                object b = Marshal.PtrToStructure(pinnedPacket.AddrOfPinnedObject(), t.GetOriginalType());
-                pinnedPacket.Free();
-                return b;
-            }
-            else
-            {
-                object b = null;
-                return b;
-            }
+            object b = t.bytesToObj(bytes);
+            return b;
 		}
 
 		public static object LoadMem(LoadState S, ClassType t, int n)
@@ -323,13 +312,14 @@ namespace KopiLua
 			//*h++=(char)*(char*)&x;				/* endianness */
 			h.set(0, (char)x);						/* endianness */
 			h.inc();
-			h.set(0, (char)sizeof(int));
+			h.set(0, (char)ClassType.SizeOfInt());
 			h.inc();
-			h.set(0, (char)sizeof(long/*uint*/));
+            //FIXME:
+			h.set(0, (char)ClassType.SizeOfLong());//sizeof(long/*uint*/)
 			h.inc();
-			h.set(0, (char)sizeof(long/*UInt32*//*Instruction*/));
+            h.set(0, (char)ClassType.SizeOfLong());//sizeof(long/*UInt32*//*Instruction*/));
 			h.inc();
-			h.set(0, (char)sizeof(Double/*lua_Number*/));
+			h.set(0, (char)ClassType.SizeOfDouble());//sizeof(Double/*lua_Number*/)
 			h.inc();
 			//(h++)[0] = ((lua_Number)0.5 == 0) ? 0 : 1;		/* is lua_Number integral? */
 			h.set(0, (char)0);	// always 0 on this build

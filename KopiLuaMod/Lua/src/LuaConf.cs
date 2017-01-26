@@ -5,10 +5,8 @@
  */
 
 using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace KopiLua
 {
@@ -575,7 +573,7 @@ namespace KopiLua
 
 			try
 			{
-				return Convert.ToDouble(str.ToString());
+				return ClassType.ConvertToDouble(str.ToString());
 			}
 			catch (System.OverflowException)
 			{
@@ -1149,7 +1147,7 @@ namespace KopiLua
 				if (invalid || (!had_digits))
 				{
 					end[0] = s;
-					return /*UInt64.MaxValue*/Int64.MaxValue;
+					return /*UInt64.MaxValue*//*Int64.MaxValue*/long.MaxValue;
 				}
 
 				// if the value was a negative then negate it here
@@ -1200,22 +1198,22 @@ namespace KopiLua
 							}
 						case 'c':
 							{
-								argp[parm_index++] = Convert.ToChar(str);
+								argp[parm_index++] = ClassType.ConvertToChar(str);
 								break;
 							}
 						case 'd':
 							{
-								argp[parm_index++] = Convert.ToInt32(str);
+                                argp[parm_index++] = ClassType.ConvertToInt32(str);
 								break;
 							}
 						case 'l':
 							{
-								argp[parm_index++] = Convert.ToDouble(str);
+                                argp[parm_index++] = ClassType.ConvertToDouble(str);
 								break;
 							}
 						case 'f':
 							{
-								argp[parm_index++] = Convert.ToDouble(str);
+                                argp[parm_index++] = ClassType.ConvertToDouble(str);
 								break;
 							}
 						//case 'p':
