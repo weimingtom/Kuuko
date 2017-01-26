@@ -41,7 +41,7 @@
 ## TODO / etc / memo   
 * http://hotruby.yukoba.jp/  
 * https://github.com/KlasBuhre/Buhrlang  
-* https://github.com/weimingtom/ChaiScript  
+* https://github.com/ChaiScript/ChaiScript  
 * https://github.com/esrrhs/fakescript  
 * https://github.com/esrrhs/fakescript-java  
 * https://github.com/rossipedia/dscript  
