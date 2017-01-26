@@ -7,6 +7,7 @@
 * https://github.com/google/leveldb  
 * https://github.com/dain/leveldb  
 * https://github.com/nhachicha/SnappyDB  
+* https://unqlite.org/  
 
 ## Java Cache / MemCached / MemCache  
 * http://www.ehcache.org/  
@@ -43,4 +44,7 @@ https://github.com/couchbaselabs/TouchDB-iOS
 https://github.com/couchbaselabs/TouchDB-Android  
 https://github.com/chosen0ne/touchdb  
 https://github.com/jzablocki/TouchDB-Mono  
+
+## Sqlite  
+* http://sqlite.org/  
 
