@@ -419,7 +419,8 @@ namespace KopiLua
 												c = 10*c + (ls.current-'0');
 												next(ls);
 											} while (++i < 3 && LuaConf.isdigit(ls.current));
-											if (c > System.Byte.MaxValue)
+											//System.Byte.MaxValue
+											if (c > byte.MaxValue)
 											{
 												luaX_lexerror(ls, CharPtr.toCharPtr("escape sequence too large"), (int)RESERVED.TK_STRING);
 											}

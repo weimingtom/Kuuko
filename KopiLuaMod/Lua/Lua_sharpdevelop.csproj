@@ -63,6 +63,7 @@
     <Compile Include="src\CCallS.cs" />
     <Compile Include="src\CClosure.cs" />
     <Compile Include="src\CharPtr.cs" />
+    <Compile Include="src\ClassType.cs" />
     <Compile Include="src\Closure.cs" />
     <Compile Include="src\ClosureHeader.cs" />
     <Compile Include="src\ClosureType.cs" />

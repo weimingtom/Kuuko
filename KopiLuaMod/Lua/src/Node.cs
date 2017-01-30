@@ -3,8 +3,6 @@
  ** Some generic functions over Lua objects
  ** See Copyright Notice in lua.h
  */
-using System.Diagnostics;
-
 namespace KopiLua
 {
 	public class Node : ArrayElement
@@ -26,7 +24,7 @@ namespace KopiLua
 		public void set_array(object array)
 		{
 			this.values = (Node[])array;
-			Debug.Assert(this.values != null);
+			ClassType.Assert(this.values != null);
 		}
 		
 		public Node()
@@ -66,7 +64,7 @@ namespace KopiLua
         //operator -
 		public static int minus(Node n1, Node n2)
 		{
-			Debug.Assert(n1.values == n2.values);
+			ClassType.Assert(n1.values == n2.values);
 			return n1.index - n2.index;
 		}
 		
@@ -85,28 +83,28 @@ namespace KopiLua
         //operator >
 		public static bool greaterThan(Node n1, Node n2) 
 		{
-			Debug.Assert(n1.values == n2.values); 
+			ClassType.Assert(n1.values == n2.values); 
 			return n1.index > n2.index;
 		}
 		
         //operator >=
 		public static bool greaterEqual(Node n1, Node n2) 
 		{ 
-			Debug.Assert(n1.values == n2.values); 
+			ClassType.Assert(n1.values == n2.values); 
 			return n1.index >= n2.index;
 		}
 
         //operator <
 		public static bool lessThan(Node n1, Node n2) 
 		{ 
-			Debug.Assert(n1.values == n2.values); 
+			ClassType.Assert(n1.values == n2.values); 
 			return n1.index < n2.index;
 		}
 		
         //operator <=
 		public static bool lessEqual(Node n1, Node n2) 
 		{ 
-			Debug.Assert(n1.values == n2.values); 
+			ClassType.Assert(n1.values == n2.values); 
 			return n1.index <= n2.index; 
 		}
 

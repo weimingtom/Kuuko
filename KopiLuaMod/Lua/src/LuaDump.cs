@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -27,7 +26,7 @@ namespace KopiLua
 
 		public static void DumpMem<T>(T[] b, int n, DumpState D, ClassType t)
 		{
-            Debug.Assert(b.Length == n);
+            ClassType.Assert(b.Length == n);
 			for (int i = 0; i < n; i++)
 			{
 				DumpMem(b[i], D, t);

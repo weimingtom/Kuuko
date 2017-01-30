@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -16,7 +15,7 @@ namespace KopiLua
 	{
 		public static int pcRel(InstructionPtr pc, Proto p)
 		{
-			Debug.Assert(pc.codes == p.code);
+			ClassType.Assert(pc.codes == p.code);
 			return pc.pc - 1;
 		}
 		

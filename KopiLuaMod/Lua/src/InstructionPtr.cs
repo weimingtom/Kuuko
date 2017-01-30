@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -61,28 +60,28 @@ namespace KopiLua
         //operator <
 		public static bool lessThan(InstructionPtr p1, InstructionPtr p2)
 		{
-            Debug.Assert(p1.codes == p2.codes);
+            ClassType.Assert(p1.codes == p2.codes);
 			return p1.pc < p2.pc;
 		}
 
         //operator >
 		public static bool greaterThan(InstructionPtr p1, InstructionPtr p2)
 		{
-            Debug.Assert(p1.codes == p2.codes);
+            ClassType.Assert(p1.codes == p2.codes);
 			return p1.pc > p2.pc;
 		}
 
         //operator <=
 		public static bool lessEqual(InstructionPtr p1, InstructionPtr p2)
 		{
-            Debug.Assert(p1.codes == p2.codes);
+            ClassType.Assert(p1.codes == p2.codes);
 			return p1.pc < p2.pc;
 		}
 
         //operator >=
 		public static bool greaterEqual(InstructionPtr p1, InstructionPtr p2)
 		{
-            Debug.Assert(p1.codes == p2.codes);
+            ClassType.Assert(p1.codes == p2.codes);
 			return p1.pc > p2.pc;
 		}
 	}

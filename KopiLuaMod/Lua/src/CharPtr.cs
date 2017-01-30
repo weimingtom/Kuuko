@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -171,27 +170,27 @@ namespace KopiLua
 		
 		public static int minus(CharPtr ptr1, CharPtr ptr2)
 		{
-			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index - ptr2.index;
+			ClassType.Assert(ptr1.chars == ptr2.chars); return ptr1.index - ptr2.index;
 		}
 		
         //operator <
 		public static bool lessThan(CharPtr ptr1, CharPtr ptr2)
 		{
-			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index < ptr2.index;
+			ClassType.Assert(ptr1.chars == ptr2.chars); return ptr1.index < ptr2.index;
 		}
         //operator <=
 		public static bool lessEqual(CharPtr ptr1, CharPtr ptr2)
 		{
-			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index <= ptr2.index;
+			ClassType.Assert(ptr1.chars == ptr2.chars); return ptr1.index <= ptr2.index;
 		}
         public static bool greaterThan(CharPtr ptr1, CharPtr ptr2)
 		{
-			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index > ptr2.index;
+			ClassType.Assert(ptr1.chars == ptr2.chars); return ptr1.index > ptr2.index;
 		}
         //operator >=
 		public static bool greaterEqual(CharPtr ptr1, CharPtr ptr2)
 		{
-			Debug.Assert(ptr1.chars == ptr2.chars); return ptr1.index >= ptr2.index;
+			ClassType.Assert(ptr1.chars == ptr2.chars); return ptr1.index >= ptr2.index;
 		}
 
         //operator ==

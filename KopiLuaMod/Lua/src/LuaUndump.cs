@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Collections;
 
 namespace KopiLua
 {
@@ -64,20 +63,14 @@ namespace KopiLua
 
 		public static object LoadMem(LoadState S, ClassType t, int n)
 		{
-			ArrayList array = new ArrayList();
+			//ArrayList array = new ArrayList();
+			object[] array = new object[n];
 			for (int i = 0; i < n; i++)
 			{
-				array.Add(LoadMem(S, t));
+				array[i] = LoadMem(S, t);
 			}
-            if (true)
-            {
-                return array.ToArray(t.GetOriginalType());
-            }
-            else
-            {
-                return null;
-            }
-		}
+			return t.ToArray(array);
+        }
 		
 		public static Byte/*lu_byte*/ LoadByte(LoadState S) 
 		{ 
@@ -315,11 +308,14 @@ namespace KopiLua
 			h.set(0, (char)ClassType.SizeOfInt());
 			h.inc();
             //FIXME:
-			h.set(0, (char)ClassType.SizeOfLong());//sizeof(long/*uint*/)
+			h.set(0, (char)ClassType.SizeOfLong());
+			//sizeof(long/*uint*/)
 			h.inc();
-            h.set(0, (char)ClassType.SizeOfLong());//sizeof(long/*UInt32*//*Instruction*/));
+            h.set(0, (char)ClassType.SizeOfLong());
+            //sizeof(long/*UInt32*//*Instruction*/));
 			h.inc();
-			h.set(0, (char)ClassType.SizeOfDouble());//sizeof(Double/*lua_Number*/)
+			h.set(0, (char)ClassType.SizeOfDouble());
+			//sizeof(Double/*lua_Number*/)
 			h.inc();
 			//(h++)[0] = ((lua_Number)0.5 == 0) ? 0 : 1;		/* is lua_Number integral? */
 			h.set(0, (char)0);	// always 0 on this build

@@ -3,8 +3,6 @@
 ** Global State
 ** See Copyright Notice in lua.h
 */
-using System.Diagnostics;
-
 namespace KopiLua
 {
     /*
@@ -30,7 +28,7 @@ namespace KopiLua
         public void set_array(object array)
         {
             this.values = (CallInfo[])array;
-            Debug.Assert(this.values != null);
+            ClassType.Assert(this.values != null);
         }
         
         public CallInfo get(int offset)
@@ -50,37 +48,37 @@ namespace KopiLua
     
         public static int minus(CallInfo ci, CallInfo[] values)
         {
-            Debug.Assert(ci.values == values);
+            ClassType.Assert(ci.values == values);
             return ci.index;
         }
     
         public static int minus(CallInfo ci1, CallInfo ci2)
         {
-            Debug.Assert(ci1.values == ci2.values);
+            ClassType.Assert(ci1.values == ci2.values);
             return ci1.index - ci2.index;
         }
     
         public static bool lessThan(CallInfo ci1, CallInfo ci2)
         {
-            Debug.Assert(ci1.values == ci2.values);
+            ClassType.Assert(ci1.values == ci2.values);
             return ci1.index < ci2.index;
         }
     
         public static bool lessEqual(CallInfo ci1, CallInfo ci2)
         {
-            Debug.Assert(ci1.values == ci2.values);
+            ClassType.Assert(ci1.values == ci2.values);
             return ci1.index <= ci2.index;
         }
     
         public static bool greaterThan(CallInfo ci1, CallInfo ci2)
         {
-            Debug.Assert(ci1.values == ci2.values);
+            ClassType.Assert(ci1.values == ci2.values);
             return ci1.index > ci2.index;
         }
     
         public static bool greaterEqual(CallInfo ci1, CallInfo ci2)
         {
-            Debug.Assert(ci1.values == ci2.values);
+            ClassType.Assert(ci1.values == ci2.values);
             return ci1.index >= ci2.index;
         }
     

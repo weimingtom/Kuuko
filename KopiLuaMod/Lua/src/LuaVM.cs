@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -512,7 +511,7 @@ namespace KopiLua
 		 */
 		public static void runtime_check(lua_State L, bool c)	
 		{ 
-			Debug.Assert(c); 
+			ClassType.Assert(c); 
 		}
 
 		//#define RA(i)	(base+GETARG_A(i))

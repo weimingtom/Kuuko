@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 /*
  ** #define lua_assert
@@ -173,7 +172,7 @@ namespace KopiLua
 		
 		public static int cast_int(object i) 
 		{ 
-			Debug.Assert(false, "Can't convert int."); 
+			ClassType.Assert(false, "Can't convert int."); 
 			return ClassType.ConvertToInt32_object(i); 
 		}
 
@@ -195,7 +194,7 @@ namespace KopiLua
 		public static Double/*lua_Number*/ cast_num(object i) 
 		{ 
             //FIXME:
-			Debug.Assert(false, "Can't convert number."); 
+			ClassType.Assert(false, "Can't convert number."); 
 			return ClassType.ConvertToSingle(i); 
 		}
 

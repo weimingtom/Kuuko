@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -62,7 +61,7 @@ namespace KopiLua
 
 		public static T[] luaM_reallocvector<T>(lua_State L, /*ref*/ T[][] v, int oldn, int n, ClassType t)
 		{
-			Debug.Assert((v[0] == null && oldn == 0) || (v[0].Length == oldn));
+			ClassType.Assert((v[0] == null && oldn == 0) || (v[0].Length == oldn));
 			v[0] = luaM_reallocv<T>(L, v[0], n, t);
 			return v[0];
 		}
@@ -174,7 +173,7 @@ namespace KopiLua
 				for (int i = 0; i < new_size; i++)
 				{
 					ArrayElement elem = new_block[i] as ArrayElement;
-					Debug.Assert(elem != null, String.Format("Need to derive type {0} from ArrayElement", t.GetTypeString()));
+					ClassType.Assert(elem != null, String.Format("Need to derive type {0} from ArrayElement", t.GetTypeString()));
 					elem.set_index(i);
 					elem.set_array(new_block);
 				}

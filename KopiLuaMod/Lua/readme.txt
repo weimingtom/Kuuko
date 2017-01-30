@@ -184,6 +184,19 @@ public static TValue luaH_getnum(Table t, int key)
 (x) using System.Reflection;
 (x) using System.Runtime.Serialization.Formatters.Binary; ->See ClassType
 (x) using System.Runtime.InteropServices;->See ClassType
-ClassType move to no depend
+(x) ClassType move to no depend->remove typeof
 (x) Convert.ToInt32->see ClassType
-
+(x) params object[]->no problem, ignored
+(x) Tools.sprintf->no problem, ignored
+(x) embeded class(for example, f_call_delegate)->ignored
+(x) Debug.Assert->ClassType.Assert
+(x) using System.Diagnostics;->removed
+(x) System.Diagnostics.Process
+using System.IO;
+System.OverflowException
+System.Double.NegativeInfinity
+System.Double.PositiveInfinity
+(x) using System.Collections.Generic;
+(x) using System.Collections;
+(x) List(System.Collections) in LuaProgram.MainLua & LuacProgram.MainLuac
+(x) newargs.RemoveRange(0, i);

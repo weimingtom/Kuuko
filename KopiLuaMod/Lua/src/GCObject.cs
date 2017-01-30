@@ -22,7 +22,7 @@ namespace KopiLua
 		public void set_array(object array)
 		{
 			//this.values = (GCObject[])array;
-			//Debug.Assert(this.values != null);
+			//ClassType.Assert(this.values != null);
 		}
 
         public GCheader getGch()

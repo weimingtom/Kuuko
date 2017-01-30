@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Collections.Generic;
 
 namespace KopiLua
 {
@@ -550,9 +549,13 @@ namespace KopiLua
 			// prepend the exe name to the arg list as it's done in C
 			// so that we don't have to change any of the args indexing
 			// code above
-			List<string> newargs = new List<string>(args);
-			newargs.Insert(0, "lua");//Assembly.GetExecutingAssembly().Location);
-			args = (string[])newargs.ToArray();
+			string[] newargs = new string[(args != null ? args.Length : 0) + 1];
+			newargs[0] = "lua";//Assembly.GetExecutingAssembly().Location);
+			for (int idx = 0; idx < args.Length; idx++)
+			{
+				newargs[idx + 1] = args[idx];
+			}
+			args = newargs;
 
 			int status;
 			Smain s = new Smain();

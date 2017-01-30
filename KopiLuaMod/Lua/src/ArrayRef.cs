@@ -3,8 +3,6 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System.Diagnostics;
-
 namespace KopiLua
 {
     public class ArrayRef : GCObjectRef, ArrayElement
@@ -54,7 +52,7 @@ namespace KopiLua
         {
             // don't actually need this
             this.vals = (ArrayRef[])vals;
-            Debug.Assert(this.vals != null);
+            ClassType.Assert(this.vals != null);
         }
     }
 }

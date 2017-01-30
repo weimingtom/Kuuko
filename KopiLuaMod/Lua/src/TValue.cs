@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.Diagnostics;
 
 namespace KopiLua
 {
@@ -24,7 +23,7 @@ namespace KopiLua
 		public void set_array(object array)
 		{
 			this.values = (TValue[])array;
-			Debug.Assert(this.values != null);
+			ClassType.Assert(this.values != null);
 		}
 
         //TValue this[int offset] get
@@ -58,42 +57,42 @@ namespace KopiLua
         //operator -
         public static int minus(TValue value, TValue[] array)
         {
-            Debug.Assert(value.values == array);
+            ClassType.Assert(value.values == array);
             return value.index;
         }
 
         //operator -
         public static int minus(TValue a, TValue b)
         {
-            Debug.Assert(a.values == b.values);
+            ClassType.Assert(a.values == b.values);
             return a.index - b.index;
         }
 
         //operator <
 		public static bool lessThan(TValue a, TValue b)
 		{
-			Debug.Assert(a.values == b.values);
+			ClassType.Assert(a.values == b.values);
 			return a.index < b.index;
 		}
 
         //operator <=
         public static bool lessEqual(TValue a, TValue b)
         {
-            Debug.Assert(a.values == b.values);
+            ClassType.Assert(a.values == b.values);
             return a.index <= b.index;
         }
 
         //operator >
         public static bool greaterThan(TValue a, TValue b)
         {
-            Debug.Assert(a.values == b.values);
+            ClassType.Assert(a.values == b.values);
             return a.index > b.index;
         }
 
         //operator >=
         public static bool greaterEqual(TValue a, TValue b)
         {
-            Debug.Assert(a.values == b.values);
+            ClassType.Assert(a.values == b.values);
             return a.index >= b.index;
         }
         

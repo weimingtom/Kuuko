@@ -34,14 +34,8 @@ namespace KopiLua
 
 		private static int os_execute(lua_State L) 
 		{
-			CharPtr strCmdLine = CharPtr.toCharPtr("/C regenresx " + LuaAuxLib.luaL_optstring(L, 1, null));
-			System.Diagnostics.Process proc = new System.Diagnostics.Process();
-			proc.EnableRaisingEvents=false;
-			proc.StartInfo.FileName = "CMD.exe";
-			proc.StartInfo.Arguments = strCmdLine.ToString();
-			proc.Start();
-			proc.WaitForExit();
-			LuaAPI.lua_pushinteger(L, proc.ExitCode);
+			CharPtr strCmdLine = CharPtr.toCharPtr("" + LuaAuxLib.luaL_optstring(L, 1, null));
+			LuaAPI.lua_pushinteger(L, ClassType.processExec(strCmdLine.ToString()));
 			return 1;
 		}
 

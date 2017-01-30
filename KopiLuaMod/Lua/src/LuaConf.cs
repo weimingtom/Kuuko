@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace KopiLua
@@ -396,12 +395,12 @@ namespace KopiLua
 		//#if LUA_USE_APICHECK
 //		public static void luai_apicheck(lua_State L, bool o)	
 //		{
-//			Debug.Assert(o);
+//			ClassType.Assert(o);
 //		}
 //		
 //		public static void luai_apicheck(lua_State L, int o) 
 //		{
-//			Debug.Assert(o != 0);
+//			ClassType.Assert(o != 0);
 //		}
 		//#else
 		public static void luai_apicheck(lua_State L, bool o)	
@@ -1689,13 +1688,13 @@ namespace KopiLua
 
 		public static int clearerr(Stream f)
 		{
-			//Debug.Assert(false, "clearerr not implemented yet - mjf");
+			//ClassType.Assert(false, "clearerr not implemented yet - mjf");
 			return 0;
 		}
 
 		public static int setvbuf(Stream stream, CharPtr buffer, int mode, int/*uint*/ size)
 		{
-			Debug.Assert(false, "setvbuf not implemented yet - mjf");
+			ClassType.Assert(false, "setvbuf not implemented yet - mjf");
 			return 0;
 		}
 
