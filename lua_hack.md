@@ -71,5 +71,6 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://studio.zerobrane.com  
 require('mobdebug').start()  
 * http://www.cnblogs.com/softidea/p/5281068.html  
+* https://github.com/jasonsantos/remdebug  
 
 
