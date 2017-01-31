@@ -31,7 +31,7 @@
 * https://github.com/weimingtom/Kuuko  
 * https://github.com/gerich-home/kopilua  
 * https://github.com/NLua/KopiLua  
-增加了os_date的实现（这里改成OSDate）：  
+澧炲姞浜唎s_date鐨勫疄鐜帮紙杩欓噷鏀规垚OSDate锛夛細  
 https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs  
 * https://github.com/gfoot/kopiluadebug  
 * https://github.com/weimingtom/LuaJMod  
@@ -43,6 +43,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/forcedotcom/jillian  
 * https://github.com/yuin/gopher-lua  
 * https://github.com/hirochachacha/plua  
+* https://github.com/milochristiansen/lua  
+* https://github.com/humbletim/ljs  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
