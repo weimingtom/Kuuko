@@ -45,6 +45,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/hirochachacha/plua  
 * https://github.com/milochristiansen/lua  
 * https://github.com/humbletim/ljs  
+* https://github.com/daurnimator/lua.vm.js  
+* https://github.com/MangelMaxime/Lua.vm.js-Samples  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
