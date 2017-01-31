@@ -205,6 +205,7 @@ https://book.douban.com/subject/26920403/?from=tag
 https://book.douban.com/subject/24718740/  
 * rubys/ruby2js  
 https://github.com/rubys/ruby2js  
+* https://github.com/macournoyer/tinyrb  
 
 ## Jx9
 * https://unqlite.org/jx9.html  
@@ -216,3 +217,9 @@ https://github.com/rubys/ruby2js
 * https://github.com/weimingtom/jython_playground  
 * see jython  
 * see ironpython  
+* https://github.com/philhassey/tinypy  
+
+## Potion  
+* https://github.com/perl11/potion  
+
+
