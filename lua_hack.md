@@ -21,6 +21,7 @@
 * https://github.com/jarjin/uLua  
 * https://github.com/topameng/tolua  
 * https://www.zhihu.com/question/28619506  
+* https://github.com/jasonsantos/luajava  
 
 ## Language Interface in C++  
 * https://github.com/luabind/luabind  
