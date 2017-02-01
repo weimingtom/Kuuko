@@ -53,7 +53,8 @@ namespace KopiLua
 		 */
 		public static TValue luaT_gettm(Table events, TMS event_, TString ename) 
 		{
-			/*const*/ TValue tm = LuaTable.luaH_getstr(events, ename);
+			//const
+			TValue tm = LuaTable.luaH_getstr(events, ename);
 			LuaLimits.lua_assert(event_ <= TMS.TM_EQ);
 			if (LuaObject.ttisnil(tm))
 			{  

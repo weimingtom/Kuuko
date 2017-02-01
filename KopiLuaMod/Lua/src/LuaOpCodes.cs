@@ -319,48 +319,48 @@ namespace KopiLua
 		}
 				
 		
-			/*       T  A    B       C     mode		   opcode	*/		
-		private readonly static Byte[]/*lu_byte[]*/ luaP_opmodes = {
-			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC) 		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgN, OpMode.iABx)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgN, OpMode.iABx)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 0, OpArgMask.OpArgK, OpArgMask.OpArgN, OpMode.iABx)		
-				,opmode(0, 0, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgR, OpMode.iABC)		
-				,opmode(0, 0, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iAsBx)		
-				,opmode(1, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(1, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(1, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC)		
-				,opmode(1, 1, OpArgMask.OpArgR, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(1, 1, OpArgMask.OpArgR, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 0, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iAsBx)		
-				,opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iAsBx)		
-				,opmode(1, 0, OpArgMask.OpArgN, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 0, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC)		
-				,opmode(0, 0, OpArgMask.OpArgN, OpArgMask.OpArgN, OpMode.iABC)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABx)		
-				,opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC)		
+		//       T  A    B       C     mode		   opcode		
+		//lu_byte[]
+		private readonly static Byte[] luaP_opmodes = {
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgN, OpMode.iABx),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgN, OpMode.iABx),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 0, OpArgMask.OpArgK, OpArgMask.OpArgN, OpMode.iABx),
+			opmode(0, 0, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgR, OpMode.iABC),
+			opmode(0, 0, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iAsBx),
+			opmode(1, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(1, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(1, 0, OpArgMask.OpArgK, OpArgMask.OpArgK, OpMode.iABC),
+			opmode(1, 1, OpArgMask.OpArgR, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(1, 1, OpArgMask.OpArgR, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 0, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iAsBx),
+			opmode(0, 1, OpArgMask.OpArgR, OpArgMask.OpArgN, OpMode.iAsBx),
+			opmode(1, 0, OpArgMask.OpArgN, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 0, OpArgMask.OpArgU, OpArgMask.OpArgU, OpMode.iABC),
+			opmode(0, 0, OpArgMask.OpArgN, OpArgMask.OpArgN, OpMode.iABC),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABx),
+			opmode(0, 1, OpArgMask.OpArgU, OpArgMask.OpArgN, OpMode.iABC)
 		};
-
 
 		public const int NUM_OPCODES = (int)OpCode.OP_VARARG;
 	}

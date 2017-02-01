@@ -123,7 +123,7 @@ namespace KopiLua
 			B.buffer.set(B.p++, c);
 		}
 
-		///* compatibility only */
+		// compatibility only
 		public static void luaL_putchar(luaL_Buffer B, char c)	
 		{
 			luaL_addchar(B,c);

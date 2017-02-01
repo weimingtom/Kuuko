@@ -250,7 +250,7 @@ namespace KopiLua
 		{ 
 			setobj(L, obj, x); 
 		}
-		///* to stack (not from same stack) */
+		//to stack (not from same stack)
 		
 		//#define setobj2s	setobj
 		public static void setobj2s(lua_State L, TValue obj, TValue x) 
@@ -276,21 +276,21 @@ namespace KopiLua
 			setptvalue(L, obj, x); 
 		}
 
-		///* from table to same table */
+		// from table to same table 
 		//#define setobjt2t	setobj
 		public static void setobjt2t(lua_State L, TValue obj, TValue x) 
 		{ 
 			setobj(L, obj, x); 
 		}
 
-		///* to table */
+		// to table 
 		//#define setobj2t	setobj
 		public static void setobj2t(lua_State L, TValue obj, TValue x) 
 		{ 
 			setobj(L, obj, x); 
 		}
 
-		///* to new object */
+		// to new object 
 		//#define setobj2n	setobj
 		public static void setobj2n(lua_State L, TValue obj, TValue x) 
 		{ 
@@ -418,7 +418,7 @@ namespace KopiLua
 				l += 8; 
 				x >>= 8; 
 			}
-			return l + log_2[x];
+			return l + log_2[(int)x];
 		}
 
 		public static int luaO_rawequalObj(TValue t1, TValue t2) 

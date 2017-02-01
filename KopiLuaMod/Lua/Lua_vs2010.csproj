@@ -95,6 +95,7 @@
     <Compile Include="src\expkind.cs" />
     <Compile Include="src\FilePtr.cs" />
     <Compile Include="src\FuncState.cs" />
+    <Compile Include="src\f_parser_delegate.cs" />
     <Compile Include="src\GCheader.cs" />
     <Compile Include="src\GCObject.cs" />
     <Compile Include="src\GCObjectRef.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="src\LuaGC.cs" />
     <Compile Include="src\LuaInit.cs" />
     <Compile Include="src\LuaIOLib.cs" />
+    <Compile Include="src\luai_jmpbuf.cs" />
     <Compile Include="src\LuaLex.cs" />
     <Compile Include="src\LuaLimits.cs" />
     <Compile Include="src\luaL_Buffer.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="src\LuaState.cs" />
     <Compile Include="src\LuaString.cs" />
     <Compile Include="src\LuaStrLib.cs" />
+    <Compile Include="src\LuaStrLib_delegate.cs" />
     <Compile Include="src\LuaTable.cs" />
     <Compile Include="src\LuaTableLib.cs" />
     <Compile Include="src\LuaTM.cs" />
@@ -158,10 +161,12 @@
     <Compile Include="src\OpCode.cs" />
     <Compile Include="src\OpenValRef.cs" />
     <Compile Include="src\OpMode.cs" />
+    <Compile Include="src\Pfunc.cs" />
     <Compile Include="src\priority_.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="src\Proto.cs" />
     <Compile Include="src\RESERVED.cs" />
+    <Compile Include="src\resume_delegate.cs" />
     <Compile Include="src\RootGCRef.cs" />
     <Compile Include="src\SemInfo.cs" />
     <Compile Include="src\Smain.cs" />

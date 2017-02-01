@@ -509,7 +509,7 @@ namespace KopiLua
 			}
 			if (hasjumps(e)) 
 			{
-				int final;  /* position after whole expression */
+				int final_;  /* position after whole expression */
 				int p_f = NO_JUMP;  /* position of an eventual LOAD false */
 				int p_t = NO_JUMP;  /* position of an eventual LOAD true */
 				if (need_value(fs, e.t) != 0 || need_value(fs, e.f) != 0) 
@@ -519,9 +519,9 @@ namespace KopiLua
 					p_t = code_label(fs, reg, 1, 0);
 					luaK_patchtohere(fs, fj);
 				}
-				final = luaK_getlabel(fs);
-				patchlistaux(fs, e.f, final, reg, p_f);
-				patchlistaux(fs, e.t, final, reg, p_t);
+				final_ = luaK_getlabel(fs);
+				patchlistaux(fs, e.f, final_, reg, p_f);
+				patchlistaux(fs, e.t, final_, reg, p_t);
 			}
 			e.f = e.t = NO_JUMP;
 			e.u.s.info = reg;
@@ -801,8 +801,10 @@ namespace KopiLua
 						break;
 					}
 			}
-			/* interchange true and false lists */
-			{ 
+			//
+			// interchange true and false lists
+			//
+			{
 				int temp = e.f; 
 				e.f = e.t; 
 				e.t = temp; 

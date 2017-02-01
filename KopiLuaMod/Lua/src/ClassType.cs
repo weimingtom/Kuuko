@@ -15,30 +15,52 @@ namespace KopiLua
     	//TODO:not sync
     	private const bool DONNOT_USE_REIMPLEMENT = false;
     	
-        public const int TYPE_CHAR = 1;//char //---
+    	//char //---
+        public const int TYPE_CHAR = 1;
         //FIXME:TYPE_INT equal TYPE_INT32
-        public const int TYPE_INT = 2;//int //typeof(int/*uint*/) 
-        public const int TYPE_DOUBLE = 3; //Double, Lua_Number
-        public const int TYPE_LONG = 4; ///*UInt32*//*Instruction*/ //---
-        public const int TYPE_LG = 5;//LG
-        public const int TYPE_FILEPTR = 6;//FilePtr
-        public const int TYPE_TVALUE = 7;//TValue; //---
-        public const int TYPE_CCLOSURE = 8;//CClosure
-        public const int TYPE_LCLOSURE = 9;//LClosure
-        public const int TYPE_TABLE = 10;//Table
-        public const int TYPE_GCOBJECTREF = 11;//GCObjectRef
-        public const int TYPE_TSTRING = 12;//TString
-        public const int TYPE_NODE = 13;//Node
-        public const int TYPE_UDATA = 14;//Udata
-        public const int TYPE_LUA_STATE = 15;//lua_State
-        public const int TYPE_CALLINFO = 16;//CallInfo //---
-        public const int TYPE_PROTO = 17;//Proto //---
-        public const int TYPE_LOCVAR = 18;//LocVar
+        //int //typeof(int/*uint*/) 
+        public const int TYPE_INT = 2;
+        //Double, Lua_Number
+        public const int TYPE_DOUBLE = 3;
+		///*UInt32*//*Instruction*/ //---        
+        public const int TYPE_LONG = 4;
+		//LG        
+        public const int TYPE_LG = 5;
+        //FilePtr
+        public const int TYPE_FILEPTR = 6;
+        //TValue; //---
+        public const int TYPE_TVALUE = 7;
+        //CClosure
+        public const int TYPE_CCLOSURE = 8;
+        //LClosure
+        public const int TYPE_LCLOSURE = 9;
+        //Table
+        public const int TYPE_TABLE = 10;
+        //GCObjectRef
+        public const int TYPE_GCOBJECTREF = 11;
+        //TString
+        public const int TYPE_TSTRING = 12;
+        //Node
+        public const int TYPE_NODE = 13;
+        //Udata
+        public const int TYPE_UDATA = 14;
+        //lua_State
+        public const int TYPE_LUA_STATE = 15;
+        //CallInfo //---
+        public const int TYPE_CALLINFO = 16;
+        //Proto //---
+        public const int TYPE_PROTO = 17;
+        //LocVar
+        public const int TYPE_LOCVAR = 18;
         //---
-        public const int TYPE_CLOSURE = 19;//Closure
-        public const int TYPE_UPVAL = 20;//UpVal
-        public const int TYPE_INT32 = 21;//Int32
-        public const int TYPE_GCOBJECT = 22;//GCObject
+        //Closure
+        public const int TYPE_CLOSURE = 19;
+        //UpVal
+        public const int TYPE_UPVAL = 20;
+        //Int32
+        public const int TYPE_INT32 = 21;
+        //GCObject
+        public const int TYPE_GCOBJECT = 22;
         //---
         public const int TYPE_CHARPTR = 23;
         
@@ -652,7 +674,8 @@ namespace KopiLua
 
         public static int ConvertToInt32(long i)
         {
-            return Convert.ToInt32(i);
+            //return Convert.ToInt32(i); //FIXME:
+            return (int)i;
         }
 
         public static int ConvertToInt32_object(object i)

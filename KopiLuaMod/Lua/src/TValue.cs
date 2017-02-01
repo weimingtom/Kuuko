@@ -130,13 +130,13 @@ namespace KopiLua
 			this.tt = value.tt;
 		}
 		
-		public TValue(TValue[] values)
-		{
-			this.values = values;
-			this.index = Array.IndexOf(values, this);
-			this.value = new Value();
-			this.tt = 0;
-		}
+		//public TValue(TValue[] values)
+		//{
+		//	this.values = values;
+		//	this.index = Array.IndexOf(values, this);
+		//	this.value = new Value();
+		//	this.tt = 0;
+		//}
 		
 		public TValue(Value value, int tt)
 		{

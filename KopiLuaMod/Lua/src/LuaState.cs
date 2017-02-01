@@ -232,7 +232,8 @@ namespace KopiLua
 			//g.frealloc(g.ud, fromstate(L), (uint)state_size(typeof(LG)), 0);
 		}
 
-		/*private */public static lua_State luaE_newthread(lua_State L) 
+		//private
+		public static lua_State luaE_newthread(lua_State L)
 		{
 			//lua_State L1 = tostate(luaM_malloc(L, state_size(typeof(lua_State))));
 			lua_State L1 = LuaMem.luaM_new<lua_State>(L, new ClassType(ClassType.TYPE_LUA_STATE));
@@ -248,7 +249,8 @@ namespace KopiLua
 			return L1;
 		}
 
-		public/*private*/ static void luaE_freethread(lua_State L, lua_State L1) 
+		//private
+		public static void luaE_freethread(lua_State L, lua_State L1) 
 		{
 			LuaFunc.luaF_close(L1, L1.stack[0]);  /* close all upvalues for this thread */
 			LuaLimits.lua_assert(L1.openupval == null);

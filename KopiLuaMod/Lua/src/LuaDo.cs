@@ -142,20 +142,15 @@ namespace KopiLua
 			lj.status = 0;
 			lj.previous = L.errorJmp;  /* chain new error handler */
 			L.errorJmp = lj;
-			/*
-		  LUAI_TRY(L, lj,
-			f(L, ud)
-		  );
-			 * */
+			//LUAI_TRY(L, lj,
+			//f(L, ud)
+		  	//);
 			if (LuaConf.CATCH_EXCEPTIONS)
 			{
-				//#if CATCH_EXCEPTIONS
 				try
-				//#endif
 				{
 					f.exec(L, ud);
 				}
-				//#if CATCH_EXCEPTIONS
 				catch
 				{
 					if (lj.status == 0) 
@@ -163,7 +158,6 @@ namespace KopiLua
 						lj.status = -1;
 					}
 				}
-				//#endif
 			} 
 			else
 			{
@@ -171,7 +165,7 @@ namespace KopiLua
 				{
 					f.exec(L, ud);
 				}
-				catch (LuaException /*e*/)
+				catch (LuaException e)
 				{
 					if (lj.status == 0) 
 					{
@@ -554,8 +548,7 @@ namespace KopiLua
 			LuaGC.luaC_checkGC(L);
 		}
 
-
-		private static void resume(lua_State L, object ud) 
+		public static void resume(lua_State L, object ud) 
         {
 			TValue/*StkId*/ firstArg = (TValue/*StkId*/)ud;
 			CallInfo ci = L.ci;
@@ -592,14 +585,6 @@ namespace KopiLua
                 }
 			}
 			LuaVM.luaV_execute(L, CallInfo.minus(L.ci, L.base_ci));
-		}
-
-		public class resume_delegate : Pfunc
-		{
-			public void exec(lua_State L, object ud)
-			{
-				resume(L, ud);
-			}
 		}
 		
 		private static int resume_error(lua_State L, CharPtr msg) 
@@ -686,7 +671,7 @@ namespace KopiLua
 			return status;
 		}
 
-		private static void f_parser(lua_State L, object ud) 
+		public static void f_parser(lua_State L, object ud) 
 		{
 			int i;
 			Proto tf;
@@ -707,14 +692,6 @@ namespace KopiLua
 			incr_top(L);
 		}
 
-		public class f_parser_delegate : Pfunc
-		{
-			public void exec(lua_State L, object ud)
-			{
-				f_parser(L, ud);
-			}
-		}
-		
 		public static int luaD_protectedparser(lua_State L, ZIO z, CharPtr name) 
 		{
 			SParser p = new SParser();
@@ -731,14 +708,4 @@ namespace KopiLua
 	/* type of protected functions, to be ran by `runprotected' */
 	//public delegate void Pfunc(lua_State L, object ud);
 	//public delegate void luai_jmpbuf(int/*Int32*//*lua_Integer*/ b);
-	
-	public interface Pfunc
-	{
-		void exec(lua_State L, object ud);
-	}               
-	
-	public interface luai_jmpbuf
-	{
-		void exec(int/*Int32*//*lua_Integer*/ b);
-	}  
 }

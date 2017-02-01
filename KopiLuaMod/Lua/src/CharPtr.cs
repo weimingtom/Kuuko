@@ -84,11 +84,11 @@ namespace KopiLua
 			this.index = index;
 		}
 		
-		public CharPtr(IntPtr ptr)
-		{
-			this.chars = new char[0];
-			this.index = 0;
-		}
+		//public CharPtr(IntPtr ptr)
+		//{
+		//	this.chars = new char[0];
+		//	this.index = 0;
+		//}
 		
 		public static CharPtr plus(CharPtr ptr, int offset) 
 		{ 

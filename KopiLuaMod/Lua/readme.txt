@@ -200,3 +200,19 @@ System.Double.PositiveInfinity
 (x) using System.Collections;
 (x) List(System.Collections) in LuaProgram.MainLua & LuacProgram.MainLuac
 (x) newargs.RemoveRange(0, i);
+(x) IntPtr->removed
+Stream
+(x) Array.IndexOf->removed
+public static Stream stdout = Console.OpenStandardOutput();
+public static Stream stdin = Console.OpenStandardInput();
+public static Stream stderr = Console.OpenStandardError();
+Directory.GetCurrentDirectory()
+public static OpCode GET_OPCODE(long  ->change to table search
+public static OpMode getOpMode(OpCode m) {  ->change to table search
+public static OpArgMask getBMode(OpCode m) { ->change to table search
+public static OpArgMask getCMode(OpCode m) { ->change to table search
+File.Delete
+Console.Error.Write
+Console.Error.Flush
+BitConverter.GetBytes
+

@@ -112,7 +112,8 @@ namespace KopiLua
 
 		private static TString LoadString(LoadState S)
 		{
-			int/*uint*/ size = (int/*uint*/)LoadVar(S, new ClassType(ClassType.TYPE_INT)); //typeof(int/*uint*/)
+			//typeof(int/*uint*/)
+			int/*uint*/ size = (int/*uint*/)LoadVar(S, new ClassType(ClassType.TYPE_INT)); 
 			if (size == 0)
 			{
 				return null;
