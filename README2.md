@@ -224,3 +224,8 @@ https://github.com/rubys/ruby2js
 
 ## MIL  
 * https://github.com/ser1zw/MIL  
+
+## IKVM.NET  
+* http://www.ikvm.net/  
+* https://github.com/gluck/ikvm  
+
