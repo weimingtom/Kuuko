@@ -229,3 +229,24 @@ https://github.com/rubys/ruby2js
 * http://www.ikvm.net/  
 * https://github.com/gluck/ikvm  
 
+## jni4net  
+* http://jni4net.com/  
+* https://github.com/jni4net/jni4net  
+
+## Mono  
+* https://github.com/ClarkGuan/mono-4.3.2  
+
+## XML  
+* http://www.jclark.com/xml/xp/  
+* https://github.com/innovimax/XP---an-XML-Parser-in-Java  
+
+## Csharp  
+* https://github.com/eriksonJAguiar/MiniCSharp  
+* https://github.com/ChristianWulf/CSharpGrammar  
+
+## VB6  
+* https://github.com/saulecabrera/VB6Subset  
+
+## Benchmark  
+* http://dacapobench.org/  
+
