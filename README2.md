@@ -218,6 +218,8 @@ https://github.com/rubys/ruby2js
 * see jython  
 * see ironpython  
 * https://github.com/philhassey/tinypy  
+* https://github.com/skulpt/skulpt  
+* http://www.skulpt.org/  
 
 ## Potion  
 * https://github.com/perl11/potion  
