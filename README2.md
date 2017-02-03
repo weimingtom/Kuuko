@@ -252,3 +252,7 @@ https://github.com/rubys/ruby2js
 ## Benchmark  
 * http://dacapobench.org/  
 
+## NekoVM  
+* http://nekovm.org/  
+* https://github.com/HaxeFoundation/neko  
+
