@@ -52,6 +52,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/SquidDev/Cobalt  
 * https://github.com/notshi/aelua  
 * https://sourceforge.net/projects/pantherengine/files/XNua%20Releases/  
+* https://github.com/rvirding/luerl  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
