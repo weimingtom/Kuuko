@@ -68,6 +68,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://zhuanlan.zhihu.com/p/22476315  
 * https://github.com/weimingtom/metamorphose/blob/master/lua_benchmark/README.md  
 * http://www.computercraft.info/forums2/index.php?/topic/27675-rembulan-a-new-lua-53-implementation-for-the-jvm-built-with-sandboxing-in-mind/  
+* http://the-ravi-programming-language.readthedocs.io/en/latest/lua_bytecode_reference.html  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
@@ -79,4 +80,5 @@ require('mobdebug').start()
 * http://www.cnblogs.com/softidea/p/5281068.html  
 * https://github.com/jasonsantos/remdebug  
 
-
+## Reimplementation  
+* https://github.com/dibyendumajumdar/ravi  
