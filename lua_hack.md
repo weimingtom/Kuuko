@@ -48,6 +48,10 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/humbletim/ljs  
 * https://github.com/daurnimator/lua.vm.js  
 * https://github.com/MangelMaxime/Lua.vm.js-Samples  
+* https://github.com/mjanicek/rembulan  
+* https://github.com/SquidDev/Cobalt  
+* https://github.com/notshi/aelua  
+* https://sourceforge.net/projects/pantherengine/files/XNua%20Releases/  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
@@ -62,6 +66,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/weimingtom/as3-lua  
 * https://zhuanlan.zhihu.com/p/22476315  
 * https://github.com/weimingtom/metamorphose/blob/master/lua_benchmark/README.md  
+* http://www.computercraft.info/forums2/index.php?/topic/27675-rembulan-a-new-lua-53-implementation-for-the-jvm-built-with-sandboxing-in-mind/  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
