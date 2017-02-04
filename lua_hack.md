@@ -1,4 +1,4 @@
-# Lua Hack 
+﻿# Lua Hack 
 
 ## Binary read in Lua     
 * https://github.com/weimingtom/RipString  
@@ -53,6 +53,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/notshi/aelua  
 * https://sourceforge.net/projects/pantherengine/files/XNua%20Releases/  
 * https://github.com/rvirding/luerl  
+* http://www.moonsharp.org/  
+* https://github.com/xanathar/moonsharp/  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
