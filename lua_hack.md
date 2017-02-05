@@ -56,6 +56,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/rvirding/luerl  
 * http://www.moonsharp.org/  
 * https://github.com/xanathar/moonsharp/  
+* https://github.com/dotneet/as3-lua  
+* https://github.com/mherkender/lua.js  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
