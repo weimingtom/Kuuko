@@ -37,6 +37,8 @@
 * 自制编译器  
 	https://github.com/aamine/cbc  
 	https://github.com/leungwensen/cbc-ubuntu-64bit  
+* https://github.com/weimingtom/wmt_mingw_study  
+* ccalc / calc
 
 ## TODO / etc / memo   
 * http://hotruby.yukoba.jp/  
