@@ -154,7 +154,7 @@ http://www.runoob.com/nodejs/nodejs-jxcore-packaging.html
 ## Lua / mobdebug  
 * https://github.com/gfoot/kopiluadebug  
 
-## JVM / CLDC  
+## JVM(j2me) / CLDC  
 https://github.com/seancfoley/mjvmk  
 j2me_cldc, search KNI_RETURNTYPE_INT  
 http://www.csie.ntu.edu.tw/~r94088/KVM_html_c/kni_8h.html  
@@ -182,6 +182,7 @@ https://github.com/majestyhao/SimpleDalvik
 https://github.com/weimingtom/android-dalvik-vm-on-java  
 https://github.com/pkirchhofer/android-dalvik  
 https://github.com/codepython/full_simple_jvm  
+https://github.com/ledyba/java.js  
 
 ## GraalVM     
 https://github.com/graalvm/truffleruby  
