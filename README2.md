@@ -267,4 +267,6 @@ https://github.com/rubys/ruby2js
 ## Antlr  
 * https://github.com/weimingtom/SeeMod  
 
+## Panda  
+* https://github.com/Panda-Programming-Language/Panda  
 
