@@ -1,4 +1,4 @@
-﻿# Script Engine List  
+# Script Engine List  
 
 ## Branch  
 * https://github.com/weimingtom/Kuuko/tree/dotnetcore  
@@ -6,7 +6,8 @@
 * https://github.com/weimingtom/UniLuaMod  
 * https://github.com/weimingtom/LuaJMod  
 * https://github.com/weimingtom/jython_playground  
-* https://github.com/weimingtom/hotruby_playground  
+* https://github.com/weimingtom/hotruby_playground  
+* https://github.com/weimingtom/nokscript_java  
 
 ## YACC  
 * https://github.com/weimingtom/wmt_yacc_study  
