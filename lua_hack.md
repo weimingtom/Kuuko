@@ -59,6 +59,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/dotneet/as3-lua  
 * http://yueliang.luaforge.net  
 * https://github.com/humbletim/ljs  
+* https://github.com/tdzl2003/lua.js  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
