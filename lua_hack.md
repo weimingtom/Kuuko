@@ -78,6 +78,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
+* https://github.com/oxyc/luaparse  
 
 ## Debug  
 * https://github.com/pkulchenko/MobDebug  
