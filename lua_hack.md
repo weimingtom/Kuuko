@@ -57,8 +57,10 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://www.moonsharp.org/  
 * https://github.com/xanathar/moonsharp/  
 * https://github.com/dotneet/as3-lua  
+* http://yueliang.luaforge.net  
+* https://github.com/humbletim/ljs  
 
-## Lua Source Reading  
+## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
 * https://github.com/weimingtom/lua_study2  
 * https://github.com/lichuang/Lua-Source-Internal  
