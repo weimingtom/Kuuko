@@ -90,7 +90,7 @@ require('mobdebug').start()
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
 
-## Translator / Compiler  
+## Transpiler(Translator) / Compiler  
 * https://github.com/mherkender/lua.js  
 * https://github.com/tdzl2003/lua.js  
 
