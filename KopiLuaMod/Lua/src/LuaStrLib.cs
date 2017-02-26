@@ -3,8 +3,6 @@
  ** Standard library for string operations and pattern-matching
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	//using ptrdiff_t = System.Int32;

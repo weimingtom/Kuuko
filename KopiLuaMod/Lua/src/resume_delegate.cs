@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KopiLua
+﻿namespace KopiLua
 {
 	public class resume_delegate : Pfunc
 	{

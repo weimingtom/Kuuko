@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KopiLua
+﻿namespace KopiLua
 {
 	public class f_parser_delegate : Pfunc
 	{

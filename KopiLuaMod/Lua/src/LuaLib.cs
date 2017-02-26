@@ -3,9 +3,6 @@
  ** Lua standard libraries
  ** See Copyright Notice in lua.h
  */
-
-using System;
-
 namespace KopiLua
 {
 	public class LuaLib

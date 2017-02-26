@@ -3,8 +3,6 @@
  ** Tag methods
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	//using TValue = Lua.TValue;

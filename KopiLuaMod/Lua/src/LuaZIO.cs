@@ -3,8 +3,6 @@
  ** a generic input stream interface
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class LuaZIO

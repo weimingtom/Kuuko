@@ -3,8 +3,6 @@
  ** Global State
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class OpenValRef : GCObjectRef

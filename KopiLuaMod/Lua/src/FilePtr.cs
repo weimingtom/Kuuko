@@ -3,12 +3,10 @@
  ** Standard I/O (and system) library
  ** See Copyright Notice in lua.h
  */
-using System.IO;
-
 namespace KopiLua
 {
 	public class FilePtr
 	{
-		public Stream file;
+        public StreamProxy file;
 	}
 }

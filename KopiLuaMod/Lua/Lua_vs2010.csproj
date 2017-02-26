@@ -171,6 +171,7 @@
     <Compile Include="src\SemInfo.cs" />
     <Compile Include="src\Smain.cs" />
     <Compile Include="src\SParser.cs" />
+    <Compile Include="src\StreamProxy.cs" />
     <Compile Include="src\stringtable.cs" />
     <Compile Include="src\Table.cs" />
     <Compile Include="src\TKey.cs" />

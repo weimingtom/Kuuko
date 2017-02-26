@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.IO;
 
 namespace KopiLua
 {
@@ -45,7 +44,7 @@ namespace KopiLua
 			int result = 1;
 			try 
 			{
-				File.Delete(filename.ToString());
+				StreamProxy.Delete(filename.ToString());
 			} 
 			catch 
 			{
@@ -61,7 +60,7 @@ namespace KopiLua
 			int result;
 			try
 			{
-				File.Move(fromname.ToString(), toname.ToString());
+				StreamProxy.Move(fromname.ToString(), toname.ToString());
 				result = 0;
 			}
 			catch
@@ -73,7 +72,7 @@ namespace KopiLua
 
 		private static int os_tmpname(lua_State L) 
 		{
-			LuaAPI.lua_pushstring(L, CharPtr.toCharPtr(Path.GetTempFileName()));
+			LuaAPI.lua_pushstring(L, CharPtr.toCharPtr(StreamProxy.GetTempFileName()));
 			return 1;
 		}
 

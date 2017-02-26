@@ -3,9 +3,6 @@
  ** Standard I/O (and system) library
  ** See Copyright Notice in lua.h
  */
-using System;
-using System.IO;
-
 namespace KopiLua
 {
 	//using lua_Number = System.Double;
@@ -77,7 +74,7 @@ namespace KopiLua
 			return 1;
 		}
 
-		private static Stream tofile(lua_State L) 
+		private static StreamProxy tofile(lua_State L) 
 		{
 			FilePtr f = tofilep(L);
 			if (f.file == null)
@@ -152,7 +149,7 @@ namespace KopiLua
 
 		private static int io_gc(lua_State L) 
 		{
-			Stream f = tofilep(L).file;
+			StreamProxy f = tofilep(L).file;
 			/* ignore closed files */
 			if (f != null)
 				aux_close(L);
@@ -161,7 +158,7 @@ namespace KopiLua
 
 		private static int io_tostring(lua_State L) 
 		{
-			Stream f = tofilep(L).file;
+			StreamProxy f = tofilep(L).file;
 			if (f == null)
 			{
 				Lua.lua_pushliteral(L, CharPtr.toCharPtr("file (closed)"));
@@ -202,9 +199,9 @@ namespace KopiLua
 			return (pf.file == null) ? pushresult(L, 0, null) : 1;
 		}
 
-		private static Stream getiofile(lua_State L, int findex) 
+		private static StreamProxy getiofile(lua_State L, int findex) 
 		{
-			Stream f;
+			StreamProxy f;
 			LuaAPI.lua_rawgeti(L, Lua.LUA_ENVIRONINDEX, findex);
 			f = (LuaAPI.lua_touserdata(L, -1) as FilePtr).file;
 			if (f == null)
@@ -294,7 +291,7 @@ namespace KopiLua
 		 ** =======================================================
 		 */
 
-		private static int read_number(lua_State L, Stream f) 
+		private static int read_number(lua_State L, StreamProxy f) 
 		{
 			//lua_Number d;
 			object[] parms = {(object)(double)0.0};
@@ -309,7 +306,7 @@ namespace KopiLua
 			}
 		}
 
-		private static int test_eof(lua_State L, Stream f) 
+		private static int test_eof(lua_State L, StreamProxy f) 
 		{
 			int c = LuaConf.getc(f);
 			LuaConf.ungetc(c, f);
@@ -317,7 +314,7 @@ namespace KopiLua
 			return (c != LuaConf.EOF) ? 1 : 0;
 		}
 
-		private static int read_line(lua_State L, Stream f) 
+		private static int read_line(lua_State L, StreamProxy f) 
 		{
 			luaL_Buffer b = new luaL_Buffer();
 			LuaAuxLib.luaL_buffinit(L, b);
@@ -345,7 +342,7 @@ namespace KopiLua
 			}
 		}
 
-		private static int read_chars(lua_State L, Stream f, long/*uint*/ n) 
+		private static int read_chars(lua_State L, StreamProxy f, long/*uint*/ n) 
 		{
 			long/*uint*/ rlen;  /* how much to read */
 			int/*uint*/ nr;  /* number of chars actually read */
@@ -367,7 +364,7 @@ namespace KopiLua
 			return (n == 0 || LuaAPI.lua_objlen(L, -1) > 0) ? 1 : 0;
 		}
 
-		private static int g_read(lua_State L, Stream f, int first) 
+		private static int g_read(lua_State L, StreamProxy f, int first) 
 		{
 			int nargs = LuaAPI.lua_gettop(L) - 1;
 			int success;
@@ -445,7 +442,7 @@ namespace KopiLua
 
 		private static int io_readline(lua_State L) 
 		{
-			Stream f = (LuaAPI.lua_touserdata(L, Lua.lua_upvalueindex(1)) as FilePtr).file;
+			StreamProxy f = (LuaAPI.lua_touserdata(L, Lua.lua_upvalueindex(1)) as FilePtr).file;
 			int sucess;
 			if (f == null)  /* file is already closed? */
 			{
@@ -476,7 +473,7 @@ namespace KopiLua
 
 		/* }====================================================== */
 
-		private static int g_write (lua_State L, Stream f, int arg) 
+		private static int g_write (lua_State L, StreamProxy f, int arg) 
 		{
 			int nargs = LuaAPI.lua_gettop(L) - 1;
 			int status = 1;
@@ -521,7 +518,7 @@ namespace KopiLua
 				CharPtr.toCharPtr("end"), 
 				null
 			};
-			Stream f = tofile(L);
+			StreamProxy f = tofile(L);
 			int op = LuaAuxLib.luaL_checkoption(L, 2, CharPtr.toCharPtr("cur"), modenames);
 			long offset = LuaAuxLib.luaL_optlong(L, 3, 0);
 			op = LuaConf.fseek(f, offset, mode[op]);
@@ -545,7 +542,7 @@ namespace KopiLua
 				null 
 			};
 			int[] mode = { LuaConf._IONBF, LuaConf._IOFBF, LuaConf._IOLBF };
-			Stream f = tofile(L);
+			StreamProxy f = tofile(L);
 			int op = LuaAuxLib.luaL_checkoption(L, 2, null, modenames);
 			int/*Int32*//*lua_Integer*/ sz = LuaAuxLib.luaL_optinteger(L, 3, LuaConf.LUAL_BUFFERSIZE);
 			int res = LuaConf.setvbuf(f, null, mode[op], (/*uint*/int)sz);
@@ -727,7 +724,7 @@ namespace KopiLua
 			LuaAuxLib.luaL_register(L, null, flib);  /* file methods */
 		}
 
-		private static void createstdfile(lua_State L, Stream f, int k, CharPtr fname) 
+		private static void createstdfile(lua_State L, StreamProxy f, int k, CharPtr fname) 
 		{
 			newfile(L).file = f;
 			if (k > 0) 

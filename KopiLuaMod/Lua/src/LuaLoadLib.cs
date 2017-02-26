@@ -8,7 +8,6 @@
  ** implementation for Windows, and a stub for other systems.
  */
 using System;
-using System.IO;
 
 namespace KopiLua
 {
@@ -33,7 +32,7 @@ namespace KopiLua
 
 		public static void setprogdir(lua_State L)
 		{
-			CharPtr buff = CharPtr.toCharPtr(Directory.GetCurrentDirectory());
+			CharPtr buff = CharPtr.toCharPtr(StreamProxy.GetCurrentDirectory());
 			LuaAuxLib.luaL_gsub(L, Lua.lua_tostring(L, -1), CharPtr.toCharPtr(LuaConf.LUA_EXECDIR), buff);
 			LuaAPI.lua_remove(L, -2);  /* remove original string */
 		}
@@ -368,7 +367,7 @@ namespace KopiLua
 		 */
 		private static int readable(CharPtr filename)
 		{
-			Stream f = LuaConf.fopen(filename, CharPtr.toCharPtr("r"));  /* try to open file */
+			StreamProxy f = LuaConf.fopen(filename, CharPtr.toCharPtr("r"));  /* try to open file */
 			if (f == null) return 0;  /* open failed */
 			LuaConf.fclose(f);
 			return 1;

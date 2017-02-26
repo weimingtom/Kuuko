@@ -3,8 +3,6 @@
  ** Lexical Analyzer
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class Token

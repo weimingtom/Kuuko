@@ -201,18 +201,20 @@ System.Double.PositiveInfinity
 (x) List(System.Collections) in LuaProgram.MainLua & LuacProgram.MainLuac
 (x) newargs.RemoveRange(0, i);
 (x) IntPtr->removed
-Stream
+(x) Stream->StreamProxy
 (x) Array.IndexOf->removed
-public static Stream stdout = Console.OpenStandardOutput();
-public static Stream stdin = Console.OpenStandardInput();
-public static Stream stderr = Console.OpenStandardError();
-Directory.GetCurrentDirectory()
+(x) public static Stream stdout = Console.OpenStandardOutput();->StreamProxy
+(x) public static Stream stdin = Console.OpenStandardInput();->StreamProxy
+(x) public static Stream stderr = Console.OpenStandardError();->StreamProxy
+(x) Directory.GetCurrentDirectory()->StreamProxy
 public static OpCode GET_OPCODE(long  ->change to table search
 public static OpMode getOpMode(OpCode m) {  ->change to table search
 public static OpArgMask getBMode(OpCode m) { ->change to table search
 public static OpArgMask getCMode(OpCode m) { ->change to table search
-File.Delete
+(x) File.Delete ->StreamProxy.Delete
 Console.Error.Write
 Console.Error.Flush
 BitConverter.GetBytes
-
+Console.Write
+Console.WriteLine
+Console.ReadLine

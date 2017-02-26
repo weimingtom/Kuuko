@@ -4,7 +4,6 @@
  ** See Copyright Notice in lua.h
  */
 using System;
-using System.IO;
 
 namespace KopiLua
 {
@@ -194,16 +193,18 @@ namespace KopiLua
 			}
 		}
 
+        //FIXME:StreamProxy/*object*/ u
 		static int writer(lua_State L, CharPtr p, int/*uint*/ size, object u)
 		{
 			//UNUSED(L);
-			return ((LuaConf.fwrite(p, (int)size, 1, (Stream)u) != 1) && (size != 0)) ? 1 : 0;
+			return ((LuaConf.fwrite(p, (int)size, 1, (StreamProxy)u) != 1) && (size != 0)) ? 1 : 0;
 		}
 		
 		public class writer_delegate : lua_Writer
 		{
 			public int exec(lua_State L, CharPtr p, int/*uint*/ sz, object ud)
 			{
+                //FIXME:StreamProxy/*object*/ u
 				return writer(L, p, sz, ud);
 			}
 		}
@@ -234,7 +235,7 @@ namespace KopiLua
 			}
 			if (dumping!=0)
 			{
-				Stream D = (CharPtr.isEqual(output, null)) ? LuaConf.stdout : LuaConf.fopen(output, CharPtr.toCharPtr("wb"));
+				StreamProxy D = (CharPtr.isEqual(output, null)) ? LuaConf.stdout : LuaConf.fopen(output, CharPtr.toCharPtr("wb"));
                 if (D == null)
                 {
                     cannot(CharPtr.toCharPtr("open"));

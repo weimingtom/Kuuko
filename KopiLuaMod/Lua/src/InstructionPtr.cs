@@ -3,8 +3,6 @@
  ** Code generator for Lua
  ** See Copyright Notice in lua.h
  */
-using System;
-
 namespace KopiLua
 {
 	public class InstructionPtr
