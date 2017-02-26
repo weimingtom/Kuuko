@@ -94,6 +94,8 @@ require('mobdebug').start()
 * https://github.com/mherkender/lua.js  
 * https://github.com/tdzl2003/lua.js  
 * https://github.com/paulcuth/starlight  
+* https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
+* https://github.com/creationix/brozula  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
