@@ -41,8 +41,10 @@ namespace KopiLua
 				LuaConf.fputs(s, LuaConf.stdout);
 				Lua.lua_pop(L, 1);  /* pop result */
 			}
-			Console.Write("\n", LuaConf.stdout);
-			return 0;
+            //FIXME:
+			//Console.Write("\n", LuaConf.stdout);
+            StreamProxy.Write("\n");
+            return 0;
 		}
 
 		private static int luaB_tonumber(lua_State L) 

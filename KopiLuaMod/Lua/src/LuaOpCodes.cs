@@ -86,7 +86,7 @@ namespace KopiLua
 		 */
 		public static OpCode GET_OPCODE(long/*UInt32*//*Instruction*/ i)
 		{
-			return (OpCode)((i >> POS_OP) & MASK1(SIZE_OP, 0));
+            return (OpCode)OpCodeUtil.longToOpCode((i >> POS_OP) & MASK1(SIZE_OP, 0));
 		}
 		
 		public static OpCode GET_OPCODE(InstructionPtr i) 
@@ -244,17 +244,48 @@ namespace KopiLua
 		 */
 		public static OpMode getOpMode(OpCode m)	
 		{
-			return (OpMode)(luaP_opmodes[(int)m] & 3);
+            switch (luaP_opmodes[(int)m] & 3)
+            {
+                default:
+                case 0:
+                    return OpMode.iABC;
+                case 1:
+                    return OpMode.iABx;
+                case 2:
+                    return OpMode.iAsBx;
+            }
 		}
 		
 		public static OpArgMask getBMode(OpCode m) 
-		{ 
-			return (OpArgMask)((luaP_opmodes[(int)m] >> 4) & 3); 
+		{
+            switch ((luaP_opmodes[(int)m] >> 4) & 3)
+            {
+                default:
+                case 0:
+                    return OpArgMask.OpArgN;
+                case 1:
+                    return OpArgMask.OpArgU;
+                case 2:
+                    return OpArgMask.OpArgR;
+                case 3:
+                    return OpArgMask.OpArgK;
+            }
 		}
 		
 		public static OpArgMask getCMode(OpCode m)
-		{ 
-			return (OpArgMask)((luaP_opmodes[(int)m] >> 2) & 3); 
+		{
+            switch ((luaP_opmodes[(int)m] >> 2) & 3)
+            {
+                default:
+                case 0:
+                    return OpArgMask.OpArgN;
+                case 1:
+                    return OpArgMask.OpArgU;
+                case 2:
+                    return OpArgMask.OpArgR;
+                case 3:
+                    return OpArgMask.OpArgK;
+            }
 		}
 		
 		public static int testAMode(OpCode m) 

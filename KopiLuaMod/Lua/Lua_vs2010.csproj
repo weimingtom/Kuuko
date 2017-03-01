@@ -159,6 +159,7 @@
     <Compile Include="src\Node.cs" />
     <Compile Include="src\OpArgMask.cs" />
     <Compile Include="src\OpCode.cs" />
+    <Compile Include="src\OpCodeUtil.cs" />
     <Compile Include="src\OpenValRef.cs" />
     <Compile Include="src\OpMode.cs" />
     <Compile Include="src\Pfunc.cs" />

@@ -593,13 +593,13 @@ namespace KopiLua
 			{
 				sBx = - (sBx & 0xff);
 			}
-			Console.Write("{0,5} ({1,10}): ", pc, i);
-			Console.Write("{0,-10}\t", LuaOpCodes.luaP_opnames[(int)LuaOpCodes.GET_OPCODE(i)]);
+            StreamProxy.Write("" + pc + " (" + i + "): "); //FIXME:"{0,5} ({1,10}): "
+            StreamProxy.Write("" + LuaOpCodes.luaP_opnames[(int)LuaOpCodes.GET_OPCODE(i)].ToString() + "\t"); //"{0,-10}\t"
 			switch (LuaOpCodes.GET_OPCODE(i))
 			{
 				case OpCode.OP_CLOSE:
 					{
-						Console.Write("{0}", A);
+                        StreamProxy.Write("" + A + "");
 						break;
 					}
 				case OpCode.OP_MOVE:
@@ -610,7 +610,7 @@ namespace KopiLua
 				case OpCode.OP_NOT:
 				case OpCode.OP_RETURN:
 					{
-						Console.Write("{0}, {1}", A, B);
+                        StreamProxy.Write("" + A + ", " + B + "");
 						break;
 					}
 				case OpCode.OP_LOADBOOL:
@@ -631,12 +631,12 @@ namespace KopiLua
 				case OpCode.OP_CALL:
 				case OpCode.OP_TAILCALL:
 					{
-						Console.Write("{0}, {1}, {2}", A, B, C);
+                        StreamProxy.Write("" + A + ", " + B + ", " + C + "");
 						break;
 					}
 				case OpCode.OP_LOADK:
 					{
-						Console.Write("{0}, {1}", A, Bx);
+                        StreamProxy.Write("" + A + ", " + Bx + "");
 						break;
 					}
 				case OpCode.OP_GETGLOBAL:
@@ -644,23 +644,23 @@ namespace KopiLua
 				case OpCode.OP_SETLIST:
 				case OpCode.OP_CLOSURE:
 					{
-						Console.Write("{0}, {1}", A, Bx);
+                        StreamProxy.Write("" + A + ", " + Bx + "");
 						break;
 					}
 				case OpCode.OP_TFORLOOP:
 					{
-						Console.Write("{0}, {1}", A, C);
+                        StreamProxy.Write("" + A + ", " + C + "");
 						break;
 					}
 				case OpCode.OP_JMP:
 				case OpCode.OP_FORLOOP:
 				case OpCode.OP_FORPREP:
 					{
-						Console.Write("{0}, {1}", A, sBx);
+                        StreamProxy.Write("" + A + ", " + sBx + "");
 						break;
 					}
 			}
-			Console.WriteLine();
+            StreamProxy.WriteLine();
 
 		}
 

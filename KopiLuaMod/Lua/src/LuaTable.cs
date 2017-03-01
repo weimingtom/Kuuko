@@ -114,7 +114,7 @@ namespace KopiLua
 		 */
 		private static Node hashnum(Table t, Double/*lua_Number*/ n)
 		{
-			byte[] a = BitConverter.GetBytes(n);
+			byte[] a = ClassType.GetBytes(n);
 			for (int i = 1; i < a.Length; i++) 
 			{
 				a[0] += a[i];

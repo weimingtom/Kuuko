@@ -184,6 +184,27 @@ namespace KopiLua
         {
             return Path.GetTempFileName();
         }
+
+        public static string ReadLine()
+        {
+            return Console.ReadLine();
+        }
+
+        public static void Write(string str)
+        {
+            Console.Write(str);
+        }
+
+        public static void WriteLine()
+        {
+            Console.WriteLine();
+        }
+
+        public static void ErrorWrite(string str)
+        {
+            Console.Error.Write(str);
+            Console.Error.Flush();
+        }
     }
 }
 

@@ -1165,12 +1165,12 @@ namespace KopiLua
 
 		public static void putchar(char ch)
 		{
-			Console.Write(ch);
+            StreamProxy.Write("" + ch);
 		}
 
 		public static void putchar(int ch)
 		{
-			Console.Write((char)ch);
+            StreamProxy.Write("" + (char)ch);
 		}
 
 		public static bool isprint(byte c)
@@ -1447,7 +1447,7 @@ namespace KopiLua
 
 		public static void fputs(CharPtr str, StreamProxy stream)
 		{
-			Console.Write(str.ToString()); //FIXME:
+            StreamProxy.Write(str.ToString()); //FIXME:
 		}
 
 		public static int feof(StreamProxy s)
@@ -1651,7 +1651,7 @@ namespace KopiLua
 
 		public static int fscanf(StreamProxy f, CharPtr format, params object[] argp)
 		{
-			string str = Console.ReadLine(); //FIXME: f
+			string str = StreamProxy.ReadLine(); //FIXME: f
 			return parse_scanf(str, format, argp);
 		}
 		

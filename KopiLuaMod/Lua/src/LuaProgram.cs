@@ -44,18 +44,15 @@ namespace KopiLua
 
 		static void print_usage()
 		{
-			Console.Error.Write(
-				"usage: {0} [options] [script [args]].\n" +
+			StreamProxy.ErrorWrite(
+				"usage: " + progname.ToString() + " [options] [script [args]].\n" +
 				"Available options are:\n" +
 				"  -e stat  execute string " + LuaConf.LUA_QL("stat").ToString() + "\n" +
 				"  -l name  require library " + LuaConf.LUA_QL("name").ToString() + "\n" +
 				"  -i       enter interactive mode after executing " + LuaConf.LUA_QL("script").ToString() + "\n" +
 				"  -v       show version information\n" +
 				"  --       stop handling options\n" +
-				"  -        execute stdin and stop handling options\n"
-				,
-				progname);
-			Console.Error.Flush();
+				"  -        execute stdin and stop handling options\n");
 		}
 
 		static void l_message(CharPtr pname, CharPtr msg)

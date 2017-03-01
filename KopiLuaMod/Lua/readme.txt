@@ -207,14 +207,14 @@ System.Double.PositiveInfinity
 (x) public static Stream stdin = Console.OpenStandardInput();->StreamProxy
 (x) public static Stream stderr = Console.OpenStandardError();->StreamProxy
 (x) Directory.GetCurrentDirectory()->StreamProxy
-public static OpCode GET_OPCODE(long  ->change to table search
-public static OpMode getOpMode(OpCode m) {  ->change to table search
-public static OpArgMask getBMode(OpCode m) { ->change to table search
-public static OpArgMask getCMode(OpCode m) { ->change to table search
+(x) public static OpCode GET_OPCODE(long  ->change to table search -> OpCodeUtil.longToOpCode
+(x) public static OpMode getOpMode(OpCode m) {  ->change to table search -> switch
+(x) public static OpArgMask getBMode(OpCode m) { ->change to table search -> switch
+(x) public static OpArgMask getCMode(OpCode m) { ->change to table search -> switch
 (x) File.Delete ->StreamProxy.Delete
-Console.Error.Write
-Console.Error.Flush
-BitConverter.GetBytes
-Console.Write
-Console.WriteLine
-Console.ReadLine
+(x) Console.Error.Write->StreamProxy.ErrorWrite
+(x) Console.Error.Flush->StreamProxy.ErrorWrite
+(x) BitConverter.GetBytes->ClassType.GetBytes
+(x) Console.Write->StreamProxy
+(x) Console.WriteLine->StreamProxy
+(x) Console.ReadLine->StreamProxy

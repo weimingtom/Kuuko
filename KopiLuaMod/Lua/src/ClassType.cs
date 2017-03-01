@@ -753,7 +753,19 @@ namespace KopiLua
         		//LuaUndump
         	}
         }
-        
+
+        public static byte[] GetBytes(double d)
+        {
+            //FIXME:
+            //long value = Double.doubleToRawLongBits(d);  
+            //byte[] byteRet = new byte[8];  
+            //for (int i = 0; i < 8; i++) {  
+            //    byteRet[i] = (byte) ((value >> 8 * i) & 0xff);  
+            //}
+            //return byteRet;  
+            return BitConverter.GetBytes(d);
+        }
+
         //--------------------------------
         //csharp only implementations
         //--------------------------------
