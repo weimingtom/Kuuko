@@ -146,12 +146,12 @@ namespace KopiLua
 			this.tt = tt;
 		}
 		
-		public TValue(TValue[] values, Value valueCls, int tt)
-		{
-			this.values = values;
-			this.index = Array.IndexOf(values, this);
-			this.value = new Value(valueCls);
-			this.tt = tt;
-		}
+		//public TValue(TValue[] values, Value valueCls, int tt)
+		//{
+		//	this.values = values;
+		//	this.index = Array.IndexOf(values, this);
+		//	this.value = new Value(valueCls);
+		//	this.tt = tt;
+        //}
 	}
 }

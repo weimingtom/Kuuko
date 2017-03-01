@@ -92,7 +92,7 @@ namespace KopiLua
 
         public static OpCode longToOpCode(long code)
         {
-            switch (code)
+            switch ((int)code)
             {
                 case 0:
                     return OpCode.OP_MOVE;
