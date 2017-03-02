@@ -129,7 +129,9 @@ namespace KopiLua
 		private static void LoadCode(LoadState S, Proto f)
 		{
 			int n = LoadInt(S);
-			f.code = LuaMem.luaM_newvector<long/*UInt32*//*Instruction*/>(S.L, n, new ClassType(ClassType.TYPE_LONG));
+            /*UInt32*/
+            /*Instruction*/
+			f.code = LuaMem.luaM_newvector_long(S.L, n, new ClassType(ClassType.TYPE_LONG));
 			f.sizecode = n;
 			f.code = (long[]/*UInt32[]*//*Instruction[]*/)LoadVector(S, new ClassType(ClassType.TYPE_LONG), n);
 		}
@@ -138,7 +140,7 @@ namespace KopiLua
 		{
 			int i,n;
 			n = LoadInt(S);
-			f.k = LuaMem.luaM_newvector<TValue>(S.L, n, new ClassType(ClassType.TYPE_TVALUE));
+			f.k = LuaMem.luaM_newvector_TValue(S.L, n, new ClassType(ClassType.TYPE_TVALUE));
 			f.sizek = n;
 			for (i = 0; i < n; i++) 
 			{
@@ -178,7 +180,7 @@ namespace KopiLua
 				}
 			}
 			n = LoadInt(S);
-			f.p = LuaMem.luaM_newvector<Proto>(S.L, n, new ClassType(ClassType.TYPE_PROTO));
+			f.p = LuaMem.luaM_newvector_Proto(S.L, n, new ClassType(ClassType.TYPE_PROTO));
 			f.sizep = n;
 			for (i = 0; i < n; i++) 
 			{
@@ -194,11 +196,11 @@ namespace KopiLua
 		{
 			int i, n;
 			n = LoadInt(S);
-			f.lineinfo = LuaMem.luaM_newvector<int>(S.L, n, new ClassType(ClassType.TYPE_INT));
+			f.lineinfo = LuaMem.luaM_newvector_int(S.L, n, new ClassType(ClassType.TYPE_INT));
 			f.sizelineinfo = n;
             f.lineinfo = (int[])LoadVector(S, new ClassType(ClassType.TYPE_INT), n); //typeof(int)
 			n = LoadInt(S);
-			f.locvars = LuaMem.luaM_newvector<LocVar>(S.L, n, new ClassType(ClassType.TYPE_LOCVAR));
+			f.locvars = LuaMem.luaM_newvector_LocVar(S.L, n, new ClassType(ClassType.TYPE_LOCVAR));
 			f.sizelocvars = n;
 			for (i = 0; i < n; i++) 
 			{
@@ -211,7 +213,7 @@ namespace KopiLua
 				f.locvars[i].endpc = LoadInt(S);
 			}
 			n = LoadInt(S);
-			f.upvalues = LuaMem.luaM_newvector<TString>(S.L, n, new ClassType(ClassType.TYPE_TSTRING));
+			f.upvalues = LuaMem.luaM_newvector_TString(S.L, n, new ClassType(ClassType.TYPE_TSTRING));
 			f.sizeupvalues = n;
 			for (i = 0; i < n; i++) 
 			{

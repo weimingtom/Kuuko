@@ -177,9 +177,13 @@ namespace KopiLua
 				f.source = LuaString.luaS_newliteral(L, CharPtr.toCharPtr("=(" + PROGNAME + ")"));
 				f.maxstacksize = 1;
 				pc = 2 * n + 1;
-				f.code = (long[]/*UInt32[]*//*Instruction[]*/)LuaMem.luaM_newvector<long/*UInt32*//*Instruction*/>(L, pc, new ClassType(ClassType.TYPE_LONG));
+                /*UInt32[]*/
+                /*Instruction[]*/
+                /*UInt32*/
+                /*Instruction*/
+				f.code = (long[])LuaMem.luaM_newvector_long(L, pc, new ClassType(ClassType.TYPE_LONG));
 				f.sizecode = pc;
-				f.p = LuaMem.luaM_newvector<Proto>(L, n, new ClassType(ClassType.TYPE_PROTO));
+				f.p = LuaMem.luaM_newvector_Proto(L, n, new ClassType(ClassType.TYPE_PROTO));
 				f.sizep = n;
 				pc = 0;
 				for (i = 0; i < n; i++)

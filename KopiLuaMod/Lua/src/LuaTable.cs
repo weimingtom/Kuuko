@@ -349,7 +349,7 @@ namespace KopiLua
 			int i;
 			TValue[][] array_ref = new TValue[1][];
 			array_ref[0] = t.array;
-			LuaMem.luaM_reallocvector<TValue>(L, /*ref*/ array_ref, t.sizearray, size/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
+			LuaMem.luaM_reallocvector_TValue(L, /*ref*/ array_ref, t.sizearray, size/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
 			t.array = array_ref[0];
 			for (i = t.sizearray; i < size; i++)
 			{
@@ -376,7 +376,7 @@ namespace KopiLua
 					LuaDebug.luaG_runerror(L, CharPtr.toCharPtr("table overflow"));
 				}
 				size = LuaObject.twoto(lsize);
-				Node[] nodes = LuaMem.luaM_newvector<Node>(L, size, new ClassType(ClassType.TYPE_NODE));
+				Node[] nodes = LuaMem.luaM_newvector_Node(L, size, new ClassType(ClassType.TYPE_NODE));
 				t.node = nodes;
 				for (i = 0; i < size; i++) 
 				{
@@ -417,7 +417,7 @@ namespace KopiLua
 				/* shrink array */
 				TValue[][] array_ref = new TValue[1][];
 				array_ref[0] = t.array;
-				LuaMem.luaM_reallocvector<TValue>(L, /*ref*/ array_ref, oldasize, nasize/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
+				LuaMem.luaM_reallocvector_TValue(L, /*ref*/ array_ref, oldasize, nasize/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
 				t.array = array_ref[0];
 			}
 			/* re-insert elements from hash part */
@@ -431,7 +431,7 @@ namespace KopiLua
 			}
 			if (Node.isNotEqual(nold[0], dummynode))
 			{
-				LuaMem.luaM_freearray(L, nold, new ClassType(ClassType.TYPE_NODE));  /* free old array */
+				LuaMem.luaM_freearray_Node(L, nold, new ClassType(ClassType.TYPE_NODE));  /* free old array */
 			}
 		}
 
@@ -470,7 +470,7 @@ namespace KopiLua
 		
 		public static Table luaH_new(lua_State L, int narray, int nhash) 
 		{
-			Table t = LuaMem.luaM_new<Table>(L, new ClassType(ClassType.TYPE_TABLE));
+			Table t = LuaMem.luaM_new_Table(L, new ClassType(ClassType.TYPE_TABLE));
 			LuaGC.luaC_link(L, LuaState.obj2gco(t), Lua.LUA_TTABLE);
 			t.metatable = null;
 			t.flags = LuaLimits.cast_byte(~0);
@@ -488,10 +488,10 @@ namespace KopiLua
 		{
 			if (Node.isNotEqual(t.node[0], dummynode))
 			{
-				LuaMem.luaM_freearray(L, t.node, new ClassType(ClassType.TYPE_NODE));
+				LuaMem.luaM_freearray_Node(L, t.node, new ClassType(ClassType.TYPE_NODE));
 			}
-			LuaMem.luaM_freearray(L, t.array, new ClassType(ClassType.TYPE_TVALUE));
-			LuaMem.luaM_free(L, t, new ClassType(ClassType.TYPE_TABLE));
+			LuaMem.luaM_freearray_TValue(L, t.array, new ClassType(ClassType.TYPE_TVALUE));
+			LuaMem.luaM_free_Table(L, t, new ClassType(ClassType.TYPE_TABLE));
 		}
 
 		private static Node getfreepos(Table t) 

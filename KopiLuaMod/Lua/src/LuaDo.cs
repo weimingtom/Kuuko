@@ -203,7 +203,7 @@ namespace KopiLua
 			LuaLimits.lua_assert(TValue.toInt(L.stack_last) == L.stacksize - LuaState.EXTRA_STACK - 1);
 			TValue[][] stack = new TValue[1][];
 			stack[0] = L.stack;
-			LuaMem.luaM_reallocvector(L, /*ref*/ stack, L.stacksize, realsize/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
+			LuaMem.luaM_reallocvector_TValue(L, /*ref*/ stack, L.stacksize, realsize/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
 			L.stack = stack[0];
 			L.stacksize = realsize;
 			L.stack_last = L.stack[newsize];
@@ -215,7 +215,7 @@ namespace KopiLua
 			CallInfo oldci = L.base_ci[0];
 			CallInfo[][] base_ci = new CallInfo[1][];
 			base_ci[0] = L.base_ci;
-			LuaMem.luaM_reallocvector(L, /*ref*/ base_ci, L.size_ci, newsize/*, CallInfo*/, new ClassType(ClassType.TYPE_CALLINFO));
+			LuaMem.luaM_reallocvector_CallInfo(L, /*ref*/ base_ci, L.size_ci, newsize/*, CallInfo*/, new ClassType(ClassType.TYPE_CALLINFO));
 			L.base_ci = base_ci[0];
 			L.size_ci = newsize;
 			L.ci = L.base_ci[CallInfo.minus(L.ci, oldci)];

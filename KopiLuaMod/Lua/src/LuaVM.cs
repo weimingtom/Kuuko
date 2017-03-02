@@ -437,7 +437,7 @@ namespace KopiLua
 					{  
 						/* concat all strings */
 						int/*uint*/ l = LuaObject.tsvalue(TValue.minus(top, i)).len;
-						LuaConf.memcpy(buffer.chars, /*(int)*/tl, LuaObject.svalue(TValue.minus(top, i)).chars, (int)l);
+						LuaConf.memcpy_char(buffer.chars, /*(int)*/tl, LuaObject.svalue(TValue.minus(top, i)).chars, (int)l);
 						tl += l;
 					}
 					LuaObject.setsvalue2s(L, TValue.minus(top, n), LuaString.luaS_newlstr(L, buffer, tl));

@@ -105,7 +105,7 @@ namespace KopiLua
             ts.getTsv().tt = Lua.LUA_TSTRING;
             ts.getTsv().reserved = 0;
 			//memcpy(ts+1, str, l*GetUnmanagedSize(typeof(char)));
-			LuaConf.memcpy(ts.str.chars, str.chars, str.index, (int)l);
+			LuaConf.memcpy_char(ts.str.chars, str.chars, str.index, (int)l);
 			ts.str.set(l, '\0');  /* ending 0 */
 			tb = LuaState.G(L).strt;
 			h = (int/*uint*/)LuaConf.lmod(h, tb.size);

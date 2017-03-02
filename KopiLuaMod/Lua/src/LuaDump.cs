@@ -24,7 +24,7 @@ namespace KopiLua
 			DumpBlock(str, /*(uint)*/str.chars.Length, D);
 		}
 
-		public static void DumpMem<T>(T[] b, int n, DumpState D, ClassType t)
+		public static void DumpMem_int(int[] b, int n, DumpState D, ClassType t)
 		{
             ClassType.Assert(b.Length == n);
 			for (int i = 0; i < n; i++)
@@ -32,6 +32,15 @@ namespace KopiLua
 				DumpMem(b[i], D, t);
 			}
 		}
+
+        public static void DumpMem_long(long[] b, int n, DumpState D, ClassType t)
+        {
+            ClassType.Assert(b.Length == n);
+            for (int i = 0; i < n; i++)
+            {
+                DumpMem(b[i], D, t);
+            }
+        }
 
 		public static void DumpVar(object x, DumpState D, ClassType t)
 		{
@@ -64,11 +73,17 @@ namespace KopiLua
 			DumpVar(x, D, new ClassType(ClassType.TYPE_DOUBLE));
 		}
 
-		static void DumpVector<T>(T[] b, int n, DumpState D, ClassType t)
+		static void DumpVector_int(int[] b, int n, DumpState D, ClassType t)
 		{
 			DumpInt(n, D);
-			DumpMem(b, n, D, t);
+			DumpMem_int(b, n, D, t);
 		}
+
+        static void DumpVector_long(long[] b, int n, DumpState D, ClassType t)
+        {
+            DumpInt(n, D);
+            DumpMem_long(b, n, D, t);
+        }
 
 		private static void DumpString(TString s, DumpState D)
 		{
@@ -87,7 +102,7 @@ namespace KopiLua
 
 		private static void DumpCode(Proto f, DumpState D)
 		{
-			DumpVector(f.code, f.sizecode, D, new ClassType(ClassType.TYPE_LONG));
+			DumpVector_long(f.code, f.sizecode, D, new ClassType(ClassType.TYPE_LONG));
 		}
 
 		private static void DumpConstants(Proto f, DumpState D)
@@ -138,7 +153,7 @@ namespace KopiLua
 		{
 			int i,n;
 			n = (D.strip != 0) ? 0 : f.sizelineinfo;
-			DumpVector(f. lineinfo, n, D, new ClassType(ClassType.TYPE_INT));
+			DumpVector_int(f. lineinfo, n, D, new ClassType(ClassType.TYPE_INT));
 			n = (D.strip != 0) ? 0 : f.sizelocvars;
 			DumpInt(n, D);
 			for (i = 0; i < n; i++)

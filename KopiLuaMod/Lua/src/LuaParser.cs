@@ -143,7 +143,7 @@ namespace KopiLua
 			locvars_ref[0] = f.locvars;
 			int[] sizelocvars_ref = new int[1];
 			sizelocvars_ref[0] = f.sizelocvars;
-			LuaMem.luaM_growvector(ls.L, /*ref*/ locvars_ref, fs.nlocvars,
+			LuaMem.luaM_growvector_LocVar(ls.L, /*ref*/ locvars_ref, fs.nlocvars,
 			    /*ref*/ sizelocvars_ref, (int)LuaConf.SHRT_MAX, 
 				CharPtr.toCharPtr("too many local variables"), new ClassType(ClassType.TYPE_LOCVAR));
 			f.sizelocvars = sizelocvars_ref[0];
@@ -207,7 +207,7 @@ namespace KopiLua
 			upvalues_ref[0] = f.upvalues;
 			int[] sizeupvalues_ref = new int[1];
 			sizeupvalues_ref[0] = f.sizeupvalues;
-			LuaMem.luaM_growvector(fs.L, /*ref*/ upvalues_ref, f.nups, /*ref*/ sizeupvalues_ref, LuaLimits.MAX_INT, CharPtr.toCharPtr(""), new ClassType(ClassType.TYPE_TSTRING));
+			LuaMem.luaM_growvector_TString(fs.L, /*ref*/ upvalues_ref, f.nups, /*ref*/ sizeupvalues_ref, LuaLimits.MAX_INT, CharPtr.toCharPtr(""), new ClassType(ClassType.TYPE_TSTRING));
 			f.sizeupvalues = sizeupvalues_ref[0];
 			f.upvalues = upvalues_ref[0];
 			while (oldsize < f.sizeupvalues)
@@ -374,7 +374,7 @@ namespace KopiLua
 			p_ref[0] = f.p;
 			int[] sizep_ref = new int[1];
 			sizep_ref[0] = f.sizep;
-			LuaMem.luaM_growvector(ls.L, /*ref*/ p_ref, fs.np, /*ref*/ sizep_ref,
+			LuaMem.luaM_growvector_Proto(ls.L, /*ref*/ p_ref, fs.np, /*ref*/ sizep_ref,
 				LuaOpCodes.MAXARG_Bx, CharPtr.toCharPtr("constant table overflow"), new ClassType(ClassType.TYPE_PROTO));
 			f.sizep = sizep_ref[0];
 			f.p = p_ref[0];
@@ -432,22 +432,22 @@ namespace KopiLua
 			LuaCode.luaK_ret(fs, 0, 0);  /* final return */
 			long[][] code_ref = new long[1][];
 			code_ref[0] = f.code;
-			LuaMem.luaM_reallocvector(L, /*ref*/ code_ref, f.sizecode, fs.pc/*, typeof(Instruction)*/, new ClassType(ClassType.TYPE_LONG));
+			LuaMem.luaM_reallocvector_long(L, /*ref*/ code_ref, f.sizecode, fs.pc/*, typeof(Instruction)*/, new ClassType(ClassType.TYPE_LONG));
 			f.code = code_ref[0];
 			f.sizecode = fs.pc;
 			int[][] lineinfo_ref = new int[1][];
 			lineinfo_ref[0] = f.lineinfo;
-			LuaMem.luaM_reallocvector(L, /*ref*/ lineinfo_ref, f.sizelineinfo, fs.pc/*, typeof(int)*/, new ClassType(ClassType.TYPE_INT));
+			LuaMem.luaM_reallocvector_int(L, /*ref*/ lineinfo_ref, f.sizelineinfo, fs.pc/*, typeof(int)*/, new ClassType(ClassType.TYPE_INT));
 			f.lineinfo = lineinfo_ref[0];
 			f.sizelineinfo = fs.pc;
 			TValue[][] k_ref = new TValue[1][];
 			k_ref[0] = f.k;
-			LuaMem.luaM_reallocvector(L, /*ref*/ k_ref, f.sizek, fs.nk/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
+			LuaMem.luaM_reallocvector_TValue(L, /*ref*/ k_ref, f.sizek, fs.nk/*, TValue*/, new ClassType(ClassType.TYPE_TVALUE));
 			f.k = k_ref[0];
 			f.sizek = fs.nk;
 			Proto[][] p_ref = new Proto[1][];
 			p_ref[0] = f.p;
-			LuaMem.luaM_reallocvector(L, /*ref*/ p_ref, f.sizep, fs.np/*, Proto*/, new ClassType(ClassType.TYPE_PROTO));
+			LuaMem.luaM_reallocvector_Proto(L, /*ref*/ p_ref, f.sizep, fs.np/*, Proto*/, new ClassType(ClassType.TYPE_PROTO));
 			f.p = p_ref[0];
 			f.sizep = fs.np;
 			for (int i = 0; i < f.p.Length; i++)
@@ -457,12 +457,12 @@ namespace KopiLua
 			}
 			LocVar[][] locvars_ref = new LocVar[1][];
 			locvars_ref[0] = f.locvars;
-			LuaMem.luaM_reallocvector(L, /*ref*/ locvars_ref, f.sizelocvars, fs.nlocvars/*, LocVar*/, new ClassType(ClassType.TYPE_LOCVAR));
+			LuaMem.luaM_reallocvector_LocVar(L, /*ref*/ locvars_ref, f.sizelocvars, fs.nlocvars/*, LocVar*/, new ClassType(ClassType.TYPE_LOCVAR));
 			f.locvars = locvars_ref[0];
 			f.sizelocvars = fs.nlocvars;
 			TString[][] upvalues_ref = new TString[1][];
 			upvalues_ref[0] = f.upvalues;
-			LuaMem.luaM_reallocvector(L, /*ref*/ upvalues_ref, f.sizeupvalues, f.nups/*, TString*/, new ClassType(ClassType.TYPE_TSTRING));
+			LuaMem.luaM_reallocvector_TString(L, /*ref*/ upvalues_ref, f.sizeupvalues, f.nups/*, TString*/, new ClassType(ClassType.TYPE_TSTRING));
 			f.upvalues = upvalues_ref[0];
 			f.sizeupvalues = f.nups;
 			LuaLimits.lua_assert(LuaDebug.luaG_checkcode(f));

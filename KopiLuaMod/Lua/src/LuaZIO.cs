@@ -61,7 +61,7 @@ namespace KopiLua
 			}
 			char[][] chars_ref = new char[1][];
 			chars_ref[0] = buff.buffer.chars;
-			LuaMem.luaM_reallocvector(L, /*ref*/ chars_ref, /*(int)*/buff.buffsize, size, new ClassType(ClassType.TYPE_CHAR));
+			LuaMem.luaM_reallocvector_char(L, /*ref*/ chars_ref, /*(int)*/buff.buffsize, size, new ClassType(ClassType.TYPE_CHAR));
 			buff.buffer.chars = chars_ref[0];
 			buff.buffsize = /*(uint)*/buff.buffer.chars.Length;
 		}

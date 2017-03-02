@@ -192,10 +192,10 @@ public static TValue luaH_getnum(Table t, int key)
 (x) Debug.Assert->ClassType.Assert
 (x) using System.Diagnostics;->removed
 (x) System.Diagnostics.Process
-using System.IO;
-System.OverflowException
-System.Double.NegativeInfinity
-System.Double.PositiveInfinity
+(x) using System.IO;
+(x) System.OverflowException->ClassType
+(x) System.Double.NegativeInfinity->ClassType
+(x) System.Double.PositiveInfinity->ClassType
 (x) using System.Collections.Generic;
 (x) using System.Collections;
 (x) List(System.Collections) in LuaProgram.MainLua & LuacProgram.MainLuac
@@ -218,11 +218,12 @@ System.Double.PositiveInfinity
 (x) Console.Write->StreamProxy
 (x) Console.WriteLine->StreamProxy
 (x) Console.ReadLine->StreamProxy
-luaM_reallocvector
-LuaConf.memcpy
-LuaMem.luaM_newvector
-LuaMem.luaM_freearray
+---
+(x) luaM_reallocvector->luaM_reallocvector_char/
+(x) LuaConf.memcpy
+(x) LuaMem.luaM_newvector
+(x) LuaMem.luaM_freearray
 LuaParser???
-LuaMem???
-LuaDump.DumpVector
-LuaMem.luaM_growvector
+(x) LuaMem???
+(x) LuaDump.DumpVector
+(x) LuaMem.luaM_growvector

@@ -758,13 +758,13 @@ namespace KopiLua
 					{
 						LuaState.G(L).strt.nuse--;
 						LuaMem.SubtractTotalBytes(L, LuaString.sizestring(LuaState.gco2ts(o)));
-						LuaMem.luaM_freemem(L, LuaState.gco2ts(o), new ClassType(ClassType.TYPE_TSTRING));
+						LuaMem.luaM_freemem_TString(L, LuaState.gco2ts(o), new ClassType(ClassType.TYPE_TSTRING));
 						break;
 					}
 				case Lua.LUA_TUSERDATA:
 					{
 						LuaMem.SubtractTotalBytes(L, LuaString.sizeudata(LuaState.gco2u(o)));
-						LuaMem.luaM_freemem(L, LuaState.gco2u(o), new ClassType(ClassType.TYPE_UDATA));
+						LuaMem.luaM_freemem_Udata(L, LuaState.gco2u(o), new ClassType(ClassType.TYPE_UDATA));
 						break;
 					}
 				default: 

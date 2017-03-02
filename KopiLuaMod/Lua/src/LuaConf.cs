@@ -1666,15 +1666,15 @@ namespace KopiLua
 			return 0;
 		}
 
-		public static void memcpy<T>(T[] dst, T[] src, int length)
-		{
-			for (int i = 0; i < length; i++)
-			{
-				dst[i] = src[i];
-			}
-		}
+		//public static void memcpy<T>(T[] dst, T[] src, int length)
+		//{
+		//	for (int i = 0; i < length; i++)
+		//	{
+		//		dst[i] = src[i];
+		//	}
+        //}
 
-		public static void memcpy<T>(T[] dst, int offset, T[] src, int length)
+		public static void memcpy_char(char[] dst, int offset, char[] src, int length)
 		{
 			for (int i=0; i<length; i++)
 			{
@@ -1682,7 +1682,7 @@ namespace KopiLua
 			}
 		}
 
-		public static void memcpy<T>(T[] dst, T[] src, int srcofs, int length)
+		public static void memcpy_char(char[] dst, char[] src, int srcofs, int length)
 		{
 			for (int i = 0; i < length; i++)
 			{
