@@ -26,8 +26,8 @@ namespace KopiLua
 			//Closure c = (Closure)luaM_malloc(L, sizeCclosure(nelems));
 			Closure c = LuaMem.luaM_new<Closure>(L, new ClassType(ClassType.TYPE_CLOSURE));
 			LuaMem.AddTotalBytes(L, sizeCclosure(nelems));
-			LuaGC.luaC_link(L, LuaState.obj2gco(c), Lua.LUA_TFUNCTION);
-			c.c.setIsC(1);
+			LuaGC.luaC_link(L, LuaState.obj2gco(c), (byte)Lua.LUA_TFUNCTION);
+			c.c.setIsC((byte)1);
 			c.c.setEnv(e);
 			c.c.setNupvalues(LuaLimits.cast_byte(nelems));
 			c.c.upvalue = new TValue[nelems];
@@ -43,8 +43,8 @@ namespace KopiLua
 			//Closure c = (Closure)luaM_malloc(L, sizeLclosure(nelems));
 			Closure c = LuaMem.luaM_new<Closure>(L, new ClassType(ClassType.TYPE_CLOSURE));
 			LuaMem.AddTotalBytes(L, sizeLclosure(nelems));
-			LuaGC.luaC_link(L, LuaState.obj2gco(c), Lua.LUA_TFUNCTION);
-			c.l.setIsC(0);
+			LuaGC.luaC_link(L, LuaState.obj2gco(c), (byte)Lua.LUA_TFUNCTION);
+			c.l.setIsC((byte)0);
 			c.l.setEnv(e);
 			c.l.setNupvalues(LuaLimits.cast_byte(nelems));
 			c.l.upvals = new UpVal[nelems];
@@ -62,7 +62,7 @@ namespace KopiLua
 		public static UpVal luaF_newupval(lua_State L) 
 		{
 			UpVal uv = LuaMem.luaM_new<UpVal>(L, new ClassType(ClassType.TYPE_UPVAL));
-			LuaGC.luaC_link(L, LuaState.obj2gco(uv), LuaObject.LUA_TUPVAL);
+			LuaGC.luaC_link(L, LuaState.obj2gco(uv), (byte)LuaObject.LUA_TUPVAL);
 			uv.v = uv.u.value;
 			LuaObject.setnilvalue(uv.v);
 			return uv;
@@ -144,7 +144,7 @@ namespace KopiLua
 		public static Proto luaF_newproto(lua_State L) 
 		{
 			Proto f = LuaMem.luaM_new<Proto>(L, new ClassType(ClassType.TYPE_PROTO));
-			LuaGC.luaC_link(L, LuaState.obj2gco(f), LuaObject.LUA_TPROTO);
+			LuaGC.luaC_link(L, LuaState.obj2gco(f), (byte)LuaObject.LUA_TPROTO);
 			f.k = null;
 			f.sizek = 0;
 			f.p = null;

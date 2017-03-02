@@ -447,7 +447,7 @@ namespace KopiLua
 		//#define LUAI_UMEM	uint
 		//#define LUAI_MEM	ptrdiff_t
 		//#else
-		///* 16-bit ints */
+		// 16-bit ints 
 		//#define LUAI_UINT32	unsigned long
 		//#define LUAI_INT32	long
 		//#define LUAI_MAXINT32	LONG_MAX
@@ -568,27 +568,13 @@ namespace KopiLua
 				end[0] = end[0].next();
 			}
 
-			try
-			{
-				return ClassType.ConvertToDouble(str.ToString());
+			bool[] isSuccess = new bool[1];
+            double result =  ClassType.ConvertToDouble(str.ToString(), isSuccess);
+			if (isSuccess[0] == false)
+            {
+                end[0] = new CharPtr(s.chars, s.index);
 			}
-			catch (System.OverflowException)
-			{
-				// this is a hack, fix it - mjf
-				if (str[0] == '-')
-				{
-					return System.Double.NegativeInfinity;
-				}
-				else
-				{
-					return System.Double.PositiveInfinity;
-				}
-			}
-			catch
-			{
-				end[0] = new CharPtr(s.chars, s.index);
-				return 0;
-			}
+            return result;
 		}
 
 		/*
@@ -697,7 +683,7 @@ namespace KopiLua
 		
 		public static bool luai_numisnan(Double/*lua_Number*/ a) 
 		{ 
-			return /*lua_Number*/Double.IsNaN(a); 
+			return /*lua_Number*/ClassType.isNaN(a); 
 		}
 		
 		//#endif
@@ -776,7 +762,7 @@ namespace KopiLua
 		 ** and with longjmp/setjmp otherwise.
 		 */
 		//#if defined(__cplusplus)
-		///* C++ exceptions */
+		// C++ exceptions
 		public static void LUAI_THROW(lua_State L, lua_longjmp c)	
 		{
 			throw new LuaException(L, c);
@@ -791,13 +777,13 @@ namespace KopiLua
 		//#define luai_jmpbuf	int  /* dummy variable */
 
 		//#elif defined(LUA_USE_ULONGJMP)
-		///* in Unix, try _longjmp/_setjmp (more efficient) */
+		// in Unix, try _longjmp/_setjmp (more efficient) 
 		//#define LUAI_THROW(L,c)	_longjmp((c).b, 1)
 		//#define LUAI_TRY(L,c,a)	if (_setjmp((c).b) == 0) { a }
 		//#define luai_jmpbuf	jmp_buf
 
 		//#else
-		///* default handling with long jumps */
+		// default handling with long jumps
 		//public static void LUAI_THROW(lua_State L, lua_longjmp c) { c.b(1); }
 		//#define LUAI_TRY(L,c,a)	if (setjmp((c).b) == 0) { a }
 		//#define luai_jmpbuf	jmp_buf
@@ -985,7 +971,7 @@ namespace KopiLua
 		
 		public static bool ispunct(char c) 
 		{ 
-			return Char.IsPunctuation(c); 
+			return ClassType.IsPunctuation(c); 
 		}
 		
 		public static bool isspace(char c) 
@@ -1205,12 +1191,12 @@ namespace KopiLua
 							}
 						case 'l':
 							{
-                                argp[parm_index++] = ClassType.ConvertToDouble(str);
+                                argp[parm_index++] = ClassType.ConvertToDouble(str, null);
 								break;
 							}
 						case 'f':
 							{
-                                argp[parm_index++] = ClassType.ConvertToDouble(str);
+                                argp[parm_index++] = ClassType.ConvertToDouble(str, null);
 								break;
 							}
 						//case 'p':
@@ -1380,8 +1366,9 @@ namespace KopiLua
 
 		public static int/*uint*/ strcspn(CharPtr str, CharPtr charset)
 		{
-			int index = str.ToString().IndexOfAny(charset.ToString().ToCharArray());
-			if (index < 0)
+			//int index = str.ToString().IndexOfAny(charset.ToString().ToCharArray());
+            int index = ClassType.IndexOfAny(str.ToString(), charset.ToString().ToCharArray());
+            if (index < 0)
 			{
 				index = str.ToString().Length;
 			}
@@ -1556,7 +1543,7 @@ namespace KopiLua
 
 		public static double frexp(double x, /*out*/ int[] expptr)
 		{
-			expptr[0] = (int)Math.Log(x, 2) + 1;
+			expptr[0] = ClassType.log2(x) + 1;
 			double s = x / Math.Pow(2, expptr[0]);
 			return s;
 		}

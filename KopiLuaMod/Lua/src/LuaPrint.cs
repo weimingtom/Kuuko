@@ -38,7 +38,7 @@ namespace KopiLua
 							LuaConf.printf(CharPtr.toCharPtr("\\\\")); 
 							break;
 						}
-					case '\a': 
+					case '\u0007': //'\a': //FIXME:
 						{
 							LuaConf.printf(CharPtr.toCharPtr("\\a")); 
 							break;
@@ -68,7 +68,7 @@ namespace KopiLua
 							LuaConf.printf(CharPtr.toCharPtr("\\t")); 
 							break;
 						}
-					case '\v': 
+                    case '\u000B': //case '\v': //FIXME: 
 						{
 							LuaConf.printf(CharPtr.toCharPtr("\\v")); 
 							break;

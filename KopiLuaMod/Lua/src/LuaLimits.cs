@@ -140,10 +140,10 @@ namespace KopiLua
 			return (Byte/*lu_byte*/)i; 
 		}
 		
-		public static Byte/*lu_byte*/ cast_byte(object i) 
-		{ 
-			return (Byte/*lu_byte*/)(int)(i); 
-		}
+		//public static Byte/*lu_byte*/ cast_byte(object i) 
+		//{ 
+		//	return (Byte/*lu_byte*/)(int)(Int32)(i); 
+		//}
 
 		public static int cast_int(int i) 
 		{ 

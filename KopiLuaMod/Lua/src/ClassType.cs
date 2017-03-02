@@ -22,7 +22,7 @@ namespace KopiLua
         public const int TYPE_INT = 2;
         //Double, Lua_Number
         public const int TYPE_DOUBLE = 3;
-		///*UInt32*//*Instruction*/ //---        
+		// UInt32 Instruction //---        
         public const int TYPE_LONG = 4;
 		//LG        
         public const int TYPE_LG = 5;
@@ -684,9 +684,53 @@ namespace KopiLua
             return Convert.ToInt32(i.ToString());
         }
 
-        public static double ConvertToDouble(String str)
+        public static double ConvertToDouble(String str, bool[] isSuccess)
         {
-            return Convert.ToDouble(str);
+            if (isSuccess != null)
+            {
+                isSuccess[0] = true;
+            }
+            try
+            {
+                return Convert.ToDouble(str);
+            }
+            catch (System.OverflowException)
+            {
+                // this is a hack, fix it - mjf
+                if (str[0] == '-')
+                {
+                    return System.Double.NegativeInfinity;
+                }
+                else
+                {
+                    return System.Double.PositiveInfinity;
+                }
+            }
+            catch
+			{
+                if (isSuccess != null)
+                {
+                    isSuccess[0] = false;
+                }
+                return 0;
+			}
+        }
+
+        public static bool isNaN(double d)
+        {
+            return Double.IsNaN(d);
+        }
+
+        public static int log2(double x)
+        {
+            if (DONNOT_USE_REIMPLEMENT)
+            {
+                return log2_csharp(x);
+            }
+            else
+            {
+                return (int)(Math.Log(x) / Math.Log(2));
+            }
         }
 
         public static double ConvertToInt32(object obj)
@@ -694,7 +738,43 @@ namespace KopiLua
         	//return Convert.ToInt32(obj);//FIXME:
         	return Convert.ToInt32(obj.ToString());
         }
-        
+
+        public static bool IsPunctuation(char c)
+        {
+            return Char.IsPunctuation(c);
+        }
+
+        public static int IndexOfAny(string str, char[] anyOf)
+        {
+            if (DONNOT_USE_REIMPLEMENT)
+            {
+                return IndexOfAny_csharp(str, anyOf);
+            }
+            else
+            {
+                int index = -1;
+                for (int i = 0; i < anyOf.Length; i++)
+                {
+                    int index2 = str.IndexOf(anyOf[i]);
+                    if (index2 >= 0)
+                    {
+                        if (index == -1)
+                        {
+                            index = index2;
+                        }
+                        else
+                        {
+                            if (index2 < index)
+                            {
+                                index = index2;
+                            }
+                        }
+                    }
+                }
+                return index;
+            }
+        }
+
         public static void Assert(bool condition)
         {
         	if (DONNOT_USE_REIMPLEMENT)
@@ -1189,6 +1269,16 @@ namespace KopiLua
             }
             Assert_csharp(false, "Trying to get unknown sized of unmanaged type " + t.ToString());
             return 0;
+        }
+
+        public static int IndexOfAny_csharp(string str, char[] anyOf)
+        {
+            return str.IndexOfAny(anyOf);
+        }
+
+        public static int log2_csharp(double x)
+        {
+            return (int)Math.Log(x, 2);
         }
     }
 }

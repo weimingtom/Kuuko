@@ -358,7 +358,7 @@ namespace KopiLua
 							{
 								case 'a': 
 									{
-										c = '\a'; 
+                                        c = '\u0007'; //'\a'; FIXME: 
 										break;
 									}
 								case 'b': 
@@ -388,7 +388,7 @@ namespace KopiLua
 									}
 								case 'v': 
 									{
-										c = '\v'; 
+                                        c = '\u000B';//'\v'; FIXME: 
 										break;
 									}
 								case '\n':  /* go through */

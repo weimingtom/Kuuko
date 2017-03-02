@@ -90,9 +90,11 @@
     <Compile Include="src\ClosureType.cs" />
     <Compile Include="src\CommonHeader.cs" />
     <Compile Include="src\ConsControl.cs" />
+    <Compile Include="src\DateTimeProxy.cs" />
     <Compile Include="src\DumpState.cs" />
     <Compile Include="src\expdesc.cs" />
     <Compile Include="src\expkind.cs" />
+    <Compile Include="src\expkindUtil.cs" />
     <Compile Include="src\FilePtr.cs" />
     <Compile Include="src\FuncState.cs" />
     <Compile Include="src\f_parser_delegate.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="src\TKey.cs" />
     <Compile Include="src\TKey_nk.cs" />
     <Compile Include="src\TMS.cs" />
+    <Compile Include="src\TMSUtil.cs" />
     <Compile Include="src\Token.cs" />
     <Compile Include="src\Tools.cs" />
     <Compile Include="src\TString.cs" />

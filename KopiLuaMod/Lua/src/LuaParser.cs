@@ -217,7 +217,7 @@ namespace KopiLua
 			f.upvalues[f.nups] = name;
 			LuaGC.luaC_objbarrier(fs.L, f, name);
 			LuaLimits.lua_assert(v.k == expkind.VLOCAL || v.k == expkind.VUPVAL);
-			fs.upvalues[f.nups].k = LuaLimits.cast_byte(v.k);
+            fs.upvalues[f.nups].k = LuaLimits.cast_byte(expkindUtil.expkindToInt(v.k));
 			fs.upvalues[f.nups].info = LuaLimits.cast_byte(v.u.s.info);
 			return f.nups++;
 		}
@@ -1050,25 +1050,25 @@ namespace KopiLua
 		/* order */
 		/* logical (and/or) */
 		private static priority_[] priority = {  
-			new priority_(6, 6),
-			new priority_(6, 6),
-			new priority_(7, 7),
-			new priority_(7, 7),
-			new priority_(7, 7),				
+			new priority_((byte)6, (byte)6),
+			new priority_((byte)6, (byte)6),
+			new priority_((byte)7, (byte)7),
+			new priority_((byte)7, (byte)7),
+			new priority_((byte)7, (byte)7),				
 
-			new priority_(10, 9),
-			new priority_(5, 4),				
+			new priority_((byte)10, (byte)9),
+			new priority_((byte)5, (byte)4),				
 
-			new priority_(3, 3),
-			new priority_(3, 3),				
+			new priority_((byte)3, (byte)3),
+			new priority_((byte)3, (byte)3),				
 
-			new priority_(3, 3),
-			new priority_(3, 3),
-			new priority_(3, 3),
-			new priority_(3, 3),				
+			new priority_((byte)3, (byte)3),
+			new priority_((byte)3, (byte)3),
+			new priority_((byte)3, (byte)3),
+			new priority_((byte)3, (byte)3),				
 
-			new priority_(2, 2),
-			new priority_(1, 1)					
+			new priority_((byte)2, (byte)2),
+			new priority_((byte)1, (byte)1)					
 		};
 
 		public const int UNARY_PRIORITY	= 8;  /* priority for unary operators */

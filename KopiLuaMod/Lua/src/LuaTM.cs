@@ -53,7 +53,7 @@ namespace KopiLua
 		{
 			//const
 			TValue tm = LuaTable.luaH_getstr(events, ename);
-			LuaLimits.lua_assert(event_ <= TMS.TM_EQ);
+			LuaLimits.lua_assert(TMSUtil.convertTMStoInt(event_) <= TMSUtil.convertTMStoInt(TMS.TM_EQ));
 			if (LuaObject.ttisnil(tm))
 			{  
 				/* no tag method? */

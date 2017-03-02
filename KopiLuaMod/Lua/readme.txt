@@ -218,39 +218,11 @@ System.Double.PositiveInfinity
 (x) Console.Write->StreamProxy
 (x) Console.WriteLine->StreamProxy
 (x) Console.ReadLine->StreamProxy
-
-
-general:
-* luaM_reallocvector
-* LuaConf.memcpy
-* luaM_newvector
-
-
--------------
-
-	public static TValue luaT_gettm(Table events, TMS event_, TString ename)
-	{
-		//const
-		TValue tm = LuaTable.luaH_getstr(events, ename);
--->		LuaLimits.lua_assert(event_ <= TMS.TM_EQ);
-
-	public static Table luaH_new(lua_State L, int narray, int nhash)
-	{
-		Table t = LuaMem.<Table>luaM_new(L, new ClassType(ClassType.TYPE_TABLE));
-		LuaGC.luaC_link(L, LuaState.obj2gco(t), -->(int)Lua.LUA_TTABLE);
-
-
-------------
-LuaString
-			ts.getTsv().next = tb.hash[(int)h]; // chain new entry 
-
----------------
-
-	-->(int) 	for (o = LuaState.G(L).strt.hash[(int)LuaConf.lmod(h, LuaState.G(L).strt.size)]; o != null; o = o.getGch().next)
-		{
-
-->(byte)
-		LuaGC.luaC_link(L, obj2gco(L1), (byte)Lua.LUA_TTHREAD);
-
-...(FIXME)
-
+luaM_reallocvector
+LuaConf.memcpy
+LuaMem.luaM_newvector
+LuaMem.luaM_freearray
+LuaParser???
+LuaMem???
+LuaDump.DumpVector
+LuaMem.luaM_growvector

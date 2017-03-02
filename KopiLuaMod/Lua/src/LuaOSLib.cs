@@ -83,10 +83,9 @@ namespace KopiLua
 			return 1;
 		}
 
-		private static int os_clock (lua_State L) 
+		private static int os_clock(lua_State L) 
 		{
-			long ticks = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-			LuaAPI.lua_pushnumber(L, ((Double/*lua_Number*/)ticks) / (Double/*lua_Number*/)1000);
+            LuaAPI.lua_pushnumber(L, DateTimeProxy.getClock());
 			return 1;
 		}
 
@@ -145,28 +144,28 @@ namespace KopiLua
 		private static int os_date(lua_State L) 
 		{
 			CharPtr s = LuaAuxLib.luaL_optstring(L, 1, CharPtr.toCharPtr("%c"));
-			DateTime stm;
+			DateTimeProxy stm = new DateTimeProxy();
 			if (s.get(0) == '!') 
 			{  
 				/* UTC? */
-				stm = DateTime.UtcNow;
+				stm.setUTCNow();
 				s.inc();  /* skip `!' */
 			}
 			else
 			{
-				stm = DateTime.Now;
+				stm.setNow();
 			}
 			if (LuaConf.strcmp(s, CharPtr.toCharPtr("*t")) == 0)
 			{
 				LuaAPI.lua_createtable(L, 0, 9);  /* 9 = number of fields */
-				setfield(L, CharPtr.toCharPtr("sec"), stm.Second);
-				setfield(L, CharPtr.toCharPtr("min"), stm.Minute);
-				setfield(L, CharPtr.toCharPtr("hour"), stm.Hour);
-				setfield(L, CharPtr.toCharPtr("day"), stm.Day);
-				setfield(L, CharPtr.toCharPtr("month"), stm.Month);
-				setfield(L, CharPtr.toCharPtr("year"), stm.Year);
-				setfield(L, CharPtr.toCharPtr("wday"), (int)stm.DayOfWeek);
-				setfield(L, CharPtr.toCharPtr("yday"), stm.DayOfYear);
+				setfield(L, CharPtr.toCharPtr("sec"), stm.getSecond());
+				setfield(L, CharPtr.toCharPtr("min"), stm.getMinute());
+				setfield(L, CharPtr.toCharPtr("hour"), stm.getHour());
+				setfield(L, CharPtr.toCharPtr("day"), stm.getDay());
+				setfield(L, CharPtr.toCharPtr("month"), stm.getMonth());
+				setfield(L, CharPtr.toCharPtr("year"), stm.getYear());
+				setfield(L, CharPtr.toCharPtr("wday"), (int)stm.getDayOfWeek());
+				setfield(L, CharPtr.toCharPtr("yday"), stm.getDayOfYear());
 				setboolfield(L, CharPtr.toCharPtr("isdst"), stm.IsDaylightSavingTime() ? 1 : 0);
 			}
 			else 
@@ -200,12 +199,12 @@ namespace KopiLua
 			return 1;
 		}
 
-		private static int os_time (lua_State L) 
+		private static int os_time(lua_State L) 
 		{
-			DateTime t;
+			DateTimeProxy t = new DateTimeProxy();
 			if (Lua.lua_isnoneornil(L, 1))  /* called without args? */
 			{
-				t = DateTime.Now;  /* get current time */
+				t.setNow();  /* get current time */
 			}
 			else 
 			{
@@ -218,16 +217,16 @@ namespace KopiLua
 				int month = getfield(L, CharPtr.toCharPtr("month"), -1) - 1;
 				int year = getfield(L, CharPtr.toCharPtr("year"), -1) - 1900;
 				int isdst = getboolfield(L, CharPtr.toCharPtr("isdst"));	// todo: implement this - mjf
-				t = new DateTime(year, month, day, hour, min, sec);
+				t = new DateTimeProxy(year, month, day, hour, min, sec);
 			}
-			LuaAPI.lua_pushnumber(L, t.Ticks);
+			LuaAPI.lua_pushnumber(L, t.getTicks());
 			return 1;
 		}
 
 		private static int os_difftime(lua_State L) 
 		{
 			long ticks = (long)LuaAuxLib.luaL_checknumber(L, 1) - (long)LuaAuxLib.luaL_optnumber(L, 2, 0);
-			LuaAPI.lua_pushnumber(L, ticks / TimeSpan.TicksPerSecond);
+            LuaAPI.lua_pushnumber(L, ticks / 10000000); //FIXME: ticks / TimeSpan.TicksPerSecond
 			return 1;
 		}
 

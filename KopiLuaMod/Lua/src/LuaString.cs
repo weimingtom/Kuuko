@@ -110,7 +110,7 @@ namespace KopiLua
 			tb = LuaState.G(L).strt;
 			h = (int/*uint*/)LuaConf.lmod(h, tb.size);
             ts.getTsv().next = tb.hash[h];  /* chain new entry */
-			tb.hash[h] = LuaState.obj2gco(ts);
+			tb.hash[(int)h] = LuaState.obj2gco(ts);
 			tb.nuse++;
 			if ((tb.nuse > (int)tb.size) && (tb.size <= LuaLimits.MAX_INT / 2))
 			{

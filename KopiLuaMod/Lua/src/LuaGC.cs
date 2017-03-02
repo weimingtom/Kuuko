@@ -618,22 +618,32 @@ namespace KopiLua
 						g.grayagain = o;
 						black2gray(o);
 						traversestack(g, th);
-                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LUA_STATE)) + //typeof(lua_State)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * th.stacksize + //typeof(TValue)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CALLINFO)) * th.size_ci; //typeof(CallInfo)
+                        //typeof(lua_State)
+                        //typeof(TValue)
+                        //typeof(CallInfo)
+                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LUA_STATE)) + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * th.stacksize + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_CALLINFO)) * th.size_ci; 
 					}
 				case LuaObject.LUA_TPROTO:
 					{
 						Proto p = LuaState.gco2p(o);
 						g.gray = p.gclist;
 						traverseproto(g, p);
-                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_PROTO)) + //typeof(Proto)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LONG)) * p.sizecode + //typeof(long/*UInt32*//*Instruction*/)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_PROTO)) * p.sizep + //typeof(Proto)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * p.sizek + //typeof(TValue)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_INT)) * p.sizelineinfo + //typeof(int)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LOCVAR)) * p.sizelocvars + //typeof(LocVar)
-                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TSTRING)) * p.sizeupvalues; //typeof(TString)
+                        //typeof(Proto)
+                        //typeof(long/*UInt32*//*Instruction*/)
+                        //typeof(Proto)
+                        //typeof(TValue)
+                        //typeof(int)
+                        //typeof(LocVar)
+                        //typeof(TString)
+                        return LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_PROTO)) + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LONG)) * p.sizecode + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_PROTO)) * p.sizep + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TVALUE)) * p.sizek + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_INT)) * p.sizelineinfo + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_LOCVAR)) * p.sizelocvars + 
+                            LuaConf.GetUnmanagedSize(new ClassType(ClassType.TYPE_TSTRING)) * p.sizeupvalues; 
 					}
 				default: 
 					{
