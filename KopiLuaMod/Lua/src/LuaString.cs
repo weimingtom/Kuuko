@@ -109,7 +109,7 @@ namespace KopiLua
 			ts.str.set(l, '\0');  /* ending 0 */
 			tb = LuaState.G(L).strt;
 			h = (int/*uint*/)LuaConf.lmod(h, tb.size);
-            ts.getTsv().next = tb.hash[h];  /* chain new entry */
+            ts.getTsv().next = tb.hash[(int)h];  /* chain new entry */
 			tb.hash[(int)h] = LuaState.obj2gco(ts);
 			tb.nuse++;
 			if ((tb.nuse > (int)tb.size) && (tb.size <= LuaLimits.MAX_INT / 2))
@@ -132,7 +132,7 @@ namespace KopiLua
 				/* compute hash */
 				h = (0xffffffff) & (h ^ ((h << 5)+(h >> 2) + (byte)str.get(l1 - 1)));
 			}
-			for (o = LuaState.G(L).strt.hash[LuaConf.lmod(h, LuaState.G(L).strt.size)];
+			for (o = LuaState.G(L).strt.hash[(int)LuaConf.lmod(h, LuaState.G(L).strt.size)];
 			     o != null;
                  o = o.getGch().next) 
 			{

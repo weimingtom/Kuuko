@@ -347,6 +347,8 @@ namespace KopiLua
 		private static Byte/*lu_byte*/ opmode(Byte/*lu_byte*/ t, Byte/*lu_byte*/ a, OpArgMask b, OpArgMask c, OpMode m)
 		{
             int bValue = 0;
+            int cValue = 0;
+            int mValue = 0;
             switch (b)
             {
                 case OpArgMask.OpArgN:
@@ -362,7 +364,34 @@ namespace KopiLua
                     bValue = 3;
                     break;
             }
-            return (Byte/*lu_byte*/)(((t) << 7) | ((a) << 6) | (((Byte/*lu_byte*/)bValue) << 4) | (((Byte/*lu_byte*/)c) << 2) | ((Byte/*lu_byte*/)m));
+            switch (c)
+            {
+                case OpArgMask.OpArgN:
+                    cValue = 0;
+                    break;
+                case OpArgMask.OpArgU:
+                    cValue = 1;
+                    break;
+                case OpArgMask.OpArgR:
+                    cValue = 2;
+                    break;
+                case OpArgMask.OpArgK:
+                    cValue = 3;
+                    break;
+            }
+            switch (m)
+            {
+                case OpMode.iABC:
+                    mValue = 0;
+                    break;
+                case OpMode.iABx:
+                    mValue = 1;
+                    break;
+                case OpMode.iAsBx:
+                    mValue = 2;
+                    break;
+            }
+            return (Byte/*lu_byte*/)(((t) << 7) | ((a) << 6) | (((Byte/*lu_byte*/)bValue) << 4) | (((Byte/*lu_byte*/)cValue) << 2) | ((Byte/*lu_byte*/)mValue));
 		}
 		
 		//       T  A    B       C     mode		   opcode		

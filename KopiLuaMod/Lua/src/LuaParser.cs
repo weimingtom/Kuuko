@@ -195,7 +195,7 @@ namespace KopiLua
 			int oldsize = f.sizeupvalues;
 			for (i=0; i<f.nups; i++) 
 			{
-				if ((int)fs.upvalues[i].k == (int)v.k && fs.upvalues[i].info == v.u.s.info) 
+				if ((int)fs.upvalues[i].k == (int)expkindUtil.expkindToInt(v.k) && fs.upvalues[i].info == v.u.s.info) 
 				{
 					LuaLimits.lua_assert(f.upvalues[i] == name);
 					return i;
@@ -1079,8 +1079,8 @@ namespace KopiLua
 		 */
 		private static BinOpr subexpr(LexState ls, expdesc v, int/*uint*/ limit) 
 		{
-			BinOpr op = new BinOpr();
-			UnOpr uop = new UnOpr();
+			BinOpr op;// = new BinOpr();
+			UnOpr uop;// = new UnOpr();
 			enterlevel(ls);
 			uop = getunopr(ls.t.token);
 			if (uop != UnOpr.OPR_NOUNOPR) 
@@ -1147,7 +1147,7 @@ namespace KopiLua
 			/* block . chunk */
 			FuncState fs = ls.fs;
 			BlockCnt bl = new BlockCnt();
-			enterblock(fs, bl, 0);
+			enterblock(fs, bl, (byte)0);
 			chunk(ls);
 			LuaLimits.lua_assert(bl.breaklist == LuaCode.NO_JUMP);
 			leaveblock(fs);
@@ -1193,7 +1193,9 @@ namespace KopiLua
 		private static void assignment(LexState ls, LHS_assign lh, int nvars) 
 		{
 			expdesc e = new expdesc();
-			check_condition(ls, expkind.VLOCAL <= lh.v.k && lh.v.k <= expkind.VINDEXED,
+            check_condition(ls, 
+                expkindUtil.expkindToInt(expkind.VLOCAL) <= expkindUtil.expkindToInt(lh.v.k) && 
+                expkindUtil.expkindToInt(lh.v.k) <= expkindUtil.expkindToInt(expkind.VINDEXED),
 				CharPtr.toCharPtr("syntax error"));
 			if (testnext(ls, ',') != 0) 
 			{  
@@ -1278,7 +1280,7 @@ namespace KopiLua
 			LuaLex.luaX_next(ls);  /* skip WHILE */
 			whileinit = LuaCode.luaK_getlabel(fs);
 			condexit = cond(ls);
-			enterblock(fs, bl, 1);
+			enterblock(fs, bl, (byte)1);
 			checknext(ls, (int)RESERVED.TK_DO);
 			block(ls);
 			LuaCode.luaK_patchlist(fs, LuaCode.luaK_jump(fs), whileinit);
@@ -1294,8 +1296,8 @@ namespace KopiLua
 			FuncState fs = ls.fs;
 			int repeat_init = LuaCode.luaK_getlabel(fs);
 			BlockCnt bl1 = new BlockCnt(), bl2 = new BlockCnt();
-			enterblock(fs, bl1, 1);  /* loop block */
-			enterblock(fs, bl2, 0);  /* scope block */
+            enterblock(fs, bl1, (byte)1);  /* loop block */
+            enterblock(fs, bl2, (byte)0);  /* scope block */
 			LuaLex.luaX_next(ls);  /* skip REPEAT */
 			chunk(ls);
 			check_match(ls, (int)RESERVED.TK_UNTIL, (int)RESERVED.TK_REPEAT, line);
@@ -1322,7 +1324,7 @@ namespace KopiLua
 			expdesc e = new expdesc();
 			int k;
 			expr(ls, e);
-			k = (int)e.k;
+			k = (int)expkindUtil.expkindToInt(e.k);
 			LuaCode.luaK_exp2nextreg(ls.fs, e);
 			return k;
 		}
@@ -1336,7 +1338,7 @@ namespace KopiLua
 			adjustlocalvars(ls, 3);  /* control variables */
 			checknext(ls, (int)RESERVED.TK_DO);
 			prep = (isnum != 0) ? LuaCode.luaK_codeAsBx(fs, OpCode.OP_FORPREP, base_, LuaCode.NO_JUMP) : LuaCode.luaK_jump(fs);
-			enterblock(fs, bl, 0);  /* scope for declared variables */
+            enterblock(fs, bl, (byte)0);  /* scope for declared variables */
 			adjustlocalvars(ls, nvars);
 			LuaCode.luaK_reserveregs(fs, nvars);
 			block(ls);
@@ -1405,7 +1407,7 @@ namespace KopiLua
 			FuncState fs = ls.fs;
 			TString varname;
 			BlockCnt bl = new BlockCnt();
-			enterblock(fs, bl, 1);  /* scope for loop and control variables */
+            enterblock(fs, bl, (byte)1);  /* scope for loop and control variables */
 			LuaLex.luaX_next(ls);  /* skip `for' */
 			varname = str_checkname(ls);  /* first variable name */
 			switch (ls.t.token) 

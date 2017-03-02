@@ -128,6 +128,8 @@
     <Compile Include="src\LuaLex.cs" />
     <Compile Include="src\LuaLimits.cs" />
     <Compile Include="src\luaL_Buffer.cs" />
+    <Compile Include="src\luaL_opt_delegate.cs" />
+    <Compile Include="src\luaL_opt_delegate_integer.cs" />
     <Compile Include="src\luaL_Reg.cs" />
     <Compile Include="src\LuaMathLib.cs" />
     <Compile Include="src\LuaMem.cs" />
@@ -152,9 +154,14 @@
     <Compile Include="src\LuaVM.cs" />
     <Compile Include="src\LuaZIO.cs" />
     <Compile Include="src\LuaPrint.cs" />
+    <Compile Include="src\lua_Alloc.cs" />
+    <Compile Include="src\lua_CFunction.cs" />
     <Compile Include="src\lua_Debug.cs" />
+    <Compile Include="src\lua_Hook.cs" />
     <Compile Include="src\lua_longjmp.cs" />
+    <Compile Include="src\lua_Reader.cs" />
     <Compile Include="src\lua_State.cs" />
+    <Compile Include="src\lua_Writer.cs" />
     <Compile Include="src\MatchState.cs" />
     <Compile Include="src\Mbuffer.cs" />
     <Compile Include="src\NextRef.cs" />
@@ -164,6 +171,7 @@
     <Compile Include="src\OpCodeUtil.cs" />
     <Compile Include="src\OpenValRef.cs" />
     <Compile Include="src\OpMode.cs" />
+    <Compile Include="src\op_delegate.cs" />
     <Compile Include="src\Pfunc.cs" />
     <Compile Include="src\priority_.cs" />
     <Compile Include="src\Program.cs" />

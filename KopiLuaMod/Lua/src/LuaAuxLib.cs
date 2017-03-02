@@ -970,12 +970,13 @@ namespace KopiLua
 	//public delegate double/*Double*//*lua_Number*/ luaL_opt_delegate(lua_State L, int narg);
 	//public delegate int/*Int32*//*lua_Integer*/ luaL_opt_delegate_integer(lua_State L, int narg);
 
-	public interface luaL_opt_delegate
-	{
-		double/*Double*//*lua_Number*/ exec(lua_State L, int narg);
-	}
-	public interface luaL_opt_delegate_integer
-	{
-		int/*Int32*//*lua_Integer*/ exec(lua_State L, int narg);
-	}
+	//public interface luaL_opt_delegate
+	//{
+	//	double/*Double*//*lua_Number*/ exec(lua_State L, int narg);
+	//}
+
+	//public interface luaL_opt_delegate_integer
+	//{
+	//	int/*Int32*//*lua_Integer*/ exec(lua_State L, int narg);
+	//}
 }

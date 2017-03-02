@@ -801,9 +801,12 @@ namespace KopiLua
 						break;
 					}
 			}
-			//
+			
+            //
 			// interchange true and false lists
 			//
+
+            if (true)
 			{
 				int temp = e.f; 
 				e.f = e.t; 

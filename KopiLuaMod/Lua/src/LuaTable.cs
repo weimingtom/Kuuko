@@ -471,7 +471,7 @@ namespace KopiLua
 		public static Table luaH_new(lua_State L, int narray, int nhash) 
 		{
 			Table t = LuaMem.luaM_new_Table(L, new ClassType(ClassType.TYPE_TABLE));
-			LuaGC.luaC_link(L, LuaState.obj2gco(t), Lua.LUA_TTABLE);
+			LuaGC.luaC_link(L, LuaState.obj2gco(t), (byte)Lua.LUA_TTABLE);
 			t.metatable = null;
 			t.flags = LuaLimits.cast_byte(~0);
 			/* temporary values (kept only if some malloc fails) */

@@ -237,7 +237,7 @@ namespace KopiLua
 		{
 			//lua_State L1 = tostate(luaM_malloc(L, state_size(typeof(lua_State))));
 			lua_State L1 = LuaMem.luaM_new_lua_State(L, new ClassType(ClassType.TYPE_LUA_STATE));
-			LuaGC.luaC_link(L, obj2gco(L1), Lua.LUA_TTHREAD);
+			LuaGC.luaC_link(L, obj2gco(L1), (byte)Lua.LUA_TTHREAD);
 			preinit_state(L1, G(L));
 			stack_init(L1, L);  /* init stack */
 			LuaObject.setobj2n(L, gt(L1), gt(L));  /* share table of globals */

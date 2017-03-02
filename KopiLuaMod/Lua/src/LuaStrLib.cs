@@ -605,11 +605,14 @@ namespace KopiLua
 												return null;
 											}
 											p = CharPtr.plus(p, 2);
-											//goto init;  /* else return match(ms, s, p+2) */
+											//goto init;  
+                                            // else return match(ms, s, p+2)
 											init2 = true;
 											break;
 										}
-										//goto dflt;  /* case default */
+										//goto dflt;  
+                                        // case default
+                                        if (true)
 										{
 											//------------------dflt start--------------		                        
 											/* it is a pattern item */
@@ -739,7 +742,8 @@ namespace KopiLua
 											}
 											s = s.next(); 
 											p = ep; 
-											//goto init;  /* else return match(ms, s+1, ep); */
+											//goto init;  
+                                            // else return match(ms, s+1, ep);
 											init2 = true;
 											break;
 		                        		}
@@ -757,9 +761,9 @@ namespace KopiLua
 							}
 						}
 					default: 
-//						dflt: 
-						{  
-							/* it is a pattern item */
+						{
+                            //dflt: 
+							// it is a pattern item
 							CharPtr ep = classend(ms, p);  /* points to what is next */
 	                        int m = (CharPtr.lessThan(s, ms.src_end)) && (singlematch((byte)(s.get(0)), p, ep) != 0) ? 1 : 0;
 							bool init2 = false;

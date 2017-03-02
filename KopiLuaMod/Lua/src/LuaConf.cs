@@ -1732,8 +1732,8 @@ namespace KopiLua
 	}
 
 	//public delegate Double/*lua_Number*/ op_delegate(Double/*lua_Number*/ a, Double/*lua_Number*/ b);
-	public interface op_delegate
-	{
-		Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b);
-	}	
+	//public interface op_delegate
+	//{
+	//	Double/*lua_Number*/ exec(Double/*lua_Number*/ a, Double/*lua_Number*/ b);
+	//}	
 }
