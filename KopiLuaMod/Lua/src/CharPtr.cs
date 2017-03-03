@@ -129,25 +129,25 @@ namespace KopiLua
 		}
 
         //operator ==
-        public static bool isEqual(CharPtr ptr, char ch)
+        public static bool isEqualChar(CharPtr ptr, char ch)
         {
             return ptr.get(0) == ch;
         }
 
         //operator ==
-        public static bool isEqual(char ch, CharPtr ptr) 
+        public static bool isEqualChar(char ch, CharPtr ptr) 
 		{ 
 			return ptr.get(0) == ch; 
 		}
 		
         //operator !=
-		public static bool isNotEqual(CharPtr ptr, char ch) 
+		public static bool isNotEqualChar(CharPtr ptr, char ch) 
 		{ 
 			return ptr.get(0) != ch; 
 		}
 		
         //operator !=
-        public static bool isNotEqual(char ch, CharPtr ptr) 
+        public static bool isNotEqualChar(char ch, CharPtr ptr) 
 		{ 
 			return ptr.get(0) != ch; 
 		}

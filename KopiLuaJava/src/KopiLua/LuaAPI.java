@@ -467,7 +467,7 @@ TValue.dec(top); //ref
 	}
 
 	public static void lua_pushstring(lua_State L, CharPtr s) {
-		if (CharPtr.isEqual(s, '\0')) {
+		if (CharPtr.isEqual(s, null)) {
 			lua_pushnil(L);
 		}
 		else {
@@ -884,7 +884,7 @@ TValue.dec(top); //ref
 		ZIO z = new ZIO();
 		int status;
 		LuaLimits.lua_lock(L);
-		if (CharPtr.isEqual(chunkname, '\0')) {
+		if (CharPtr.isEqual(chunkname, null)) {
 			chunkname = CharPtr.toCharPtr("?");
 		}
 		LuaZIO.luaZ_init(L, z, reader, data);
@@ -1100,7 +1100,7 @@ TValue.dec(top); // remove key  - ref
 		val_ref[0] = val;
 		name = aux_upvalue(index2adr(L, funcindex), n, val_ref); //ref
 		val = val_ref[0];
-		if (CharPtr.isNotEqual(name, '\0')) {
+		if (CharPtr.isNotEqual(name, null)) {
 			LuaObject.setobj2s(L, L.top, val);
 			api_incr_top(L);
 		}
@@ -1119,7 +1119,7 @@ TValue.dec(top); // remove key  - ref
 		val_ref[0] = val;
 		name = aux_upvalue(fi, n, val_ref); //ref
 		val = val_ref[0];
-		if (CharPtr.isNotEqual(name, '\0')) {
+		if (CharPtr.isNotEqual(name, null)) {
 			TValue[] top = new TValue[1];
 			top[0] = L.top;
 			//StkId

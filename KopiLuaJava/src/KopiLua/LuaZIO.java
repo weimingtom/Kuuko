@@ -44,7 +44,7 @@ public class LuaZIO {
 	}
 
 	public static void luaZ_resizebuffer(lua_State L, Mbuffer buff, int size) {
-		if (CharPtr.isEqual(buff.buffer, '\0')) {
+		if (CharPtr.isEqual(buff.buffer, null)) {
 			buff.buffer = new CharPtr();
 		}
 		char[][] chars_ref = new char[1][];
@@ -67,7 +67,7 @@ public class LuaZIO {
 		LuaLimits.lua_unlock(L);
 		buff = z.reader.exec(L, z.data, size); //out
 		LuaLimits.lua_lock(L);
-		if (CharPtr.isEqual(buff, '\0') || size[0] == 0) {
+		if (CharPtr.isEqual(buff, null) || size[0] == 0) {
 			return EOZ;
 		}
 		z.n = size[0] - 1;

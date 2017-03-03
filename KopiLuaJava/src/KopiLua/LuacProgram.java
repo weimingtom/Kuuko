@@ -86,7 +86,7 @@ public class LuacProgram {
 			}
 			else if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-o")) == 0) { // output file 
 				output = CharPtr.toCharPtr(argv[++i]);
-				if (CharPtr.isEqual(output, '\0') || (output.get(0) == 0)) {
+				if (CharPtr.isEqual(output, null) || (output.get(0) == 0)) {
 					usage(CharPtr.toCharPtr(LuaConf.LUA_QL("-o") + " needs argument"));
 				}
 				if (LuaConf.strcmp(CharPtr.toCharPtr(argv[i]), CharPtr.toCharPtr("-")) == 0) {
@@ -187,7 +187,7 @@ public class LuacProgram {
 			LuaPrint.luaU_print(f, (listing > 1) ? 1 : 0);
 		}
 		if (dumping!=0) {
-			StreamProxy D = (CharPtr.isEqual(output, '\0')) ? LuaConf.stdout : LuaConf.fopen(output, CharPtr.toCharPtr("wb"));
+			StreamProxy D = (CharPtr.isEqual(output, null)) ? LuaConf.stdout : LuaConf.fopen(output, CharPtr.toCharPtr("wb"));
 			if (D == null) {
 				cannot(CharPtr.toCharPtr("open"));
 			}

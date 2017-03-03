@@ -168,7 +168,7 @@ public class LuaAuxLib {
 				return luaL_error(L, CharPtr.toCharPtr("calling " + LuaConf.getLUA_QS() + " on bad self ({1})"), ar.name, extramsg); //FIXME:
 			}
 		}
-		if (CharPtr.isEqual(ar.name, '\0')) {
+		if (CharPtr.isEqual(ar.name, null)) {
 			ar.name = CharPtr.toCharPtr("?");
 		}
 		return luaL_error(L, CharPtr.toCharPtr("bad argument #%d to " + LuaConf.getLUA_QS() + " (%s)"), narg, ar.name, extramsg);
@@ -207,7 +207,7 @@ public class LuaAuxLib {
 	// }====================================================== 
 
 	public static int luaL_checkoption(lua_State L, int narg, CharPtr def, CharPtr[] lst) {
-		CharPtr name = (CharPtr.isNotEqual(def, '\0')) ? luaL_optstring(L, narg, def) : luaL_checkstring(L, narg);
+		CharPtr name = (CharPtr.isNotEqual(def, null)) ? luaL_optstring(L, narg, def) : luaL_checkstring(L, narg);
 		int i;
 		for (i = 0; i < lst.length; i++) {
 			if (LuaConf.strcmp(lst[i], name) == 0) {
@@ -273,7 +273,7 @@ public class LuaAuxLib {
 
 	public static CharPtr luaL_checklstring(lua_State L, int narg, int[] len) { //uint - out
 		CharPtr s = LuaAPI.lua_tolstring(L, narg, len); //out
-		if (CharPtr.isEqual(s, '\0')) {
+		if (CharPtr.isEqual(s, null)) {
 			tag_error(L, narg, Lua.LUA_TSTRING);
 		}
 		return s;
@@ -286,7 +286,7 @@ public class LuaAuxLib {
 
 	public static CharPtr luaL_optlstring(lua_State L, int narg, CharPtr def, int[] len) { //uint - out
 		if (Lua.lua_isnoneornil(L, narg)) {
-			len[0] = ((CharPtr.isNotEqual(def, '\0')) ? LuaConf.strlen(def) : 0); //(uint)
+			len[0] = ((CharPtr.isNotEqual(def, null)) ? LuaConf.strlen(def) : 0); //(uint)
 			return def;
 		}
 		else {
@@ -364,14 +364,14 @@ public class LuaAuxLib {
 	// to keep it as close to the C implementation as possible.
 	private static int libsize(luaL_Reg[] l) {
 		int size = 0;
-		for (; CharPtr.isNotEqual(l[size].name, '\0'); size++) {
+		for (; CharPtr.isNotEqual(l[size].name, null); size++) {
 			;
 		}
 		return size;
 	}
 
 	public static void luaI_openlib(lua_State L, CharPtr libname, luaL_Reg[] l, int nup) {
-		if (CharPtr.isNotEqual(libname, '\0')) {
+		if (CharPtr.isNotEqual(libname, null)) {
 			int size = libsize(l);
 			// check whether lib already exists 
 			luaL_findtable(L, Lua.LUA_REGISTRYINDEX, CharPtr.toCharPtr("_LOADED"), 1);
@@ -380,7 +380,7 @@ public class LuaAuxLib {
 				// not found? 
 				Lua.lua_pop(L, 1); // remove previous result 
 				// try global variable (and create one if it does not exist) 
-				if (CharPtr.isNotEqual(luaL_findtable(L, Lua.LUA_GLOBALSINDEX, libname, size), '\0')) {
+				if (CharPtr.isNotEqual(luaL_findtable(L, Lua.LUA_GLOBALSINDEX, libname, size), null)) {
 					luaL_error(L, CharPtr.toCharPtr("name conflict for module " + LuaConf.getLUA_QS()), libname);
 				}
 				LuaAPI.lua_pushvalue(L, -1);
@@ -390,7 +390,7 @@ public class LuaAuxLib {
 			LuaAPI.lua_insert(L, -(nup + 1)); // move library table to below upvalues 
 		}
 		int reg_num = 0;
-		for (; CharPtr.isNotEqual(l[reg_num].name, '\0'); reg_num++) {
+		for (; CharPtr.isNotEqual(l[reg_num].name, null); reg_num++) {
 			int i;
 			for (i = 0; i < nup; i++) { // copy upvalues to the top 
 				LuaAPI.lua_pushvalue(L, -nup);
@@ -485,7 +485,7 @@ public class LuaAuxLib {
 		int l = LuaConf.strlen(p); //(uint) - uint
 		luaL_Buffer b = new luaL_Buffer();
 		luaL_buffinit(L, b);
-		while (CharPtr.isNotEqual((wild = LuaConf.strstr(s, p)), '\0')) {
+		while (CharPtr.isNotEqual((wild = LuaConf.strstr(s, p)), null)) {
 			luaL_addlstring(b, s, CharPtr.minus(wild, s)); // push prefix  - (uint)
 			luaL_addstring(b, r); // push replacement in place of pattern 
 			s = CharPtr.plus(wild, l); // continue after `p' 
@@ -500,7 +500,7 @@ public class LuaAuxLib {
 		LuaAPI.lua_pushvalue(L, idx);
 		do {
 			e = LuaConf.strchr(fname, '.');
-			if (CharPtr.isEqual(e, '\0')) {
+			if (CharPtr.isEqual(e, null)) {
 				e = CharPtr.plus(fname, LuaConf.strlen(fname));
 			}
 			LuaAPI.lua_pushlstring(L, fname, CharPtr.minus(e, fname)); //(uint)
@@ -508,7 +508,7 @@ public class LuaAuxLib {
 			if (Lua.lua_isnil(L, -1)) {
 				// no such field? 
 				Lua.lua_pop(L, 1); // remove this nil 
-				LuaAPI.lua_createtable(L, 0, (CharPtr.isEqual(e, '.') ? 1 : szhint)); // new table for field 
+				LuaAPI.lua_createtable(L, 0, (CharPtr.isEqualChar(e, '.') ? 1 : szhint)); // new table for field 
 				LuaAPI.lua_pushlstring(L, fname, CharPtr.minus(e, fname)); //(uint)
 				LuaAPI.lua_pushvalue(L, -2);
 				LuaAPI.lua_settable(L, -4); // set new table into field 
@@ -520,7 +520,7 @@ public class LuaAuxLib {
 			}
 			LuaAPI.lua_remove(L, -2); // remove previous table 
 			fname = CharPtr.plus(e, 1);
-		} while (CharPtr.isEqual(e, '.'));
+		} while (CharPtr.isEqualChar(e, '.'));
 		return null;
 	}
 
@@ -697,7 +697,7 @@ public class LuaAuxLib {
 		int c;
 		int fnameindex = LuaAPI.lua_gettop(L) + 1; // index of filename on the stack 
 		lf.extraline = 0;
-		if (CharPtr.isEqual(filename, '\0')) {
+		if (CharPtr.isEqual(filename, null)) {
 			Lua.lua_pushliteral(L, CharPtr.toCharPtr("=stdin"));
 			lf.f = LuaConf.stdin;
 		}
@@ -719,7 +719,7 @@ public class LuaAuxLib {
 				c = LuaConf.getc(lf.f);
 			}
 		}
-		if (c == Lua.LUA_SIGNATURE.charAt(0) && (CharPtr.isNotEqual(filename, '\0'))) {
+		if (c == Lua.LUA_SIGNATURE.charAt(0) && (CharPtr.isNotEqual(filename, null))) {
 			// binary file? 
 			lf.f = LuaConf.freopen(filename, CharPtr.toCharPtr("rb"), lf.f); // reopen in binary mode 
 			if (lf.f == null) {
@@ -734,7 +734,7 @@ public class LuaAuxLib {
 		LuaConf.ungetc(c, lf.f);
 		status = LuaAPI.lua_load(L, new getF_delegate(), lf, Lua.lua_tostring(L, -1));
 		readstatus = LuaConf.ferror(lf.f);
-		if (CharPtr.isNotEqual(filename, '\0')) {
+		if (CharPtr.isNotEqual(filename, null)) {
 			LuaConf.fclose(lf.f); // close file (even in case of errors) 
 		}
 		if (readstatus != 0) {

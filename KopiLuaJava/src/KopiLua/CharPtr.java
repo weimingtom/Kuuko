@@ -108,22 +108,22 @@ public class CharPtr {
 	}
 
 	//operator ==
-	public static boolean isEqual(CharPtr ptr, char ch) {
+	public static boolean isEqualChar(CharPtr ptr, char ch) {
 		return ptr.get(0) == ch;
 	}
 
 	//operator ==
-	public static boolean isEqual(char ch, CharPtr ptr) {
+	public static boolean isEqualChar(char ch, CharPtr ptr) {
 		return ptr.get(0) == ch;
 	}
 
 	//operator !=
-	public static boolean isNotEqual(CharPtr ptr, char ch) {
+	public static boolean isNotEqualChar(CharPtr ptr, char ch) {
 		return ptr.get(0) != ch;
 	}
 
 	//operator !=
-	public static boolean isNotEqual(char ch, CharPtr ptr) {
+	public static boolean isNotEqualChar(char ch, CharPtr ptr) {
 		return ptr.get(0) != ch;
 	}
 

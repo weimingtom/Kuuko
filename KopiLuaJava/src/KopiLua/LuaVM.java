@@ -343,7 +343,7 @@ TValue.dec(top); //ref
 					tl += l;
 				}
 				buffer = LuaZIO.luaZ_openspace(L, LuaState.G(L).buff, tl);
-				if (CharPtr.isEqual(mybuff, '\0')) {
+				if (CharPtr.isEqual(mybuff, null)) {
 					mybuff = buffer;
 				}
 				tl = 0;

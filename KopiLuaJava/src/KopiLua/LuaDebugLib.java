@@ -98,27 +98,27 @@ public class LuaDebugLib {
 			return LuaAuxLib.luaL_argerror(L, arg[0] + 2, CharPtr.toCharPtr("invalid option"));
 		}
 		LuaAPI.lua_createtable(L, 0, 2);
-		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'S'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'S'), null)) {
 			settabss(L, CharPtr.toCharPtr("source"), ar.source);
 			settabss(L, CharPtr.toCharPtr("short_src"), ar.short_src);
 			settabsi(L, CharPtr.toCharPtr("linedefined"), ar.linedefined);
 			settabsi(L, CharPtr.toCharPtr("lastlinedefined"), ar.lastlinedefined);
 			settabss(L, CharPtr.toCharPtr("what"), ar.what);
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'l'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'l'), null)) {
 			settabsi(L, CharPtr.toCharPtr("currentline"), ar.currentline);
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'u'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'u'), null)) {
 			settabsi(L, CharPtr.toCharPtr("nups"), ar.nups);
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'n'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'n'), null)) {
 			settabss(L, CharPtr.toCharPtr("name"), ar.name);
 			settabss(L, CharPtr.toCharPtr("namewhat"), ar.namewhat);
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'L'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'L'), null)) {
 			treatstackoption(L, L1, CharPtr.toCharPtr("activelines"));
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'f'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(options, 'f'), null)) {
 			treatstackoption(L, L1, CharPtr.toCharPtr("func"));
 		}
 		return 1; // return table 
@@ -133,7 +133,7 @@ public class LuaDebugLib {
 			return LuaAuxLib.luaL_argerror(L, arg[0] + 1, CharPtr.toCharPtr("level out of range"));
 		}
 		name = LuaDebug.lua_getlocal(L1, ar, LuaAuxLib.luaL_checkint(L, arg[0] + 2));
-		if (CharPtr.isNotEqual(name, '\0')) {
+		if (CharPtr.isNotEqual(name, null)) {
 			LuaAPI.lua_xmove(L1, L, 1);
 			LuaAPI.lua_pushstring(L, name);
 			LuaAPI.lua_pushvalue(L, -2);
@@ -168,7 +168,7 @@ public class LuaDebugLib {
 		} {
 			name = (get != 0) ? LuaAPI.lua_getupvalue(L, 1, n) : LuaAPI.lua_setupvalue(L, 1, n);
 		}
-		if (CharPtr.isEqual(name, '\0')) {
+		if (CharPtr.isEqual(name, null)) {
 			return 0;
 		}
 		LuaAPI.lua_pushstring(L, name);
@@ -215,13 +215,13 @@ public class LuaDebugLib {
 
 	private static int makemask(CharPtr smask, int count) {
 		int mask = 0;
-		if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'c'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'c'), null)) {
 			mask |= Lua.LUA_MASKCALL;
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'r'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'r'), null)) {
 			mask |= Lua.LUA_MASKRET;
 		}
-		if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'l'), '\0')) {
+		if (CharPtr.isNotEqual(LuaConf.strchr(smask, 'l'), null)) {
 			mask |= Lua.LUA_MASKLINE;
 		}
 		if (count > 0) {
@@ -308,7 +308,7 @@ public class LuaDebugLib {
 		for (;;) {
 			CharPtr buffer = CharPtr.toCharPtr(new char[250]);
 			LuaConf.fputs(CharPtr.toCharPtr("lua_debug> "), LuaConf.stderr);
-			if (CharPtr.isEqual(LuaConf.fgets(buffer, LuaConf.stdin), '\0') || LuaConf.strcmp(buffer, CharPtr.toCharPtr("cont\n")) == 0) {
+			if (CharPtr.isEqual(LuaConf.fgets(buffer, LuaConf.stdin), null) || LuaConf.strcmp(buffer, CharPtr.toCharPtr("cont\n")) == 0) {
 				return 0;
 			}
 			if (LuaAuxLib.luaL_loadbuffer(L, buffer, LuaConf.strlen(buffer), CharPtr.toCharPtr("=(debug command)")) != 0 || LuaAPI.lua_pcall(L, 0, 0, 0) != 0) { //(uint)
@@ -366,14 +366,14 @@ public class LuaDebugLib {
 			if (ar.currentline > 0) {
 				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%d:"), ar.currentline);
 			}
-			if (CharPtr.isNotEqual(ar.namewhat, '\0')) { // is there a name? 
+			if (CharPtr.isNotEqualChar(ar.namewhat, '\0')) { // is there a name? 
 				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in function " + LuaConf.getLUA_QS()), ar.name);
 			}
 			else {
-				if (CharPtr.isEqual(ar.what, 'm')) { // main? 
+				if (CharPtr.isEqualChar(ar.what, 'm')) { // main? 
 					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in main chunk"));
 				}
-				else if (CharPtr.isEqual(ar.what, 'C') || CharPtr.isEqual(ar.what, 't')) {
+				else if (CharPtr.isEqualChar(ar.what, 'C') || CharPtr.isEqualChar(ar.what, 't')) {
 					Lua.lua_pushliteral(L, CharPtr.toCharPtr(" ?")); // C function or tail call 
 				}
 				else {

@@ -22,7 +22,7 @@ public class LuaIOLib {
 		}
 		else {
 			LuaAPI.lua_pushnil(L);
-			if (CharPtr.isNotEqual(filename, '\0')) {
+			if (CharPtr.isNotEqual(filename, null)) {
 				LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%s: %s"), filename, LuaConf.strerror(en));
 			}
 			else {
@@ -183,7 +183,7 @@ public class LuaIOLib {
 	private static int g_iofile(lua_State L, int f, CharPtr mode) {
 		if (!Lua.lua_isnoneornil(L, 1)) {
 			CharPtr filename = Lua.lua_tostring(L, 1);
-			if (CharPtr.isNotEqual(filename, '\0')) {
+			if (CharPtr.isNotEqual(filename, null)) {
 				FilePtr pf = newfile(L);
 				pf.file = LuaConf.fopen(filename, mode);
 				if (pf.file == null) {
@@ -272,7 +272,7 @@ public class LuaIOLib {
 		for (;;) {
 			int l; //uint
 			CharPtr p = LuaAuxLib.luaL_prepbuffer(b);
-			if (CharPtr.isEqual(LuaConf.fgets(p, f), '\0')) {
+			if (CharPtr.isEqual(LuaConf.fgets(p, f), null)) {
 				// eof? 
 				LuaAuxLib.luaL_pushresult(b); // close buffer 
 				return (LuaAPI.lua_objlen(L, -1) > 0) ? 1 : 0; // check whether read something 
@@ -329,7 +329,7 @@ public class LuaIOLib {
 				}
 				else {
 					CharPtr p = Lua.lua_tostring(L, n);
-					LuaAuxLib.luaL_argcheck(L, (CharPtr.isNotEqual(p, '\0')) && (p.get(0) == '*'), n, "invalid option");
+					LuaAuxLib.luaL_argcheck(L, (CharPtr.isNotEqual(p, null)) && (p.get(0) == '*'), n, "invalid option");
 					switch (p.get(1)) {
 						case 'n': { // number 
 								success = read_number(L, f);

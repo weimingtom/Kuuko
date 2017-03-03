@@ -291,7 +291,7 @@ namespace KopiLua
 			Closure f = null;
 			CallInfo ci = null;
 			LuaLimits.lua_lock(L);
-			if (CharPtr.isEqual(what, '>')) 
+			if (CharPtr.isEqualChar(what, '>')) 
 			{
 				TValue/*StkId*/ func = TValue.minus(L.top, 1);
 				LuaConf.luai_apicheck(L, LuaObject.ttisfunction(func));

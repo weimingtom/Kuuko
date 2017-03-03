@@ -70,7 +70,7 @@ public class LuaDump {
 	}
 
 	private static void DumpString(TString s, DumpState D) {
-		if (s == null || CharPtr.isEqual(LuaObject.getstr(s), '\0')) {
+		if (s == null || CharPtr.isEqual(LuaObject.getstr(s), null)) {
 			int size = 0; //uint
 			DumpVar(size, D, new ClassType(ClassType.TYPE_INT));
 		}

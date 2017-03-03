@@ -137,7 +137,7 @@ public class LuaLex {
 //		 ** =======================================================
 //		 
 	private static int check_next(LexState ls, CharPtr set) {
-		if (CharPtr.isEqual(LuaConf.strchr(set, (char)ls.current), '\0')) {
+		if (CharPtr.isEqual(LuaConf.strchr(set, (char)ls.current), null)) {
 			return 0;
 		}
 		save_and_next(ls);

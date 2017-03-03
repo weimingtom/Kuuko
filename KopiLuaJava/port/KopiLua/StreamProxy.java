@@ -3,6 +3,11 @@
 import java.io.*;
 
 public class StreamProxy {
+	private final static int TYPE_FILE = 0;
+	private final static int TYPE_STDOUT = 1;
+	private final static int TYPE_STDIN = 2;
+	private final static int TYPE_STDERR = 3;
+	public int type = TYPE_FILE;
 	public boolean isOK = false;
 
 	private StreamProxy() {
@@ -22,7 +27,13 @@ public class StreamProxy {
 	}
 
 	public final void Write(byte[] buffer, int offset, int count) {
-		
+		if (this.type == TYPE_STDOUT) {
+			System.out.print(new String(buffer, offset, count));
+		} else if (this.type == TYPE_STDERR) {
+			System.err.print(new String(buffer, offset, count));
+		} else {
+			//FIXME:TODO
+		}
 	}
 
 	public final int Read(byte[] buffer, int offset, int count) {
@@ -34,7 +45,16 @@ public class StreamProxy {
 	}
 
 	public final int ReadByte() {
-		return 0;
+		if (type == TYPE_STDIN) {
+			try {
+				return System.in.read();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return 0;
+		} else {
+			return 0;
+		}
 	}
 
 	public final void ungetc(int c) {
@@ -58,16 +78,22 @@ public class StreamProxy {
 
 	public static StreamProxy OpenStandardOutput() {
 		StreamProxy result = new StreamProxy();
+		result.type = TYPE_STDOUT;
+		result.isOK = true;
 		return result;
 	}
 
 	public static StreamProxy OpenStandardInput() {
 		StreamProxy result = new StreamProxy();
+		result.type = TYPE_STDIN;
+		result.isOK = true;
 		return result;
 	}
 
 	public static StreamProxy OpenStandardError() {
 		StreamProxy result = new StreamProxy();
+		result.type = TYPE_STDERR;
+		result.isOK = true;
 		return result;
 	}
 

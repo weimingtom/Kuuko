@@ -41,7 +41,7 @@ public class LuaProgram {
 	}
 
 	private static void l_message(CharPtr pname, CharPtr msg) {
-		if (CharPtr.isNotEqual(pname, '\0')) {
+		if (CharPtr.isNotEqual(pname, null)) {
 			LuaConf.fprintf(LuaConf.stderr, CharPtr.toCharPtr("%s: "), pname);
 		}
 		LuaConf.fprintf(LuaConf.stderr, CharPtr.toCharPtr("%s\n"), msg);
@@ -51,7 +51,7 @@ public class LuaProgram {
 	private static int report(lua_State L, int status) {
 		if ((status != 0) && !Lua.lua_isnil(L, -1)) {
 			CharPtr msg = Lua.lua_tostring(L, -1);
-			if (CharPtr.isEqual(msg, '\0')) {
+			if (CharPtr.isEqual(msg, null)) {
 				msg = CharPtr.toCharPtr("(error object is not a string)");
 			}
 			l_message(progname, msg);
@@ -137,7 +137,7 @@ public class LuaProgram {
 		CharPtr p;
 		LuaAPI.lua_getfield(L, Lua.LUA_GLOBALSINDEX, (firstline != 0) ? CharPtr.toCharPtr("_PROMPT") : CharPtr.toCharPtr("_PROMPT2"));
 		p = Lua.lua_tostring(L, -1);
-		if (CharPtr.isEqual(p, '\0')) {
+		if (CharPtr.isEqual(p, null)) {
 			p = ((firstline != 0) ? CharPtr.toCharPtr(LuaConf.LUA_PROMPT) : CharPtr.toCharPtr(LuaConf.LUA_PROMPT2));
 		}
 		Lua.lua_pop(L, 1); // remove global 
@@ -355,7 +355,7 @@ public class LuaProgram {
 
 	private static int handle_luainit(lua_State L) {
 		CharPtr init = LuaConf.getenv(CharPtr.toCharPtr(LuaConf.LUA_INIT));
-		if (CharPtr.isEqual(init, '\0')) {
+		if (CharPtr.isEqual(init, null)) {
 			return 0; // status OK 
 		}
 		else if (init.get(0) == '@') {

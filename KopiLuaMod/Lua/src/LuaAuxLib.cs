@@ -592,7 +592,7 @@ namespace KopiLua
 				{
 					/* no such field? */
 					Lua.lua_pop(L, 1);  /* remove this nil */
-					LuaAPI.lua_createtable(L, 0, (CharPtr.isEqual(e, '.') ? 1 : szhint)); /* new table for field */
+					LuaAPI.lua_createtable(L, 0, (CharPtr.isEqualChar(e, '.') ? 1 : szhint)); /* new table for field */
 					LuaAPI.lua_pushlstring(L, fname, /*(uint)*/CharPtr.minus(e, fname));
 					LuaAPI.lua_pushvalue(L, -2);
 					LuaAPI.lua_settable(L, -4);  /* set new table into field */
@@ -605,7 +605,7 @@ namespace KopiLua
 				}
 				LuaAPI.lua_remove(L, -2);  /* remove previous table */
 				fname = CharPtr.plus(e, 1);
-            } while (CharPtr.isEqual(e, '.'));
+            } while (CharPtr.isEqualChar(e, '.'));
 			return null;
 		}
 

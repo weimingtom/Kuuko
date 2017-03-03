@@ -452,17 +452,17 @@ namespace KopiLua
 				{
 					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr("%d:"), ar.currentline);
 				}
-				if (CharPtr.isNotEqual(ar.namewhat, '\0'))  /* is there a name? */
+				if (CharPtr.isNotEqualChar(ar.namewhat, '\0'))  /* is there a name? */
 				{
 					LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in function " + LuaConf.getLUA_QS()), ar.name);
 				}
 				else 
 				{
-					if (CharPtr.isEqual(ar.what, 'm'))  /* main? */
+					if (CharPtr.isEqualChar(ar.what, 'm'))  /* main? */
 					{
 						LuaAPI.lua_pushfstring(L, CharPtr.toCharPtr(" in main chunk"));
 					}
-					else if (CharPtr.isEqual(ar.what, 'C') || CharPtr.isEqual(ar.what, 't'))
+					else if (CharPtr.isEqualChar(ar.what, 'C') || CharPtr.isEqualChar(ar.what, 't'))
 					{
 						Lua.lua_pushliteral(L, CharPtr.toCharPtr(" ?"));  /* C function or tail call */
 					}

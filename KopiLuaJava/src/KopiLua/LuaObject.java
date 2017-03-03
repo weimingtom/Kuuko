@@ -406,7 +406,7 @@ public class LuaObject {
 		pushstr(L, CharPtr.toCharPtr(""));
 		for (;;) {
 			CharPtr e = LuaConf.strchr(fmt, '%');
-			if (CharPtr.isEqual(e, '\0')) {
+			if (CharPtr.isEqual(e, null)) {
 				break;
 			}
 			setsvalue2s(L, L.top, LuaString.luaS_newlstr(L, fmt, CharPtr.minus(e, fmt))); //(uint)
@@ -415,10 +415,10 @@ public class LuaObject {
 				case 's': {
 						Object o = argp[parm_index++];
 						CharPtr s = (CharPtr)((o instanceof CharPtr) ? o : null);
-						if (CharPtr.isEqual(s, '\0')) {
+						if (CharPtr.isEqual(s, null)) {
 							s = CharPtr.toCharPtr((String)o);
 						}
-						if (CharPtr.isEqual(s, '\0')) {
+						if (CharPtr.isEqual(s, null)) {
 							s = CharPtr.toCharPtr("(null)");
 						}
 						pushstr(L, s);

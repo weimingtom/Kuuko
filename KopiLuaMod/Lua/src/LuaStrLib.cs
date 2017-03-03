@@ -355,7 +355,7 @@ namespace KopiLua
 			}
 			while (CharPtr.lessThan((p = p.next()), ec)) 
 			{
-				if (CharPtr.isEqual(p, L_ESC)) 
+				if (CharPtr.isEqualChar(p, L_ESC)) 
 				{
 					p = p.next();
 					if (match_class(c, (byte)(p.get(0))) != 0)

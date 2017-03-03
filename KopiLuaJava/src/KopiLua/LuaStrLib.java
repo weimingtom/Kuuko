@@ -292,7 +292,7 @@ public class LuaStrLib {
 			p = p.next(); // skip the `^' 
 		}
 		while (CharPtr.lessThan((p = p.next()), ec)) {
-			if (CharPtr.isEqual(p, L_ESC)) {
+			if (CharPtr.isEqualChar(p, L_ESC)) {
 				p = p.next();
 				if (match_class(c, (byte)(p.get(0))) != 0) {
 					return sig;
@@ -361,7 +361,7 @@ public class LuaStrLib {
 		// keeps trying to match with the maximum repetitions 
 		while (i >= 0) {
 			CharPtr res = match(ms, CharPtr.plus(s, i), CharPtr.plus(ep, 1));
-			if (CharPtr.isNotEqual(res, '\0')) {
+			if (CharPtr.isNotEqual(res, null)) {
 				return res;
 			}
 			i--; // else didn't match; reduce 1 repetition to try again 
@@ -372,7 +372,7 @@ public class LuaStrLib {
 	private static CharPtr min_expand(MatchState ms, CharPtr s, CharPtr p, CharPtr ep) {
 		for (;;) {
 			CharPtr res = match(ms, s, CharPtr.plus(ep, 1));
-			if (CharPtr.isNotEqual(res, '\0')) {
+			if (CharPtr.isNotEqual(res, null)) {
 				return res;
 			}
 			else if ((CharPtr.lessThan(s, ms.src_end)) && (singlematch((byte)(s.get(0)), p, ep) != 0)) {
@@ -393,7 +393,7 @@ public class LuaStrLib {
 		ms.capture[level].init = s;
 		ms.capture[level].len = what;
 		ms.level = level+1;
-		if (CharPtr.isEqual((res = match(ms, s, p)), '\0')) { // match failed? 
+		if (CharPtr.isEqual((res = match(ms, s, p)), null)) { // match failed? 
 			ms.level--; // undo capture 
 		}
 		return res;
@@ -403,7 +403,7 @@ public class LuaStrLib {
 		int l = capture_to_close(ms);
 		CharPtr res;
 		ms.capture[l].len = CharPtr.minus(s, ms.capture[l].init); // close capture 
-		if (CharPtr.isEqual((res = match(ms, s, p)), '\0')) { // match failed? 
+		if (CharPtr.isEqual((res = match(ms, s, p)), null)) { // match failed? 
 			ms.capture[l].len = CAP_UNFINISHED; // undo capture 
 		}
 		return res;
@@ -447,7 +447,7 @@ public class LuaStrLib {
 							case 'b': {
 									// balanced string? 
 									s = matchbalance(ms, s, CharPtr.plus(p, 2));
-									if (CharPtr.isEqual(s, '\0')) {
+									if (CharPtr.isEqual(s, null)) {
 										return null;
 									}
 									p = CharPtr.plus(p, 4);
@@ -477,7 +477,7 @@ public class LuaStrLib {
 									if (LuaConf.isdigit((byte)(p.get(1)))) {
 										// capture results (%0-%9)? 
 										s = match_capture(ms, s, (byte)(p.get(1)));
-										if (CharPtr.isEqual(s, '\0')) {
+										if (CharPtr.isEqual(s, null)) {
 											return null;
 										}
 										p = CharPtr.plus(p, 2);
@@ -498,7 +498,7 @@ public class LuaStrLib {
 											case '?': {
 													// optional 
 													CharPtr res;
-													if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), '\0')) {
+													if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null)) {
 														return res;
 													}
 													p = CharPtr.plus(ep, 1);
@@ -567,7 +567,7 @@ public class LuaStrLib {
 								case '?': {
 										// optional 
 										CharPtr res;
-										if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), '\0')) {
+										if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null)) {
 											return res;
 										}
 										p = CharPtr.plus(ep, 1);
@@ -619,7 +619,7 @@ public class LuaStrLib {
 							case '?': {
 									// optional 
 									CharPtr res;
-									if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), '\0')) {
+									if ((m != 0) && CharPtr.isNotEqual((res = match(ms, CharPtr.plus(s, 1), CharPtr.plus(ep, 1))), null)) {
 										return res;
 									}
 									p = CharPtr.plus(ep, 1);
@@ -680,7 +680,7 @@ public class LuaStrLib {
 			CharPtr init; // to search for a `*s2' inside `s1' 
 			l2--; // 1st char will be checked by `memchr' 
 			l1 = l1 - l2; // `s2' cannot be found after that 
-			while (l1 > 0 && CharPtr.isNotEqual((init = LuaConf.memchr(s1, s2.get(0), l1)), '\0')) {
+			while (l1 > 0 && CharPtr.isNotEqual((init = LuaConf.memchr(s1, s2.get(0), l1)), null)) {
 				init = init.next(); // 1st char is already checked 
 				if (LuaConf.memcmp(init, CharPtr.plus(s2, 1), l2) == 0) {
 					return CharPtr.minus(init, 1);
@@ -720,7 +720,7 @@ public class LuaStrLib {
 
 	private static int push_captures(MatchState ms, CharPtr s, CharPtr e) {
 		int i;
-		int nlevels = ((ms.level == 0) && (CharPtr.isNotEqual(s, '\0'))) ? 1 : ms.level;
+		int nlevels = ((ms.level == 0) && (CharPtr.isNotEqual(s, null))) ? 1 : ms.level;
 		LuaAuxLib.luaL_checkstack(ms.L, nlevels, CharPtr.toCharPtr("too many captures"));
 		for (i = 0; i < nlevels; i++) {
 			push_onecapture(ms, i, s, e);
@@ -740,11 +740,11 @@ public class LuaStrLib {
 		else if ((int)(init) > l1[0]) { //uint
 			init = (int)l1[0]; //ptrdiff_t - Int32
 		}
-		if ((find != 0) && ((LuaAPI.lua_toboolean(L, 4) != 0) || CharPtr.isEqual(LuaConf.strpbrk(p, CharPtr.toCharPtr(SPECIALS)), '\0'))) { // explicit request? 
+		if ((find != 0) && ((LuaAPI.lua_toboolean(L, 4) != 0) || CharPtr.isEqual(LuaConf.strpbrk(p, CharPtr.toCharPtr(SPECIALS)), null))) { // explicit request? 
 			// or no special characters? 
 			// do a plain search 
 			CharPtr s2 = lmemfind(CharPtr.plus(s, init), (int)(l1[0] - init), p, (int)(l2[0])); //uint - uint
-			if (CharPtr.isNotEqual(s2, '\0')) {
+			if (CharPtr.isNotEqual(s2, null)) {
 				LuaAPI.lua_pushinteger(L, CharPtr.minus(s2, s) + 1);
 				LuaAPI.lua_pushinteger(L, (int)(CharPtr.minus(s2, s) + l2[0]));
 				return 2;
@@ -764,7 +764,7 @@ public class LuaStrLib {
 			do {
 				CharPtr res;
 				ms.level = 0;
-				if (CharPtr.isNotEqual((res = match(ms, s1, p)), '\0')) {
+				if (CharPtr.isNotEqual((res = match(ms, s1, p)), null)) {
 					if (find != 0) {
 						LuaAPI.lua_pushinteger(L, CharPtr.minus(s1, s) + 1); // start 
 						LuaAPI.lua_pushinteger(L, CharPtr.minus(res, s)); // end 
@@ -800,7 +800,7 @@ public class LuaStrLib {
 		for (src = CharPtr.plus(s, LuaAPI.lua_tointeger(L, Lua.lua_upvalueindex(3))); CharPtr.lessEqual(src, ms.src_end); src = src.next()) { //(uint)
 			CharPtr e;
 			ms.level = 0;
-			if (CharPtr.isNotEqual((e = match(ms, src, p)), '\0')) {
+			if (CharPtr.isNotEqual((e = match(ms, src, p)), null)) {
 				int newstart = CharPtr.minus(e, s); //lua_Integer - Int32
 				if (CharPtr.isEqual(e, src)) {
 					newstart++; // empty match? go at least one position 
@@ -906,11 +906,11 @@ public class LuaStrLib {
 			CharPtr e;
 			ms.level = 0;
 			e = match(ms, src, p);
-			if (CharPtr.isNotEqual(e, '\0')) {
+			if (CharPtr.isNotEqual(e, null)) {
 				n++;
 				add_value(ms, b, src, e);
 			}
-			if ((CharPtr.isNotEqual(e, '\0')) && CharPtr.greaterThan(e, src)) { // non empty match? 
+			if ((CharPtr.isNotEqual(e, null)) && CharPtr.greaterThan(e, src)) { // non empty match? 
 				src = e; // skip it 
 			}
 			else if (CharPtr.lessThan(src, ms.src_end)) {
@@ -976,7 +976,7 @@ public class LuaStrLib {
 
 	private static CharPtr scanformat(lua_State L, CharPtr strfrmt, CharPtr form) {
 		CharPtr p = strfrmt;
-		while (p.get(0) != '\0' && CharPtr.isNotEqual(LuaConf.strchr(CharPtr.toCharPtr(FLAGS), p.get(0)), '\0')) {
+		while (p.get(0) != '\0' && CharPtr.isNotEqual(LuaConf.strchr(CharPtr.toCharPtr(FLAGS), p.get(0)), null)) {
 			p = p.next(); // skip flags 
 		}
 		if ((int)(CharPtr.minus(p, strfrmt)) >= (FLAGS.length() + 1)) { //uint
@@ -1075,7 +1075,7 @@ public class LuaStrLib {
 					case 's': {
 							int[] l = new int[1]; //uint
 							CharPtr s = LuaAuxLib.luaL_checklstring(L, arg, l); //out
-							if (CharPtr.isEqual(LuaConf.strchr(form, '.'), '\0') && l[0] >= 100) {
+							if (CharPtr.isEqual(LuaConf.strchr(form, '.'), null) && l[0] >= 100) {
 //                                     no precision and string is too long to be formatted;
 //									 keep original string 
 								LuaAPI.lua_pushvalue(L, arg);

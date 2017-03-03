@@ -285,7 +285,7 @@ public class LuaConf {
 	public static boolean lua_readline(lua_State L, CharPtr b, CharPtr p) {
 		fputs(p, stdout);
 		fflush(stdout); // show prompt 
-		return (CharPtr.isNotEqual(fgets(b, stdin), '\0')); // get line 
+		return (CharPtr.isNotEqual(fgets(b, stdin), null)); // get line 
 	}
 
 	public static void lua_saveline(lua_State L, int idx) {
@@ -1332,10 +1332,10 @@ public class LuaConf {
 		if (CharPtr.isEqual(s1, s2)) {
 			return 0;
 		}
-		if (CharPtr.isEqual(s1, '\0')) {
+		if (CharPtr.isEqual(s1, null)) {
 			return -1;
 		}
-		if (CharPtr.isEqual(s2, '\0')) {
+		if (CharPtr.isEqual(s2, null)) {
 			return 1;
 		}
 

@@ -25,7 +25,7 @@ public class LuaBaseLib {
 			LuaAPI.lua_pushvalue(L, i); // value to print 
 			LuaAPI.lua_call(L, 1, 1);
 			s = Lua.lua_tostring(L, -1); // get result 
-			if (CharPtr.isEqual(s, '\0')) {
+			if (CharPtr.isEqual(s, null)) {
 				return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("tostring") + " must return a string to " + LuaConf.LUA_QL("print"))); //FIXME:
 			}
 			if (i > 1) {

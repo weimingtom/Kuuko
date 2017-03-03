@@ -1,0 +1,18 @@
+LuaAuxLib.java
+	private static int libsize(luaL_Reg[] l) {
+		int size = 0;
+		for (; CharPtr.isNotEqual(l[size].name, '\0'); size++) {
+			;
+		}
+		return size;
+	}
+	
+	CharPtr.isNotEqual(l[size].name, '\0')
+	->
+	CharPtr.isNotEqual(l[size].name, null)
+	
+	
+TODO:
+remove CharPtr.isNotEqual override	
+CharPtr.isEqual
+------------------------------------

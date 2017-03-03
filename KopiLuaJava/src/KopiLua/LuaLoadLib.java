@@ -365,7 +365,7 @@ public class LuaLoadLib {
 			return null; // no more templates 
 		}
 		l = LuaConf.strchr(path, LuaConf.LUA_PATHSEP.charAt(0)); // find next separator 
-		if (CharPtr.isEqual(l, '\0')) {
+		if (CharPtr.isEqual(l, null)) {
 			l = CharPtr.plus(path, LuaConf.strlen(path));
 		}
 		LuaAPI.lua_pushlstring(L, path, CharPtr.minus(l, path)); // template  - (uint)
@@ -377,11 +377,11 @@ public class LuaLoadLib {
 		name = LuaAuxLib.luaL_gsub(L, name, CharPtr.toCharPtr("."), CharPtr.toCharPtr(LuaConf.LUA_DIRSEP));
 		LuaAPI.lua_getfield(L, Lua.LUA_ENVIRONINDEX, pname);
 		path = Lua.lua_tostring(L, -1);
-		if (CharPtr.isEqual(path, '\0')) {
+		if (CharPtr.isEqual(path, null)) {
 			LuaAuxLib.luaL_error(L, CharPtr.toCharPtr(LuaConf.LUA_QL("package.%s") + " must be a string"), pname);
 		}
 		Lua.lua_pushliteral(L, CharPtr.toCharPtr("")); // error accumulator 
-		while (CharPtr.isNotEqual((path = pushnexttemplate(L, path)), '\0')) {
+		while (CharPtr.isNotEqual((path = pushnexttemplate(L, path)), null)) {
 			CharPtr filename;
 			filename = LuaAuxLib.luaL_gsub(L, Lua.lua_tostring(L, -1), CharPtr.toCharPtr(LuaConf.LUA_PATH_MARK), name);
 			LuaAPI.lua_remove(L, -2); // remove path template 
@@ -403,7 +403,7 @@ public class LuaLoadLib {
 		CharPtr filename;
 		CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
 		filename = findfile(L, name, CharPtr.toCharPtr("path"));
-		if (CharPtr.isEqual(filename, '\0')) {
+		if (CharPtr.isEqual(filename, null)) {
 			return 1; // library not found in this path 
 		}
 		if (LuaAuxLib.luaL_loadfile(L, filename) != 0) {
@@ -415,7 +415,7 @@ public class LuaLoadLib {
 	private static CharPtr mkfuncname(lua_State L, CharPtr modname) {
 		CharPtr funcname;
 		CharPtr mark = LuaConf.strchr(modname, LuaConf.LUA_IGMARK.charAt(0));
-		if (CharPtr.isNotEqual(mark, '\0')) {
+		if (CharPtr.isNotEqual(mark, null)) {
 			modname = CharPtr.plus(mark, 1);
 		}
 		funcname = LuaAuxLib.luaL_gsub(L, modname, CharPtr.toCharPtr("."), CharPtr.toCharPtr(LUA_OFSEP));
@@ -428,7 +428,7 @@ public class LuaLoadLib {
 		CharPtr funcname;
 		CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
 		CharPtr filename = findfile(L, name, CharPtr.toCharPtr("cpath"));
-		if (CharPtr.isEqual(filename, '\0')) {
+		if (CharPtr.isEqual(filename, null)) {
 			return 1; // library not found in this path 
 		}
 		funcname = mkfuncname(L, name);
@@ -444,12 +444,12 @@ public class LuaLoadLib {
 		CharPtr name = LuaAuxLib.luaL_checkstring(L, 1);
 		CharPtr p = LuaConf.strchr(name, '.');
 		int stat;
-		if (CharPtr.isEqual(p, '\0')) {
+		if (CharPtr.isEqual(p, null)) {
 			return 0; // is root 
 		}
 		LuaAPI.lua_pushlstring(L, name, CharPtr.minus(p, name)); //(uint)
 		filename = findfile(L, Lua.lua_tostring(L, -1), CharPtr.toCharPtr("cpath"));
-		if (CharPtr.isEqual(filename, '\0')) {
+		if (CharPtr.isEqual(filename, null)) {
 			return 1; // root not found 
 		}
 		funcname = mkfuncname(L, name);
@@ -566,7 +566,7 @@ public class LuaLoadLib {
 		LuaAPI.lua_pushstring(L, modname);
 		LuaAPI.lua_setfield(L, -2, CharPtr.toCharPtr("_NAME"));
 		dot = LuaConf.strrchr(modname, '.'); // look for last dot in module name 
-		if (CharPtr.isEqual(dot, '\0')) {
+		if (CharPtr.isEqual(dot, null)) {
 			dot = modname;
 		}
 		else {
@@ -586,7 +586,7 @@ public class LuaLoadLib {
 			// not found? 
 			Lua.lua_pop(L, 1); // remove previous result 
 			// try global variable (and create one if it does not exist) 
-			if (CharPtr.isNotEqual(LuaAuxLib.luaL_findtable(L, Lua.LUA_GLOBALSINDEX, modname, 1), '\0')) {
+			if (CharPtr.isNotEqual(LuaAuxLib.luaL_findtable(L, Lua.LUA_GLOBALSINDEX, modname, 1), null)) {
 				return LuaAuxLib.luaL_error(L, CharPtr.toCharPtr("name conflict for module " + LuaConf.getLUA_QS()), modname);
 			}
 			LuaAPI.lua_pushvalue(L, -1);
@@ -627,7 +627,7 @@ public class LuaLoadLib {
 
 	private static void setpath(lua_State L, CharPtr fieldname, CharPtr envname, CharPtr def) {
 		CharPtr path = LuaConf.getenv(envname);
-		if (CharPtr.isEqual(path, '\0')) { // no environment variable? 
+		if (CharPtr.isEqual(path, null)) { // no environment variable? 
 			LuaAPI.lua_pushstring(L, def); // use default 
 		}
 		else {
