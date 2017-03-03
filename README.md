@@ -7,7 +7,7 @@ http://39miyu-chan.official.jp/
 * http://www.ppl-pilot.com/kopilua.aspx  
 
 ## History  
-* 2017-03-03 : First running successfully (20:22 2017-03-03).  
+* 2017-03-03 : First running KopiLuaJava successfully (20:22 2017-03-03).  
 * 2017-03-03 : Convert to Java successfully.  
 * 2016-03-08 : First public modification.  
 * 2015-10-27 : First private modification.  
