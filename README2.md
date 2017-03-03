@@ -282,3 +282,5 @@ https://github.com/rubys/ruby2js
 ## cpi  
 * https://github.com/treefrogframework/cpi  
 
+## selfie  
+* https://github.com/cksystemsteaching/selfie  
