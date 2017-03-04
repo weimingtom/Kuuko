@@ -99,6 +99,7 @@ require('mobdebug').start()
 * https://github.com/paulcuth/starlight  
 * https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
 * https://github.com/creationix/brozula  
+* https://github.com/mascarenhas/luaclr  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
