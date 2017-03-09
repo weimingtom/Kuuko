@@ -78,6 +78,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/weimingtom/metamorphose/blob/master/lua_benchmark/README.md  
 * http://www.computercraft.info/forums2/index.php?/topic/27675-rembulan-a-new-lua-53-implementation-for-the-jvm-built-with-sandboxing-in-mind/  
 * http://the-ravi-programming-language.readthedocs.io/en/latest/lua_bytecode_reference.html  
+* https://github.com/LuaDist/  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
@@ -93,6 +94,7 @@ require('mobdebug').start()
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
 * https://github.com/tj/luna  
+* https://github.com/airtrack/luna  
 
 ## Transpiler(Translator) / Compiler  
 * https://github.com/mherkender/lua.js  
@@ -104,3 +106,6 @@ require('mobdebug').start()
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
+
+## Lint  
+* https://github.com/mpeterv/luacheck  
