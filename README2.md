@@ -1,4 +1,4 @@
-﻿# Script Engine List  
+# Script Engine List  
 
 ## Branch  
 * https://github.com/weimingtom/Kuuko/tree/dotnetcore  
@@ -292,3 +292,7 @@ https://github.com/rubys/ruby2js
 
 ## c4  
 * https://github.com/rswier/c4  
+
+## jsjohnst/ejscript  
+* https://github.com/jsjohnst/ejscript  
+
