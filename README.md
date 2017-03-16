@@ -24,6 +24,8 @@ http://www.tangiblesoftwaresolutions.com/
 
 ## Visual Novel Engine  
 [README4.md](README4.md)  
+NOTE: moved to weimingtom/wmt_link_collections_in_Chinese  
+https://github.com/weimingtom/wmt_link_collections_in_Chinese/blob/master/vn.md  
 
 ## Lua Hack     
 [lua_hack.md](lua_hack.md)  
