@@ -298,3 +298,6 @@ https://github.com/rubys/ruby2js
 
 ## ohm  
 * https://github.com/harc/ohm  
+
+## klipse  
+* https://github.com/viebel/klipse  
