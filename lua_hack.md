@@ -1,4 +1,4 @@
-﻿# Lua Hack 
+# Lua Hack 
 
 ## Binary read in Lua     
 * https://github.com/weimingtom/RipString  
@@ -90,6 +90,9 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 require('mobdebug').start()  
 * http://www.cnblogs.com/softidea/p/5281068.html  
 * https://github.com/jasonsantos/remdebug  
+* https://github.com/muzuiget/mare  
+* http://mare.ejoy.com  
+
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
