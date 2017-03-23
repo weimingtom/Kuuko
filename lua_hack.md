@@ -92,7 +92,7 @@ require('mobdebug').start()
 * https://github.com/jasonsantos/remdebug  
 * https://github.com/muzuiget/mare  
 * http://mare.ejoy.com  
-* https://github.com/weimingtom/mare-runner  
+* https://github.com/muzuiget/mare-runner  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
