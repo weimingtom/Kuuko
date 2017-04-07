@@ -29,7 +29,8 @@
 
 ## Links / Books    
 * http://lua-users.org/wiki/LuaImplementations  
-* https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
+Lua实现列表官方版  
+* https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS  
 * https://github.com/phodal/awesome-iot  
   see Language  
 * https://github.com/weimingtom/myosotis2  
