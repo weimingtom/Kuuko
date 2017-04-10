@@ -114,3 +114,9 @@ require('mobdebug').start()
 
 ## Lint  
 * https://github.com/mpeterv/luacheck  
+
+## trace
+* https://github.com/rocaltair/ltrace  
+* https://github.com/rocaltair/ldump  
+* https://github.com/rocaltair/lua-coredump  
+
