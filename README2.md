@@ -332,3 +332,6 @@ https://github.com/goruby/goruby
 
 ## C-Compiler  
 https://github.com/phisiart/C-Compiler  
+
+## small python  
+search PyDict_Type  pyobject language:cpp  
