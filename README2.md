@@ -326,3 +326,7 @@ https://github.com/gopherjs/gopherjs
 
 ## goruby  
 https://github.com/goruby/goruby  
+
+## regex var name  
+	search ^[a-zA-Z_][a-zA-Z0-9_]*$ language:java  
+
