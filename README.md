@@ -2,6 +2,10 @@
 Copy of kopilua, for someone in heaven.  
 https://ja.wikipedia.org/wiki/%E6%9D%BE%E6%9D%A5%E6%9C%AA%E7%A5%90  
 http://39miyu-chan.official.jp/  
+
+Kuuko is the name of クー子 in Haiyore! Nyaruko-san.  
+https://en.wikipedia.org/wiki/Nyaruko:_Crawling_with_Love  
+
 **NOTE: this project is moved to https://github.com/weimingtom/kurumi**  
 This project contains some notes for study which are not related to kopilua.  
 
