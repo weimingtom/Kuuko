@@ -358,3 +358,7 @@ search search BUILD_MAP jython
 
 ## rooby  
 https://github.com/rooby-lang/rooby  
+
+## SharpHSQL  
+http://sharphsql.codeplex.com/  
+https://github.com/ArsenShnurkov/SharpHSQL  
