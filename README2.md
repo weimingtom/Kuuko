@@ -365,3 +365,7 @@ https://github.com/ArsenShnurkov/SharpHSQL
 
 ## playscript  
 https://github.com/PlayScriptRedux/playscript  
+
+## CsharpSQLite  
+https://github.com/CsharpDatabase/CsharpSQLite  
+
