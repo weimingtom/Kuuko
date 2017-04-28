@@ -98,6 +98,8 @@ require('mobdebug').start()
 * https://redis.io/topics/ldb  
 * http://blog.huangz.me/2017/redis-lua-debuger-introduction.html  
 * https://github.com/tjsymbol/ldb  
+* http://blog.csdn.net/siddontang/article/details/18727613  
+* https://github.com/siddontang/luahelper  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
