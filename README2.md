@@ -369,3 +369,5 @@ https://github.com/PlayScriptRedux/playscript
 ## CsharpSQLite  
 https://github.com/CsharpDatabase/CsharpSQLite  
 
+## esprima  
+https://github.com/jquery/esprima
