@@ -95,6 +95,9 @@ require('mobdebug').start()
 * https://github.com/muzuiget/mare  
 * http://mare.ejoy.com  
 * https://github.com/muzuiget/mare-runner  
+* https://redis.io/topics/ldb  
+* http://blog.huangz.me/2017/redis-lua-debuger-introduction.html  
+* https://github.com/tjsymbol/ldb  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
