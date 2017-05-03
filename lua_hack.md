@@ -132,8 +132,8 @@ require('mobdebug').start()
 
 ## persist
 * pluto  
-http://lua-users.org/wiki/PlutoLibrary  
-http://luaforge.net/projects/pluto/
+http://lua-users.org/wiki/PlutoLibrary    
+http://luaforge.net/projects/pluto/  
 https://github.com/fnuecke/eris  
 https://github.com/LuaDist/pluto  
 
