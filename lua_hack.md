@@ -129,6 +129,8 @@ require('mobdebug').start()
 * https://github.com/rocaltair/ltrace  
 * https://github.com/rocaltair/ldump  
 * https://github.com/rocaltair/lua-coredump  
+* tostringex  
+https://github.com/weimingtom/consistent_hashing/blob/master/k.lua  
 
 ## persist
 * pluto  
