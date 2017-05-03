@@ -374,3 +374,6 @@ https://github.com/jquery/esprima
 
 ## execjs  
 https://github.com/rails/execjs  
+
+## prepack  
+https://github.com/facebook/prepack  
