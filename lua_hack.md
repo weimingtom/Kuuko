@@ -131,6 +131,8 @@ require('mobdebug').start()
 * https://github.com/rocaltair/lua-coredump  
 * tostringex  
 https://github.com/weimingtom/consistent_hashing/blob/master/k.lua  
+* list  
+https://github.com/weimingtom/MoonSharpMod/blob/master/moonsharpsl4/MainPage.xaml.cs  
 
 ## persist
 * pluto  
