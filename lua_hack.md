@@ -134,7 +134,7 @@ require('mobdebug').start()
 * pluto  
 https://github.com/hoelzro/pluto  
 http://lua-users.org/wiki/PlutoLibrary    
-http://luaforge.net/projects/pluto/
+http://luaforge.net/projects/pluto/  
 https://github.com/LuaDist/pluto  
 
 * eris  
