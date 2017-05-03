@@ -130,3 +130,10 @@ require('mobdebug').start()
 * https://github.com/rocaltair/ldump  
 * https://github.com/rocaltair/lua-coredump  
 
+## persist
+* pluto  
+http://lua-users.org/wiki/PlutoLibrary  
+http://luaforge.net/projects/pluto/
+https://github.com/fnuecke/eris  
+https://github.com/LuaDist/pluto  
+
