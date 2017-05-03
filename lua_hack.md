@@ -1,5 +1,8 @@
 # Lua Hack 
 
+## todo  
+https://github.com/weimingtom/chunktrans_java  
+
 ## Binary read in Lua     
 * https://github.com/weimingtom/RipString  
 * https://github.com/yongkangchen/lua-msgpack  
