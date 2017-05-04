@@ -134,6 +134,7 @@ require('mobdebug').start()
 https://github.com/weimingtom/consistent_hashing/blob/master/k.lua  
 * list  
 https://github.com/weimingtom/MoonSharpMod/blob/master/moonsharpsl4/MainPage.xaml.cs  
+* https://github.com/ilua/ilua  
 
 ## persist
 * pluto  
@@ -144,4 +145,9 @@ https://github.com/LuaDist/pluto
 
 * eris  
 https://github.com/fnuecke/eris  
+
+## decompile / asm    
+* https://github.com/viruscamp/luadec  
+* https://github.com/mlnlover11/LuaAssemblyTools  
+
 
