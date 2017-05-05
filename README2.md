@@ -377,3 +377,7 @@ https://github.com/rails/execjs
 
 ## prepack  
 https://github.com/facebook/prepack  
+
+## cppcheck
+https://github.com/danmar/cppcheck  
+
