@@ -150,4 +150,6 @@ https://github.com/fnuecke/eris
 * https://github.com/viruscamp/luadec  
 * https://github.com/mlnlover11/LuaAssemblyTools  
 
+## patch  
+* http://lua-users.org/wiki/LuaPowerPatches  
 
