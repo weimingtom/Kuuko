@@ -152,4 +152,6 @@ https://github.com/fnuecke/eris
 
 ## patch  
 * http://lua-users.org/wiki/LuaPowerPatches  
+* http://www.lua.org/work/  
+* http://www.lua.org/bugs.html  
 
