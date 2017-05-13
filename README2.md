@@ -40,7 +40,8 @@ Lua实现列表官方版
 	https://github.com/aamine/cbc  
 	https://github.com/leungwensen/cbc-ubuntu-64bit  
 * https://github.com/weimingtom/wmt_mingw_study  
-* ccalc / calc
+* ccalc / calc  
+* https://github.com/aalhour/awesome-compilers  
 
 ## TODO / etc / memo   
 * http://hotruby.yukoba.jp/  
