@@ -85,6 +85,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://www.computercraft.info/forums2/index.php?/topic/27675-rembulan-a-new-lua-53-implementation-for-the-jvm-built-with-sandboxing-in-mind/  
 * http://the-ravi-programming-language.readthedocs.io/en/latest/lua_bytecode_reference.html  
 * https://github.com/LuaDist/  
+* search lua 中断  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
