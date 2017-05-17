@@ -163,3 +163,6 @@ http://bbs.pediy.com/thread-216969.htm
 ## Bind  
 * https://github.com/aarzilli/golua  
 
+## Manual  
+* http://milkpot.sakura.ne.jp/lua/index.html  
+
