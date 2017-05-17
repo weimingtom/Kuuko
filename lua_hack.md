@@ -86,6 +86,9 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://the-ravi-programming-language.readthedocs.io/en/latest/lua_bytecode_reference.html  
 * https://github.com/LuaDist/  
 * search lua 中断  
+* https://github.com/rymis/robolang  
+* 绿色线程  
+* http://code.google.com/p/luame/  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
