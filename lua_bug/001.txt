@@ -1,0 +1,112 @@
+http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html
+
+
+lua的os.date()在多线程下的问题
+
+我使用的lua版本是5.1.2，其他版本估计也有这个问题。
+lua的os.date()函数在多线程下存在问题，即使是每个线程都是独立的Lua_State.
+原因:
+lua的loslib.c中，对os.date函数的实现采用了localtime和gmtime这两个函数,而这两个函数都是非线程安全的，这意味着在多线程下使用这两个函数有可能导致取时间错误.
+所以无论如何，在多线程下调用os.date()都含有安全隐患.
+例如，在线程A中有这样的代码:
+local t = os.time() -24*3600
+local st1 = os.date("%Y%m%d", t)
+线程B中:
+local t = os.time()
+local st2 = os.date("%Y%m%d", t)
+
+这样，上面两份代码在不同线程频繁调用的情况下就有可能出现错误，st2得到的结果未必是当前时间，而是一天前，而st1的结果页未必是一天前，而有可能是当前时间，因为结果被后一次的调用覆盖了。
+
+修复方案:
+1.自己写个lua扩展，直接拷贝原来loslib.c中os_date的实现，将其中调用localtime和gmtime的地方改为线程安全的localtime_r 和gmtime_r即可
+2.修改lua源码，将localtime和gmtime的地方改为线程安全的localtime_r 和gmtime_r。
+这个应该算是lua的一个bug了。
+
+附上修正的os_date源代码:
+
+复制代码
+static void setfield (lua_State *L, const char *key, int value) {
+  lua_pushinteger(L, value);
+  lua_setfield(L, -2, key);
+}
+
+static void setboolfield (lua_State *L, const char *key, int value) {
+  if (value < 0)  /* undefined? */
+    return;  /* does not set field */
+  lua_pushboolean(L, value);
+  lua_setfield(L, -2, key);
+}
+
+static int os_date (lua_State *L) {
+  const char *s = luaL_optstring(L, 1, "%c");
+  time_t t = luaL_opt(L, (time_t)luaL_checknumber, 2, time(NULL));
+  struct tm tmx;
+  struct tm *stm = &tmx;
+  char buf[512];
+  FILE* f = NULL;
+  int n  =lua_tonumber(L, 3);
+  if (n == 1) 
+  {
+      f = fopen("c:\\osdate.txt", "a+");
+      if (!f) {
+          printf("open file osdate.txt error");
+      }
+      else{
+          sprintf(buf, "now:%d, s=%s, t=%d, result=", time(NULL), s, t);
+          fwrite(buf, strlen(buf), 1, f);
+      }
+  }
+
+
+
+
+  if (*s == '!') {  /* UTC? */
+    gmtime_r(&t, stm);
+    s++;  /* skip `!' */
+  }
+  else
+    localtime_r(&t, stm);
+  if (stm == NULL)  /* invalid date? */
+    lua_pushnil(L);
+  else if (strcmp(s, "*t") == 0) {
+    lua_createtable(L, 0, 9);  /* 9 = number of fields */
+    setfield(L, "sec", stm->tm_sec);
+    setfield(L, "min", stm->tm_min);
+    setfield(L, "hour", stm->tm_hour);
+    setfield(L, "day", stm->tm_mday);
+    setfield(L, "month", stm->tm_mon+1);
+    setfield(L, "year", stm->tm_year+1900);
+    setfield(L, "wday", stm->tm_wday+1);
+    setfield(L, "yday", stm->tm_yday+1);
+    setboolfield(L, "isdst", stm->tm_isdst);
+  }
+  else {
+    char cc[3];
+    luaL_Buffer b;
+    cc[0] = '%'; cc[2] = '\0';
+    luaL_buffinit(L, &b);
+    for (; *s; s++) {
+      if (*s != '%' || *(s + 1) == '\0')  /* no conversion specifier? */
+        luaL_addchar(&b, *s);
+      else {
+        size_t reslen;
+        char buff[200];  /* should be big enough for any conversion result */
+        cc[1] = *(++s);
+        reslen = strftime(buff, sizeof(buff), cc, stm);
+        luaL_addlstring(&b, buff, reslen);
+      }
+    }
+    if (n==1) {
+        fwrite(b.buffer, b.p - b.buffer, 1, f);
+        fwrite("\n", 1,1,f);
+    }
+    luaL_pushresult(&b);
+  }
+
+  if (n==1 && f) {
+      fclose(f);
+      f = NULL;
+  }
+  return 1;
+}
+复制代码
