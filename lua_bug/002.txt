@@ -1,5 +1,6 @@
 http://blog.csdn.net/asmcvc/article/details/46990761#0-tsina-1-20050-397232819ff9a47a7b7e80a40613cfe1
 
+【经典BUG】exe与dll同时使用Lua的一个内存崩溃异常
 
 长时间运行后，出现以下崩溃：
 ntdll.dll!77b95a6c()
