@@ -94,6 +94,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
 * https://github.com/oxyc/luaparse  
+* https://github.com/BabeStudio/BabeLua  
+* https://github.com/illw910911/WjsLuaPraser  
 
 ## Debug  
 * https://github.com/pkulchenko/MobDebug  
