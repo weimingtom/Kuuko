@@ -188,3 +188,7 @@ http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
 
+## test  
+* https://github.com/fperrad/lua-TestMore  
+* http://lua.2524044.n2.nabble.com/UniLua-A-pure-C-implementation-of-Lua-5-2-focus-on-compatibility-with-Unity3D-td7645967.html  
+
