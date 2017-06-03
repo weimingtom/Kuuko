@@ -390,3 +390,6 @@ https://github.com/fanzhidongyzby/cit
 
 ## c2goasm  
 https://github.com/minio/c2goasm  
+
+## php7-internal  
+https://github.com/pangudashu/php7-internal  
