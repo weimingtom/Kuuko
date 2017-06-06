@@ -363,6 +363,7 @@ https://github.com/rooby-lang/rooby
 ## SharpHSQL  
 http://sharphsql.codeplex.com/  
 https://github.com/ArsenShnurkov/SharpHSQL  
+https://github.com/weimingtom/sharphsql_svn  
 
 ## playscript  
 https://github.com/PlayScriptRedux/playscript  
