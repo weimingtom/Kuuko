@@ -72,6 +72,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/michalmicpaw/AluminiumLua-for-Windows-Phone-8-SDK/tree/master/src  
 * https://news.ycombinator.com/item?id=8399789  
 * https://github.com/frabert/NetLua  
+* https://github.com/ericmj/IronLua  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
