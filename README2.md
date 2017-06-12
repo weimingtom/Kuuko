@@ -6,11 +6,12 @@
 * https://github.com/weimingtom/UniLuaMod  
 * https://github.com/weimingtom/LuaJMod  
 * https://github.com/weimingtom/jython_playground  
-* https://github.com/weimingtom/hotruby_playground ?
+* https://github.com/weimingtom/hotruby_playground  
 * https://github.com/weimingtom/nokscript_java  
 
 ## YACC  
 * https://github.com/weimingtom/wmt_yacc_study  
+* https://github.com/weimingtom/myosotis2  
 
 ## Porting  
 * https://github.com/weimingtom/nokscript_java  
