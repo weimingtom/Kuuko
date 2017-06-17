@@ -343,9 +343,10 @@ search PyDict_Type  pyobject language:cpp
 https://github.com/elliotchance/c2go  
 
 ## tinycc / TCC    
-https://github.com/mirror/tinycc  
+https://github.com/TinyCC/TinyCC  
 https://bellard.org/tcc/  
 http://download.savannah.gnu.org/releases/tinycc/  
+https://github.com/mirror/tinycc  
 
 ## CoCo  
 https://github.com/kentdlee/CoCo  
