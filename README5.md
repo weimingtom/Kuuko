@@ -4,5 +4,5 @@
 * https://github.com/weimingtom/ugame  
 
 ## flash animation    
-???  
+xxx@lip    
 earth_army  
