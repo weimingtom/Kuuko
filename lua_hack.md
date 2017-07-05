@@ -3,6 +3,7 @@
 ## todo  
 * https://github.com/weimingtom/chunktrans_java  
 * https://github.com/weimingtom/RipString  
+* https://github.com/weimingtom/chunktrans_java/blob/master/README.md  
 
 ## Binary read in Lua     
 * https://github.com/weimingtom/RipString  
@@ -198,4 +199,7 @@ http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html
 * https://github.com/adamwiggins/lua-pong  
 * https://github.com/Apress/learn-cocos2d-2  
 * http://www.apress.com/9781430244165  
+
+## Cross Language  
+* https://github.com/haramako/mlua  
 
