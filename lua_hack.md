@@ -30,6 +30,7 @@
 * https://github.com/chadrem/easy_lua  
 * https://github.com/gfoot/kopiluainterface  
 * https://github.com/stevedonovan/MonoLuaInterface  
+* http://git.oschina.net/ximu/ELua  
 
 ## Language Interface in C++  
 * https://github.com/luabind/luabind  
