@@ -29,6 +29,7 @@
 * https://github.com/jasonsantos/luajava  
 * https://github.com/chadrem/easy_lua  
 * https://github.com/gfoot/kopiluainterface  
+* https://github.com/stevedonovan/MonoLuaInterface  
 
 ## Language Interface in C++  
 * https://github.com/luabind/luabind  
