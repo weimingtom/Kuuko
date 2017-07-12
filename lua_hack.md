@@ -102,6 +102,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * 绿色线程  
 * http://code.google.com/p/luame/  
 * https://github.com/luaforge/w32wrappers  
+* https://www.gitbook.com/book/moonbingbing/openresty-best-practices/details  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
