@@ -211,3 +211,7 @@ http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html
 
 ## book code  
 https://github.com/wyrover/book-code  
+
+## test suite  
+* https://github.com/openresty/luajit2-test-suite  
+
