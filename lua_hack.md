@@ -103,6 +103,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://code.google.com/p/luame/  
 * https://github.com/luaforge/w32wrappers  
 * https://www.gitbook.com/book/moonbingbing/openresty-best-practices/details  
+* https://github.com/moonbingbing/openresty-best-practices  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
