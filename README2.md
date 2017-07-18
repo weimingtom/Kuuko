@@ -414,3 +414,6 @@ http://blog.csdn.net/snlscript/article/details/17722255
 
 ## hobbes  
 https://github.com/Morgan-Stanley/hobbes  
+
+## ruby-compiler  
+https://github.com/pmq20/ruby-compiler  
