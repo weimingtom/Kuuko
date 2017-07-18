@@ -412,3 +412,5 @@ https://github.com/mortdeus/legacy-cc
 ## snail  
 http://blog.csdn.net/snlscript/article/details/17722255  
 
+## hobbes  
+https://github.com/Morgan-Stanley/hobbes  
