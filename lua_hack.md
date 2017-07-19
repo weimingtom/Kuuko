@@ -6,7 +6,8 @@
 * https://github.com/weimingtom/RipString  
 * https://github.com/weimingtom/chunktrans_java/blob/master/README.md  
 * https://github.com/weimingtom/lua_study2  
-* https://github.com/weimingtom/lua_study  
+* https://github.com/weimingtom/lua_study  
+* https://github.com/weimingtom/xlua_mingw  
 
 ## Binary read in Lua     
 * https://github.com/weimingtom/RipString  
