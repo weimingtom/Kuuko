@@ -189,6 +189,8 @@ https://github.com/fnuecke/eris
 * https://github.com/bobsayshilol/luajit-decomp  
 * [原创]浅析android手游lua脚本的加密与解密  
 http://bbs.pediy.com/thread-216969.htm  
+* https://github.com/viruscamp/LuaTool   
+
 
 ## patch  
 * http://lua-users.org/wiki/LuaPowerPatches  
