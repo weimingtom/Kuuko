@@ -116,12 +116,13 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/moonbingbing/openresty-best-practices  
 * https://github.com/gerich-home/lua-inject  
 
-## Parser  
+## Parser / Lexer  
 * https://github.com/weimingtom/wmt_yacc_study  
 * https://github.com/oxyc/luaparse  
 * https://github.com/BabeStudio/BabeLua  
 * https://github.com/illw910911/WjsLuaPraser  
 * search lua.flex jflex language:java  
+* https://github.com/Anailson/Projeto-LFT-Compilador-Lua  
 
 ## Debug  
 * https://github.com/pkulchenko/MobDebug  
