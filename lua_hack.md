@@ -35,6 +35,9 @@
 * https://github.com/gfoot/kopiluainterface  
 * https://github.com/stevedonovan/MonoLuaInterface  
 * http://git.oschina.net/ximu/ELua  
+* https://github.com/aarzilli/golua  
+* https://github.com/ZhangQin3/golua  
+
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
