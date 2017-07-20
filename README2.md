@@ -426,3 +426,6 @@ http://bbs.elecfans.com/jishu_419346_1_1.html
 
 ## byterun  
 https://github.com/nedbat/byterun  
+http://www.aosabook.org/en/500L/a-python-interpreter-written-in-python.html  
+https://qingyunha.github.io/taotao/  
+
