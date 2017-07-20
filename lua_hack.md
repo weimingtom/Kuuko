@@ -121,6 +121,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/oxyc/luaparse  
 * https://github.com/BabeStudio/BabeLua  
 * https://github.com/illw910911/WjsLuaPraser  
+* search lua.flex jflex language:java  
 
 ## Debug  
 * https://github.com/pkulchenko/MobDebug  
