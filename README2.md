@@ -443,3 +443,9 @@ https://github.com/rspivak/lsbasi
 https://ruslanspivak.com/lsbasi-part1/  
 自己手动编写一个简单的解释器 Part 3   
 http://www.oschina.net/translate/lsbasi-part-3  
+
+## jvmgo  
+https://github.com/zhaohuXing/jvmgo  
+用Go编写JVM之指令集和解释器  
+http://www.jianshu.com/p/5eb86705dc94  
+
