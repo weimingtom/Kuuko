@@ -1,0 +1,41 @@
+http://blog.csdn.net/laozitianxia/article/details/51953989
+
+高效调用lua函数
+2016-07-19 11:05 227人阅读 评论(0) 收藏 举报
+ 分类： lua（21）  
+通常调用一个lua函数需要以下步骤
+
+
+[html] view plain copy
+//1.解析函数名，将lua函数压栈  
+findLuaItem( "a.b.c.func" );  
+//2.参数压栈  
+lua_push()  
+//3.函数调用  
+lua_call()  
+
+最慢的是第一步解析函数名、反复查表的过程，这个过程会消耗不少时间和空间。
+如果可以避开这个过程，就能提升效率。
+
+函数总有函数指针，就算lua函数没有，也该有个handler吧。这个想法在LuaBind中得到了确认，他用一个int做lua函数的句柄。
+接下来看了看lua SDK，没有发现返回lua函数句柄的API，于是想到了这个点子：用一个表保存需要调用的lua函数，表的key就是lua函数的句柄。
+CustomTable[ handler ] = a.b.c.func
+
+在C中访问lua的表，需要表索引。当时想到的只有LUA_GLOBALSINDEX，后来从同学那知道还有LUA_ENVIRONINDEX和LUA_REGISTRYINDEX。考虑了一下，觉得registry表最合适。
+Lua provides a registry, a pre-defined table that can be used by any C code to store whatever Lua value it needs to store. This table is always located at pseudo-index LUA_REGISTRYINDEX. Any C library can store data into this table, but it should take care to choose keys different from those used by other libraries, to avoid collisions. Typically, you should use as key a string containing your library name or a light userdata with the address of a C object in your code.
+
+要将lua函数保存到这个表。lua提供了在表里增加一个条目的API，luaL_ref，返回值是新条目的key，一个整数。这样就万事俱备了。
+程序初始化阶段，给所有会调用的lua函数分配句柄：
+
+[html] view plain copy
+1findLuaItem( “a.b.c.func" );  
+2int handler = luaL_ref( L , LUA_REGISTRYINDEX );  
+以后调用lua函数：
+
+[javascript] view plain copy
+1//将lua函数压栈  
+2lua_rawgeti( L , LUA_REGISTRYINDEX , handler );  
+3  
+4lua_push();  
+5lua_call();  
+
