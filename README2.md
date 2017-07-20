@@ -423,3 +423,6 @@ https://github.com/zsaleeba/picoc
 Picoc C语言解释器移植到STM32平台  
 https://github.com/larryhe/tiny-c-interpreter  
 http://bbs.elecfans.com/jishu_419346_1_1.html  
+
+## byterun  
+https://github.com/nedbat/byterun  
