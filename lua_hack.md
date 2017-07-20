@@ -233,3 +233,5 @@ https://github.com/wyrover/book-code
 
 ## Coroutine  
 * http://marupeke296.com/LUA_No3_Coroutine.html  
+* search lua_newthread lua_resume  
+
