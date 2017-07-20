@@ -131,6 +131,7 @@ require('mobdebug').start()
 * https://github.com/pangweiwei/sluadbg  
 * https://github.com/airtrack/lua-debugger  
 * https://github.com/unknownworlds/decoda  
+* https://github.com/GaloisInc/galua  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
