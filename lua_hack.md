@@ -139,6 +139,7 @@ require('mobdebug').start()
 * https://github.com/airtrack/lua-debugger  
 * https://github.com/unknownworlds/decoda  
 * https://github.com/GaloisInc/galua  
+* http://tset.de/dbghelper/index.html  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
