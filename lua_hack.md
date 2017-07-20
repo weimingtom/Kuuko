@@ -8,6 +8,7 @@
 * https://github.com/weimingtom/lua_study2  
 * https://github.com/weimingtom/lua_study  
 * https://github.com/weimingtom/xlua_mingw  
+* https://github.com/weimingtom/lua_test_coroutine  
 
 ## Binary read in Lua     
 * https://github.com/weimingtom/RipString  
