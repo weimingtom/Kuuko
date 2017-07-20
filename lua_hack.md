@@ -148,6 +148,7 @@ require('mobdebug').start()
 * https://github.com/GHScan/DailyProjects/tree/master/C++/CompilerStudy/Lesson20_Lua3  
 * https://github.com/zdevito/terra  
 * https://github.com/stroan/Lamn  
+* https://github.com/richardhundt/shine  
 
 ## Transpiler(Translator) / Compiler  
 * https://github.com/mherkender/lua.js  
