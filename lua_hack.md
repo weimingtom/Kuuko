@@ -112,6 +112,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/luaforge/w32wrappers  
 * https://www.gitbook.com/book/moonbingbing/openresty-best-practices/details  
 * https://github.com/moonbingbing/openresty-best-practices  
+* https://github.com/gerich-home/lua-inject  
 
 ## Parser  
 * https://github.com/weimingtom/wmt_yacc_study  
