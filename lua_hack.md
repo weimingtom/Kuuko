@@ -95,6 +95,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/lichuang/Lua-Source-Internal  
 * https://github.com/lichuang/Lua-5.1.4-codedump  
 * https://github.com/ASMlover/study/tree/master/lua/programming-in-lua  
+* https://github.com/middlefeng/LuaVMRead  
 
 ## Etc  
 * https://github.com/weimingtom/lua-wince  
