@@ -449,3 +449,6 @@ https://github.com/zhaohuXing/jvmgo
 用Go编写JVM之指令集和解释器  
 http://www.jianshu.com/p/5eb86705dc94  
 
+## jvm.go  
+https://github.com/zxh0/jvm.go  
+
