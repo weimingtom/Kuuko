@@ -429,3 +429,17 @@ https://github.com/nedbat/byterun
 http://www.aosabook.org/en/500L/a-python-interpreter-written-in-python.html  
 https://qingyunha.github.io/taotao/  
 
+## 200-line C++ prolog interpreter and example run  
+http://www.cl.cam.ac.uk/~am21/research/funnel/  
+http://www.cl.cam.ac.uk/~am21/research/funnel/prolog.c  
+
+## mal  
+https://github.com/kanaka/mal  
+56种语言编写一个Lisp解释器  
+http://blog.csdn.net/tangxiaoyin/article/details/51788554  
+
+## Let's Build A Simple Interpreter  
+https://github.com/rspivak/lsbasi  
+https://ruslanspivak.com/lsbasi-part1/  
+自己手动编写一个简单的解释器 Part 3   
+http://www.oschina.net/translate/lsbasi-part-3  
