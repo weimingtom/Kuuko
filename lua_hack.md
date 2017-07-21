@@ -30,6 +30,8 @@
 * https://github.com/weimingtom/luainterface  
 * https://github.com/pangweiwei/slua  
 * https://github.com/jarjin/uLua  
+* https://github.com/jarjin/ulua_debugger_demo  
+* https://github.com/jarjin/ulua_runtime_project  
 * https://github.com/topameng/tolua  
 * https://www.zhihu.com/question/28619506  
 * https://github.com/jasonsantos/luajava  
@@ -40,7 +42,6 @@
 * https://github.com/aarzilli/golua  
 * https://github.com/ZhangQin3/golua  
 * https://github.com/hanhongyi/ulua_profiler  
-
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
