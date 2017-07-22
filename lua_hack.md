@@ -89,6 +89,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://news.ycombinator.com/item?id=8399789  
 * https://github.com/frabert/NetLua  
 * https://github.com/ericmj/IronLua  
+* https://github.com/zxh0/lua.go  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
