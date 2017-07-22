@@ -153,6 +153,7 @@ require('mobdebug').start()
 * https://github.com/zdevito/terra  
 * https://github.com/stroan/Lamn  
 * https://github.com/richardhundt/shine  
+* https://github.com/albertodemichelis/squirrel  
 
 ## Transpiler(Translator) / Compiler  
 * https://github.com/mherkender/lua.js  
@@ -203,6 +204,8 @@ http://bbs.pediy.com/thread-216969.htm
 * http://lua-users.org/wiki/LuaPowerPatches  
 * http://www.lua.org/work/  
 * http://www.lua.org/bugs.html  
+* COMPUTED_GOTO  
+https://github.com/zhaojh329/lua-5.1.5-mod/blob/master/src/lvm.c  
 
 ## Bind  
 * https://github.com/aarzilli/golua  
