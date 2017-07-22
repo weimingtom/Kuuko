@@ -144,6 +144,10 @@ require('mobdebug').start()
 * https://github.com/unknownworlds/decoda  
 * https://github.com/GaloisInc/galua  
 * http://tset.de/dbghelper/index.html  
+* https://github.com/luaforge/luaprofiler  
+* http://luaprofiler.luaforge.net  
+* http://www.jianshu.com/p/f6606b27e9de  
+
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
