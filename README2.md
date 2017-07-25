@@ -457,3 +457,6 @@ https://github.com/francisrstokes/16bitjs
 
 ## ANSI C Yacc grammar  
 http://www.lysator.liu.se/c/ANSI-C-grammar-y.html  
+
+## mujs  
+https://github.com/ccxvii/mujs  
