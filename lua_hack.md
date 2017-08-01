@@ -16,6 +16,8 @@
 * https://github.com/yongkangchen/lua-msgpack  
 * https://github.com/torch/torch7  
 * https://github.com/weimingtom/chunktrans  
+* https://github.com/weimingtom/chunktrans_java  
+=====================================================>**luac to js**  
 
 ## Language Interface  
 * https://github.com/cloudwu/sharplua  
