@@ -47,6 +47,7 @@
 * https://github.com/aarzilli/golua  
 * https://github.com/ZhangQin3/golua  
 * https://github.com/hanhongyi/ulua_profiler  
+* https://github.com/jmettraux/rufus-lua/  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
