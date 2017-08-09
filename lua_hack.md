@@ -272,3 +272,8 @@ https://github.com/wyrover/book-code
 * http://marupeke296.com/LUA_No3_Coroutine.html  
 * search lua_newthread lua_resume  
 
+## lib / ext  
+* http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/  
+* https://github.com/ignacio/luanode  
+* https://stackoverflow.com/questions/6118799/creating-a-timer-using-lua  
+
