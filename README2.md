@@ -466,3 +466,25 @@ https://github.com/ccxvii/mujs
 https://github.com/mafintosh/node-on-android  
 
 ## search java aconst_null language:c  
+
+## Javascript IoT  
+* http://blog.csdn.net/tangxiaoyin/article/details/76876426  
+* Espruino  
+* https://www.espruino.com  
+* https://github.com/espruino/Espruino  
+* JerryScript  
+* http://jerryscript.net  
+* https://github.com/jerryscript-project/jerryscript  
+* IoT.js  
+* http://iotjs.net  
+* https://github.com/Samsung/iotjs  
+* Tessel  
+* https://tessel.io  
+* Johnny-Five  
+* http://johnny-five.io  
+* https://github.com/rwaldron/johnny-five  
+* Cylon.js  
+* https://cylonjs.com  
+* https://github.com/hybridgroup/cylon/  
+* Ruff  
+* https://ruff.io  
