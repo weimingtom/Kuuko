@@ -180,6 +180,7 @@ require('mobdebug').start()
 * https://github.com/mascarenhas/luaclr  
 * https://github.com/vvanders/wasm_lua  
 * https://github.com/serprex/luwa  
+* https://github.com/tessel/colony-compiler  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
