@@ -493,4 +493,11 @@ https://github.com/mafintosh/node-on-android
 https://github.com/drh/lcc  
 
 ## scc  
-《自己动手写编译器链接器》  
+自己动手写编译器链接器  
+
+## ucc  
+http://ucc.sourceforge.net  
+https://sourceforge.net/projects/ucc/  
+https://github.com/nobled/ucc  
+C编译器剖析  
+
