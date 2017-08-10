@@ -494,4 +494,3 @@ https://github.com/drh/lcc
 
 ## scc  
 《自己动手写编译器链接器》  
-http://download.csdn.net/download/sxtylhg163/9668525  
