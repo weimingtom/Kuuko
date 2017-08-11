@@ -182,6 +182,7 @@ require('mobdebug').start()
 * https://github.com/vvanders/wasm_lua  
 * https://github.com/serprex/luwa  
 * https://github.com/tessel/colony-compiler  
+* http://moonscript.org  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
