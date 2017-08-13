@@ -238,7 +238,7 @@ https://github.com/zhaojh329/lua-5.1.5-mod/blob/master/src/lvm.c
 http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html  
 
 * 【经典BUG】exe与dll同时使用Lua的一个内存崩溃异常  
-http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html  
+http://blog.csdn.net/asmcvc/article/details/46990761  
 
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
