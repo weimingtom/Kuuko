@@ -240,6 +240,9 @@ http://www.cnblogs.com/moodlxs/archive/2012/11/29/2795016.html
 * 【经典BUG】exe与dll同时使用Lua的一个内存崩溃异常  
 http://blog.csdn.net/asmcvc/article/details/46990761  
 
+* LUA5.3.3如何支持中文函数？？  
+http://blog.csdn.net/qq1841370452/article/details/54613230  
+
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
 
