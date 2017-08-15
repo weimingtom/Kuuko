@@ -51,6 +51,7 @@
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
+* http://www.rasterbar.com/products/luabind/docs.html  
 * https://github.com/zupet/LuaTinker  
 
 ## Lua VM Port   
