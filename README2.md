@@ -505,3 +505,6 @@ C编译器剖析
 
 ## sqlcheck  
 https://github.com/jarulraj/sqlcheck  
+
+## Rhino.Net  
+https://github.com/hazzik/Rhino.Net  
