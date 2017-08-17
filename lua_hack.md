@@ -232,8 +232,11 @@ https://github.com/zhaojh329/lua-5.1.5-mod/blob/master/src/lvm.c
 ## Bind  
 * https://github.com/aarzilli/golua  
 
-## Manual  
+## Manual / Doc    
 * http://milkpot.sakura.ne.jp/lua/index.html  
+* https://cloudwu.github.io/lua53doc/  
+* https://github.com/cloudwu/lua53doc/  
+* https://github.com/jaywcjlove/handbook/blob/master/other/Lua5.3.md  
 
 ## bug  
 * lua的bug：lua的os.date()在多线程下的问题  
