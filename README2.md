@@ -508,3 +508,7 @@ https://github.com/jarulraj/sqlcheck
 
 ## Rhino.Net  
 https://github.com/hazzik/Rhino.Net  
+
+## j2megamescript  
+http://j2megamescript.sourceforge.net  
+http://blog.sina.com.cn/s/blog_4a32d7f6010008f3.html  
