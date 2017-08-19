@@ -512,3 +512,29 @@ https://github.com/hazzik/Rhino.Net
 ## j2megamescript  
 http://j2megamescript.sourceforge.net  
 http://blog.sina.com.cn/s/blog_4a32d7f6010008f3.html  
+
+# 收集一些在线的 REPL  
+http://blog.csdn.net/redraiment/article/details/6941121  
+W3C School  
+http://www.w3school.com.cn/tiy/t.asp?f=html_basic  
+PHP  
+http://writecodeonline.com/php/  
+http://writecodeonline.com/javascript/  
+JavaScript Console  
+http://jsconsole.com/  
+Python  
+http://datamech.com/devan/trypython/trypython.py   
+ActionScript  
+http://eval.hurlant.com/demo/  
+Perl  
+http://colabv6.dan.co.jp/lleval.html  
+Scala  
+http://www.simplyscala.com/  
+Groovy  
+http://groovyconsole.appspot.com/  
+Clojure  
+http://tryclj.com/  
+Scheme  
+http://sisc-scheme.org/sisc-online.php  
+repl.it  
+http://repl.it/#:languages  
