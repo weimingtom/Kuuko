@@ -538,3 +538,7 @@ Scheme
 http://sisc-scheme.org/sisc-online.php  
 repl.it  
 http://repl.it/#:languages  
+
+# sisc  
+https://github.com/amoe/sisc  
+
