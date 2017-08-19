@@ -542,3 +542,5 @@ http://repl.it/#:languages
 # sisc  
 https://github.com/amoe/sisc  
 
+# List of Ruby implementations  
+https://github.com/cogitator/ruby-implementations/wiki/List-of-Ruby-implementations  
