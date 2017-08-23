@@ -553,3 +553,17 @@ https://ringojs.org/download/
 https://stackoverflow.com/questions/11838369/where-can-i-find-a-list-of-available-jsr-223-scripting-languages  
 https://en.wikipedia.org/wiki/List_of_JVM_languages  
 http://java-source.net/open-source/scripting-languages  
+
+# VMLisp  
+* https://github.com/yshinya6/VMLisp  
+
+# CompilerStudy  
+* https://github.com/GHScan/DailyProjects/tree/master/C++/CompilerStudy  
+
+# darumabasic  
+* https://github.com/toshinagata/darumabasic  
+
+# search pop vmcode execute  
+
+# glisp  
+* https://github.com/goccy/glisp  
