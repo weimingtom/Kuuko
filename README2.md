@@ -567,3 +567,8 @@ http://java-source.net/open-source/scripting-languages
 
 # glisp  
 * https://github.com/goccy/glisp  
+
+# mini-langtools  
+* https://github.com/sebkirche/mini-langtools/tree/master  
+* http://www.complang.tuwien.ac.at/ublu/MiniVM.java  
+
