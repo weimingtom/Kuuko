@@ -574,3 +574,6 @@ http://java-source.net/open-source/scripting-languages
 
 # stack-machine  
 https://github.com/cslarsen/stack-machine  
+
+# python-simple-vm  
+https://github.com/cslarsen/python-simple-vm  
