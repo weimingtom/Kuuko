@@ -577,3 +577,7 @@ https://github.com/cslarsen/stack-machine
 
 # python-simple-vm  
 https://github.com/cslarsen/python-simple-vm  
+
+# a cpu in lua  
+http://blog.headchant.com/a-cpu-in-lua-2/  
+https://gist.github.com/headchant/10428851  
