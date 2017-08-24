@@ -572,3 +572,5 @@ http://java-source.net/open-source/scripting-languages
 * https://github.com/sebkirche/mini-langtools/tree/master  
 * http://www.complang.tuwien.ac.at/ublu/MiniVM.java  
 
+# stack-machine  
+https://github.com/cslarsen/stack-machine  
