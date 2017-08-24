@@ -185,6 +185,7 @@ require('mobdebug').start()
 * https://github.com/tessel/colony-compiler  
 * http://moonscript.org  
 * https://github.com/yanghuan/CSharp.lua  
+* https://github.com/WeirdConstructor/lal  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
