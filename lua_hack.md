@@ -99,6 +99,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/zxh0/lua.go  
 * https://github.com/fengari-lua/fengari  
 * https://hackernoon.com/why-we-rewrote-lua-in-js-a66529a8278d  
+* https://github.com/lindig/lua-ml  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
