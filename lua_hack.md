@@ -296,3 +296,7 @@ https://github.com/airm2m-open/Luat_simulator
 
 ## Editor   
 * http://www.x-studio365.com  
+
+## jit  
+* https://github.com/Leonardo2718/lua-vermelha  
+
