@@ -1,0 +1,40 @@
+提高Lua在嵌入式系统中的运行速度
+
+rubynroll的博客	
+rubynroll 2008-05-29
+Lua是一门运行速度极快的脚本语言，但是对于嵌入式系统来说，再怎么追求速度也不过分，:) 
+
+默认情况下，Lua用'double'来代表内部的'number‘，这对于有浮点协处理器的PC CPU来说没有什么影响，但许多嵌入式CPU并没有浮点处理器，因此得用多个通用寄存器来存储，并且在参与运算的时候用软件来模拟浮点，效率很低。 
+
+其实在大部分情况下，嵌入式系统的规模容量都无须考虑得那么大，因此用32bit的long来代表内部的'number‘就足够了，因此本文的方法就是通过定制编译Lua来提高Lua在无浮点协处理器的嵌入式系统上的运行速度： 
+
+luaconf.h（在line 504左右），修改： 
+#define LUA_NUMBER_DOUBLE 
+#define LUA_NUMBER	double 
+
+为： 
+#define LUA_NUMBER_LONG 
+#define LUA_NUMBER	long 
+
+修改： 
+#define LUAI_UACNUMBER	double 
+
+为： 
+#define LUAI_UACNUMBER	long 
+
+修改： 
+#define LUA_NUMBER_SCAN	"%lf" 
+#define LUA_NUMBER_FMT	"%.14g" 
+#define lua_number2str(s,n)	sprintf((s), LUA_NUMBER_FMT, (n)) 
+#define LUAI_MAXNUMBER2STR	32 /* 16 digits, sign, point, and \0 */ 
+#define lua_str2number(s,p)	strtod((s), (p)) 
+
+为： 
+#define LUA_NUMBER_SCAN	"%l" 
+#define LUA_NUMBER_FMT	"%l" 
+#define lua_number2str(s,n)	sprintf((s), LUA_NUMBER_FMT, (n)) 
+#define LUAI_MAXNUMBER2STR	32 /* 16 digits, sign, point, and \0 */ 
+#define lua_str2number(s,p)	strtol((s), (p), 0) 
+
+
+OK，大功告成，编译，运行，是不是觉得速度快了很多？ 
