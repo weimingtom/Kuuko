@@ -257,6 +257,9 @@ http://blog.csdn.net/asmcvc/article/details/46990761
 * LUA5.3.3如何支持中文函数？？  
 http://blog.csdn.net/qq1841370452/article/details/54613230  
 
+* 提高Lua在嵌入式系统中的运行速度  
+http://rubyemb.group.iteye.com/group/topic/5743  
+
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
 
