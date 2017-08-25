@@ -1,3 +1,5 @@
+http://rubyemb.group.iteye.com/group/topic/5743
+
 提高Lua在嵌入式系统中的运行速度
 
 rubynroll的博客	
