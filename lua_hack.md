@@ -227,7 +227,8 @@ https://github.com/fnuecke/eris
 * [原创]浅析android手游lua脚本的加密与解密  
 http://bbs.pediy.com/thread-216969.htm  
 * https://github.com/viruscamp/LuaTool   
-
+* https://github.com/sztupy/luadec51  
+* https://groups.google.com/d/topic/lua_cn/CTuLC054WM8/discussion  
 
 ## patch / branch    
 * http://lua-users.org/wiki/LuaPowerPatches  
