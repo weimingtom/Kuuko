@@ -585,3 +585,6 @@ https://gist.github.com/headchant/10428851
 # Implementing a virtual machine in C  
 https://felixangell.com/blog/virtual-machine-in-c  
 https://github.com/felixangell/mac  
+
+# python-cobra  
+https://github.com/farseer002/python-cobra  
