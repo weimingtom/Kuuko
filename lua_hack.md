@@ -21,6 +21,8 @@
 * https://github.com/weimingtom/chunktrans  
 * https://github.com/weimingtom/chunktrans_java  
 =====================================================>**luac to js**  
+* https://github.com/wildptr/whex  
+* https://github.com/weimingtom/whex  
 
 ## Language Interface  
 * https://github.com/cloudwu/sharplua  
