@@ -597,3 +597,6 @@ https://github.com/arp/ruby_from_c
 
 # johnson  
 https://github.com/jbarnette/johnson  
+
+# mkscript  
+https://github.com/noranuk0/mkscript  
