@@ -239,6 +239,10 @@ http://bbs.pediy.com/thread-216969.htm
 * COMPUTED_GOTO  
 https://github.com/zhaojh329/lua-5.1.5-mod/blob/master/src/lvm.c  
 * https://github.com/tessel/colony-lua  
+* readonly table / rotable  
+https://github.com/jsnyder/lua/tree/lua_tiny_ram  
+http://lua-users.org/lists/lua-l/2008-11/msg00331.html  
+http://lua-users.org/lists/lua-l/2006-03/msg00723.html  
 
 ## Bind  
 * https://github.com/aarzilli/golua  
