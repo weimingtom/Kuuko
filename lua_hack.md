@@ -106,7 +106,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://shopifyengineering.myshopify.com/blogs/engineering/announcing-go-lua  
 * https://github.com/numerodix/luna  
 * http://www.matusiak.eu/numerodix/blog/2013/10/12/luna-learns-to-crawl/  
-* http://www.matusiak.eu/numerodix/blog/2013/10/8/writing-lua-interpreter/  
+* http://www.matusiak.eu/numerodix/blog/2013/10/8/writing-lua-interpreter/  
+* https://github.com/weimingtom/luaj  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
