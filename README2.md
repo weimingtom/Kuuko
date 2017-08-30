@@ -609,3 +609,6 @@ https://github.com/zenglong/zengl_language
 
 # lip  
 https://github.com/bullno1/lip  
+
+# njs  
+https://github.com/nginx/njs  
