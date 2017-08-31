@@ -138,6 +138,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/moonbingbing/openresty-best-practices  
 * https://github.com/gerich-home/lua-inject  
 * https://github.com/outsky/luamisc  
+* LuaTips  
+* http://lua.tips/index.php  
 
 ## Parser / Lexer  
 * https://github.com/weimingtom/wmt_yacc_study  
