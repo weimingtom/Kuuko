@@ -612,3 +612,8 @@ https://github.com/bullno1/lip
 
 # njs  
 https://github.com/nginx/njs  
+
+# tjs2  
+https://krkrz.github.io/krkr2doc/tjs2doc/contents/index.html  
+https://krkrz.github.io/krkr2doc/tjs2doc/contents/simple.html  
+https://krkrz.github.io/krkr2doc/tjs2doc/contents/vmcodes.html  
