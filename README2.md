@@ -617,3 +617,7 @@ https://github.com/nginx/njs
 https://krkrz.github.io/krkr2doc/tjs2doc/contents/index.html  
 https://krkrz.github.io/krkr2doc/tjs2doc/contents/simple.html  
 https://krkrz.github.io/krkr2doc/tjs2doc/contents/vmcodes.html  
+
+# jint  
+* http://jint.codeplex.com  
+* https://www.nuget.org/packages/Jint  
