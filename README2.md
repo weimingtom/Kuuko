@@ -624,3 +624,6 @@ https://krkrz.github.io/krkr2doc/tjs2doc/contents/vmcodes.html
 
 # Javascript.Net  
 https://github.com/JavascriptNet/Javascript.Net  
+
+# The SQLite Bytecode Engine  
+http://www.sqlite.org/opcode.html  
