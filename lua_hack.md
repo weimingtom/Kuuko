@@ -235,7 +235,7 @@ http://bbs.pediy.com/thread-216969.htm
 * https://github.com/sztupy/luadec51  
 * https://groups.google.com/d/topic/lua_cn/CTuLC054WM8/discussion  
 
-## patch / branch    
+## patch / branch / compatibility   
 * http://lua-users.org/wiki/LuaPowerPatches  
 * http://www.lua.org/work/  
 * http://www.lua.org/bugs.html  
@@ -247,6 +247,7 @@ https://github.com/jsnyder/lua/tree/lua_tiny_ram
 http://lua-users.org/lists/lua-l/2008-11/msg00331.html  
 http://lua-users.org/lists/lua-l/2006-03/msg00723.html  
 * https://github.com/dubiousjim/luafiveq  
+* https://github.com/keplerproject/lua-compat-5.3  
 
 ## Bind  
 * https://github.com/aarzilli/golua  
