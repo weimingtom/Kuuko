@@ -271,6 +271,9 @@ http://blog.csdn.net/qq1841370452/article/details/54613230
 * 提高Lua在嵌入式系统中的运行速度  
 http://rubyemb.group.iteye.com/group/topic/5743  
 
+* lua number运算误差备忘  
+https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-deviation.article  
+
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
 
