@@ -246,6 +246,7 @@ https://github.com/zhaojh329/lua-5.1.5-mod/blob/master/src/lvm.c
 https://github.com/jsnyder/lua/tree/lua_tiny_ram  
 http://lua-users.org/lists/lua-l/2008-11/msg00331.html  
 http://lua-users.org/lists/lua-l/2006-03/msg00723.html  
+* https://github.com/dubiousjim/luafiveq  
 
 ## Bind  
 * https://github.com/aarzilli/golua  
