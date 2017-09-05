@@ -140,6 +140,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/outsky/luamisc  
 * LuaTips  
 * http://lua.tips/index.php  
+* https://github.com/lichuang/qnode/wiki/qnode中文wiki  
 
 ## Parser / Lexer  
 * https://github.com/weimingtom/wmt_yacc_study  
