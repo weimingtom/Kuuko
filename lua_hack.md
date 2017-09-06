@@ -300,6 +300,7 @@ https://github.com/wyrover/book-code
 
 ## test suite  
 * https://github.com/openresty/luajit2-test-suite  
+* https://github.com/NLua/LuaTests  
 
 ## Data Structure  
 * https://github.com/gtxx3600/TDR  
