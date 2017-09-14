@@ -43,13 +43,14 @@
 * https://www.zhihu.com/question/28619506  
 * https://github.com/jasonsantos/luajava  
 * https://github.com/chadrem/easy_lua  
-* https://github.com/gfoot/kopiluainterface  
+* (*) https://github.com/gfoot/kopiluainterface  
 * https://github.com/stevedonovan/MonoLuaInterface  
 * http://git.oschina.net/ximu/ELua  
 * https://github.com/aarzilli/golua  
 * https://github.com/ZhangQin3/golua  
 * https://github.com/hanhongyi/ulua_profiler  
 * https://github.com/jmettraux/rufus-lua/  
+* (*) https://github.com/weimingtom/ELua_fork  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
