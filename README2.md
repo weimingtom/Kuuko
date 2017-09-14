@@ -627,3 +627,7 @@ https://github.com/JavascriptNet/Javascript.Net
 
 # The SQLite Bytecode Engine  
 http://www.sqlite.org/opcode.html  
+
+# shiftjs  
+http://www.shiftjs.com/  
+https://github.com/shift-js/shift-js  
