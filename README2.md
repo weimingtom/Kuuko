@@ -631,3 +631,14 @@ http://www.sqlite.org/opcode.html
 # shiftjs  
 http://www.shiftjs.com/  
 https://github.com/shift-js/shift-js  
+
+# ffpython  
+https://github.com/fanchy/ffpython  
+
+# micropython & unicorn    
+https://github.com/micropython/micropython-unicorn  
+https://github.com/AlexAltea/unicorn.js  
+https://micropython.org/unicorn/  
+https://github.com/unicorn-engine/unicorn  
+https://github.com/micropython/micropython  
+
