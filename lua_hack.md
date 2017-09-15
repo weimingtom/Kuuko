@@ -51,6 +51,9 @@
 * https://github.com/hanhongyi/ulua_profiler  
 * https://github.com/jmettraux/rufus-lua/  
 * (*) https://github.com/weimingtom/ELua_fork  
+* https://github.com/stevetranby/labs-tilemaps/blob/master/_docs/lua-notes.md  
+* https://forum.unity.com/threads/lua-and-unity.124569/  
+* https://github.com/gfoot/kopiluainterface/releases  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
@@ -141,7 +144,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/outsky/luamisc  
 * LuaTips  
 * http://lua.tips/index.php  
-* https://github.com/lichuang/qnode/wiki/qnode中文wiki  
+* https://github.com/lichuang/qnode/wiki/qnode中文wiki  
 
 ## Parser / Lexer / AST    
 * https://github.com/weimingtom/wmt_yacc_study  
@@ -329,3 +332,7 @@ https://github.com/airm2m-open/Luat_simulator
 ## jit  
 * https://github.com/Leonardo2718/lua-vermelha  
 
+## lwf  
+https://twitter.com/tanaka_u/status/493387874859880448    
+https://github.com/gree/lwf/wiki/Blog-%231
+https://github.com/splhack/Hello-LWF-Unity  
