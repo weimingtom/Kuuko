@@ -54,6 +54,9 @@
 * https://github.com/stevetranby/labs-tilemaps/blob/master/_docs/lua-notes.md  
 * https://forum.unity.com/threads/lua-and-unity.124569/  
 * https://github.com/gfoot/kopiluainterface/releases  
+* KLITest  
+* https://github.com/stevetranby/labs-tilemaps/tree/master/tests/lua-tests/KLITest  
+* https://github.com/Henry-T/UnityPG/tree/master/Script/KopiLuaInterface_Dll_Test  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
