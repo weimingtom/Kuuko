@@ -642,5 +642,9 @@ https://micropython.org/unicorn/
 https://github.com/unicorn-engine/unicorn  
 https://github.com/micropython/micropython  
 
-* as3cc  
+# as3cc  
 https://github.com/aristotle9/as3cc  
+
+# yani2  
+https://github.com/aristotle9/yani2  
+http://nicowiki.com/%E3%83%8B%E3%83%AF%E3%83%B3%E8%AA%9E.html  
