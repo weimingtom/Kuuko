@@ -290,6 +290,8 @@ https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-
 * https://github.com/fperrad/lua-TestMore  
 * http://lua.2524044.n2.nabble.com/UniLua-A-pure-C-implementation-of-Lua-5-2-focus-on-compatibility-with-Unity3D-td7645967.html  
 * https://github.com/gfoot/kopilua/tree/master/LuaTestMore  
+* https://github.com/fperrad/lua-TestMore  
+* https://fperrad.github.io/lua-TestMore/cover_lua515/  
 
 ## framework   
 * https://github.com/alibaba/wax
