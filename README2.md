@@ -658,3 +658,6 @@ http://geek.csdn.net/news/detail/238098
 
 # Utf8Json  
 https://github.com/neuecc/Utf8Json  
+
+# SQLparser  
+https://github.com/MyCATApache/SQLparser  
