@@ -651,3 +651,7 @@ http://nicowiki.com/%E3%83%8B%E3%83%AF%E3%83%B3%E8%AA%9E.html
 
 # cherow  
 https://github.com/cherow/cherow  
+
+# tiny-compiler  
+https://github.com/mgechev/tiny-compiler  
+http://geek.csdn.net/news/detail/238098  
