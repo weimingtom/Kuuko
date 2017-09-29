@@ -59,6 +59,7 @@
 * https://github.com/Henry-T/UnityPG/tree/master/Script/KopiLuaInterface_Dll_Test  
 * 在Unity中使用Lua脚本：语言层和游戏逻辑粘合层处理  
 http://blog.csdn.net/neil3d/article/details/44200821  
+search baidu pan LuaComponentDemo5.zip  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
