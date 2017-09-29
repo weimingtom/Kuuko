@@ -57,6 +57,8 @@
 * KLITest  
 * https://github.com/stevetranby/labs-tilemaps/tree/master/tests/lua-tests/KLITest  
 * https://github.com/Henry-T/UnityPG/tree/master/Script/KopiLuaInterface_Dll_Test  
+* 在Unity中使用Lua脚本：语言层和游戏逻辑粘合层处理  
+http://blog.csdn.net/neil3d/article/details/44200821  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
