@@ -126,6 +126,8 @@ https://github.com/jxcore/jxcore
 https://github.com/karaxuna/jxcore-repl  
 http://sourcechord.hatenablog.com/entry/2015/09/06/203827  
 http://www.runoob.com/nodejs/nodejs-jxcore-packaging.html  
+nodejs-mobile  
+https://github.com/janeasystems/nodejs-mobile  
 
 ## Converter  
 * https://github.com/weimingtom/j2as3  
