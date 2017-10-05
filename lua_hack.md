@@ -160,6 +160,9 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * search lua.flex jflex language:java  
 * https://github.com/Anailson/Projeto-LFT-Compilador-Lua  
 * https://github.com/bkiers/lua-parser  
+* https://github.com/stravant/LuaMinify  
+from https://github.com/g012/l65  
+
 
 ## Debug  
 * https://github.com/pkulchenko/MobDebug  
