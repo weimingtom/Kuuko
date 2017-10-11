@@ -66,6 +66,7 @@ search baidu pan LuaComponentDemo5.zip
 * https://github.com/luabind/luabind  
 * http://www.rasterbar.com/products/luabind/docs.html  
 * https://github.com/zupet/LuaTinker  
+* https://github.com/satoren/kaguya  
 
 ## Lua VM Port   
 * https://github.com/mlnlover11/SharpLua  
