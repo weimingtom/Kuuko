@@ -221,6 +221,7 @@ require('mobdebug').start()
 
 ## Lint  
 * https://github.com/mpeterv/luacheck  
+* https://github.com/Tencent/TscanCode  
 
 ## trace
 * https://github.com/rocaltair/ltrace  
