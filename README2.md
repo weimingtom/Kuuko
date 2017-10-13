@@ -663,3 +663,6 @@ https://github.com/neuecc/Utf8Json
 
 # SQLparser  
 https://github.com/MyCATApache/SQLparser  
+
+# mruby-simple-game-engine  
+https://github.com/dabroz/mruby-simple-game-engine  
