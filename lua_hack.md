@@ -222,6 +222,8 @@ require('mobdebug').start()
 ## Lint  
 * https://github.com/mpeterv/luacheck  
 * https://github.com/Tencent/TscanCode  
+* https://github.com/weimingtom/lua-checker  
+* https://github.com/weimingtom/lua-checker_win  
 
 ## trace
 * https://github.com/rocaltair/ltrace  
