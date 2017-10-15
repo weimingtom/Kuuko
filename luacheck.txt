@@ -1,0 +1,6 @@
+4月30日 05:42 来自 微博 weibo.com
+
+搞明白怎么在windows xp下运行luacheck，首先用Mingw编译lua-5.3.4，然后把exe放到bin目录，
+再把src目录下的luacheck文件夹复制到bin目录下。此时因为同时存在luacheck.lua和luacheck文件夹，
+所以需要把luacheck.lua改名成luacheck_bat.lua，相应也修改luacheck.bat里面的内容，
+最后运行luacheck.bat即可（后面接文件名作为参数）
