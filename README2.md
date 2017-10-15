@@ -666,3 +666,6 @@ https://github.com/MyCATApache/SQLparser
 
 # mruby-simple-game-engine  
 https://github.com/dabroz/mruby-simple-game-engine  
+
+# SmallerC  
+https://github.com/alexfru/SmallerC  
