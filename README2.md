@@ -669,3 +669,6 @@ https://github.com/dabroz/mruby-simple-game-engine
 
 # SmallerC  
 https://github.com/alexfru/SmallerC  
+
+# napajs  
+https://github.com/Microsoft/napajs  
