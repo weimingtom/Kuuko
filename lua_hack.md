@@ -254,6 +254,9 @@ http://bbs.pediy.com/thread-216969.htm
 * https://github.com/viruscamp/LuaTool   
 * https://github.com/sztupy/luadec51  
 * https://groups.google.com/d/topic/lua_cn/CTuLC054WM8/discussion  
+* 【技术分享】Lua程序逆向之Luac文件格式分析  
+http://bobao.360.cn/learning/detail/4534.html  
+https://github.com/feicong/lua_re  
 
 ## patch / branch / compatibility   
 * http://lua-users.org/wiki/LuaPowerPatches  
