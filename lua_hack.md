@@ -257,6 +257,7 @@ http://bbs.pediy.com/thread-216969.htm
 * 【技术分享】Lua程序逆向之Luac文件格式分析  
 http://bobao.360.cn/learning/detail/4534.html  
 https://github.com/feicong/lua_re  
+* https://github.com/viruscamp/unluac  
 
 ## patch / branch / compatibility   
 * http://lua-users.org/wiki/LuaPowerPatches  
