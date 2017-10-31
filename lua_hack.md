@@ -314,6 +314,7 @@ https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-
 * https://github.com/Apress/learn-cocos2d-2  
 * http://www.apress.com/9781430244165  
 * https://github.com/alibaba/LuaViewSDK  
+* https://github.com/Tencent/RapidView  
 
 ## Cross Language  
 * https://github.com/haramako/mlua  
