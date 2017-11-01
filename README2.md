@@ -673,5 +673,5 @@ https://github.com/alexfru/SmallerC
 # napajs  
 https://github.com/Microsoft/napajs  
 
-* closh  
+# closh  
 https://github.com/dundalek/closh  
