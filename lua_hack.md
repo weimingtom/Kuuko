@@ -61,6 +61,8 @@
 http://blog.csdn.net/neil3d/article/details/44200821  
 search baidu pan LuaComponentDemo5.zip  
 * https://github.com/aakashapoorv/PSLua  
+* https://github.com/mr-kelly/KSFramework  
+基于slua  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
