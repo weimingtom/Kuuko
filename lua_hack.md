@@ -202,6 +202,7 @@ require('mobdebug').start()
 * https://github.com/stroan/Lamn  
 * https://github.com/richardhundt/shine  
 * https://github.com/albertodemichelis/squirrel  
+* https://github.com/deemess/uLua  
 
 ## Transpiler(Translator) / Compiler  
 * https://github.com/mherkender/lua.js  
