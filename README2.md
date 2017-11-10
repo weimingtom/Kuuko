@@ -678,3 +678,6 @@ https://github.com/dundalek/closh
 
 # como-lang-ng  
 https://github.com/rmccullagh/como-lang-ng  
+
+# qlang  
+https://github.com/qiniu/qlang  
