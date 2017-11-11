@@ -681,3 +681,12 @@ https://github.com/rmccullagh/como-lang-ng
 
 # qlang  
 https://github.com/qiniu/qlang  
+
+# AS3  
+https://discuss.as3lang.org/t/an-actionscript-3-port-of-mozillas-rhino-javascript-interpreter/958/2  
+https://github.com/theturtle32/RhinoAS3/blob/master/src/java/lang/Character.as  
+
+# js  
+https://github.com/mozilla/narcissus  
+https://johnresig.com/blog/bringing-the-browser-to-the-server/  
+https://github.com/jeresig/env-js  
