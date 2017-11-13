@@ -690,3 +690,7 @@ https://github.com/theturtle32/RhinoAS3/blob/master/src/java/lang/Character.as
 https://github.com/mozilla/narcissus  
 https://johnresig.com/blog/bringing-the-browser-to-the-server/  
 https://github.com/jeresig/env-js  
+
+# lemon-lang  
+https://github.com/lemon-lang/lemon  
+
