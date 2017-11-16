@@ -694,3 +694,5 @@ https://github.com/jeresig/env-js
 # lemon-lang  
 https://github.com/lemon-lang/lemon  
 
+# my_basic  
+https://github.com/paladin-t/my_basic  
