@@ -699,3 +699,6 @@ https://github.com/paladin-t/my_basic
 
 # micro-lisp  
 https://github.com/carld/micro-lisp  
+
+# awesome-language-engineering  
+https://github.com/NLKNguyen/awesome-language-engineering  
