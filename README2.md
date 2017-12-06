@@ -705,3 +705,7 @@ https://github.com/NLKNguyen/awesome-language-engineering
 
 # my_toy_compiler  
 https://github.com/lsegal/my_toy_compiler  
+
+# leveldb java port  
+https://github.com/dain/leveldb  
+
