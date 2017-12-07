@@ -709,3 +709,9 @@ https://github.com/lsegal/my_toy_compiler
 # leveldb java port  
 https://github.com/dain/leveldb  
 
+# R7RS  
+https://github.com/objecthub/swift-lispkit  
+https://github.com/ashinn/chibi-scheme  
+https://github.com/cslarsen/mickey-scheme  
+https://www.douban.com/group/topic/35902334/  
+
