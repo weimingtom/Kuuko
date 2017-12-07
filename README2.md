@@ -12,6 +12,11 @@
 ## YACC (!!!Important!!!)  
 * https://github.com/weimingtom/wmt_yacc_study  
 * https://github.com/weimingtom/myosotis2  
+* https://github.com/sebknzl/byacc-ragel  
+* http://www.colm.net/open-source/ragel/  
+* git://git.colm.net/ragel.git  
+* https://github.com/weimingtom/ragel_fork  
+* http://invisible-island.net/byacc/byacc.html  
 
 ## Porting (!!!Important!!!)  
 * https://github.com/weimingtom/nokscript_java  
