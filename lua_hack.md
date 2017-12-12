@@ -381,3 +381,6 @@ https://github.com/ostinelli/gin
 ## Http Server  
 * search kepler-1.1-beta2-win32-lua51 in baidupan    
 
+## IDEA  
+* https://github.com/EmmyLua/IntelliJ-EmmyLua  
+
