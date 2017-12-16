@@ -749,3 +749,10 @@ https://github.com/pochi0701/TinyJS
 # JavaScriptCore  
 https://github.com/WebKit/webkit  
 search Visual Studio javascriptcore.dll  
+https://github.com/cocos2d-x/JavaScriptCore-X  
+https://github.com/Andersbakken/WebKit-mirror.git  
+https://github.com/gaoyuping/wke.git  
+https://github.com/aogilvie/JavaScriptCore-Android  
+https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey  
+search FixedArray StdLibExtras class Bitmap  
+https://github.com/cexer/wke  
