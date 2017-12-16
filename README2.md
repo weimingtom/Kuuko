@@ -745,3 +745,7 @@ http://blog.csdn.net/dev_csdn/article/details/78792014
 
 # TinyJS  
 https://github.com/pochi0701/TinyJS  
+
+# JavaScriptCore  
+https://github.com/WebKit/webkit  
+search Visual Studio javascriptcore.dll  
