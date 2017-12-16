@@ -149,6 +149,8 @@ https://github.com/janeasystems/nodejs-mobile
 * https://github.com/ericwlange/AndroidJSCore  
 * https://github.com/cesanta/mjs  
 * https://github.com/tessel/t1-runtime  
+* js引擎能做到多小？  
+https://www.zhihu.com/question/53612496  
 
 ## Javascript in Golang  
 * https://github.com/robertkrimen/otto  
