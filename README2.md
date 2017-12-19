@@ -765,3 +765,6 @@ http://excamera.com/sphinx/article-chip8.html#chip8
 https://community.arduboy.com/t/gba-roms-on-an-arduboy/219  
 https://github.com/prophittcorey/iC8  
 https://github.com/Gabriele91/Chip8-emulator-Arduino-UNO  
+
+# ubasic  
+https://github.com/adamdunkels/ubasic  
