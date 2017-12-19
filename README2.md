@@ -759,3 +759,8 @@ https://github.com/cexer/wke
 
 # json  
 https://github.com/nlohmann/json  
+
+# chip8  
+http://excamera.com/sphinx/article-chip8.html#chip8  
+https://community.arduboy.com/t/gba-roms-on-an-arduboy/219  
+https://github.com/prophittcorey/iC8  
