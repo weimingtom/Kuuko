@@ -768,3 +768,6 @@ https://github.com/Gabriele91/Chip8-emulator-Arduino-UNO
 
 # ubasic  
 https://github.com/adamdunkels/ubasic  
+
+# ClrSqlite  
+https://github.com/tsadigov/ClrSqlite  
