@@ -771,3 +771,6 @@ https://github.com/adamdunkels/ubasic
 
 # ClrSqlite  
 https://github.com/tsadigov/ClrSqlite  
+
+# BSharp  
+https://github.com/GruntTheDivine/BSharp  
