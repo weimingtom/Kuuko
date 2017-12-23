@@ -193,6 +193,7 @@ require('mobdebug').start()
 * http://luaprofiler.luaforge.net  
 * http://www.jianshu.com/p/f6606b27e9de  
 * https://github.com/luzhlon/old-code/blob/master/MAKE/CL_LINK/LuaDebugger/LuaDebugger.cpp  
+* https://github.com/xjdrew/lua-gdb  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
