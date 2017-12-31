@@ -777,3 +777,9 @@ https://github.com/GruntTheDivine/BSharp
 
 # IronScheme  
 https://github.com/leppie/IronScheme  
+
+# Flee / FleeSharp  
+http://flee.codeplex.com  
+https://fleesharp.codeplex.com  
+https://github.com/mparlak/Flee  
+https://github.com/netgrim/FleeSharp  
