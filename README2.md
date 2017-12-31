@@ -783,3 +783,6 @@ http://flee.codeplex.com
 https://fleesharp.codeplex.com  
 https://github.com/mparlak/Flee  
 https://github.com/netgrim/FleeSharp  
+
+# Lucene.Net.Expressions  
+https://github.com/palmer0914/lucenenet/blob/master/src/Lucene.Net.Expressions/JS/JavascriptCompiler.cs  
