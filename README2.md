@@ -789,3 +789,8 @@ https://github.com/palmer0914/lucenenet/blob/master/src/Lucene.Net.Expressions/J
 
 # tiger  
 https://github.com/lcastillov/TigerCompiler  
+
+# Ruby Hacking Guide  
+https://ruby-hacking-guide.github.io  
+https://ruby-china.org/topics/14504  
+https://github.com/ruby-hacking-guide/ruby-hacking-guide.github.com  
