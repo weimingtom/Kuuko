@@ -800,3 +800,6 @@ https://github.com/luna/luna
 
 # open-fortran-parser  
 https://github.com/OpenFortranProject/open-fortran-parser  
+
+# movfuscator  
+https://github.com/xoreaxeaxeax/movfuscator  
