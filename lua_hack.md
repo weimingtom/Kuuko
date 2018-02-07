@@ -63,12 +63,20 @@ search baidu pan LuaComponentDemo5.zip
 * https://github.com/aakashapoorv/PSLua  
 * https://github.com/mr-kelly/KSFramework  
 based on slua  
+* https://www.codeproject.com/Articles/4723/LuaDotNet-a-thin-wrapper-around-Lua-and-Luabind-fo  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
 * http://www.rasterbar.com/products/luabind/docs.html  
+* https://www.rasterbar.com/products/luabind.html  
+* https://sourceforge.net/projects/luabind/  
 * https://github.com/zupet/LuaTinker  
 * https://github.com/satoren/kaguya  
+* https://www.lua.org/wshop14/Zykov.pdf  
+* https://github.com/OldFisher/lua-api-pp  
+
+## Swift  
+* https://github.com/sdegutis/lua4swift  
 
 ## Lua VM Port   
 * https://github.com/mlnlover11/SharpLua  
@@ -104,6 +112,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/mpeterv/emlua  
 * https://github.com/neolithos/neolua  
 * https://www.codeproject.com/Articles/674128/NeoLua-Lua-for-the-NET-Dynamic-Language-Runtime  
+* https://archive.codeplex.com/?p=neolua  
 * http://d.hatena.ne.jp/rinnSanada/20140720/1405866337  
 * https://github.com/SquidDev/urn  
 * https://github.com/fiatjaf/glua  
