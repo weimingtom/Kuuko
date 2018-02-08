@@ -806,3 +806,9 @@ https://github.com/xoreaxeaxeax/movfuscator
 
 # pcbasic  
 https://github.com/robhagemans/pcbasic  
+
+# qb.js  
+https://github.com/smhanov/qb.js  
+
+# qb64  
+http://www.qb64.net  
