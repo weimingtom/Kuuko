@@ -812,3 +812,6 @@ https://github.com/smhanov/qb.js
 
 # qb64  
 http://www.qb64.net  
+
+# inspector  
+https://github.com/inspector-repl/inspector  
