@@ -815,3 +815,6 @@ http://www.qb64.net
 
 # inspector  
 https://github.com/inspector-repl/inspector  
+
+# fnl  
+https://github.com/bakpakin/fnl  
