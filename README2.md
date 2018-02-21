@@ -818,3 +818,9 @@ https://github.com/inspector-repl/inspector
 
 # fnl  
 https://github.com/bakpakin/fnl  
+
+# onelang  
+https://github.com/koczkatamas/onelang  
+
+# how-products-got-their-name  
+https://github.com/amitmerchant1990/how-products-got-their-name  
