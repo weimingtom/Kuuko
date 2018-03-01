@@ -824,3 +824,6 @@ https://github.com/koczkatamas/onelang
 
 # how-products-got-their-name  
 https://github.com/amitmerchant1990/how-products-got-their-name  
+
+# node-in-debugging  
+https://github.com/nswbmw/node-in-debugging  
