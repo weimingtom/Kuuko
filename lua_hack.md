@@ -74,6 +74,7 @@ based on slua
 * https://github.com/satoren/kaguya  
 * https://www.lua.org/wshop14/Zykov.pdf  
 * https://github.com/OldFisher/lua-api-pp  
+* https://github.com/vinniefalco/LuaBridge  
 
 ## Swift  
 * https://github.com/sdegutis/lua4swift  
