@@ -400,3 +400,10 @@ https://github.com/oneoo/alilua
 
 ## Game Server  
 * https://github.com/ElunaLuaEngine/Eluna  
+
+## Unreal  
+* http://lscript4unreal.sourceforge.net  
+* https://github.com/asqbtcupid/unreal.lua  
+
+## Hot Reload  
+* https://github.com/asqbtcupid/lua_hotupdate  
