@@ -409,3 +409,8 @@ https://github.com/oneoo/alilua
 
 ## Hot Reload  
 * https://github.com/asqbtcupid/lua_hotupdate  
+
+## Memory Leak Detect  
+* http://blog.sina.com.cn/s/blog_7d7447e70102xbs1.html  
+* http://www.cnblogs.com/yaukey/p/unity_lua_memory_leak_trace.html  
+* https://github.com/yaukeywang/LuaMemorySnapshotDump  
