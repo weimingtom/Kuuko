@@ -232,6 +232,8 @@ require('mobdebug').start()
 * https://github.com/yanghuan/CSharp.lua  
 * https://github.com/WeirdConstructor/lal  
 * https://github.com/PhilLCar/Luna  
+* 动手写IL到Lua的翻译器——准备  
+* https://juejin.im/entry/5aab2c1b6fb9a028bd4c0f1d  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
