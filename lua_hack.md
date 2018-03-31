@@ -217,6 +217,8 @@ require('mobdebug').start()
 * https://github.com/richardhundt/shine  
 * https://github.com/albertodemichelis/squirrel  
 * https://github.com/deemess/uLua  
+* https://github.com/fperrad/lua-batteries  
+* https://github.com/fperrad/lua  
 
 ## Transpiler(Translator) / Compiler  
 * https://github.com/mherkender/lua.js  
