@@ -331,6 +331,8 @@ https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-
 * https://github.com/gfoot/kopilua/tree/master/LuaTestMore  
 * https://github.com/fperrad/lua-TestMore  
 * https://fperrad.github.io/lua-TestMore/cover_lua515/  
+* https://github.com/LuaJIT/LuaJIT-test-cleanup  
+
 
 ## framework   
 * https://github.com/alibaba/wax
