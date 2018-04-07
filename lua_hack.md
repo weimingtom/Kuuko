@@ -325,14 +325,15 @@ https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
 
-## test  
+## test / test suite    
 * https://github.com/fperrad/lua-TestMore  
 * http://lua.2524044.n2.nabble.com/UniLua-A-pure-C-implementation-of-Lua-5-2-focus-on-compatibility-with-Unity3D-td7645967.html  
 * https://github.com/gfoot/kopilua/tree/master/LuaTestMore  
 * https://github.com/fperrad/lua-TestMore  
 * https://fperrad.github.io/lua-TestMore/cover_lua515/  
 * https://github.com/LuaJIT/LuaJIT-test-cleanup  
-
+* https://github.com/openresty/luajit2-test-suite  
+* https://github.com/NLua/LuaTests  
 
 ## framework   
 * https://github.com/alibaba/wax
@@ -351,10 +352,6 @@ https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-
 
 ## book code  
 https://github.com/wyrover/book-code  
-
-## test suite  
-* https://github.com/openresty/luajit2-test-suite  
-* https://github.com/NLua/LuaTests  
 
 ## Data Structure  
 * https://github.com/gtxx3600/TDR  
