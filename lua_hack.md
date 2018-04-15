@@ -334,6 +334,7 @@ https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-
 * https://github.com/LuaJIT/LuaJIT-test-cleanup  
 * https://github.com/openresty/luajit2-test-suite  
 * https://github.com/NLua/LuaTests  
+* https://github.com/zxh0/lua.go/tree/master/test  
 
 ## framework   
 * https://github.com/alibaba/wax
