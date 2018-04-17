@@ -322,6 +322,10 @@ http://rubyemb.group.iteye.com/group/topic/5743
 * lua number运算误差备忘  
 https://github.com/someonegg/jtwsm_net/blob/master/data/blog/content/lua-number-deviation.article  
 
+* 64位lua引擎如何支持32位luac编译出来的二进制字节码？  
+https://www.jianshu.com/p/3c49cf454502  
+https://github.com/Tencent/xLua/issues/356  
+
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
 
