@@ -836,3 +836,7 @@ https://github.com/jakogut/tinyvm
 
 # ShivyC  
 https://github.com/ShivamSarodia/ShivyC  
+
+# TinyPerl    
+http://tinyperl.sourceforge.net/  
+https://sourceforge.net/projects/tinyperl/files/  
