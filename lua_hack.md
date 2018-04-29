@@ -205,6 +205,8 @@ require('mobdebug').start()
 * http://www.jianshu.com/p/f6606b27e9de  
 * https://github.com/luzhlon/old-code/blob/master/MAKE/CL_LINK/LuaDebugger/LuaDebugger.cpp  
 * https://github.com/xjdrew/lua-gdb  
+* https://marketplace.visualstudio.com/items?itemName=devCAT.lua-debug  
+* https://github.com/devcat-studio/VSCodeLuaDebug  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
@@ -424,3 +426,9 @@ https://github.com/oneoo/alilua
 * http://blog.sina.com.cn/s/blog_7d7447e70102xbs1.html  
 * http://www.cnblogs.com/yaukey/p/unity_lua_memory_leak_trace.html  
 * https://github.com/yaukeywang/LuaMemorySnapshotDump  
+
+## Game Engine  
+* Moai  
+http://www.gamelook.com.cn/2011/04/32937  
+http://getmoai.com/  
+https://github.com/moai/moai-dev  
