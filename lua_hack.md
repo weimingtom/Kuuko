@@ -168,6 +168,9 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * LuaTips  
 * http://lua.tips/index.php  
 * https://github.com/lichuang/qnode/wiki/qnode中文wiki  
+* Unity手游开发札记——Lua语言集成  
+http://www.jianshu.com/p/160f2810034f  
+http://gad.qq.com/article/detail/28959  
 
 ## Parser / Lexer / AST    
 * https://github.com/weimingtom/wmt_yacc_study  
@@ -240,6 +243,12 @@ https://github.com/fperrad/lua
 * https://github.com/PhilLCar/Luna  
 * 动手写IL到Lua的翻译器——准备  
 * https://juejin.im/entry/5aab2c1b6fb9a028bd4c0f1d  
+
+## Transpiler to Lua   
+* http://urn-lang.com  
+
+## Twitter  
+* LuaLang  
 
 ## Emscripten  
 * https://github.com/THISISAGOODNAME/emscriptenDemos  
@@ -432,3 +441,6 @@ https://github.com/oneoo/alilua
 http://www.gamelook.com.cn/2011/04/32937  
 http://getmoai.com/  
 https://github.com/moai/moai-dev  
+
+## GUI  
+* http://libyue.com  
