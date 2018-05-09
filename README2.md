@@ -857,3 +857,10 @@ https://github.com/munificent/wren
 https://github.com/qingfeng346/Scorpio-CSharp  
 https://github.com/qingfeng346/ScorpioUnitySample  
 
+# rxi/aria  
+A tiny, embeddable lisp-shaped language implemented in C89  
+https://github.com/rxi/aria  
+
+# io  
+A Programming Language  
+https://github.com/IoLanguage/io  
