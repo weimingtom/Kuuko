@@ -864,3 +864,6 @@ https://github.com/rxi/aria
 # io  
 A Programming Language  
 https://github.com/IoLanguage/io  
+
+# pyre-check  
+https://github.com/facebook/pyre-check  
