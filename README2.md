@@ -867,3 +867,8 @@ https://github.com/IoLanguage/io
 
 # pyre-check  
 https://github.com/facebook/pyre-check  
+
+# Racket  
+http://racket-lang.org  
+DrRacket, IDE for Racket  
+https://github.com/racket/drracket  
