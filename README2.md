@@ -872,3 +872,7 @@ https://github.com/facebook/pyre-check
 http://racket-lang.org  
 DrRacket, IDE for Racket  
 https://github.com/racket/drracket  
+
+# smilebasic  
+SmileBASIC 講座 6.ゲームを作る  
+http://smilebasic.com/academy/game/  
