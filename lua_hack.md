@@ -414,6 +414,8 @@ https://github.com/leafo/lapis
 https://github.com/ostinelli/gin  
 * alilua  
 https://github.com/oneoo/alilua  
+* sailor  
+https://github.com/sailorproject/sailor  
 
 ## Http Server  
 * search kepler-1.1-beta2-win32-lua51 in baidupan    
