@@ -259,6 +259,7 @@ https://github.com/fperrad/lua
 * https://github.com/weimingtom/lua-checker  
 * https://github.com/weimingtom/lua-checker_win  
 * https://github.com/shiguredo/luli  
+* https://medium.com/shiguredo/lua-lint-luli-のソースコードを公開しました-4eb087bc5358  
 
 ## trace
 * https://github.com/rocaltair/ltrace  
