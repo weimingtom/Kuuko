@@ -258,6 +258,7 @@ https://github.com/fperrad/lua
 * https://github.com/Tencent/TscanCode  
 * https://github.com/weimingtom/lua-checker  
 * https://github.com/weimingtom/lua-checker_win  
+* https://github.com/shiguredo/luli  
 
 ## trace
 * https://github.com/rocaltair/ltrace  
@@ -457,3 +458,6 @@ https://github.com/pllua/pllua
 ## ???  
 * https://github.com/perbone/luascript  
 * https://github.com/bakpakin/Fennel  
+
+## profile  
+* https://github.com/jgrahamc/lulip  
