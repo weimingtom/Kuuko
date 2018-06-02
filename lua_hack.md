@@ -310,6 +310,7 @@ http://lua-users.org/lists/lua-l/2006-03/msg00723.html
 * https://github.com/dubiousjim/luafiveq  
 * https://github.com/keplerproject/lua-compat-5.3  
 * https://github.com/malokch/stm32lua  
+* https://github.com/cogwheel/lua-wow  
 
 ## Bind  
 * https://github.com/aarzilli/golua  
