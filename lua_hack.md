@@ -387,6 +387,7 @@ https://github.com/wyrover/book-code
 * https://stackoverflow.com/questions/6118799/creating-a-timer-using-lua  
 * https://github.com/CDSoft/bonaluna  
 * https://github.com/cogwheel/lua-wow  
+* http://www.lua.inf.puc-rio.br  
 
 ## IoT
 * Luat  
@@ -468,3 +469,6 @@ https://github.com/pllua/pllua
 
 ## tutorial   
 * https://github.com/wenquan0hf/lua  
+
+## Win32  
+* http://luabinaries.sourceforge.net/download.html  
