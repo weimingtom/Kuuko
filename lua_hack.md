@@ -172,6 +172,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * Unity手游开发札记——Lua语言集成  
 http://www.jianshu.com/p/160f2810034f  
 http://gad.qq.com/article/detail/28959  
+* http://sunxiunan.com/archives/2080  
 
 ## Parser / Lexer / AST    
 * https://github.com/weimingtom/wmt_yacc_study  
@@ -423,6 +424,8 @@ https://github.com/ostinelli/gin
 https://github.com/oneoo/alilua  
 * sailor  
 https://github.com/sailorproject/sailor  
+* kepler  
+https://github.com/keplerproject/kepler  
 
 ## Http Server  
 * search kepler-1.1-beta2-win32-lua51 in baidupan    
