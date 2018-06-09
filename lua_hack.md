@@ -134,6 +134,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * https://github.com/weimingtom/luaj  
 * http://sourceforge.net/p/cfwlua  
 * https://github.com/hellowod/lua-csharp-development  
+* http://lua-users.org/wiki/LuaImplementations  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
