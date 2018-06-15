@@ -382,6 +382,8 @@ https://github.com/wyrover/book-code
 * http://marupeke296.com/LUA_No3_Coroutine.html  
 * search lua_newthread lua_resume  
 * https://github.com/gtimworks/lua-process  
+
+## Yield  
 * More freedom to yield()  
 http://lua-users.org/wiki/LuaFiveTwo  
 http://lua-users.org/wiki/ResumableVmPatch  
