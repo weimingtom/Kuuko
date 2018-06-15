@@ -387,6 +387,7 @@ https://github.com/wyrover/book-code
 * More freedom to yield()  
 http://lua-users.org/wiki/LuaFiveTwo  
 http://lua-users.org/wiki/ResumableVmPatch  
+http://lua-users.org/wiki/FeatureProposals  
 
 ## lib / ext  
 * http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/  
