@@ -258,6 +258,7 @@ https://github.com/fperrad/lua
 
 ## Lint  
 * https://github.com/mpeterv/luacheck  
+https://github.com/weimingtom/luacheck/tree/master/luacheck_mingw  
 * https://github.com/Tencent/TscanCode  
 * https://github.com/weimingtom/lua-checker  
 * https://github.com/weimingtom/lua-checker_win  
