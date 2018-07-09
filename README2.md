@@ -191,6 +191,9 @@ https://github.com/davidgiven/luje
 https://sourceforge.net/projects/pspme/  
 https://sourceforge.net/projects/pspkvm/  
 
+## Avian - A lightweight Java Virtual Machine (JVM)  
+https://github.com/ReadyTalk/avian  
+
 ## jython / dex converter  
 https://github.com/weimingtom/jythonroid/blob/master/src/org/python/debug/FixMe.java  
 https://github.com/RunasSudo/PyAndroid/blob/master/app/src/main/java/org/python/core/Dexer.java  
