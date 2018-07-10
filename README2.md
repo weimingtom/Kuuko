@@ -194,6 +194,11 @@ https://sourceforge.net/projects/pspkvm/
 ## Avian - A lightweight Java Virtual Machine (JVM)  
 https://github.com/ReadyTalk/avian  
 
+## JVM  
+https://github.com/lihaoyi/Metascala  
+有没有什么基于C++或者scala的比较轻量级的JVM实现？  
+https://www.zhihu.com/question/51886256  
+
 ## jython / dex converter  
 https://github.com/weimingtom/jythonroid/blob/master/src/org/python/debug/FixMe.java  
 https://github.com/RunasSudo/PyAndroid/blob/master/app/src/main/java/org/python/core/Dexer.java  
