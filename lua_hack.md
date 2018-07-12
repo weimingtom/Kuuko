@@ -346,6 +346,7 @@ https://github.com/Tencent/xLua/issues/356
 
 ## benchmark  
 * https://github.com/r-lyeh/scriptorium  
+* https://github.com/weimingtom/KuukoBack/tree/master/kuuko/test/scimark  
 
 ## test / test suite    
 * https://github.com/fperrad/lua-TestMore  
