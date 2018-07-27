@@ -887,3 +887,6 @@ http://smilebasic.com/academy/game/
 
 # ffi-overhead  
 https://github.com/dyu/ffi-overhead  
+
+# pylite  
+https://github.com/linuxmooc/pylite  
