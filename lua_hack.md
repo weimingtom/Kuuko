@@ -485,3 +485,7 @@ https://github.com/pllua/pllua
 
 ## Win32  
 * http://luabinaries.sourceforge.net/download.html  
+
+## MCU  
+* https://github.com/malokch/stm32lua  
+* https://github.com/deemess/uLua  
