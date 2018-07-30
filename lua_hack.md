@@ -490,3 +490,4 @@ https://github.com/pllua/pllua
 * https://github.com/malokch/stm32lua  
 * https://github.com/deemess/uLua  
 * https://github.com/dawee/moonchild  
+* https://github.com/elua/elua  
