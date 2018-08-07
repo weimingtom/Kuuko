@@ -896,3 +896,6 @@ https://github.com/nkolban/duktape-esp32
 
 # esp32-arduinoでJavaScript(duktape)を使う  
 https://qiita.com/inajob/items/1c721d45900f0ff06d2a  
+
+# AllJoyn.js 入门  
+https://github.com/smart-conn/alljoyn-zh/blob/master/docs/develop/building/alljoyn-js/index.md  
