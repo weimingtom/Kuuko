@@ -890,3 +890,9 @@ https://github.com/dyu/ffi-overhead
 
 # pylite  
 https://github.com/linuxmooc/pylite  
+
+# duktape-esp32  
+https://github.com/nkolban/duktape-esp32  
+
+# esp32-arduinoでJavaScript(duktape)を使う  
+https://qiita.com/inajob/items/1c721d45900f0ff06d2a  
