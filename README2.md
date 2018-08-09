@@ -899,3 +899,6 @@ https://qiita.com/inajob/items/1c721d45900f0ff06d2a
 
 # AllJoyn.js 入门  
 https://github.com/smart-conn/alljoyn-zh/blob/master/docs/develop/building/alljoyn-js/index.md  
+
+# ESP8266这么火红背后不得不说的六个理由  
+https://www.sohu.com/a/127188797_467791  
