@@ -136,6 +136,8 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://sourceforge.net/p/cfwlua  
 * https://github.com/hellowod/lua-csharp-development  
 * http://lua-users.org/wiki/LuaImplementations  
+* http://www.moonshinejs.org  
+* https://github.com/gamesys/moonshine  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
