@@ -912,6 +912,8 @@ https://github.com/jnz/q3vm.git
 
 # TorqueScript    
 http://wiki.torque3d.org/wiki:_scripter-start  
+http://www.garagegames.com/products/torque-3d/documentation/user  
+scripting - overview - syntax guide  
 https://github.com/GarageGames/Torque3D  
 http://torque3d.org  
 脚本级网络游戏编程  
