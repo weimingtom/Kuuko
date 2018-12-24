@@ -380,6 +380,8 @@ https://github.com/Tencent/xLua/issues/356
 
 ## book code  
 https://github.com/wyrover/book-code  
+《自己动手实现Lua》源代码  
+https://github.com/zxh0/luago-book  
 
 ## Data Structure  
 * https://github.com/gtxx3600/TDR  
