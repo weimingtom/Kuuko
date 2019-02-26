@@ -77,6 +77,7 @@ based on slua
 * https://github.com/OldFisher/lua-api-pp  
 * https://github.com/vinniefalco/LuaBridge  
 * https://github.com/dafrito/luacxx  
+* https://github.com/amzeratul/halley/tree/master/src/engine/lua  
 
 ## Swift  
 * https://github.com/sdegutis/lua4swift  
