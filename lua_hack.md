@@ -78,6 +78,9 @@ based on slua
 * https://github.com/vinniefalco/LuaBridge  
 * https://github.com/dafrito/luacxx  
 * https://github.com/amzeratul/halley/tree/master/src/engine/lua  
+* ELuna  
+* https://radiotail.iteye.com/blog/1584610  
+* https://github.com/ElunaLuaEngine/Eluna  
 
 ## Swift  
 * https://github.com/sdegutis/lua4swift  
