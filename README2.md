@@ -926,3 +926,7 @@ https://en.wikipedia.org/wiki/List_of_ARM_Cortex-M_development_tools
 
 # aalhour/awesome-compilers  
 https://github.com/aalhour/awesome-compilers  
+
+# ffhelicopter/Go42  
+https://github.com/ffhelicopter/Go42  
+
