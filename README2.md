@@ -930,3 +930,6 @@ https://github.com/aalhour/awesome-compilers
 # ffhelicopter/Go42  
 https://github.com/ffhelicopter/Go42  
 
+# vlang  
+https://github.com/vlang-io/V  
+
