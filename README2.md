@@ -933,3 +933,5 @@ https://github.com/ffhelicopter/Go42
 # vlang  
 https://github.com/vlang-io/V  
 
+# Java  
+https://stackoverflow.com/questions/2856843/java-on-openwrt-dd-wrt  
