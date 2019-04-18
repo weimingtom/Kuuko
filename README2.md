@@ -938,3 +938,6 @@ https://github.com/vlang-io/V
 https://stackoverflow.com/questions/2856843/java-on-openwrt-dd-wrt  
 https://sourceforge.net/projects/jamvm/  
 
+# BosqueLanguage  
+https://github.com/Microsoft/BosqueLanguage  
+
