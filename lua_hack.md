@@ -81,6 +81,7 @@ based on slua
 * ELuna  
 * https://radiotail.iteye.com/blog/1584610  
 * https://github.com/ElunaLuaEngine/Eluna  
+* https://github.com/ThePhD/sol2  
 
 ## Swift  
 * https://github.com/sdegutis/lua4swift  
