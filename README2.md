@@ -943,3 +943,6 @@ https://github.com/Microsoft/BosqueLanguage
 
 # 自制编程语言 基于C语言  
 https://github.com/yifengyou/sparrow  
+
+# QuickJS  
+https://github.com/quickjs-zh/QuickJS  
