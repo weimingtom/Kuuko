@@ -945,4 +945,5 @@ https://github.com/Microsoft/BosqueLanguage
 https://github.com/yifengyou/sparrow  
 
 # QuickJS  
+https://bellard.org/quickjs/  
 https://github.com/quickjs-zh/QuickJS  
