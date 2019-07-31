@@ -946,6 +946,7 @@ https://github.com/yifengyou/sparrow
 
 # QuickJS  
 https://bellard.org/quickjs/  
+https://bellard.org/quickjs/bench.html  
 https://github.com/quickjs-zh/QuickJS  
 
 # iotjs  
