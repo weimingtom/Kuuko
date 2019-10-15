@@ -952,3 +952,6 @@ https://github.com/quickjs-zh/QuickJS
 # iotjs  
 https://github.com/jerryscript-project/iotjs  
 
+# benchmarksgame  
+https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/lua.html  
+
