@@ -65,6 +65,11 @@ search baidu pan LuaComponentDemo5.zip
 based on slua  
 * https://www.codeproject.com/Articles/4723/LuaDotNet-a-thin-wrapper-around-Lua-and-Luabind-fo  
 * https://github.com/weimingtom/sharplua-1  
+* https://github.com/momotech/MLN  
+use jni  
+https://github.com/momotech/MLN/tree/master/MLN-Android/mlncore/src/main/jni/japi  
+use objc  
+https://github.com/momotech/MLN/tree/master/MLN-iOS/MLN/Classes/Core  
 
 ## Language Interface in C++ / Bind    
 * https://github.com/luabind/luabind  
