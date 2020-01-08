@@ -958,3 +958,9 @@ https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/lua.html
 # Blawn  
 https://github.com/Naotonosato/Blawn  
 
+# acwj  
+https://github.com/DoctorWkt/acwj  
+
+# subc  
+http://www.t3x.org/subc/  
+
