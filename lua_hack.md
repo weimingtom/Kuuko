@@ -228,6 +228,7 @@ require('mobdebug').start()
 * https://marketplace.visualstudio.com/items?itemName=devCAT.lua-debug  
 * https://github.com/devcat-studio/VSCodeLuaDebug  
 * https://github.com/facebookarchive/fblualib/tree/master/fblualib/debugger  
+* https://github.com/mkottman/lua-gdb-helper  
 
 ## Reimplementation  
 * https://github.com/dibyendumajumdar/ravi  
