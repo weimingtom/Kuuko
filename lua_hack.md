@@ -512,3 +512,5 @@ https://github.com/pllua/pllua
 
 ## js lua  
 https://fengari.io  
+https://hackernoon.com/why-we-rewrote-lua-in-js-a66529a8278d  
+http://moonshinejs.org/examples/debug/  
