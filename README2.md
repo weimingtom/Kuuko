@@ -969,3 +969,7 @@ https://github.com/danistefanovic/build-your-own-x#build-your-own-programming-la
 
 # webml  
 https://github.com/KeenS/webml  
+
+# beef  
+https://www.beeflang.org  
+https://github.com/beefytech/Beef  
