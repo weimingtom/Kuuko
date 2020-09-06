@@ -190,6 +190,9 @@ http://java.coe.psu.ac.th/J2ME/
 https://github.com/davidgiven/luje  
 https://sourceforge.net/projects/pspme/  
 https://sourceforge.net/projects/pspkvm/  
+深度实践嵌入式linux系统移植, PhoneME, JamVM  
+https://github.com/zxlooong/cvm  
+https://github.com/nikita36078/phoneME-android  
 
 ## Avian - A lightweight Java Virtual Machine (JVM)  
 https://github.com/ReadyTalk/avian  
