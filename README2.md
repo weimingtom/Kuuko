@@ -979,3 +979,6 @@ https://github.com/beefytech/Beef
 
 # gravity  
 https://github.com/marcobambini/gravity  
+
+# chibicc  
+https://github.com/rui314/chibicc  
