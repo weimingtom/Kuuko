@@ -514,3 +514,12 @@ https://github.com/pllua/pllua
 https://fengari.io  
 https://hackernoon.com/why-we-rewrote-lua-in-js-a66529a8278d  
 http://moonshinejs.org/examples/debug/  
+
+## dynamiclua  
+https://github.com/nrother/dynamiclua  
+
+## ModMaker.Lua  
+https://github.com/TheModMaker/ModMaker.Lua  
+
+## linteir  
+https://osdn.net/projects/linteir/  
