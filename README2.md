@@ -193,6 +193,8 @@ https://sourceforge.net/projects/pspkvm/
 深度实践嵌入式linux系统移植, PhoneME, JamVM  
 https://github.com/zxlooong/cvm  
 https://github.com/nikita36078/phoneME-android  
+???which book  
+https://github.com/Joyounger/armlinuxbook  
 
 ## Avian - A lightweight Java Virtual Machine (JVM)  
 https://github.com/ReadyTalk/avian  
