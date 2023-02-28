@@ -151,6 +151,7 @@ https://github.com/NLua/KopiLua/blob/master/KopiLua/src/loslib.cs
 * http://www.moonshinejs.org  
 * https://github.com/gamesys/moonshine  
 * https://github.com/mikejewell/lufa  
+* https://github.com/Manistein/dummylua-tutorial  
 
 ## Lua Source Reading  
 * https://github.com/weimingtom/wmt_lua_study  
